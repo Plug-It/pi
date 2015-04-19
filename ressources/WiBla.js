@@ -45,7 +45,7 @@ function init(v) {
 		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
 	} else {
 		old_chat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
-		purple_css = "https://rawgit.com/WiBla/Script/master/ressources/max.css";
+		purple_css = "https://rawgit.com/WiBla/Script/master/ressources/purple.css";
 		menu_css = "https://rawgit.com/WiBla/Script/master/ressources/menu.css";
 		blue_css = "https://rawgit.com/WiBla/Script/master/ressources/blue.css";
 		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav");
@@ -66,10 +66,10 @@ function init(v) {
 		menu += '	</ul>';
 		menu += '</div>';
 		moderateGUI += '<div id="ws-rmvDJ" onclick="removeDJ()">';
-		moderateGUI += '	<img src="https://dl.dropboxusercontent.com/s/ou587hh6d0ov90w/romveDJ.png" alt="button remove from wait-list" />';
+		moderateGUI += '	<img src="https://raw.githubusercontent.com/WiBla/Script/master/images/other/romveDJ.png" alt="button remove from wait-list" />';
 		moderateGUI += '</div>';
 		moderateGUI += '<div id="ws-skip" onclick="forceSkip();">';
-		moderateGUI += '	<img src="https://dl.dropboxusercontent.com/s/0fn3plmg2yhy6rf/skip.png" alt="button skip" />';
+		moderateGUI += '	<img src="https://raw.githubusercontent.com/WiBla/Script/master/images/other/skip.png" alt="button skip" />';
 		moderateGUI += '</div>';
 		icon += '<div id="del-chat-button" class="chat-header-button">';
 		icon += '	<i class="icon ws-delChat" onclick="API.sendChat(\'/clear\')"></i>';

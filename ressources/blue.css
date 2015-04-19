@@ -77,27 +77,27 @@
 	color: #000;
 }
 .icon-chat-subscriber {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/crown.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/crown.png);
 	background-position: -1px 0 !important;
 }
 .icon-chat-dj {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_dj.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_dj.png);
 	background-position: 0 0 !important;
 }
 .icon-chat-bouncer {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bouncer.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_bouncer.png);
 	background-position: 1px 0 !important;
 }
 .icon-chat-manager {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_manager.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_manager.png);
 	background-position: 2px 0 !important;
 }
 .icon-chat-cohost {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_cohost.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_cohost.png);
 	background-position: 2px 0 !important;
 }
 .icon-chat-host {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_host.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_host.png);
 	background-position: 2px 0 !important;
 }
 /*--[welcome & log]--*/
@@ -199,12 +199,12 @@
 	display: inline !important;
 }
 #chat .cm.emote.id-3455411 .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/badge_bot.png) !important;
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
 #chat .cm.emote.id-3455411 .icon-chat-subscriber {opacity: 0;width: 0;}
 #chat .cm.emote.id-3455411 .icon-chat-host {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bot.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/images/chat/rank_bot.png);
 	background-size: 15px;
 	background-position: 0 0 !important;
 }
