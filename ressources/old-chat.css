@@ -1,0 +1,34 @@
+.cm .badge-box {
+	opacity: 0;
+	width:0; height:0;
+	margin: 0 !important;
+}
+.msg {
+	padding: 5px !important;
+	min-height: 0 !important;
+}
+.msg .from {
+	display: inline !important;
+}
+.msg .text {
+	display: inline !important;
+	padding-left: 5px !important;
+}
+.delete-button {
+	top: 2px !important;
+	padding: 3px !important;
+}
+#chat .emote, #chat .mention, #chat .message, #chat .moderation, #chat .skip, #chat .system, #chat .update, #chat .welcome {
+	min-height: 0px !important;
+}
+
+/*Radiant*/
+#chat .rsshit {
+	min-height: 10px !important;
+}
+#chat .rsshit .msg {
+	padding: 5px 8px 6px 10px;
+}
+#chat .rsshit .from, #chat .rsshit .badge-box, #rs-skip-button {
+	display: none;
+}

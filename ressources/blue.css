@@ -1,0 +1,223 @@
+/*Plug*/
+#playback-container {
+	box-shadow: 0 0 150px #0bf;
+}
+#playback .background {
+	visibility: hidden;
+}
+.notification {
+	border-radius: 20px;
+	background: rgba(50,100,255,0.7);
+}
+#toast-notifications .left {
+	border-radius: 20px 0 0 20px;
+	background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(0,0,0,0)) !important;
+}
+#toast-notifications .right {
+	border-radius: 0 20px 20px 0;
+	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0)) !important;
+}
+/*########## [chat] ##########*/
+.app-right {
+	background: rgba(0,0,0,0.5) !important;
+}
+#chat-header {
+	background: rgba(30,35,40,0.7);
+	border: none !important;
+}
+#chat-messages {
+	border-color: #555;
+	box-shadow: 0 51px 0 rgba(30,35,40,0.7);
+}
+#chat-messages::-webkit-scrollbar {
+	width: 7px !important;
+	box-shadow: inset 0 0 6px #555;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+	background: hsl(200,100%,40%);
+	box-shadow: inset 0 0 6px -2px #000;
+}
+#chat-input {
+	border-radius: 20px;
+	background: linear-gradient(to top, hsla(220,100%,15%,0.7), hsla(220,100%,10%,0.7)) !important;
+}
+#chat-input.focused {
+	color: #EEE !important;
+	box-shadow: inset 0 0 0 2px #05F !important;
+	background: linear-gradient(to top, hsl(220,100%,30%), hsl(220,100%,20%)) !important;
+}
+#chat-input-field {
+	color: #888 !important;
+	font-weight: bold;
+}
+#chat-input.focused #chat-input-field{
+	color: #EEE !important;
+}
+/*### [message] ###*/
+#chat .cm {
+	background: linear-gradient(hsla(0,0%,13%,0.8), hsla(0,0%,5%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	border-radius: 10px;
+	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.15);
+}
+#chat .cm .badge-box {
+	background: rgba(0,0,0,0) !important;
+}
+#chat .cm .timestamp {
+	color: #818587;
+}
+#chat .cm.deletable .delete-button {
+	border-radius: 8px;
+	background: linear-gradient(hsl(0,0%,30%), hsl(0,0%,40%));
+	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
+}
+#chat .cm.deletable .delete-button:hover {
+	background: linear-gradient(hsl(5,100%,60%), hsl(5,100%,50%));
+	box-shadow: 0 0 10px hsl(5,100%,50%);
+	color: #000;
+}
+.icon-chat-subscriber {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/crown.png);
+	background-position: -1px 0 !important;
+}
+.icon-chat-dj {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_dj.png);
+	background-position: 0 0 !important;
+}
+.icon-chat-bouncer {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bouncer.png);
+	background-position: 1px 0 !important;
+}
+.icon-chat-manager {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_manager.png);
+	background-position: 2px 0 !important;
+}
+.icon-chat-cohost {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_cohost.png);
+	background-position: 2px 0 !important;
+}
+.icon-chat-host {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_host.png);
+	background-position: 2px 0 !important;
+}
+/*--[welcome & log]--*/
+#chat .cm.welcome, #chat .log {
+	border-radius: 0;
+	box-shadow: none;
+	background: none !important;
+}
+/*--[moderation]--*/
+#chat .cm.moderation {
+	background: linear-gradient(hsla(260,50%,25%,0.8), hsla(260,50%,15%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(260,50%,50%);
+}
+#chat .cm.moderation .timestamp {
+	color: hsl(260,70%,70%);
+}
+/*--[MENTION]--*/
+#chat .cm.mention.role-host {
+	background: linear-gradient(hsla(200,100%,30%,0.8), hsla(200,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
+}
+#chat .cm.mention.role-host .name, #chat .cm.mention.role-host .timestamp {
+	color: hsl(200,100%,50%);
+}
+#chat .cm.mention.role-cohost {
+	background: linear-gradient(hsla(210,100%,30%,0.8), hsla(210,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
+}
+#chat .cm.mention.role-cohost .name, #chat .cm.mention.role-cohost .timestamp {
+	color: hsl(210,100%,50%);
+}
+#chat .cm.mention.role-manager {
+	background: linear-gradient(hsla(350,85%,20%,0.8), hsla(350,85%,10%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(350,50%,50%);
+}
+#chat .cm.mention.role-manager .name, #chat .cm.mention.role-manager .timestamp {
+	color: #E15;
+}
+#chat .cm.mention.role-bouncer {
+	background: linear-gradient(hsla(354,100%,20%,0.8), hsla(354,100%,10%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(354,50%,50%);
+}
+#chat .cm.mention.role-bouncer .name, #chat .cm.mention.role-bouncer .timestamp {
+	color: #F45;
+}
+#chat .cm.mention.role-dj {
+	background: linear-gradient(hsla(20,100%,30%,0.8), hsla(20,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(20,50%,50%);
+}
+#chat .cm.mention.role-dj .name, #chat .cm.mention.role-dj .timestamp {
+	color: hsl(20,100%,60%);
+}
+#chat .cm.mention {
+	background: linear-gradient(hsla(77,100%,20%,0.8), hsla(77,100%,11%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(77,100%,30%);
+}
+#chat .cm.mention .name, #chat .cm.mention .timestamp {
+	color: hsl(77,100%,50%);
+}
+#chat .cm.mention .msg {
+	background: none !important;
+}
+/*--[EMOTE]--*/
+#chat .cm.emote, #chat .cm.emote .timestamp {
+	border-left: none !important;
+	text-align: center;
+}
+#chat .cm.emote .from .un {
+	color: #eee !important;
+}
+#chat .cm.emote i {
+	display: none !important;
+}
+#chat .cm.emote .msg .text {
+	font-style: normal !important;
+}
+#chat .cm.emote .msg .emoji {
+	left: 0px;
+}
+/*--[BOT]--*/
+#chat .cm.emote.id-3455411 {
+	background: linear-gradient(hsla(219,100%,20%,0.8), hsla(219,100%,10%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	border-left: none !important;
+	text-align: left;
+	box-shadow: inset 0 0 0 1px hsla(220,100%,50%,0.5);
+}
+#chat .cm.emote.id-3455411 .un, #chat .cm.emote.id-3455411 .timestamp {
+	color: hsl(210,100%,60%) !important;
+}
+#chat .cm.emote.id-3455411 i {
+	display: inline !important;
+}
+#chat .cm.emote.id-3455411 .bdg {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/badge_bot.png) !important;
+	background-position: 0 0 !important;
+}
+#chat .cm.emote.id-3455411 .icon-chat-subscriber {opacity: 0;width: 0;}
+#chat .cm.emote.id-3455411 .icon-chat-host {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/chat/rank_bot.png);
+	background-size: 15px;
+	background-position: 0 0 !important;
+}
+/*--[DEV]--*/
+#chat .cm.message.id-4613422 .icon-chat-subscriber {
+	background: url(https://cdn3.iconfinder.com/data/icons/ultimate-social/150/48_github-16.png);
+	background-position: -1px -1px !important;
+}
+#chat .cm.message.id-4613422 .icon-chat-bouncer {
+	background: url(https://cdn2.iconfinder.com/data/icons/seo-internet-marketing-6/256/Custom_Coding-16.png);
+	background-position: -1px -1px !important;
+}
+/*--[RSSHIT]--*/
+#chat .cm.rsshit.message {
+	border: none !important;
+}

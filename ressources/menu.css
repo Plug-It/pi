@@ -1,0 +1,165 @@
+/*le logo*/
+#Box, #icon {
+	position: absolute;
+	right: 345px; top: 0;
+	width: 54px; height: 54px;
+	background: radial-gradient(#111517, #111);
+	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
+	z-index: 90000;
+}
+#Box:hover {
+	background: radial-gradient(#252525, #1A1A1A);
+}
+#icon {
+	position: relative;
+	top: 0; left: 0;
+	cursor: pointer;
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon.png);
+}
+#icon:hover {
+	background: url(https://rawgit.com/WiBla/Script/alpha/images/other/icon-hover.png);
+}
+
+/*le menu*/
+#Settings {
+	position: absolute;
+	right: 200px;
+	top: 54px;
+	width: 145px;
+	z-index: 0;
+	font-family: arial;
+	visibility: hidden;
+	background: linear-gradient(to left, #0a0a0a, #111);
+	border: 2px solid #eee;
+	border-right: 0; border-top: 0;
+	border-radius: 0 0 0 15px;
+	box-shadow: inset 1px -1px 10px #0a0a0a;
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
+}
+#Settings ul {
+	list-style-type: none;
+}
+#Settings li {
+	cursor: pointer;
+	text-align: center;
+	font-size: 22px;
+	color: #808691;
+}
+#Settings li:hover {
+	background: radial-gradient(#111, #1A1A1A);
+	box-shadow: 0 0 3px #000;
+	text-shadow: 1px 0 4px #000;
+	color: #DDD;
+}
+#Settings #ws-off {
+	color: #A33 !important;
+}
+#Settings #ws-off:hover {
+	color: #F33 !important;
+}
+#Settings #ws-V {
+	color: #5AD;
+}
+#Settings #ws-V:hover {
+	background: none !important;
+	text-shadow: 0 0 0 #000 !important;
+	box-shadow: none !important;
+	cursor: default;
+	border-radius: none !important;
+}
+.ws-on {
+	color: #5A5 !important;
+}
+.ws-on:hover {
+	color: #5E5 !important;
+}
+.ws-off {
+	color: #D85 !important;
+}
+.ws-off:hover {
+	color: #F93 !important;
+}
+.ws-delChat {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/alpha/images/other/delChat.png);
+}
+
+/*placement du menu*/
+#history-button {
+	right: 54px !important;
+}
+#now-playing-time, #volume, #button {
+	right: calc(+115px) !important;
+}
+
+/* Création du bouton Skip */
+#rs-skip-button {
+	display: none;
+}
+#ws-rmvDJ {
+	left: -9px;
+	width: 253px;
+	border-radius: 0 0 0 10px;
+}
+#ws-skip {
+	left: 248px;
+	width: 247px;
+	border-radius: 0 0 10px 0;
+	border-left: none !important;
+}
+#ws-rmvDJ, #ws-skip {
+	position: absolute;
+	top: 283px;
+	height: 34px;
+	cursor: pointer;
+	border: 2px solid silver;
+	border-top: none;
+	background: linear-gradient(to right, rgba(48,53,64,0.7), rgba(32,37,48,0.7)), linear-gradient(to bottom, #555, #222);
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
+	z-index: 4;
+}
+#ws-rmvDJ:hover, #ws-skip:hover {
+	background: linear-gradient(to right, rgba(58,63,74,0.7), rgba(42,47,58,0.7)), linear-gradient(to bottom, #555, #222);
+}
+#ws-rmvDJ img, #ws-skip img {
+	position: relative;
+	left: 110px;
+	top: 4px;
+}
+#ws-rmvDJ img {
+	top: 7px;
+}
+
+/* Les élements du script */
+.ws-selected {
+ background: radial-gradient(#383,#272);
+}
+#chat-messages .ws-selected .msg .from .un, #chat-messages .ws-selected .msg .timestamp, #chat-messages .ws-selected .msg {
+	color: #EEE !important;
+	text-shadow: 0 0 4px #010;
+}
+#chat-messages .ws-selected .badge-box {
+	background: rgba(0,0,0,0);
+}
+#chat-messages .ws-selected .badge-box i {
+	border-color: #EEE;
+}
+
+/* Le reste */
+#playback-container {
+	border: 2px solid #000 !important;
+	border-top: 0 !important;
+	border-radius: 3px 3px 0 0;
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
+}
+#playback-controls {
+	left: -7px !important;
+}
