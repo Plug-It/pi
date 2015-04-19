@@ -14,10 +14,10 @@
 	position: relative;
 	top: 0; left: 0;
 	cursor: pointer;
-	background: url(https://rawgit.com/WiBla/Script/images/other/icon.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon.png);
 }
 #icon:hover {
-	background: url(https://rawgit.com/WiBla/Script/alpha/other/icon-hover.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover.png);
 }
 
 /*le menu*/

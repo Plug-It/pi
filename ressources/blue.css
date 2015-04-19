@@ -209,12 +209,20 @@
 	background-position: 0 0 !important;
 }
 /*--[DEV]--*/
-#chat .cm.message.id-4613422 .icon-chat-subscriber {
-	background: url(https://cdn3.iconfinder.com/data/icons/ultimate-social/150/48_github-16.png);
+#chat .cm.message.id-4613422 .icon-chat-subscriber, #chat .cm.message.id-4506088 .icon-chat-subscriber, #chat .cm.message.id-209178 .icon-chat-subscriber {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
 	background-position: -1px -1px !important;
 }
+#chat .cm.message.id-4613422 .bdg {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
+	background-position: 0 0 !important;
+}
+#chat .cm.message.id-4506088 .bdg {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
+	background-position: 0 0 !important;
+}
 #chat .cm.message.id-4613422 .icon-chat-bouncer {
-	background: url(https://cdn2.iconfinder.com/data/icons/seo-internet-marketing-6/256/Custom_Coding-16.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
 	background-position: -1px -1px !important;
 }
 /*--[RSSHIT]--*/
