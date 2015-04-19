@@ -343,10 +343,7 @@ function chatCommand(commande) {
 			if (args[1] === undefined) {
 				API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			} else {
-				var end = args.length;
-				args.splice(1, end);
-				args = args.join(" ")
-				API.sendChat(args + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
+				API.sendChat(args[1] + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			}
 			break;
 		case "/eta":
