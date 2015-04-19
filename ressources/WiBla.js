@@ -31,11 +31,11 @@ if(!$("#WiBla-CSS")[0]) {
 	var ID = API.getUser().id;
 
 	// Running the specified version
-	init("alpha");
+	init();
 }
 
 // #################### [Functions] ####################
-function init() {
+function init(v) {
 	// Creating core elements
 	if (v == "alpha") {
 		old_chat ="https://rawgit.com/WiBla/Script/alpha/ressources/old-chat.css";
