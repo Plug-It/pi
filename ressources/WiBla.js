@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Alpha 7",
+	"V": "Beta 1",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -194,13 +194,17 @@ function hideStream() {
 	if (json.showVideo) {
 		item.stream.style.visibility = "visible";
 		item.stream.style.height = "281px";
-		item.rmvDJ.style.top = item.skip.style.top = "283px";
+		if (hasPermBouncer) {
+			item.rmvDJ.style.top = item.skip.style.top = "283px";
+		}
 		$("#playback-controls")[0].style.visibility = "visible";
 		item.video.className = "ws-off";
 	} else {
 		item.stream.style.visibility = "hidden";
 		item.stream.style.height = "0";
-		item.rmvDJ.style.top = item.skip.style.top = "0";
+		if (hasPermBouncer) {
+			item.rmvDJ.style.top = item.skip.style.top = "0";
+		}
 		$("#playback-controls")[0].style.visibility = "hidden";
 		item.video.className = "ws-on";
 	}
