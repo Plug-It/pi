@@ -402,6 +402,8 @@ function chatCommand(commande) {
 			API.chatLog("XP: " + API.getUser().xp);
 			API.chatLog("PP: " + API.getUser().pp);
 			break;
+		/*case "/ban":
+			break;*/
 		case "/list":
 			API.chatLog("/like <3 x 5");
 			API.chatLog("/love [@user] <3 x 10 + user (optional)");

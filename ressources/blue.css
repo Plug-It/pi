@@ -202,40 +202,8 @@
 #chat .cm.emote.id-3455411 i {
 	display: inline !important;
 }
-#chat .cm.emote.id-3455411 .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_bot.png) !important;
-	background-position: 0 0 !important;
-}
 #chat .cm.emote.id-3455411 .text {
 	margin-left: 0;
-}
-#chat .cm.emote.id-3455411 .icon-chat-subscriber {opacity: 0;width: 0;}
-#chat .cm.emote.id-3455411 .icon-chat-host {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bot.png);
-	background-size: 15px;
-	background-position: 0 0 !important;
-}
-/*--[DEV]--*/
-#chat .cm.id-4613422 .icon-chat-subscriber, #chat .cm.id-4506088 .icon-chat-subscriber, #chat .cm.id-209178 .icon-chat-subscriber {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
-	background-position: -1px -1px !important;
-}
-#chat .cm.id-4613422 .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
-	background-position: 0 0 !important;
-}
-#chat .cm.id-4506088 .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
-	background-position: 0 0 !important;
-}
-#chat .cm.id-4613422 .icon-chat-bouncer {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
-	background-position: -1px -1px !important;
-}
-/*--[ALPHA TESTER]--*/
-#chat .cm.id-4272266 .bdg, #chat .cm.id-4782448 .bdg, #chat .cm.id-4656513 .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
-	background-position: 0 0 !important;
 }
 /*--[RSSHIT]--*/
 #chat .cm.rsshit.message {
