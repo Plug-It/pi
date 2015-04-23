@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1",
+	"V": "Beta 1.0.1",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
