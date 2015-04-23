@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.1",
+	"V": "Beta 1.0.2",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -282,7 +282,7 @@ function muteMeh() {
 	json.betterMeh = !json.betterMeh;
 	if (json.betterMeh) {
 		$("#meh")[0].setAttribute("onclick", "vol=API.getVolume();API.setVolume(0);");
-		$("#woot")[0].setAttribute("onclick", "if(API.getVolume()===0)API.setvolume(vol);");
+		$("#woot")[0].setAttribute("onclick", "if(API.getVolume()===0){API.setVolume(vol)};");
 		item.betterMeh.className = "ws-on";
 	} else {
 		$("#meh")[0].setAttribute("onclick", "");
