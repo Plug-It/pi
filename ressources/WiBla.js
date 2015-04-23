@@ -282,7 +282,7 @@ function muteMeh() {
 	json.betterMeh = !json.betterMeh;
 	if (json.betterMeh) {
 		$("#meh")[0].setAttribute("onclick", "vol=API.getVolume();API.setVolume(0);");
-		$("#woot")[0].setAttribute("onclick", "API.setVolume(vol);");
+		$("#woot")[0].setAttribute("onclick", "if(API.getVolume()===0)API.setvolume(vol);");
 		item.betterMeh.className = "ws-on";
 	} else {
 		$("#meh")[0].setAttribute("onclick", "");
