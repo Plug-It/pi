@@ -1,4 +1,14 @@
-/*Plug*/
+/*--[PLUG]--*/
+#tooltip.right span {
+	background: radial-gradient(hsla(210,100%,30%,0.9), hsla(220,100%,20%,0.9));
+	border-radius: 13px 13px 0 13px
+}
+#tooltip.right .corner {
+	border-top: 10px solid hsla(220,100%,20%,0.9) !important;
+	border-right: 10px solid hsla(220,100%,20%,0.9) !important;
+	border-left: 10px solid transparent !important;
+	border-bottom: 10px solid transparent !important;
+}
 #playback-container {
 	box-shadow: 0 0 150px #0bf;
 }

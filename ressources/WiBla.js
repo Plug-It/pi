@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.2",
+	"V": "Beta 1.0.3",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -380,8 +380,8 @@ function chatCommand(commande) {
 			}
 			break;
 		case "/afk":
-			afk = !afk;
-			if (afk) {
+			json.afk = !json.afk;
+			if (json.afk) {
 				API.sendChat("/me is AFK.");
 			} else {
 				API.sendChat("/me is no more AFK.");
