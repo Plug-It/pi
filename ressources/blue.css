@@ -11,10 +11,13 @@
 }
 #playback-container {
 	box-shadow: 0 0 150px #0bf;
+	border-color: hsl(210,100%,40%) !important;
+	border-radius: 0 0 4px 4px;
 }
 #playback .background {
 	visibility: hidden;
 }
+/*--[toast-notifications]--*/
 .notification {
 	border-radius: 20px;
 	background: rgba(50,100,255,0.7);
@@ -26,6 +29,47 @@
 #toast-notifications .right {
 	border-radius: 0 20px 20px 0;
 	background: linear-gradient(rgba(255,255,255,0.2), rgba(0,0,0,0)) !important;
+}
+/*--[dj-button]--*/
+#dj-button {
+	border-radius: 50px;
+	background: linear-gradient(hsla(220,100%,30%,0.3), hsla(220,100%,50%,0.3));
+}
+#dj-button:hover {
+	background: linear-gradient(hsla(220,100%,30%,0.6), hsla(220,100%,50%,0.6));
+}
+#dj-button .left {
+	border-radius: 50px 50px 50px 50px;
+}
+#dj-button .left {
+	background: linear-gradient(135deg, hsla(190,100%,60%,0.6), hsla(205,100%,50%,0.6)) !important;
+}
+#dj-button:hover .left {
+	background: linear-gradient(135deg, hsla(190,100%,60%,0.9), hsla(205,100%,50%,0.9)) !important;
+}
+/*--[user-rollover]--*/
+#user-rollover {
+	border-radius: 30px 30px 0 0;
+	background: linear-gradient(135deg, hsla(0,0%,20%,0.6), hsla(0,0%,0%,0.6));
+}
+#user-rollover .info {
+	background: hsla(220,100%,15%,0.6);
+	box-shadow: inset 0 0 50px hsla(220,100%,50%,0.3);
+	border-radius: 20px 20px 0 0 !important;
+}
+#user-rollover .info .badge-box, #user-rollover .background {
+	background: rgba(0,0,0,0);
+}
+#user-rollover .thumb {
+	border-color: rgba(0,0,0,0);
+	box-shadow: hsla(200,100%,50%,0.3) !important;
+}
+#user-rollover .action {
+	background: radial-gradient(hsla(0,0%,7%,0.8), hsla(0,0%,0%,0.8)) !important;
+	box-shadow: 0 0 0 1px #111 !important;
+}
+#user-rollover .action:hover {
+	background: radial-gradient(hsl(0,0%,10%), hsl(0,0%,5%)) !important;
 }
 /*########## [chat] ##########*/
 .app-right {
@@ -218,4 +262,13 @@
 /*--[RSSHIT]--*/
 #chat .cm.rsshit.message {
 	border: none !important;
+}
+#media-panel .media-list .playlist-media-item:nth-child(2n+1) {
+	color: #AAA;
+	background: hsl(219,15%,5%);
+}
+#media-panel .media-list .playlist-media-item.selected {
+	color: #EEE;
+	background: linear-gradient(hsl(220,100%,20%),hsl(220,100%,10%));
+	border-radius: 7px;
 }
