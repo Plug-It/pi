@@ -240,7 +240,7 @@ function oldChat() {
 function askBG() {
 	switch (json.bg) {
 		case "reset":
-			json.bg = "https://raw.githubusercontent.com/WiBla/Script/alpha/images/background/default/FEDMC.jpg";
+			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/FEDMC.jpg";
 			style = $(".room-background")[0].getAttribute("style").split(" ");
 			style[9] = "url(" + json.bg +")";
 			style = style.join(" ");
@@ -248,7 +248,7 @@ function askBG() {
 			item.bg.className = "ws-on";
 		break;
 		case "default":
-			json.bg = "https://raw.githubusercontent.com/WiBla/Script/alpha/images/background/default/Island.jpg";
+			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/Island.jpg";
 			style = $(".room-background")[0].getAttribute("style").split(" ");
 			style[9] = "url(" + json.bg +")";
 			style = style.join(" ");

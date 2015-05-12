@@ -9,6 +9,7 @@
 }
 .msg .from {
 	display: inline !important;
+	margin-right: 4px;
 }
 .msg .text {
 	display: inline !important;
