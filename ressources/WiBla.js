@@ -384,14 +384,15 @@ function chatCommand(commande) {
 			if (json.afk) {
 				API.sendChat("/me is AFK.");
 			} else {
-				API.sendChat("/me is no more AFK.");
+				API.sendChat("/me is back.");
 			}
 			break;
+		/* Experimental
 		case "/bot":
 			if (args[1] === undefined) {
 				API.chatLog("Write either the pseudo or the id of the bot in your room after /bot");
 			}
-			break;
+			break;*/
 		case "/whoami":
 			API.chatLog("Username: " + API.getUser().username);
 			API.chatLog("ID: " + API.getUser().id);
@@ -412,8 +413,5 @@ function chatCommand(commande) {
 			API.chatLog("/afk say that you're afk or not");
 			API.chatLog("/whoami display your own infos");
 			API.chatLog("/list display this list");
-			break;
-		default:
-			API.chatLog("Try /list");
 	}
 }

@@ -1,11 +1,20 @@
 /*--[PLUG]--*/
-#tooltip.right span {
+#tooltip span {
 	background: radial-gradient(hsla(210,100%,30%,0.9), hsla(220,100%,20%,0.9));
+	border-radius: 13px 13px 13px 0
+}
+#tooltip.right span {
 	border-radius: 13px 13px 0 13px
+}
+#tooltip .corner {
+	border-top: 10px solid transparent !important;
+	border-right: 0px solid transparent !important;
+	border-left: 10px solid hsla(220,100%,22%,0.9) !important;
+	border-bottom: 10px solid transparent !important;
 }
 #tooltip.right .corner {
 	border-top: 10px solid hsla(220,100%,20%,0.9) !important;
-	border-right: 10px solid hsla(220,100%,20%,0.9) !important;
+	border-right: 10px solid hsla(220,100%,22%,0.9) !important;
 	border-left: 10px solid transparent !important;
 	border-bottom: 10px solid transparent !important;
 }
@@ -60,8 +69,9 @@
 #woot, #grab, #meh {
 	margin-top: 0 !important;
 }
-#woot.selected, #grab.selected, #meh.selected, #vote .selected .value {
+#vote .selected, #vote .selected .value {
 	font-weight: bold;
+	color: #FFF;
 }
 #woot {
 	border-radius: 30px 0 0 30px;
@@ -71,7 +81,6 @@
 #woot.selected {
 	background: linear-gradient(135deg, hsla(90,80%,50%,0.8), hsla(90,80%,30%,0.8)) !important;
 	box-shadow: inset 0 0 10px hsl(70,100%,40%) !important;
-	color: hsl(100,100%,5%);
 }
 #grab {
 	background: linear-gradient(hsla(0,0%,50%,0.3), hsla(0,0%,30%,0.3)) !important;
@@ -80,7 +89,6 @@
 #grab.selected {
 	background: linear-gradient(hsla(270,70%,50%,0.8), hsla(265,70%,30%,0.8)) !important;
 	box-shadow: inset 0 0 10px hsl(280,100%,40%) !important;
-	color: hsl(270,100%,5%);
 }
 #meh {
 	background: linear-gradient(225deg, hsla(0,0%,50%,0.3), hsla(0,0%,30%,0.3)) !important;
@@ -91,7 +99,6 @@
 #meh.selected {
 	background: linear-gradient(225deg, hsla(5,80%,50%,0.8), hsla(0,80%,40%,0.8)) !important;
 	box-shadow: inset 0 0 10px hsl(15,100%,50%) !important;
-	color: hsl(0,100%,5%);
 }
 /*--[user-rollover]--*/
 #user-rollover {
