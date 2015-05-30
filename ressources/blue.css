@@ -1,7 +1,37 @@
 /*--[PLUG]--*/
+.slider .line {
+	background: linear-gradient(to right, hsl(120,100%,50%), hsl(0,100%,50%)) !important;
+}
+.slider .circle {
+	background: radial-gradient(hsl(0,0%,100%), hsl(0,0%,70%)) !important;
+}
 #tooltip span {
 	background: radial-gradient(hsla(210,100%,30%,0.9), hsla(220,100%,20%,0.9));
 	border-radius: 13px 13px 13px 0
+}
+#tooltip.orange span {
+	background: radial-gradient(hsla(20,100%,50%,0.9), hsla(10,100%,40%,0.9));
+}
+#tooltip.orange .corner {
+	border-top: 10px solid transparent !important;
+	border-right: 0px solid transparent !important;
+	border-left: 10px solid hsla(10,100%,45%,0.9) !important;
+	border-bottom: 10px solid transparent !important;
+}
+#tooltip.purple span {
+	background: radial-gradient(hsla(270,70%,60%,0.9), hsla(270,70%,50%,0.9));
+}
+#tooltip.purple .corner {
+	border-top: 10px solid transparent !important;
+	border-right: 0px solid transparent !important;
+	border-left: 10px solid hsla(270,70%,52%,0.9) !important;
+	border-bottom: 10px solid transparent !important;
+}
+#tooltip.purple.right .corner {
+	border-top: 10px solid hsla(270,70%,52%,0.9) !important;
+	border-right: 10px solid hsla(270,70%,52%,0.9) !important;
+	border-left: 10px solid transparent !important;
+	border-bottom: 10px solid transparent !important;
 }
 #tooltip.right span {
 	border-radius: 13px 13px 0 13px

@@ -157,7 +157,7 @@ function firstRun() {
 	// Fully loaded
 	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");
-	API.chatLog("http://strawpoll.me/4479199 I care about what you think, so vote ! Please :)")
+	API.chatLog("You voted, I listened ! By the way, check out the new volume bar with the blue theme !");
 }
 
 // #### [Menu] ####
