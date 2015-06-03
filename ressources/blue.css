@@ -221,10 +221,12 @@
 }
 /*### [message] ###*/
 #chat .cm {
-	background: linear-gradient(hsla(0,0%,13%,0.8), hsla(0,0%,5%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	border-radius: 10px;
-	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.15);
+	background: hsla(220,10%,10%,0.8);
+	box-shadow: inset 1px 1px 1px 0 hsla(220,10%,20%,0.8);
+}
+#chat .cm.message:nth-child(2n+1) {
+	background: hsla(220,10%,5%,0.8);
+	box-shadow: inset 1px 1px 1px 0 hsla(220,10%,0%,0.8);
 }
 #chat .cm .badge-box {
 	background: rgba(0,0,0,0) !important;
@@ -277,6 +279,7 @@
 	background: linear-gradient(hsla(260,50%,25%,0.8), hsla(260,50%,15%,0.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(260,50%,50%);
+	border: none !important;
 }
 #chat .cm.moderation .timestamp {
 	color: hsl(260,70%,70%);
@@ -326,6 +329,7 @@
 	background: linear-gradient(hsla(77,100%,20%,0.8), hsla(77,100%,11%,0.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(77,100%,30%);
+	border: none !important;
 }
 #chat .cm.mention .name, #chat .cm.mention .timestamp {
 	color: hsl(77,100%,50%);
@@ -333,7 +337,7 @@
 #chat .cm.mention .msg {
 	background: none !important;
 }
-/*--[EMOTE]--*/
+/*--[EMOTE]--
 #chat .cm.emote, #chat .cm.emote .timestamp {
 	border-left: none !important;
 	text-align: center;
@@ -355,21 +359,23 @@
 	left: 0px;
 }
 /*--[BOT]--*/
-#chat .cm.emote.id-3455411 {
+#chat .cm.emote {
 	background: linear-gradient(hsla(219,100%,20%,0.8), hsla(219,100%,10%,0.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
 	border-left: none !important;
 	text-align: left;
 	box-shadow: inset 0 0 0 1px hsla(220,100%,50%,0.5);
+	border: none !important;
 }
-#chat .cm.emote.id-3455411 .un, #chat .cm.emote.id-3455411 .timestamp {
+#chat .cm.emote .un, #chat .cm.emote .timestamp {
 	color: hsl(210,100%,60%) !important;
 }
-#chat .cm.emote.id-3455411 i {
+#chat .cm.emote i {
 	display: inline !important;
 }
-#chat .cm.emote.id-3455411 .text {
+#chat .cm.emote .text {
 	margin-left: 0;
+	font-style: normal;
 }
 /*--[RSSHIT]--*/
 #chat .cm.rsshit.message {

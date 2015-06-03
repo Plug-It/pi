@@ -178,7 +178,7 @@
 /*--[DEV]--*/
 #chat .cm.id-4613422 .icon-chat-subscriber, #chat .cm.id-4506088 .icon-chat-subscriber, #chat .cm.id-209178 .icon-chat-subscriber {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
-	background-position: -1px -1px !important;
+	background-position: 0 0 !important;
 }
 #chat .cm.id-4613422 .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
@@ -188,9 +188,13 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
-#chat .cm.id-4613422 .icon-chat-bouncer {
+#chat .cm.id-4613422 i.icon-chat-host,
+#chat .cm.id-4613422 i.icon-chat-cohost,
+#chat .cm.id-4613422 i.icon-chat-manager,
+#chat .cm.id-4613422 i.icon-chat-bouncer,
+#chat .cm.id-4613422 i.icon-chat-dj {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
-	background-position: -1px -1px !important;
+	background-position: 0 0 !important;
 }
 /*--[ALPHA TESTER]--*/
  #chat .cm.id-4726785 .bdg, #chat .cm.id-4272266 .bdg, #chat .cm.id-4782448 .bdg, #chat .cm.id-4656513 .bdg {
