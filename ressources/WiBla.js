@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.3",
+	"V": "Beta 1.0.4",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -198,6 +198,7 @@ function hideStream() {
 			item.rmvDJ.style.top = item.skip.style.top = "283px";
 		}
 		$("#playback-controls")[0].style.visibility = "visible";
+		$("#no-dj")[0].style.visibility = "visible";
 		item.video.className = "ws-off";
 	} else {
 		item.stream.style.visibility = "hidden";
@@ -206,6 +207,7 @@ function hideStream() {
 			item.rmvDJ.style.top = item.skip.style.top = "0";
 		}
 		$("#playback-controls")[0].style.visibility = "hidden";
+		$("#no-dj")[0].style.visibility = "hidden";
 		item.video.className = "ws-on";
 	}
 }
