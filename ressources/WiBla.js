@@ -303,15 +303,15 @@ function WiBla_Script_Shutdown() {
 		hideStream();
 		setTimeout(WiBla_Script_Shutdown,250);
 	}
-	var parent = $("#app")[0];
-	parent.removeChild(item.box);
-	parent.removeChild(item.settings);
-	item.head.removeChild($("#WiBla-menu-CSS")[0]);
-	item.head.removeChild(item.style);
-	item.head.removeChild(item.oldStyle);
+	item.box.remove();
+	item.settings.remove();
+	$("#WiBla-menu-CSS")[0].remove();
+	item.style.remove();
+	item.oldStyle.remove();
+	$(".icon.ws-delChat")[0].remove();
 	if (hasPermBouncer) {
-		$("#playback")[0].removeChild(item.rmvDJ);
-		$("#playback")[0].removeChild(item.skip);
+		item.rmvDJ.remove();
+		item.skip.remove();
 	}
 }
 function slide() {
