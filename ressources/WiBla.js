@@ -308,7 +308,7 @@ function WiBla_Script_Shutdown() {
 	$("#WiBla-menu-CSS")[0].remove();
 	item.style.remove();
 	item.oldStyle.remove();
-	$(".icon.ws-delChat")[0].remove();
+	$("#del-chat-button")[0].remove();
 	if (hasPermBouncer) {
 		item.rmvDJ.remove();
 		item.skip.remove();
