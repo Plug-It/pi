@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.4",
+	"V": "Beta 1.0.5",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -240,34 +240,41 @@ function oldChat() {
 	}
 }
 function askBG() {
+	style = $(".room-background")[0].getAttribute("style").split(" ");
+	if (typeof(plugBG) == "undefined") {
+  	window.plugBG = style[9];
+	}
 	switch (json.bg) {
 		case "reset":
 			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/FEDMC.jpg";
-			style = $(".room-background")[0].getAttribute("style").split(" ");
-			style[9] = "url(" + json.bg +")";
-			style = style.join(" ");
-			$(".room-background")[0].setAttribute("style", style);
-			item.bg.className = "ws-on";
+			changeBG();
 		break;
 		case "default":
-			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/Island.jpg";
-			style = $(".room-background")[0].getAttribute("style").split(" ");
-			style[9] = "url(" + json.bg +")";
-			style = style.join(" ");
-			$(".room-background")[0].setAttribute("style", style);
-			item.bg.className = "ws-off";
+			json.bg = plugBG;
+			changeBG(true);
 		break;
 		default:
 			json.bg = prompt("Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background");
 			if (json.bg !== null && json.bg.length > 0) {
-				style = $(".room-background")[0].getAttribute("style").split(" ");
-				style[9] = "url(" + json.bg +")";
-				style = style.join(" ");
-				$(".room-background")[0].setAttribute("style", style);
-				item.bg.className = "ws-on";
+				if (json.bg == "reset" || json.bg == "default") {
+					askBG();
+				} else {
+					changeBG();
+				}
 			}
 		break;
 	}
+}
+function changeBG(isDefault) {
+	style = $(".room-background")[0].getAttribute("style").split(" ");
+	if (isDefault) {
+		style[9] = plugBG;
+	} else {
+		style[9] = "url(" + json.bg +")";
+	}
+	style = style.join(" ");
+	$(".room-background")[0].setAttribute("style", style);
+	item.bg.className = "ws-on";
 }
 function alertDuration() {
 	if (json.alertDuration) {
