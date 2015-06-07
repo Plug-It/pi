@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.5",
+	"V": "Beta 1.0.6",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -242,7 +242,11 @@ function oldChat() {
 function askBG() {
 	style = $(".room-background")[0].getAttribute("style").split(" ");
 	if (typeof(plugBG) == "undefined") {
-  	window.plugBG = style[9];
+  	if ($(".firefox").length >= 0) {
+  		window.plugBG = style[10];
+  	} else {
+  		window.plugBG = style[9];
+  	}
 	}
 	switch (json.bg) {
 		case "reset":
@@ -268,9 +272,17 @@ function askBG() {
 function changeBG(isDefault) {
 	style = $(".room-background")[0].getAttribute("style").split(" ");
 	if (isDefault) {
-		style[9] = plugBG;
+		if ($(".firefox").length >= 0) {
+			style[10] = plugBG;
+		} else {
+			style[9] = plugBG;
+		}
 	} else {
-		style[9] = "url(" + json.bg +")";
+		if ($(".firefox").length >= 0) {
+			style[10] = "url(" + json.bg +")";
+		} else {
+			style[9] = "url(" + json.bg +")";
+		}
 	}
 	style = style.join(" ");
 	$(".room-background")[0].setAttribute("style", style);
