@@ -242,12 +242,8 @@ function oldChat() {
 function askBG() {
 	style = $(".room-background")[0].getAttribute("style").split(" ");
 	if (typeof(plugBG) == "undefined") {
-  	if ($(".firefox").length >= 0) {
-  		window.plugBG = style[10];
-  	} else {
-  		window.plugBG = style[9];
-  	}
-	}
+  	window.plugBG = style[9];
+  }
 	switch (json.bg) {
 		case "reset":
 			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/FEDMC.jpg";
@@ -270,22 +266,11 @@ function askBG() {
 	}
 }
 function changeBG(isDefault) {
-	style = $(".room-background")[0].getAttribute("style").split(" ");
 	if (isDefault) {
-		if ($(".firefox").length >= 0) {
-			style[10] = plugBG;
-		} else {
-			style[9] = plugBG;
-		}
+		$(".room-background")[0].style.background = plugBG;
 	} else {
-		if ($(".firefox").length >= 0) {
-			style[10] = "url(" + json.bg +")";
-		} else {
-			style[9] = "url(" + json.bg +")";
-		}
+		$(".room-background")[0].style.background = "url(" + json.bg +")";
 	}
-	style = style.join(" ");
-	$(".room-background")[0].setAttribute("style", style);
 	item.bg.className = "ws-on";
 }
 function alertDuration() {
