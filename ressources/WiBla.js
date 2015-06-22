@@ -297,10 +297,10 @@ function muteMeh() {
 	}
 }
 function WiBla_Script_Shutdown() {
-	API.stopListening(API.CHAT_COMMAND, chatCommand);
-	API.stopListening(API.ADVANCE, alertDuration);
-	API.stopListening(API.ADVANCE, autowoot);
-	API.stopListening(API.ADVANCE, autojoin);
+	API.off(API.CHAT_COMMAND, chatCommand);
+	API.off(API.ADVANCE, alertDuration);
+	API.off(API.ADVANCE, autowoot);
+	API.off(API.ADVANCE, autojoin);
 	$(window).unbind();
 	// Preventing making the video definitly desapear
 	if (json.showVideo === false) {
