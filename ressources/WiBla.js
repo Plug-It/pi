@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.0.6",
+	"V": "Beta 1.1.0",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -18,6 +18,9 @@ if(!$("#WiBla-CSS")[0]) {
 	"CSS": 0,
 	"oldChat": true,
 	"durationAlert": false,
+	"woot": false,
+	"meh": false,
+	"grab": false,
 	"bg": "",
 	"betterMeh": false,
 	"security": false,
@@ -60,6 +63,7 @@ function init(v) {
 		menu += '		<li id="ws-old-chat" onclick="oldChat();">Old chat</li>';
 		menu += '		<li id="ws-bg"       onclick="askBG();">Custom Bg</li>';
 		menu += '		<li id="ws-lengthA"  onclick="json.alertDuration = !json.alertDuration;alertDuration();">Song limit</li>';
+		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;">Show mehs</li>';
 		menu += '		<li id="ws-mutemeh"  onclick="muteMeh();">Mute on meh</li>';
 		menu += '		<li id="ws-off"      onclick="WiBla_Script_Shutdown();">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
@@ -111,6 +115,7 @@ function init(v) {
 		"oldChat": $("#ws-old-chat")[0],
 		"bg": $("#ws-bg")[0],
 		"lengthA": $("#ws-lengthA")[0],
+		"mehA": $("#ws-mehA")[0],
 		"betterMeh": $("#ws-mutemeh")[0],
 		"off": $("#ws-off")[0],
 		//plug in general
@@ -128,6 +133,7 @@ function firstRun() {
 	oldChat();
 	item.bg.className = "ws-off";
 	alertDuration();
+	voteAlert(0);
 	json.betterMeh = true;muteMeh();
 	
 	
@@ -136,6 +142,7 @@ function firstRun() {
 	API.on(API.ADVANCE, autojoin);
 	API.on(API.ADVANCE, alertDuration);
 	API.on(API.ADVANCE, json.security = false);
+	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
 
 	// Keyboard shorcuts
@@ -242,8 +249,8 @@ function oldChat() {
 function askBG() {
 	style = $(".room-background")[0].getAttribute("style").split(" ");
 	if (typeof(plugBG) == "undefined") {
-  	window.plugBG = style[9];
-  }
+		window.plugBG = style[9];
+	}
 	switch (json.bg) {
 		case "reset":
 			json.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/FEDMC.jpg";
@@ -296,9 +303,24 @@ function muteMeh() {
 		item.betterMeh.className = "ws-off";
 	}
 }
+function voteAlert(data) {
+	//visual stuff
+	if (json.meh === true) {
+		item.mehA.className = "ws-on";
+	} else {
+		item.mehA.className = "ws-off";
+	}
+	//notifications
+	if (data.vote == 1 && json.woot === true) {
+		API.chatLog(data.user.username + " wooted this track !");
+	} else if (data.vote == -1 && json.meh === true) {
+		API.chatLog(data.user.username + " meh'd this track !");
+	}
+}
 function WiBla_Script_Shutdown() {
 	API.off(API.CHAT_COMMAND, chatCommand);
 	API.off(API.ADVANCE, alertDuration);
+	API.off(API.VOTE_UPDATE, voteAlert)
 	API.off(API.ADVANCE, autowoot);
 	API.off(API.ADVANCE, autojoin);
 	$(window).unbind();
