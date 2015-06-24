@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.1.0",
+	"V": "Beta 1.1.1",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -63,7 +63,7 @@ function init(v) {
 		menu += '		<li id="ws-old-chat" onclick="oldChat();">Old chat</li>';
 		menu += '		<li id="ws-bg"       onclick="askBG();">Custom Bg</li>';
 		menu += '		<li id="ws-lengthA"  onclick="json.alertDuration = !json.alertDuration;alertDuration();">Song limit</li>';
-		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;">Show mehs</li>';
+		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;voteAlert();">Show mehs</li>';
 		menu += '		<li id="ws-mutemeh"  onclick="muteMeh();">Mute on meh</li>';
 		menu += '		<li id="ws-off"      onclick="WiBla_Script_Shutdown();">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
