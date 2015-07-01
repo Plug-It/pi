@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.1.1",
+	"V": "Beta 1.1.2",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -92,6 +92,8 @@ function init(v) {
 	$("head").append(e);// Old chat css
 	var f = $(icon);
 	$("#chat-header").append(f);// DelChat icon
+	var h = '<script id="extendAPI" rel="script" type="text/javascript" src="https://plugmixer-serve.sunwj.com/extendAPI.js"></script>';
+	$("head").append(h);// Extended API script
 	
 	// If at least bouncer (or developer)
 	if (hasPermBouncer) {
@@ -275,10 +277,15 @@ function askBG() {
 function changeBG(isDefault) {
 	if (isDefault) {
 		$(".room-background")[0].style.background = plugBG;
+		$("i.torch")[0].style.display = "block";
+		$("i.torch.right")[0].style.display = "block";
+		item.bg.className = "ws-off";
 	} else {
 		$(".room-background")[0].style.background = "url(" + json.bg +")";
+		item.bg.className = "ws-on";
+		$("i.torch")[0].style.display = "none";
+		$("i.torch.right")[0].style.display = "none";
 	}
-	item.bg.className = "ws-on";
 }
 function alertDuration() {
 	if (json.alertDuration) {
