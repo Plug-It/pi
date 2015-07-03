@@ -10,7 +10,7 @@ if(!$("#WiBla-CSS")[0]) {
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
 	json = {
-	"V": "Beta 1.1.2",
+	"V": "Beta 1.1.3",
 	"showMenu": false,
 	"autoW": false,
 	"autoDJ": false,
@@ -146,19 +146,20 @@ function firstRun() {
 	API.on(API.ADVANCE, json.security = false);
 	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
+	API.on(API.COMMUNITY_CHANGE, reload);
 
 	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
 		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
 			var volume = API.getVolume();
-			volume += 3;
+			volume += 5;
 			API.setVolume(volume);
 		}
 	});
 	$(window).bind("keydown", function(k) {
 		if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
 			var volume = API.getVolume();
-			volume -= 3;
+			volume -= 5;
 			API.setVolume(volume);
 		}
 	});
@@ -327,7 +328,7 @@ function voteAlert(data) {
 function WiBla_Script_Shutdown() {
 	API.off(API.CHAT_COMMAND, chatCommand);
 	API.off(API.ADVANCE, alertDuration);
-	API.off(API.VOTE_UPDATE, voteAlert)
+	API.off(API.VOTE_UPDATE, voteAlert);
 	API.off(API.ADVANCE, autowoot);
 	API.off(API.ADVANCE, autojoin);
 	$(window).unbind();
@@ -346,6 +347,11 @@ function WiBla_Script_Shutdown() {
 		item.rmvDJ.remove();
 		item.skip.remove();
 	}
+}
+function reload() {
+	API.chatLog("Reloading WS...");
+	WiBla_Script_Shutdown();
+	$.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");
 }
 function slide() {
 	var show = json.showMenu = !json.showMenu,
@@ -372,8 +378,16 @@ function forceSkip() {
 function removeDJ() {
 	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
 }
+function execute(code) {
+	eval(code);
+}
 function chatCommand(commande) {
-	var args = commande.split(" ");
+	var args = commande.split(" "), msg = [];
+	for (var i = 1; i < args.length; i++) {
+		msg.push(args[i]);
+	}
+	msg = msg.join(" ");
+	
 	switch (args[0]) {
 		case "/like":
 			API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes:");
@@ -382,7 +396,7 @@ function chatCommand(commande) {
 			if (args[1] === undefined) {
 				API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			} else {
-				API.sendChat(args[1] + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
+				API.sendChat(msg + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			}
 			break;
 		case "/eta":
@@ -390,7 +404,7 @@ function chatCommand(commande) {
 				API.chatLog("You are the DJ !");
 			} else if (API.getWaitListPosition() == -1) {
 				API.chatLog("You are not in the Wait-List.");
-			}	else {
+			} else {
 				var eta = API.getWaitListPosition() + 1; //index 0
 				eta = eta * 4; //we assume that everyone plays 4mins music
 				eta = eta * 60; //transform in second
@@ -401,9 +415,9 @@ function chatCommand(commande) {
 					var etaH = eta / 60;
 					etaH = Math.round(etaH, 1); //gives hours
 					var etaM = eta % 60; //gives minutes
-					API.chatLog("There is " + etaH + "H" + etaM + "min(s) before you play.");
+					API.chatLog(etaH + "H" + etaM + "min(s) until you play.");
 				} else {
-					API.chatLog("There is " + eta + " min(s) before you play.");
+					API.chatLog(eta + " min(s) until you play.");
 				}
 			}
 			break;
@@ -417,7 +431,11 @@ function chatCommand(commande) {
 		case "/afk":
 			json.afk = !json.afk;
 			if (json.afk) {
-				API.sendChat("/me is AFK.");
+				if (args[1] !== undefined) {
+					API.sendChat('/me is AFK: "' + msg + '".');
+				} else {
+					API.sendChat("/me is AFK.");
+				}
 			} else {
 				API.sendChat("/me is back.");
 			}
@@ -442,11 +460,19 @@ function chatCommand(commande) {
 			break;*/
 		case "/list":
 			API.chatLog("/like <3 x 5");
-			API.chatLog("/love [@user] <3 x 10 + user (optional)");
-			API.chatLog("/eta the time before you DJ");
+			API.chatLog("/love [@user]");
+			API.chatLog("/eta");
 			API.chatLog("/vol [0-100]");
-			API.chatLog("/afk say that you're afk or not");
-			API.chatLog("/whoami display your own infos");
-			API.chatLog("/list display this list");
+			API.chatLog("/afk [message]");
+			API.chatLog("/whoami");
+			API.chatLog("/reload");
+			API.chatLog("/list");
+			break;
+		case "/reload":
+			reload();
+			break;
+		case "/js":
+			execute(msg);
+			break;
 	}
 }
