@@ -14,10 +14,11 @@
 	position: relative;
 	top: 0; left: 0;
 	cursor: pointer;
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon.jpg);
+	background-size: 54px;
 }
 #icon:hover {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover.png);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover.jpg);
 }
 
 /*le menu*/
@@ -197,7 +198,17 @@
 	background-position: 0 0 !important;
 }
 /*--[ALPHA TESTER]--*/
- #chat .cm.id-4726785 .bdg, #chat .cm.id-4272266 .bdg, #chat .cm.id-4782448 .bdg, #chat .cm.id-4656513 .bdg {
+#chat .cm.id-4726785 .bdg, #chat .cm.id-4272266 .bdg, #chat .cm.id-4782448 .bdg, #chat .cm.id-4656513 .bdg, #chat .cm.id-4024959 .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
+	background-position: 0 0 !important;
+}
+/*--[Designer]--*/
+#chat .cm.id-4336782 .bdg {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_designer.jpg);
+	background-size: 30px;
+	background-position: 0 0 !important;
+}
+#chat .cm.id-4336782 i.icon-chat-designer {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_designer.png);
 	background-position: 0 0 !important;
 }

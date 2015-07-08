@@ -422,6 +422,14 @@
 #chat .cm.mention.role-dj .name, #chat .cm.mention.role-dj .timestamp {
 	color: hsl(20,100%,60%);
 }
+#chat .cm.mention.role-subscriber {
+	background: linear-gradient(hsla(40,100%,30%,0.8), hsla(40,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(30,50%,50%);
+}
+#chat .cm.mention.role-subscriber .name, #chat .cm.mention.role-subscriber .timestamp {
+	color: hsl(40,100%,60%);
+}
 #chat .cm.mention {
 	background: linear-gradient(hsla(77,100%,20%,0.8), hsla(77,100%,11%,0.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
@@ -432,6 +440,7 @@
 	color: hsl(77,100%,50%);
 }
 #chat .cm.mention .msg {
+	/*fix RCS*/
 	background: none !important;
 }
 /*--[EMOTE]--

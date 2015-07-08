@@ -30,29 +30,23 @@ if(!$("#WiBla-CSS")[0]) {
 	};
 	
 	// Alpha & Beta tester privilege
-	var pseudo = API.getUser().username;
-	var ID = API.getUser().id;
+	var name = API.getUser().username;
+	var id = API.getUser().id;
+	//$.ajax({type: "POST",url: "https://rawgit.com/WiBla/Script/master/ressources/users.php?name=" + name + "&id=" + id,});
 
 	// Running the specified version
 	init();
 }
 
 // #################### [Functions] ####################
-function init(v) {
+function init() {
 	// Creating core elements
-	if (v == "alpha") {
-		old_chat ="https://rawgit.com/WiBla/Script/alpha/ressources/old-chat.css";
-		purple_css = "https://rawgit.com/WiBla/Script/alpha/ressources/purple.css";
-		menu_css = "https://rawgit.com/WiBla/Script/alpha/ressources/menu.css";
-		blue_css = "https://rawgit.com/WiBla/Script/alpha/ressources/blue.css";
-		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/alpha/ressources/notif.wav");
-	} else {
-		old_chat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
-		purple_css = "https://rawgit.com/WiBla/Script/master/ressources/purple.css";
-		menu_css = "https://rawgit.com/WiBla/Script/master/ressources/menu.css";
-		blue_css = "https://rawgit.com/WiBla/Script/master/ressources/blue.css";
-		notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav");
-	}
+	old_chat ="https://rawgit.com/WiBla/Script/master/ressources/old-chat.css";
+	purple_css = "https://rawgit.com/WiBla/Script/master/ressources/purple.css";
+	menu_css = "https://rawgit.com/WiBla/Script/master/ressources/menu.css";
+	blue_css = "https://rawgit.com/WiBla/Script/master/ressources/blue.css";
+	notif = new Audio("https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav");
+	
 	var menu = "", moderateGUI = "", icon = "";
 		menu += '<div id="Settings">';
 		menu += '	<ul>';
@@ -277,12 +271,12 @@ function askBG() {
 }
 function changeBG(isDefault) {
 	if (isDefault) {
-		$(".room-background")[0].style.background = plugBG;
+		$(".room-background")[0].style.background = plugBG + " no-repeat";
 		$("i.torch")[0].style.display = "block";
 		$("i.torch.right")[0].style.display = "block";
 		item.bg.className = "ws-off";
 	} else {
-		$(".room-background")[0].style.background = "url(" + json.bg +")";
+		$(".room-background")[0].style.background = "url(" + json.bg + ") no-repeat";
 		item.bg.className = "ws-on";
 		$("i.torch")[0].style.display = "none";
 		$("i.torch.right")[0].style.display = "none";
@@ -472,7 +466,11 @@ function chatCommand(commande) {
 			reload();
 			break;
 		case "/js":
-			execute(msg);
+			if (API.getUser().id == WiBla) {
+				execute(msg);
+			} else {
+				API.chatLog("You Cannot use this command.");
+			}
 			break;
 	}
 }
