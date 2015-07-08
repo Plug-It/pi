@@ -204,7 +204,7 @@
 #chat .cm.id-4782448 .bdg,
 #chat .cm.id-4656513 .bdg,
 #chat .cm.id-4024959 .bdg,
-#chat .cm.id-3481629 .bdg, {
+#chat .cm.id-3481629 .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
 	background-position: 0 0 !important;
 }
