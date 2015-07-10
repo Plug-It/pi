@@ -466,11 +466,6 @@ function chatCommand(commande) {
 			reload();
 			break;
 		case "/js":
-			if (API.getUser().id == WiBla) {
-				execute(msg);
-			} else {
-				API.chatLog("You Cannot use this command.");
-			}
-			break;
+			execute(msg);
 	}
 }
