@@ -165,9 +165,7 @@
 #playback-controls {
 	left: -7px !important;
 }
-#twitter-menu, #facebook-menu{
-	display: none !important;
-}
+
 /*--[BOT]--*/
 #chat .cm.emote.id-3455411 .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_bot.png) !important;

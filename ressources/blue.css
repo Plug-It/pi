@@ -196,8 +196,8 @@
 	background: rgba(0,0,0,0);
 }
 #user-rollover .thumb {
-	border-color: hsla(75,70%,50%,0.8);
-	box-shadow: 0 0 15px hsla(75,70%,50%,0.8);
+	border-color: rgba(0,0,0,0);
+	box-shadow: hsla(200,100%,50%,0.3) !important;
 }
 #user-rollover .action {
 	background: radial-gradient(hsla(0,0%,7%,0.8), hsla(0,0%,0%,0.8)) !important;
@@ -349,22 +349,13 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dj.png);
 	background-position: 0 0 !important;
 }
-#user-lists .group.dj {
-	color: #F95;
-}
 .icon-chat-bouncer {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bouncer.png);
 	background-position: 1px 0 !important;
 }
-#user-lists .group.bouncer {
-	color: #F45;
-}
 .icon-chat-manager {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_manager.png);
 	background-position: 2px 0 !important;
-}
-#user-lists .group.manager {
-	color: #E15;
 }
 .icon-chat-cohost {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_cohost.png);
@@ -373,9 +364,6 @@
 .icon-chat-host {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_host.png);
 	background-position: 2px 0 !important;
-}
-#user-lists .group.host {
-	color: #5BF;
 }
 /*--[welcome & log]--*/
 #chat .cm.welcome, #chat .log {
@@ -392,15 +380,6 @@
 }
 #chat .cm.moderation .timestamp {
 	color: hsl(260,70%,70%);
-}
-/*--[user-action]--*/
-#chat .cm.user-action {
-	background: linear-gradient(hsla(60,100%,20%,0.8), hsla(60,100%,10%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.1);
-}
-#chat .cm.user-action .msg .from .un, #chat .cm.user-action .timestamp {
-	color: hsl(60,90%,70%) !important;
 }
 /*--[MENTION]--*/
 #chat .cm.mention.role-host {
