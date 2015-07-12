@@ -1,4 +1,4 @@
-﻿// For any informations, go to: https://github.com/WiBla/Script
+// For any informations, go to: https://github.com/WiBla/Script
 
 if(!$("#WiBla-CSS")[0]) {
 	// ####### [Global variables] #######
@@ -9,29 +9,25 @@ if(!$("#WiBla-CSS")[0]) {
 	isDev = wibla || zurbo || dano,
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
-	json = JSON.parse(localStorage.getItem('WiblaScript'));
-	if (json === undefined) {
-		json = {
-			"V": "Beta 1.1.3",
-			"showMenu": false,
-			"autoW": false,
-			"autoDJ": false,
-			"showVideo": false,
-			"CSS": 0,
-			"oldChat": true,
-			"durationAlert": false,
-			"woot": false,
-			"meh": false,
-			"grab": false,
-			"bg": "",
-			"betterMeh": false,
-			"security": false,
-			"afk": false,
-			"time": 435,
-			"bot": "3455411",
-		};
-		localStorage.setItem('WiblaScript', JSON.stringify(json)); //ajoute cette ligne a chaque endroit ou tu modifies une propriété ^^ (et vire ce comm après)
-	}
+	json = {
+	"V": "Beta 1.1.3",
+	"showMenu": false,
+	"autoW": false,
+	"autoDJ": false,
+	"showVideo": false,
+	"CSS": 0,
+	"oldChat": true,
+	"durationAlert": false,
+	"woot": false,
+	"meh": false,
+	"grab": false,
+	"bg": "",
+	"betterMeh": false,
+	"security": false,
+	"afk": false,
+	"time": 435,
+	"bot": "3455411",
+	};
 	
 	// Alpha & Beta tester privilege
 	var name = API.getUser().username;
@@ -54,14 +50,14 @@ function init() {
 	var menu = "", moderateGUI = "", icon = "";
 		menu += '<div id="Settings">';
 		menu += '	<ul>';
-		menu += '		<li id="ws-woot"     onclick="json.autoW = !json.autoW;autowoot(); localStorage.setItem('WiblaScript', JSON.stringify(json));">Auto-woot</li>'; // ce serait plus propre de faire des fcts du coup ^^
-		menu += '		<li id="ws-join"     onclick="json.autoDJ = !json.autoDJ;autojoin(); localStorage.setItem('WiblaScript', JSON.stringify(json));">Auto-join</li>'; // ici aussi
+		menu += '		<li id="ws-woot"     onclick="json.autoW = !json.autoW;autowoot();">Auto-woot</li>';
+		menu += '		<li id="ws-join"     onclick="json.autoDJ = !json.autoDJ;autojoin();">Auto-join</li>';
 		menu += '		<li id="ws-video"    onclick="hideStream();">Hide video</li>';
 		menu += '		<li id="ws-css"      onclick="design();">Custom Style</li>';
 		menu += '		<li id="ws-old-chat" onclick="oldChat();">Old chat</li>';
 		menu += '		<li id="ws-bg"       onclick="askBG();">Custom Bg</li>';
-		menu += '		<li id="ws-lengthA"  onclick="json.alertDuration = !json.alertDuration;alertDuration(); localStorage.setItem('WiblaScript', JSON.stringify(json));">Song limit</li>'; //ici aussi
-		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;voteAlert(); localStorage.setItem('WiblaScript', JSON.stringify(json));">Show mehs</li>'; //ici aussi
+		menu += '		<li id="ws-lengthA"  onclick="json.alertDuration = !json.alertDuration;alertDuration();">Song limit</li>';
+		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;voteAlert();">Show mehs</li>';
 		menu += '		<li id="ws-mutemeh"  onclick="muteMeh();">Mute on meh</li>';
 		menu += '		<li id="ws-off"      onclick="WiBla_Script_Shutdown();">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
@@ -134,8 +130,7 @@ function firstRun() {
 	item.bg.className = "ws-off";
 	alertDuration();
 	voteAlert(0);
-	json.betterMeh = true;
-	muteMeh();
+	json.betterMeh = true;muteMeh();
 	
 	
 	// API initalization
@@ -219,7 +214,6 @@ function hideStream() {
 		$("#no-dj")[0].style.visibility = "hidden";
 		item.video.className = "ws-on";
 	}
-	localStorage.setItem('WiblaScript', JSON.stringify(json));
 }
 function design() {
 	if (json.bg == "reset") askBG();
@@ -238,7 +232,6 @@ function design() {
 			item.style.setAttribute("href", purple_css);
 			json.bg = "default"; askBG();
 	}
-	localStorage.setItem('WiblaScript', JSON.stringify(json));
 }
 function oldChat() {
 	json.oldChat = !json.oldChat;
@@ -249,7 +242,6 @@ function oldChat() {
 		item.oldChat.className = "ws-off";
 		item.oldStyle.setAttribute("href", "");
 	}
-	localStorage.setItem('WiblaScript', JSON.stringify(json));
 }
 function askBG() {
 	style = $(".room-background")[0].getAttribute("style").split(" ");
@@ -275,7 +267,6 @@ function askBG() {
 				}
 			}
 		break;
-		localStorage.setItem('WiblaScript', JSON.stringify(json));
 	}
 }
 function changeBG(isDefault) {
@@ -313,7 +304,6 @@ function muteMeh() {
 		$("#woot")[0].setAttribute("onclick", "");
 		item.betterMeh.className = "ws-off";
 	}
-	localStorage.setItem('WiblaScript', JSON.stringify(json));
 }
 function voteAlert(data) {
 	//visual stuff
@@ -369,7 +359,6 @@ function slide() {
 		menu.style.zIndex = "2";
 		menu.style.right = "345px";
 	}
-	localStorage.setItem('WiblaScript', JSON.stringify(json));
 }
 function forceSkip() {
 	if (json.security === false) {
@@ -449,9 +438,6 @@ function chatCommand(commande) {
 		case "/bot":
 			if (args[1] === undefined) {
 				API.chatLog("Write either the pseudo or the id of the bot in your room after /bot");
-			} else {
-				json.bot = args[1];
-				localStorage.setItem('WiblaScript', JSON.stringify(json));
 			}
 			break;*/
 		case "/whoami":
