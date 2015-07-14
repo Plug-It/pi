@@ -1,7 +1,7 @@
 // For any informations, go to: https://github.com/WiBla/Script
 
 var defaultSettings = {
-"V": "Beta 1.1.4",
+"V": "Beta 1.1.5",
 "showMenu": false,
 "autoW": false,
 "autoDJ": false,
@@ -220,27 +220,28 @@ function menu(choice) {
 		break;
 
 		case "10":
-			API.off(API.CHAT_COMMAND, chatCommand);
-			API.off(API.ADVANCE, alertDuration);
-			API.off(API.VOTE_UPDATE, voteAlert);
-			API.off(API.ADVANCE, autowoot);
-			API.off(API.ADVANCE, autojoin);
-			$(window).unbind();
 			// Preventing making the video definitly desapear
 			if (json.showVideo === false) {
 				menu(3);
 				setTimeout(menu(10), 250);
-			}
-			item.box.remove();
-			item.settings.remove();
-			$("#WiBla-menu-CSS")[0].remove();
-			item.style.remove();
-			item.oldStyle.remove();
-			$("#extendAPI")[0].remove();
-			$("#del-chat-button")[0].remove();
-			if (hasPermBouncer) {
-				item.rmvDJ.remove();
-				item.skip.remove();
+			} else {
+				API.off(API.CHAT_COMMAND, chatCommand);
+				API.off(API.ADVANCE, alertDuration);
+				API.off(API.VOTE_UPDATE, voteAlert);
+				API.off(API.ADVANCE, autowoot);
+				API.off(API.ADVANCE, autojoin);
+				$(window).unbind();
+				item.box.remove();
+				item.settings.remove();
+				$("#WiBla-menu-CSS")[0].remove();
+				item.style.remove();
+				item.oldStyle.remove();
+				$("#extendAPI")[0].remove();
+				$("#del-chat-button")[0].remove();
+				if (hasPermBouncer) {
+					item.rmvDJ.remove();
+					item.skip.remove();
+				}
 			}
 		break;
 
