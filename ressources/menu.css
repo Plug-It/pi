@@ -165,6 +165,9 @@
 #playback-controls {
 	left: -7px !important;
 }
+#twitter-menu, #facebook-menu{
+	display: none !important;
+}
 
 /*--[BOT]--*/
 #chat .cm.emote.id-3455411 .bdg {

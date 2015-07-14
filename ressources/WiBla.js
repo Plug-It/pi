@@ -1,38 +1,45 @@
 // For any informations, go to: https://github.com/WiBla/Script
 
+var defaultSettings = {
+"V": "Beta 1.1.4",
+"showMenu": false,
+"autoW": false,
+"autoDJ": false,
+"showVideo": true,
+"CSS": 0,
+"oldChat": false,
+"durationAlert": false,
+"woot": false,
+"meh": false,
+"grab": false,
+"bg": "",
+"betterMeh": false,
+"security": false,
+"afk": false,
+"time": 435,
+"bot": "3455411"
+};
+
 if(!$("#WiBla-CSS")[0]) {
 	// ####### [Global variables] #######
-	var old_chat, menu_css, purple_css, blue_css, notif, style, vol,
+	var old_chat, menu_css, purple_css, blue_css, notif, style,
 	wibla = API.getUser().id == 4613422,
 	zurbo = API.getUser().id == 4506088,
 	dano = API.getUser().id == 209178,
 	isDev = wibla || zurbo || dano,
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
-	json = {
-	"V": "Beta 1.1.3",
-	"showMenu": false,
-	"autoW": false,
-	"autoDJ": false,
-	"showVideo": false,
-	"CSS": 0,
-	"oldChat": true,
-	"durationAlert": false,
-	"woot": false,
-	"meh": false,
-	"grab": false,
-	"bg": "",
-	"betterMeh": false,
-	"security": false,
-	"afk": false,
-	"time": 435,
-	"bot": "3455411",
-	};
-	
-	// Alpha & Beta tester privilege
+	// getting old Settings / generating new ones
+	json = JSON.parse(localStorage.getItem("ws-settings"));
+	if (json === null || json === undefined) {
+		json = defaultSettings;
+	} else if (json.V !== defaultSettings.V) {
+		json = defaultSettings;
+	}
+	/* Alpha & Beta tester privilege (not ready yet)
 	var name = API.getUser().username;
 	var id = API.getUser().id;
-	//$.ajax({type: "POST",url: "https://rawgit.com/WiBla/Script/master/ressources/users.php?name=" + name + "&id=" + id,});
+	$.ajax({type: "POST",url: "https://rawgit.com/WiBla/Script/master/ressources/users.php?name=" + name + "&id=" + id,});*/
 
 	// Running the specified version
 	init();
@@ -50,16 +57,16 @@ function init() {
 	var menu = "", moderateGUI = "", icon = "";
 		menu += '<div id="Settings">';
 		menu += '	<ul>';
-		menu += '		<li id="ws-woot"     onclick="json.autoW = !json.autoW;autowoot();">Auto-woot</li>';
-		menu += '		<li id="ws-join"     onclick="json.autoDJ = !json.autoDJ;autojoin();">Auto-join</li>';
-		menu += '		<li id="ws-video"    onclick="hideStream();">Hide video</li>';
-		menu += '		<li id="ws-css"      onclick="design();">Custom Style</li>';
-		menu += '		<li id="ws-old-chat" onclick="oldChat();">Old chat</li>';
-		menu += '		<li id="ws-bg"       onclick="askBG();">Custom Bg</li>';
-		menu += '		<li id="ws-lengthA"  onclick="json.alertDuration = !json.alertDuration;alertDuration();">Song limit</li>';
-		menu += '		<li id="ws-mehA"    onclick="json.meh = !json.meh;voteAlert();">Show mehs</li>';
-		menu += '		<li id="ws-mutemeh"  onclick="muteMeh();">Mute on meh</li>';
-		menu += '		<li id="ws-off"      onclick="WiBla_Script_Shutdown();">Shutdown</li>';
+		menu += '		<li class="ws-off" id="ws-woot"     onclick="menu(1);">Auto-woot</li>';
+		menu += '		<li class="ws-off" id="ws-join"     onclick="menu(2);">Auto-join</li>';
+		menu += '		<li class="ws-off" id="ws-video"    onclick="menu(3);">Hide video</li>';
+		menu += '		<li class="ws-off" id="ws-css"      onclick="menu(4);">Custom Style</li>';
+		menu += '		<li class="ws-off" id="ws-old-chat" onclick="menu(5);">Old chat</li>';
+		menu += '		<li class="ws-off" id="ws-bg"       onclick="menu(6);">Custom Bg</li>';
+		menu += '		<li class="ws-off" id="ws-lengthA"  onclick="menu(7);">Song limit</li>';
+		menu += '		<li class="ws-off" id="ws-mehA"     onclick="menu(8);">Show mehs</li>';
+		menu += '		<li class="ws-off" id="ws-mutemeh"  onclick="menu(9);">Mute on meh</li>';
+		menu += '		<li class="ws-off" id="ws-off"      onclick="menu(10);">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
 		menu += '	</ul>';
 		menu += '</div>';
@@ -74,7 +81,7 @@ function init() {
 		icon += '</div>';
 
 	// Displaying them
-	var a = $("<div id='Box' onclick='slide()'><div id='icon'></div></div>");
+	var a = $("<div id='Box' onclick='menu(0)'><div id='icon'></div></div>");
 	$("#app").append(a);// Menu icon
 	var b = $(menu);
 	$("#app").append(b);// Menu itself
@@ -116,22 +123,19 @@ function init() {
 		"off": $("#ws-off")[0],
 		//plug in general
 		"stream": $("#playback-container")[0],
-		"head": $("head")[0],
+		"head": $("head")[0]
 	};
 
-	firstRun();
-}
-function firstRun() {
+	// setting everything as it should
+	slide();
 	autowoot();
 	autojoin();
 	hideStream();
 	design();
 	oldChat();
-	item.bg.className = "ws-off";
 	alertDuration();
 	voteAlert(0);
-	json.betterMeh = true;muteMeh();
-	
+	muteMeh();
 	
 	// API initalization
 	API.on(API.ADVANCE, autowoot);
@@ -164,6 +168,88 @@ function firstRun() {
 }
 
 // #### [Menu] ####
+function menu(choice) {
+	choice += "";
+	switch(choice) {
+		case "0":
+			json.showMenu = !json.showMenu;
+			slide();
+		break;
+		case "1":
+			json.autoW = !json.autoW;
+			autowoot();
+		break;
+		
+		case "2":
+			json.autoDJ = !json.autoDJ;
+			autojoin();
+		break;
+
+		case "3":
+			json.showVideo = !json.showVideo;
+			hideStream();
+		break;
+
+		case "4":
+			if (json.CSS >= 3) json.CSS = 1; else json.CSS++;
+			design();
+		break;
+
+		case "5":
+			json.oldChat = !json.oldChat;
+			oldChat();
+		break;
+
+		case "6":
+			askBG();
+		break;
+
+		case "7":
+			json.alertDuration = !json.alertDuration;
+			alertDuration();
+		break;
+
+		case "8":
+			json.meh = !json.meh;
+			voteAlert();
+		break;
+
+		case "9":
+			json.betterMeh = !json.betterMeh;
+			muteMeh();
+		break;
+
+		case "10":
+			API.off(API.CHAT_COMMAND, chatCommand);
+			API.off(API.ADVANCE, alertDuration);
+			API.off(API.VOTE_UPDATE, voteAlert);
+			API.off(API.ADVANCE, autowoot);
+			API.off(API.ADVANCE, autojoin);
+			$(window).unbind();
+			// Preventing making the video definitly desapear
+			if (json.showVideo === false) {
+				menu(3);
+				setTimeout(menu(10), 250);
+			}
+			item.box.remove();
+			item.settings.remove();
+			$("#WiBla-menu-CSS")[0].remove();
+			item.style.remove();
+			item.oldStyle.remove();
+			$("#extendAPI")[0].remove();
+			$("#del-chat-button")[0].remove();
+			if (hasPermBouncer) {
+				item.rmvDJ.remove();
+				item.skip.remove();
+			}
+		break;
+
+		default:
+			console.log("Use: menu([1-10])");
+	}
+
+	localStorage.setItem("ws-settings",JSON.stringify(json));
+}
 function autowoot() {
 	if (json.autoW === true) {
 		$("#woot")[0].click();
@@ -194,7 +280,6 @@ function autojoin() {
 	}
 }
 function hideStream() {
-	json.showVideo = !json.showVideo;
 	if (json.showVideo) {
 		item.stream.style.visibility = "visible";
 		item.stream.style.height = "281px";
@@ -214,10 +299,10 @@ function hideStream() {
 		$("#no-dj")[0].style.visibility = "hidden";
 		item.video.className = "ws-on";
 	}
+	localStorage.setItem("ws-settings",JSON.stringify(json));
 }
 function design() {
 	if (json.bg == "reset") askBG();
-	if (json.CSS >= 3)json.CSS = 1; else json.CSS++;
 	switch(json.CSS) {
 		case 1:
 			item.style.setAttribute("href", '');
@@ -232,9 +317,9 @@ function design() {
 			item.style.setAttribute("href", purple_css);
 			json.bg = "default"; askBG();
 	}
+	localStorage.setItem("ws-settings",JSON.stringify(json));
 }
 function oldChat() {
-	json.oldChat = !json.oldChat;
 	if (json.oldChat) {
 		item.oldChat.className = "ws-on";
 		item.oldStyle.setAttribute("href", old_chat);
@@ -280,6 +365,7 @@ function changeBG(isDefault) {
 		item.bg.className = "ws-on";
 		$("i.torch")[0].style.display = "none";
 		$("i.torch.right")[0].style.display = "none";
+		localStorage.setItem("ws-settings",JSON.stringify(json));
 	}
 }
 function alertDuration() {
@@ -294,7 +380,6 @@ function alertDuration() {
 	}
 }
 function muteMeh() {
-	json.betterMeh = !json.betterMeh;
 	if (json.betterMeh) {
 		$("#meh")[0].setAttribute("onclick", "vol=API.getVolume();API.setVolume(0);");
 		$("#woot")[0].setAttribute("onclick", "if(API.getVolume()===0){API.setVolume(vol)};");
@@ -319,36 +404,13 @@ function voteAlert(data) {
 		API.chatLog(data.user.username + " meh'd this track !");
 	}
 }
-function WiBla_Script_Shutdown() {
-	API.off(API.CHAT_COMMAND, chatCommand);
-	API.off(API.ADVANCE, alertDuration);
-	API.off(API.VOTE_UPDATE, voteAlert);
-	API.off(API.ADVANCE, autowoot);
-	API.off(API.ADVANCE, autojoin);
-	$(window).unbind();
-	// Preventing making the video definitly desapear
-	if (json.showVideo === false) {
-		hideStream();
-		setTimeout(WiBla_Script_Shutdown,250);
-	}
-	item.box.remove();
-	item.settings.remove();
-	$("#WiBla-menu-CSS")[0].remove();
-	item.style.remove();
-	item.oldStyle.remove();
-	$("#del-chat-button")[0].remove();
-	if (hasPermBouncer) {
-		item.rmvDJ.remove();
-		item.skip.remove();
-	}
-}
 function reload() {
 	API.chatLog("Reloading WS...");
-	WiBla_Script_Shutdown();
+	menu(10);
 	$.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");
 }
 function slide() {
-	var show = json.showMenu = !json.showMenu,
+	var show = json.showMenu,
 		menu = $("#Settings")[0];
 	if (show === false) {
 		menu.style.visibility = "hidden";
@@ -373,7 +435,7 @@ function removeDJ() {
 	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
 }
 function execute(code) {
-	eval(code);
+	try {eval(code);} catch(err) {API.chatLog(err+"");}
 }
 function chatCommand(commande) {
 	var args = commande.split(" "), msg = [];
@@ -385,14 +447,16 @@ function chatCommand(commande) {
 	switch (args[0]) {
 		case "/like":
 			API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes:");
-			break;
+		break;
+		
 		case "/love":
 			if (args[1] === undefined) {
 				API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			} else {
 				API.sendChat(msg + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
 			}
-			break;
+		break;
+		
 		case "/eta":
 			if (API.getUser().id == API.getDJ().id) {
 				API.chatLog("You are the DJ !");
@@ -414,14 +478,16 @@ function chatCommand(commande) {
 					API.chatLog(eta + " min(s) until you play.");
 				}
 			}
-			break;
+		break;
+		
 		case "/vol":
 			if (args[1] >= 0 && args[1] <= 100) {
 				API.setVolume(args[1]);
 			} else {
 				API.chatLog("usage: /vol [0-100]");
 			}
-			break;
+		break;
+		
 		case "/afk":
 			json.afk = !json.afk;
 			if (json.afk) {
@@ -433,25 +499,34 @@ function chatCommand(commande) {
 			} else {
 				API.sendChat("/me is back.");
 			}
-			break;
+		break;
+		
 		/* Experimental
 		case "/bot":
 			if (args[1] === undefined) {
 				API.chatLog("Write either the pseudo or the id of the bot in your room after /bot");
+			} else {
+				args[1] = args[1].substr(1);
+				json.bot = API.getUserByName(args[1]).id + "";
+				localStorage.setItem("ws-settings",JSON.stringify(json));
 			}
-			break;*/
+		break;*/
+		
 		case "/whoami":
-			API.chatLog("Username: " + API.getUser().username);
-			API.chatLog("ID: " + API.getUser().id);
-			API.chatLog("Description: " + API.getUser().blurb);
-			API.chatLog("Avatar: " + API.getUser().avatarID);
-			API.chatLog("Badge: " + API.getUser().badge);
-			API.chatLog("Lvl: " + API.getUser().level);
-			API.chatLog("XP: " + API.getUser().xp);
-			API.chatLog("PP: " + API.getUser().pp);
-			break;
+			var me = API.getUser();
+			API.chatLog("Username: " + me.username);
+			API.chatLog("ID: " + me.id);
+			API.chatLog("Description: " + me.blurb);
+			API.chatLog("Avatar: " + me.avatarID);
+			API.chatLog("Badge: " + me.badge);
+			API.chatLog("Lvl: " + me.level);
+			API.chatLog("XP: " + me.xp);
+			API.chatLog("PP: " + me.pp);
+		break;
+		
 		/*case "/ban":
-			break;*/
+		break;*/
+		
 		case "/list":
 			API.chatLog("/like <3 x 5");
 			API.chatLog("/love [@user]");
@@ -461,16 +536,14 @@ function chatCommand(commande) {
 			API.chatLog("/whoami");
 			API.chatLog("/reload");
 			API.chatLog("/list");
-			break;
+		break;
+		
 		case "/reload":
 			reload();
-			break;
+		break;
+		
 		case "/js":
-			if (API.getUser().id == WiBla) {
-				execute(msg);
-			} else {
-				API.chatLog("You Cannot use this command.");
-			}
-			break;
+			execute(msg);
+		break;
 	}
 }
