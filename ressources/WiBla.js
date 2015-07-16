@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.1.6",
+		"V": "Beta 1.1.5",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -63,8 +63,8 @@ function init() {
 		menu += '		<li id="ws-join"     onclick="menu(2);">Auto-join</li>';
 		menu += '		<li id="ws-video"    onclick="menu(3);">Hide video</li>';
 		menu += '		<li id="ws-css"      onclick="menu(4);">Custom Style</li>';
-		menu += '		<li id="ws-old-chat" onclick="menu(5);">Old chat</li>';
-		menu += '		<li id="ws-bg"       onclick="menu(6);">Custom Bg</li>';
+		menu += '		<li id="ws-bg"       onclick="menu(5);">Custom Bg</li>';
+		menu += '		<li id="ws-old-chat" onclick="menu(6);">Old chat</li>';
 		menu += '		<li id="ws-lengthA"  onclick="menu(7);">Song limit</li>';
 		menu += '		<li id="ws-mehA"     onclick="menu(8);">Show mehs</li>';
 		menu += '		<li id="ws-mutemeh"  onclick="menu(9);">Mute on meh</li>';
@@ -219,14 +219,14 @@ function menu(choice) {
 			if (json.CSS >= 3) json.CSS = 1; else json.CSS++;
 			design();
 		break;
-
+		
 		case "5":
+			askBG();
+		break;
+		
+		case "6":
 			json.oldChat = !json.oldChat;
 			oldChat();
-		break;
-
-		case "6":
-			askBG();
 		break;
 
 		case "7":
@@ -332,6 +332,7 @@ function design() {
 	switch(json.CSS) {
 		case 1:
 			item.style.setAttribute("href", '');
+			json.bg = "default"; askBG();
 			item.css.className = "ws-off";
 			break;
 		case 2:
@@ -341,7 +342,7 @@ function design() {
 			break;
 		case 3:
 			item.style.setAttribute("href", purple_css);
-			json.bg = "default"; askBG();
+			json.bg = "https://rawgit.com/WiBla/Script/master/images/background/1.png"; changeBG();
 	}
 	localStorage.setItem("ws-settings",JSON.stringify(json));
 }
