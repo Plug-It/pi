@@ -5,7 +5,7 @@
 .slider .circle {
 	background: radial-gradient(hsl(0,0%,100%), hsl(0,0%,70%)) !important;
 }
-#tooltip span {
+#tooltip span, #tooltip.blue span {
 	background: radial-gradient(hsla(210,100%,30%,0.9), hsla(220,100%,20%,0.9));
 	border-radius: 13px 13px 13px 0
 }
@@ -387,6 +387,7 @@
 }
 #user-lists .group.dj {
 	color: #F95;
+	background: linear-gradient(to right, hsla(20,100%,30%,0.5), hsla(30,100%,40%,0.5)) !important;
 }
 .icon-chat-bouncer {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bouncer.png);
@@ -394,6 +395,7 @@
 }
 #user-lists .group.bouncer {
 	color: #F45;
+	background: linear-gradient(to right, hsla(10,100%,30%,0.5), hsla(10,100%,40%,0.5)) !important;
 }
 .icon-chat-manager {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_manager.png);
@@ -401,6 +403,7 @@
 }
 #user-lists .group.manager {
 	color: #E15;
+	background: linear-gradient(to right, hsla(0,100%,20%,0.5), hsla(0,100%,30%,0.5)) !important;
 }
 .icon-chat-cohost {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_cohost.png);
@@ -412,12 +415,41 @@
 }
 #user-lists .group.host {
 	color: #5BF;
+	background: linear-gradient(to right, hsla(210,100%,30%,0.5), hsla(210,100%,40%,0.5)) !important;
+	top: 1px;
+}
+#user-lists .group {
+	border: none !important;
+	box-shadow: 0 0 1px 1px;
+}
+#user-lists .user:hover {
+	background: linear-gradient(to right, hsla(200,100%,20%,0.5), hsla(200,100%,40%,0.5)) !important;
+}
+#user-lists .user:hover .name {
+	color: #eee !important;
+}
+#user-lists .header {
+	height: 42px;
+}
+#user-lists .list-header {
+	top: 44px;
+}
+#user-lists .header .button {
+	top: 0px;
+}
+#user-lists .header .button.selected {
+	border-radius: 0px;
+	background: radial-gradient(hsla(210,10%,50%,0.5), hsla(210,10%,40%,0.3));
+	border: none !important;
 }
 /*--[welcome & log]--*/
 #chat .cm.welcome, #chat .log {
 	border-radius: 0;
 	box-shadow: none;
 	background: none !important;
+}
+#chat .log {
+	background: hsla(220,30%,20%,0.8) !important;
 }
 /*--[moderation]--*/
 #chat .cm.moderation {
@@ -497,32 +529,11 @@
 	color: hsl(77,100%,50%);
 }
 #chat .cm.mention .msg .from .un {
-	color: hsl(77,100%,40%) !important;
+	color: hsl(77,100%,40%);
 }
 #chat .cm.mention .msg {
 	/*fix RCS*/
 	background: none !important;
-}
-/*--[EMOTE]--
-#chat .cm.emote, #chat .cm.emote .timestamp {
-	border-left: none !important;
-	text-align: center;
-}
-#chat .cm.emote .from .un {
-	color: #eee !important;
-}
-#chat .cm.emote .from, #chat .cm.emote .msg .text {
-	display: inline;
-}
-#chat .cm.emote i {
-	display: none !important;
-}
-#chat .cm.emote .msg .text {
-	font-style: normal !important;
-	margin-left: 5px;
-}
-#chat .cm.emote .msg .emoji {
-	left: 0px;
 }
 /*--[BOT]--*/
 #chat .cm.emote {
@@ -540,7 +551,6 @@
 	display: inline !important;
 }
 #chat .cm.emote .text {
-	margin-left: 0;
 	font-style: normal;
 }
 /*--[RSSHIT]--*/

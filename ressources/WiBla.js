@@ -1,26 +1,35 @@
 // For any informations, go to: https://github.com/WiBla/Script
 
-var defaultSettings = {
-"V": "Beta 1.1.5",
-"showMenu": false,
-"autoW": false,
-"autoDJ": false,
-"showVideo": true,
-"CSS": 0,
-"oldChat": false,
-"durationAlert": false,
-"woot": false,
-"meh": false,
-"grab": false,
-"bg": "",
-"betterMeh": false,
-"security": false,
-"afk": false,
-"time": 435,
-"bot": "3455411"
-};
-
 if(!$("#WiBla-CSS")[0]) {
+	var defaultSettings = {
+		"V": "Beta 1.1.6",
+		"showMenu": false,
+		"autoW": false,
+		"autoDJ": false,
+		"showVideo": true,
+		"CSS": 0,
+		"oldChat": false,
+		"durationAlert": false,
+		"woot": false,
+		"meh": false,
+		"grab": false,
+		"bg": "",
+		"betterMeh": false,
+		"security": false,
+		"afk": false,
+		"time": 435,
+		"bot": "3455411"
+	};
+	// getting old Settings if available
+	json = JSON.parse(localStorage.getItem("ws-settings"));
+	// if not
+	if (json === null || json === undefined) {
+  	json = defaultSettings;
+ 	} else if (json.length !== defaultSettings.length) {
+		json = defaultSettings;
+  } else if (json.V !== defaultSettings.V) {
+  	json.V = defaultSettings.V;
+ 	}
 	// ####### [Global variables] #######
 	var old_chat, menu_css, purple_css, blue_css, notif, style,
 	wibla = API.getUser().id == 4613422,
@@ -29,13 +38,6 @@ if(!$("#WiBla-CSS")[0]) {
 	isDev = wibla || zurbo || dano,
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
-	// getting old Settings / generating new ones
-	json = JSON.parse(localStorage.getItem("ws-settings"));
-	if (json === null || json === undefined) {
-		json = defaultSettings;
-	} else if (json.V !== defaultSettings.V) {
-		json = defaultSettings;
-	}
 	/* Alpha & Beta tester privilege (not ready yet)
 	var name = API.getUser().username;
 	var id = API.getUser().id;
@@ -57,16 +59,16 @@ function init() {
 	var menu = "", moderateGUI = "", icon = "";
 		menu += '<div id="Settings">';
 		menu += '	<ul>';
-		menu += '		<li class="ws-off" id="ws-woot"     onclick="menu(1);">Auto-woot</li>';
-		menu += '		<li class="ws-off" id="ws-join"     onclick="menu(2);">Auto-join</li>';
-		menu += '		<li class="ws-off" id="ws-video"    onclick="menu(3);">Hide video</li>';
-		menu += '		<li class="ws-off" id="ws-css"      onclick="menu(4);">Custom Style</li>';
-		menu += '		<li class="ws-off" id="ws-old-chat" onclick="menu(5);">Old chat</li>';
-		menu += '		<li class="ws-off" id="ws-bg"       onclick="menu(6);">Custom Bg</li>';
-		menu += '		<li class="ws-off" id="ws-lengthA"  onclick="menu(7);">Song limit</li>';
-		menu += '		<li class="ws-off" id="ws-mehA"     onclick="menu(8);">Show mehs</li>';
-		menu += '		<li class="ws-off" id="ws-mutemeh"  onclick="menu(9);">Mute on meh</li>';
-		menu += '		<li class="ws-off" id="ws-off"      onclick="menu(10);">Shutdown</li>';
+		menu += '		<li id="ws-woot"     onclick="menu(1);">Auto-woot</li>';
+		menu += '		<li id="ws-join"     onclick="menu(2);">Auto-join</li>';
+		menu += '		<li id="ws-video"    onclick="menu(3);">Hide video</li>';
+		menu += '		<li id="ws-css"      onclick="menu(4);">Custom Style</li>';
+		menu += '		<li id="ws-old-chat" onclick="menu(5);">Old chat</li>';
+		menu += '		<li id="ws-bg"       onclick="menu(6);">Custom Bg</li>';
+		menu += '		<li id="ws-lengthA"  onclick="menu(7);">Song limit</li>';
+		menu += '		<li id="ws-mehA"     onclick="menu(8);">Show mehs</li>';
+		menu += '		<li id="ws-mutemeh"  onclick="menu(9);">Mute on meh</li>';
+		menu += '		<li id="ws-off"      onclick="menu(10);">Shutdown</li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
 		menu += '	</ul>';
 		menu += '</div>';
@@ -93,9 +95,7 @@ function init() {
 	$("head").append(e);// Old chat css
 	var f = $(icon);
 	$("#chat-header").append(f);// DelChat icon
-	var h = '<script id="extendAPI" rel="script" type="text/javascript" src="https://plugmixer-serve.sunwj.com/extendAPI.js"></script>';
-	$("head").append(h);// Extended API script
-	
+		
 	// If at least bouncer (or developer)
 	if (hasPermBouncer) {
 		var g = $(moderateGUI);
@@ -134,7 +134,7 @@ function init() {
 	design();
 	oldChat();
 	alertDuration();
-	voteAlert(0);
+	voteAlert();
 	muteMeh();
 	
 	// API initalization
@@ -144,7 +144,12 @@ function init() {
 	API.on(API.ADVANCE, json.security = false);
 	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
-	API.on(API.COMMUNITY_CHANGE, reload);
+	API.on(API.ADVANCE, (function(){
+		window.roomName = $("#room-name span")[0].innerHTML;
+		if ($("#room-name span")[0].innerHTML !== roomName) {
+			reload();
+		}
+	}));
 
 	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
@@ -161,10 +166,30 @@ function init() {
 			API.setVolume(volume);
 		}
 	});
+	// show percentage in level bar
+	window.levelBarInfo = setInterval((function() {
+		var xp = $("#footer-user .info .meta .bar .value")[0].innerHTML,
+			elements = xp.split(" ");
+
+		if (elements.length == 3) {
+			var toAdd = $("#footer-user .info .progress")[0].style.width;
+			$("#footer-user .info .meta .bar .value")[0].innerHTML = xp + " " + toAdd;
+		}
+		if ($("#the-user-profile .experience.section .xp .value")[0] !== undefined) {
+			var	xp2 = $("#the-user-profile .experience.section .xp .value")[0].innerHTML,
+				elements2 = xp2.split(" ");
+				if (elements2.length == 3) {
+					var toAdd2 = $("#the-user-profile .experience.section .progress")[0].style.width;
+					$("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
+				}
+		}
+	}), 1000);
 
 	// Fully loaded
 	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");
+	API.chatLog("Check me out on twitter to be notified for updates and more ! \
+	https://twitter.com/WiBla7");
 }
 
 // #### [Menu] ####
@@ -231,12 +256,12 @@ function menu(choice) {
 				API.off(API.ADVANCE, autowoot);
 				API.off(API.ADVANCE, autojoin);
 				$(window).unbind();
+				clearInterval(levelBarInfo);
 				item.box.remove();
 				item.settings.remove();
 				$("#WiBla-menu-CSS")[0].remove();
 				item.style.remove();
 				item.oldStyle.remove();
-				$("#extendAPI")[0].remove();
 				$("#del-chat-button")[0].remove();
 				if (hasPermBouncer) {
 					item.rmvDJ.remove();
@@ -246,7 +271,7 @@ function menu(choice) {
 		break;
 
 		default:
-			console.log("Use: menu([1-10])");
+			console.log("Use: menu(1-10)");
 	}
 
 	localStorage.setItem("ws-settings",JSON.stringify(json));
@@ -399,10 +424,12 @@ function voteAlert(data) {
 		item.mehA.className = "ws-off";
 	}
 	//notifications
-	if (data.vote == 1 && json.woot === true) {
-		API.chatLog(data.user.username + " wooted this track !");
-	} else if (data.vote == -1 && json.meh === true) {
-		API.chatLog(data.user.username + " meh'd this track !");
+	if (data !== undefined) {
+		if (data.vote == 1 && json.woot === true) {
+			API.chatLog(data.user.username + " wooted this track !");
+		} else if (data.vote == -1 && json.meh === true) {
+			API.chatLog(data.user.username + " meh'd this track !");
+		}
 	}
 }
 function reload() {
