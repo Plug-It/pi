@@ -1,19 +1,26 @@
 # WiBla-Script
-This script is intended for plug.dj, it can help to moderate, but also provide nice features such as a custom style that beautify plug.
+This script is intended for [plug.dj](https://plug.dj)
+It can help to moderate, but also provide nice features that goes from autowooting to custom commands.
+
+To get it, create a bookmark with this link:
+`javascript:(function(){$.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");}());`
+Go to any plug room, and click that bookmark !
+
+You can also get the [Chrome Extension](https://chrome.google.com/webstore/detail/wibla-script/bikeoipagmbnkipclndbmfkjdcljocej) that will do it for you and even reload plug if it's down !
+
 
 ##List of intresting features:
 <ul>
-	<li>AutoWoot</li>
-	<li>AutoJoin</li>
+	<li>AutoWoot/Join</li>
 	<li>Hide the video (nice for low end PC's)</li>
-	<li>clear the chat</li>
-	<li>Can be shutdown</li>
+	<li>clear chat</li>
 	<li>Custom room background with URL</li>
-	<li>Alert if the song is too long (actually 7:15 is the limit)</li>
+	<li>custom style css</li>
+	<li>Alert if the song is too long</li>
 	<li>Mute when song is meh'd</li>
-	<li>Key shortcuts (+ and - change the volume)</li>
+	<li>Key shortcuts</li>
 	<li>Custom commands</li>
-	<li>And a custom style css that can be removed if not liked</li>
+	<li>And many more !</li>
 </ul>
 
 ##Credits: (Plug names)
@@ -24,14 +31,19 @@ This script is intended for plug.dj, it can help to moderate, but also provide n
 
 <ul>
 	<h3>Helper:</h3>
-	<li>JoeLeBranleur: PHP</li>
 	<li>Zurbo: a lot of stuff</li>
 	<li>Dano-em: same</li>
 	<li>Hideki: CSS</li>
+	<li>JoeLeBranleur: PHP</li>
 	<li>CookieMichal: API</li>
-	<li>Bil_Balle: Background and Alpha tester badge</li>
 </ul>
 
-##Also, thanks for all the Alpha and Beta tester that are too many but really helpfull.
+<ul>
+	<h3>Designer</h3>
+	<li>Bil_Balle</li>
+	<li>WiBla</li>
+</ul>
+
+###I would like to thank all the alpha and beta testers, they really helped me a lot.
 
 ###For more information, go here: http://wibla.free.fr
