@@ -1,10 +1,10 @@
 # WiBla-Script
-This script is intended for [plug.dj](https://plug.dj)
+This script is intended for [plug.dj](https://plug.dj)  
 It can help to moderate, but also provide nice features that goes from autowooting to custom commands.
 
-To get it, create a bookmark with this link:
-`javascript:(function(){$.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");}());`
-Go to any plug room, and click that bookmark !
+To get it, create a bookmark with this link:  
+`javascript:(function(){$.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");}());`  
+Go to any plug room, and click that bookmark !  
 
 You can also get the [Chrome Extension](https://chrome.google.com/webstore/detail/wibla-script/bikeoipagmbnkipclndbmfkjdcljocej) that will do it for you and even reload plug if it's down !
 
@@ -46,4 +46,4 @@ You can also get the [Chrome Extension](https://chrome.google.com/webstore/detai
 
 ###I would like to thank all the alpha and beta testers, they really helped me a lot.
 
-###For more information, go here: http://wibla.free.fr
+###You can find more stuff here: http://wibla.free.fr
