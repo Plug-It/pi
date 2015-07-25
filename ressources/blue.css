@@ -3,12 +3,14 @@
 	color: hsl(200,100%,55%) !important;
 	text-shadow: 0 0 5px;
 }
-#search-menu .menu ul  i {
+#search-menu .menu ul  i, #search-menu-icon {
 	/*Adblock fix*/
 	display: inline !important;
 }
 .slider .line, #user-settings .slider .bar {
 	background: linear-gradient(to right, hsl(120,100%,50%), hsl(0,100%,50%)) !important;
+}
+#user-settings .slider .bar {
 	width: calc(100% - 1px) !important;
 }
 .slider .circle, #user-settings .slider .circle {
@@ -143,15 +145,15 @@
 	background: linear-gradient(hsl(205,100%,40%), hsl(205,100%,30%));
 	box-shadow: inset 0 0 10px 1px hsla(0,0%,100%,0.4);
 }
-#room-settings .general-settings button {
+#room-settings .general-settings button, #room-settings .general-settings .option.enabled button.off {
 	background: linear-gradient(hsl(220,5%,20%), hsl(220,5%,10%)) !important;
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
 }
-#room-settings .general-settings button:hover {
+#room-settings .general-settings button:hover, #room-settings .general-settings .option.enabled button.off:hover {
 	background: linear-gradient(hsl(220,50%,20%), hsl(220,50%,10%)) !important;
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
 }
-#room-settings .option.enabled button.on, #room-settings .wait-list.option button.off {
+#room-settings .general-settings button.off, #room-settings .general-settings .option.enabled button.on {
 	background: linear-gradient(hsl(220,50%,40%), hsl(220,50%,30%)) !important;
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
 }
@@ -389,32 +391,42 @@
 }
 #user-rollover .info {
 	background: linear-gradient(hsla(220,100%,30%,0.5), hsla(220,100%,15%,0.5));
+	box-shadow: 0px -2px 10px -1px #000;
 	border-radius: 50% 50% 0 0 !important;
+}
+.thumb {
+	background: hsla(210,10%,10%,0.4);
 }
 #user-rollover .info .badge-box, #user-rollover .background {
 	background: rgba(0,0,0,0);
 }
 .thumb.large, .thumb, #user-rollover .meta.online .thumb {
 	border-color: hsl(80,70%,50%) !important;
-	box-shadow: 0 0 7px hsl(80,70%,50%);
+	box-shadow: 0 0 7px hsl(80,70%,50%) !important;
 }
 .thumb.large, #user-rollover .meta.online .thumb.large {
-	border-color: hsl(80,70%,50%) !important;
-	box-shadow: 0 0 15px hsl(80,70%,50%);
+	box-shadow: 0 0 15px hsl(80,70%,50%) !important;
 }
-#user-rollover .is-staff .thumb, #waitlist .is-staff .thumb {
-	border-color: hsl(270,100%,50%) !important;
-	box-shadow: 0 0 7px hsl(270,100%,50%);
+#user-rollover.is-staff .meta.online .thumb, #waitlist .is-staff .thumb {
+	border-color: hsl(270,50%,50%) !important;
+	box-shadow: 0 0 7px hsl(270,50%,50%) !important;
 }
-#user-rollover .is-staff .thumb.large {
-	box-shadow: 0 0 15px hsl(270,100%,50%);
+#user-rollover.is-staff .meta.online .thumb.large {
+	box-shadow: 0 0 15px hsl(270,50%,50%) !important;
 }
-#user-rollover .subscriber .thumb, #waitlist .is-subscriber .thumb {
+#user-rollover .meta.subscriber .thumb, #waitlist .is-subscriber .thumb {
 	border-color: hsl(45,80%,45%) !important;
-	box-shadow: 0 0 7px hsl(45,80%,45%);
+	box-shadow: 0 0 7px hsl(45,80%,45%) !important;
 }
-.is-subscriber .thumb.large, #user-rollover .meta.subscriber .thumb.large {
+#user-rollover .meta.subscriber .thumb.large {
 	box-shadow: 0 0 15px hsl(45,80%,45%) !important;
+}
+#user-rollover .meta.online .status i {
+	display: none;
+}
+#user-rollover .meta.online .status span {
+	color: hsl(80,70%,50%);
+	margin-left: 0;
 }
 .offline .thumb {
 	border-color: hsl(0,0%,40%) !important;
@@ -504,14 +516,20 @@
 	color: #AAA;
 	background: hsla(219,15%,15%,0.6);
 }
-#media-panel .media-list .playlist-media-first-item.now-playing .actions .action,
+#media-panel .media-list .playlist-media-first-item .actions,
+#media-panel .media-list .playlist-media-last-item .actions,
 .playlist-media-item .actions {
 	background: linear-gradient(hsla(210,100%,20%,0.8), hsla(210,100%,10%,0.8)) !important;
+	border-radius: 30px 0 0 30px;
 }
 #media-panel .media-list .playlist-media-first-item.now-playing .actions .action:hover,
 .playlist-media-item .actions .action:hover {
 	background: radial-gradient(hsl(210,100%,50%), hsl(210,100%,20%)) !important;
 	box-shadow: 0 0 10px #000;
+}
+.playlist-media-first-item.now-playing .actions .action.edit,
+.playlist-media-item .actions .action.edit {
+	border-radius: 30px 0 0 30px;
 }
 #media-panel .media-list .playlist-media-item.selected, #media-panel .media-list .playlist-media-last-item.selected, #media-panel .media-list .playlist-media-item.in-history.selected {
 	color: #EEE;
@@ -599,26 +617,7 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dj.png);
 	background-position: 0 0 !important;
 }
-#user-lists .group.dj {
-	color: #F95;
-	background: linear-gradient(to right, hsla(20,100%,30%,0.5), hsla(30,100%,40%,0.5)) !important;
-}
-.icon-chat-bouncer {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bouncer.png);
-	background-position: 1px 0 !important;
-}
-#user-lists .group.bouncer {
-	color: #F45;
-	background: linear-gradient(to right, hsla(10,100%,30%,0.5), hsla(10,100%,40%,0.5)) !important;
-}
-.icon-chat-manager {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_manager.png);
-	background-position: 2px 0 !important;
-}
-#user-lists .group.manager {
-	color: #E15;
-	background: linear-gradient(to right, hsla(0,100%,20%,0.5), hsla(0,100%,30%,0.5)) !important;
-}
+/*#####[hosts]#####*/
 .icon-chat-cohost {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_cohost.png);
 	background-position: 2px 0 !important;
@@ -627,10 +626,46 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_host.png);
 	background-position: 2px 0 !important;
 }
+#user-rollover .info .role .icon-chat-host + span, #user-lists .group.host ~ .user span {
+	color: #5BF;
+}
 #user-lists .group.host {
 	color: #5BF;
 	background: linear-gradient(to right, hsla(210,100%,30%,0.5), hsla(210,100%,40%,0.5)) !important;
 	top: 1px;
+}
+/*#####[mana]#####*/
+.icon-chat-manager {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_manager.png);
+	background-position: 2px 0 !important;
+}
+#user-rollover .info .role .icon-chat-manager + span,
+#user-lists .group.manager ~ .user span{
+	color: #E15 !important;
+}
+#user-lists .group.manager {
+	color: #E15;
+	background: linear-gradient(to right, hsla(0,100%,20%,0.5), hsla(0,100%,30%,0.5)) !important;
+}/*#####[bouncer]#####*/
+.icon-chat-bouncer {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bouncer.png);
+	background-position: 1px 0 !important;
+}
+#user-rollover .info .role .icon-chat-bouncer + span,
+#user-lists .group.bouncer ~ .user span{
+	color: #F45 !important;
+}
+#user-lists .group.bouncer {
+	color: #F45;
+	background: linear-gradient(to right, hsla(10,100%,30%,0.5), hsla(10,100%,40%,0.5)) !important;
+}
+/*#####[DJ]#####*/
+#user-lists .group.dj {
+	color: #F95;
+	background: linear-gradient(to right, hsla(20,100%,30%,0.5), hsla(30,100%,40%,0.5)) !important;
+}
+#user-rollover .info .role .icon-chat-dj + span, #user-lists .group.dj ~ .user span {
+	color: #F95 !important;
 }
 #user-lists .group {
 	border: none !important;
@@ -639,7 +674,7 @@
 #user-lists .user:hover {
 	background: linear-gradient(to right, hsla(200,100%,20%,0.5), hsla(200,100%,40%,0.5)) !important;
 }
-#user-lists .user:hover .name {
+#user-lists .list.staff .user:hover .name {
 	color: #eee !important;
 }
 #user-lists .header {
@@ -814,4 +849,11 @@
 	background: linear-gradient(to right, hsl(10,90%,20%), hsl(0,90%,20%));
 	box-shadow: 0 0 5px #000;
 	border: 1px solid #F55;
+}
+#dialog-level-up {
+	background: linear-gradient(hsl(210,10%,20%), hsl(210,10%,10%));
+	box-shadow: 0 0 20px #000;
+}
+#dialog-level-up .dialog-body {
+	background: transparent;
 }

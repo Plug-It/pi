@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.1.6",
+		"V": "Beta 1.1.7",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -384,14 +384,18 @@ function askBG() {
 function changeBG(isDefault) {
 	if (isDefault) {
 		$(".room-background")[0].style.background = plugBG + " no-repeat";
-		$("i.torch")[0].style.display = "block";
-		$("i.torch.right")[0].style.display = "block";
+		if ($("i.torch")[0] !== undefined) {
+			$("i.torch")[0].style.display = "block";
+			$("i.torch.right")[0].style.display = "block";
+		}
 		item.bg.className = "ws-off";
 	} else {
 		$(".room-background")[0].style.background = "url(" + json.bg + ") no-repeat";
 		item.bg.className = "ws-on";
-		$("i.torch")[0].style.display = "none";
-		$("i.torch.right")[0].style.display = "none";
+		if ($("i.torch")[0] !== undefined) {
+			$("i.torch")[0].style.display = "none";
+			$("i.torch.right")[0].style.display = "none";
+		}
 		localStorage.setItem("ws-settings",JSON.stringify(json));
 	}
 }

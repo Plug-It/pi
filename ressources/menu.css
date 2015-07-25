@@ -14,11 +14,11 @@
 	position: relative;
 	top: 0; left: 0;
 	cursor: pointer;
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon.jpg);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-54.jpg);
 	background-size: 54px;
 }
 #icon:hover {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover.jpg);
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover-54.jpg);
 	background-size: 54px;
 }
 
@@ -56,13 +56,16 @@
 	text-shadow: 1px 0 4px #000;
 	color: #DDD;
 }
+#Settings #ws-twitter a:hover {
+	color: #0bf !important;
+}
 #Settings #ws-off {
 	color: #A33 !important;
 }
 #Settings #ws-off:hover {
 	color: #F33 !important;
 }
-#Settings #ws-V {
+#Settings #ws-V, #Settings #ws-twitter a {
 	color: #5AD;
 }
 #Settings #ws-V:hover {
