@@ -1,4 +1,3 @@
-// this file whil be used in the future, not right now
 var dev = {
 	"WiBla": 4613422,
 }
@@ -24,5 +23,4 @@ var alpha-tester = {
 	"Gattaca": 726785,
 }
 var beta-tester = {
-	//I promise, the moment i'll know how to add you automatically, I will do it.
 }
