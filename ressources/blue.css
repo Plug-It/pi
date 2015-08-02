@@ -103,7 +103,7 @@
 }
 #footer-user .buttons .button.inventory:hover .thumb {
 	border-color: #5bf !important;
-	box-shadow: 0 0 7px #5bf;
+	box-shadow: 0 0 7px #5bf !important;
 }
 #footer-user .info {
 	background: linear-gradient(hsla(210,5%,10%,0.8), hsla(210,5%,5%,0.8));
@@ -164,14 +164,18 @@
 #user-settings .container button:hover {
 	background: linear-gradient(hsl(10,100%,40%), hsl(0,100%,30%));
 }
-#user-settings .container .subscribe-button {
+.subscribe-button {
 	border-radius: 10px;
 	background: linear-gradient(hsl(50,70%,20%), hsl(50,70%,10%));
 }
-#user-settings .container .subscribe-button:hover {
+.subscribe-button:hover {
 	background: linear-gradient(hsl(50,70%,40%), hsl(50,70%,30%));
 }
-.tab-menu button, .dropdown {
+#the-user-profile .notifications.section .row {
+	border-radius: 10px;
+	background: linear-gradient(hsl(210,100%,20%), hsl(210,100%,10%));
+}
+.tab-menu button, .dropdown, #dialog-user-role .role-menu {
 	border-radius: 10px;
 	background: linear-gradient(hsl(220,5%,20%), hsl(220,5%,10%));
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
@@ -182,13 +186,12 @@
 .tab-menu .selected, .dropdown.open {
 	background: linear-gradient(hsl(220,100%,30%), hsl(220,100%,20%)) !important;
 	box-shadow: inset 0 0 7px hsla(0,0%,100%,0.5) !important;
-	font-weight: bold;
 }
 .dropdown dt {
 	border-radius: 10px;
 	box-shadow: inset -39px 0 0 hsla(0,0%,100%,0.15) !important;
 }
-.dropdown.open, .dropdown.open dt {
+.dropdown.open, .dropdown.open dt, #dialog-user-role .role-menu:hover {
 	border-radius: 10px 10px 0 0;
 	font-weight: normal;
 }
@@ -198,16 +201,24 @@
 .dropdown dd {
 	background: transparent;
 }
-.dropdown dd, #chat-suggestion {
+.dropdown dd, #chat-suggestion, #dialog-user-role .role-menu .menu ul li {
 	background: hsla(210,10%,10%,0.8);
 }
-.dropdown dd .row:hover, .chat-suggestion-item[style='background: rgb(45, 49, 58);'] {
+#dialog-user-role .role-menu .menu ul li {
+	border-color: hsla(210,10%,8%,0.8);
+}
+.dropdown dd .row:hover, .chat-suggestion-item[style='background: rgb(45, 49, 58);'], #dialog-user-role .role-menu .menu ul li:hover {
 	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8)) !important;
 }
 #user-menu .count, .requests .count, .buttons .count, .request-count, .friends .header i {
 	background: radial-gradient(hsl(215,100%,50%), hsl(210,100%,30%)) !important;
 	box-shadow: inset 0 0 10px hsl(200,100%,50%);
 	text-shadow: 0 0 3px #000;
+}
+#user-menu .selected .count, .button:hover .count, #friends-button.selected span, #user-friends .requests.selected span, .friends .header:hover i {
+	background: radial-gradient(hsl(210,10%,20%), hsl(0,0%,0%)) !important;
+	box-shadow: inset 0 0 1px #000;
+	font-weight: bold;
 }
 .grid .cell {
 	border-radius: 30px;
@@ -223,8 +234,8 @@
 	color: #eee !important;
 }
 .grid .cell .meta .join {
-	background: hsl(210,100%,20%) !important;
-	border: 1px solid hsl(210,60%,40%) !important;
+	background: hsl(220,50%,20%) !important;
+	border: 1px solid hsl(220,50%,30%) !important;
 	box-shadow: 0 0 3px #000;
 	border-radius: 30px;
 }
@@ -352,9 +363,41 @@
 #woot, #grab, #meh {
 	margin-top: 0 !important;
 }
-#vote .selected, #vote .selected .value {
+#vote .selected,
+#vote .selected .value {
 	font-weight: bold;
 	color: #FFF;
+}
+.pop-menu.grab, .pop-menu.grab .bar {
+	border-radius: 20px 20px 0 0;
+	background: transparent;
+}
+.pop-menu.grab .bar {
+	background: linear-gradient(hsla(260,50%,50%,0.8), hsla(260,50%,30%,0.8));
+}
+.pop-menu.grab .bar-divider {
+	background: linear-gradient(hsla(0,0%,90%,0.8), hsla(0,0%,60%,0.8));
+}
+.pop-menu.grab .menu ul {
+	background: hsla(260,10%,7%,0.8);
+}
+.pop-menu.grab .menu ul i + span {
+	font-weight: bold;
+}
+.pop-menu.grab .menu ul li:hover {
+	background: linear-gradient(hsla(260,50%,50%,0.2), hsla(260,50%,30%,0.2));;
+}
+.pop-menu.grab .menu ul .create:hover {
+	background: linear-gradient(hsl(260,40%,50%), hsl(260,40%,30%));
+}
+.pop-menu.grab .menu::-webkit-scrollbar {
+	background: hsl(260,10%,20%) !important;
+	box-shadow: inset 0 0 10px #000;
+	width: 10px;
+}
+.pop-menu.grab .menu::-webkit-scrollbar-thumb {
+	background: linear-gradient(to right, hsl(260,40%,60%), hsl(260,40%,40%));
+	box-shadow: inset 0 0 5px hsla(0,0%,100%,0.3);
 }
 #woot {
 	border-radius: 30px 0 0 30px;
@@ -394,6 +437,9 @@
 	box-shadow: 0px -2px 10px -1px #000;
 	border-radius: 50% 50% 0 0 !important;
 }
+#user-rollover .info i +span {
+	text-shadow: 0 0 5px #000;
+}
 .thumb {
 	background: hsla(210,10%,10%,0.4);
 }
@@ -430,7 +476,7 @@
 }
 .offline .thumb {
 	border-color: hsl(0,0%,40%) !important;
-	box-shadow: none;
+	box-shadow: none !important;
 }
 #user-rollover .action {
 	background: radial-gradient(hsla(0,0%,7%,0.8), hsla(0,0%,0%,0.8)) !important;
@@ -458,7 +504,8 @@
 #playlist-activate-button i, #playlist-menu .row i {
 	background-position: -70px -140px;
 }
-#media-panel #playlist-activate-button.active span {
+#media-panel #playlist-activate-button.active span,
+#dialog-user-role .name {
 	color: #eee !important;
 }
 #media-panel #playlist-activate-button.active:hover {
@@ -522,13 +569,17 @@
 	background: linear-gradient(hsla(210,100%,20%,0.8), hsla(210,100%,10%,0.8)) !important;
 	border-radius: 30px 0 0 30px;
 }
+#media-panel .media-list .playlist-media-first-item .actions .action:hover,
 #media-panel .media-list .playlist-media-first-item.now-playing .actions .action:hover,
+#media-panel .media-list .playlist-media-last-item .actions .action:hover,
 .playlist-media-item .actions .action:hover {
 	background: radial-gradient(hsl(210,100%,50%), hsl(210,100%,20%)) !important;
 	box-shadow: 0 0 10px #000;
 }
-.playlist-media-first-item.now-playing .actions .action.edit,
-.playlist-media-item .actions .action.edit {
+#media-panel .media-list .playlist-media-first-item .actions .action:hover:first-child,
+#media-panel .media-list .playlist-media-first-item.now-playing .actions .action:hover:first-child,
+#media-panel .media-list .playlist-media-last-item .actions .action:hover:first-child,
+.playlist-media-item .actions .action:hover:first-child {
 	border-radius: 30px 0 0 30px;
 }
 #media-panel .media-list .playlist-media-item.selected, #media-panel .media-list .playlist-media-last-item.selected, #media-panel .media-list .playlist-media-item.in-history.selected {
@@ -568,7 +619,12 @@
 	background: hsl(200,100%,40%);
 	box-shadow: inset 0 0 6px -2px #000;
 }
-.app-right #chat-input, #dashboard .search, #search-bar, #filter-bar, #user-friends .search {
+.app-right #chat-input,
+#dashboard .search,
+#search-bar,
+#filter-bar,
+#user-friends .search,
+.app-right .friends .list-header .input-background {
 	border-radius: 20px;
 	background: linear-gradient(to top, hsla(220,100%,15%,0.7), hsla(220,100%,10%,0.7));
 }
@@ -609,50 +665,51 @@
 	box-shadow: 0 0 10px hsl(5,100%,50%);
 	color: #000;
 }
-.icon-chat-subscriber, #user-rollover .meta.subscriber .status i {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/crown.png);
-	background-position: -1px 0 !important;
-}
-.icon-chat-dj {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dj.png);
-	background-position: 0 0 !important;
-}
-/*#####[hosts]#####*/
-.icon-chat-cohost {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_cohost.png);
-	background-position: 2px 0 !important;
-}
+/*#####[HOST]#####*/
 .icon-chat-host {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_host.png);
 	background-position: 2px 0 !important;
 }
-#user-rollover .info .role .icon-chat-host + span, #user-lists .group.host ~ .user span {
-	color: #5BF;
+.icon-chat-host + span,
+#user-lists .group.host ~ .user span,
+#dialog-user-role .role-menu .menu ul .host span {
+	color: #5BF !important;
 }
 #user-lists .group.host {
 	color: #5BF;
 	background: linear-gradient(to right, hsla(210,100%,30%,0.5), hsla(210,100%,40%,0.5)) !important;
 	top: 1px;
 }
-/*#####[mana]#####*/
+/*#####[CO-HOSTS]#####*/
+.icon-chat-cohost {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_cohost.png);
+	background-position: 2px 0 !important;
+}
+.icon-chat-cohost + span,
+#dialog-user-role .dialog-body .role-menu .menu ul .cohost span {
+	color: #58f !important;
+}
+/*#####[MANAGER]#####*/
 .icon-chat-manager {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_manager.png);
 	background-position: 2px 0 !important;
 }
-#user-rollover .info .role .icon-chat-manager + span,
-#user-lists .group.manager ~ .user span{
+.icon-chat-manager + span,
+#user-lists .group.manager ~ .user span,
+#dialog-user-role .role-menu .menu ul .manager span {
 	color: #E15 !important;
 }
 #user-lists .group.manager {
 	color: #E15;
 	background: linear-gradient(to right, hsla(0,100%,20%,0.5), hsla(0,100%,30%,0.5)) !important;
-}/*#####[bouncer]#####*/
+}/*#####[BOUNCER]#####*/
 .icon-chat-bouncer {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bouncer.png);
 	background-position: 1px 0 !important;
 }
-#user-rollover .info .role .icon-chat-bouncer + span,
-#user-lists .group.bouncer ~ .user span{
+.icon-chat-bouncer + span,
+#user-lists .group.bouncer ~ .user span,
+#dialog-user-role .role-menu .menu ul .bouncer span {
 	color: #F45 !important;
 }
 #user-lists .group.bouncer {
@@ -660,12 +717,26 @@
 	background: linear-gradient(to right, hsla(10,100%,30%,0.5), hsla(10,100%,40%,0.5)) !important;
 }
 /*#####[DJ]#####*/
+.icon-chat-dj {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dj.png);
+	background-position: 0 0 !important;
+}
 #user-lists .group.dj {
 	color: #F95;
 	background: linear-gradient(to right, hsla(20,100%,30%,0.5), hsla(30,100%,40%,0.5)) !important;
 }
-#user-rollover .info .role .icon-chat-dj + span, #user-lists .group.dj ~ .user span {
+.icon-chat-dj + span,
+#user-lists .group.dj ~ .user span,
+#dialog-user-role .role-menu .menu ul .dj span {
 	color: #F95 !important;
+}
+/*#####[SUBS]#####*/
+.icon-chat-subscriber, #user-rollover .meta.subscriber .status i {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/crown.png);
+	background-position: -1px 0 !important;
+}
+.icon-chat-subscriber + span {
+	color: #FB3 !important;
 }
 #user-lists .group {
 	border: none !important;
@@ -850,10 +921,36 @@
 	box-shadow: 0 0 5px #000;
 	border: 1px solid #F55;
 }
+.dialog {
+	border-radius: 20px;
+	background: hsla(210,10%,20%,0.5);
+}
+.dialog .dialog-body {
+	background: hsla(210,10%,5%,0.8) !important;
+}
+.dialog .cancel {
+	background: linear-gradient(hsla(15,80%,50%,0.5), hsla(15,80%,30%,0.5)) !important;
+}
+.dialog .submit {
+	background: linear-gradient(hsla(210,100%,50%,0.5), hsla(210,100%,30%,0.5)) !important;
+}
 #dialog-level-up {
 	background: linear-gradient(hsl(210,10%,20%), hsl(210,10%,10%));
 	box-shadow: 0 0 20px #000;
 }
 #dialog-level-up .dialog-body {
 	background: transparent;
+}
+#dialog-preview .submit {
+	border-radius: 0 0 20px 20px;
+	background: transparent !important;
+}
+#dialog-user-role .button.submit {
+	border-radius: 0 0 20px;
+}
+#dialog-user-role .button.cancel {
+	border-radius: 0 0 0 20px;
+}
+#dialog-user-role .button.cancel span {
+	color: hsl(15,80%,50%);
 }

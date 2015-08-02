@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.1.7",
+		"V": "Beta 1.2.0",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -16,8 +16,8 @@ if(!$("#WiBla-CSS")[0]) {
 		"bg": "",
 		"betterMeh": false,
 		"security": false,
-		"afk": false,
-		"time": 435,
+		"afk": true,
+		"time": 480,
 		"bot": "3455411"
 	};
 	// getting old Settings if available
@@ -69,6 +69,7 @@ function init() {
 		menu += '		<li id="ws-mehA"     onclick="menu(8);">Show mehs</li>';
 		menu += '		<li id="ws-mutemeh"  onclick="menu(9);">Mute on meh</li>';
 		menu += '		<li id="ws-off"      onclick="menu(10);">Shutdown</li>';
+		menu += '		<li id="ws-twitter"><a href="https://twitter.com/WiBla7" target="blank">@WiBla7</a></li>';
 		menu += '		<li id="ws-V">'+ json.V +'</li>';
 		menu += '	</ul>';
 		menu += '</div>';
@@ -93,13 +94,13 @@ function init() {
 	$("head").append(d);// General css
 	var e = $("<link id='WiBla-Old-Chat-CSS' rel='stylesheet' type='text/css' href=''>");
 	$("head").append(e);// Old chat css
-	var f = $(icon);
-	$("#chat-header").append(f);// DelChat icon
-		
+	if ($("#rcs-clearchat")) {
+		$("#chat-header").append(icon);// DelChat icon
+	}
 	// If at least bouncer (or developer)
 	if (hasPermBouncer) {
-		var g = $(moderateGUI);
-		$("#playback-container").after(g);// Moderation tools
+		var z = $(moderateGUI);
+		$("#playback-container").after(z);// Moderation tools
 	}
 	// Element that only are available after the script has loaded
 	window.item = {
@@ -144,26 +145,25 @@ function init() {
 	API.on(API.ADVANCE, json.security = false);
 	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
-	API.on(API.ADVANCE, (function(){
-		window.roomName = $("#room-name span")[0].innerHTML;
-		if ($("#room-name span")[0].innerHTML !== roomName) {
-			reload();
-		}
-	}));
+	API.on(API.CHAT, chatHandler);
 
 	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
 		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
-			var volume = API.getVolume();
-			volume += 5;
-			API.setVolume(volume);
+			vol += 5;
+			API.setVolume(vol);
+		} else if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
+			vol -= 5;
+			API.setVolume(vol);
 		}
 	});
-	$(window).bind("keydown", function(k) {
-		if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
-			var volume = API.getVolume();
-			volume -= 5;
-			API.setVolume(volume);
+	// on room change
+	$(window).bind("click", function() {
+		if (window.roomName === undefined) {
+			window.roomName = $("#room-name span")[0].innerHTML;
+		} else if ($("#room-name span")[0].innerHTML !== roomName) {
+			API.chatLog("Your room changed");
+			reload();
 		}
 	});
 	// show percentage in level bar
@@ -188,10 +188,7 @@ function init() {
 	// Fully loaded
 	API.chatLog("WiBla Script " + json.V + " loaded !");
 	API.chatLog("Type /list for commands list.");
-	API.chatLog("Check me out on twitter to be notified for updates and more ! \
-	https://twitter.com/WiBla7");
 }
-
 // #### [Menu] ####
 function menu(choice) {
 	choice += "";
@@ -255,6 +252,7 @@ function menu(choice) {
 				API.off(API.VOTE_UPDATE, voteAlert);
 				API.off(API.ADVANCE, autowoot);
 				API.off(API.ADVANCE, autojoin);
+				API.off(API.CHAT, chatHandler);
 				$(window).unbind();
 				clearInterval(levelBarInfo);
 				item.box.remove();
@@ -288,18 +286,22 @@ function autojoin() {
 	var dj = API.getDJ();
 	if (json.autoDJ) {
 		item.join.className = "ws-on";
-		if (dj === null || dj.id !== API.getUser().id || API.getWaitListPosition() > -1) {
-			switch (API.djJoin()) {
-				case 1:
-					API.chatLog("Cannot auto-join: Wait list is locked");
+		if (dj !== undefined) {
+			if (dj.id !== API.getUser().id && API.getWaitListPosition() === -1) {
+				switch (API.djJoin()) {
+					case 1:
+						API.chatLog("Cannot auto-join: Wait list is locked");
 					break;
-				case 2:
-					API.chatLog("Cannot auto-join: Invalid active playlist");
+					case 2:
+						API.chatLog("Cannot auto-join: Invalid active playlist");
 					break;
-				case 3:
-					API.chatLog("Cannot auto-join: Wait List is full");
+					case 3:
+						API.chatLog("Cannot auto-join: Wait List is full");
 					break;
+				}
 			}
+		} else {
+			API.djJoin();
 		}
 	} else {
 		item.join.className = "ws-off";
@@ -402,9 +404,11 @@ function changeBG(isDefault) {
 function alertDuration() {
 	if (json.alertDuration) {
 		item.lengthA.className = "ws-on";
-		if (API.getMedia().duration > json.time) {
-			notif.play();
-			API.chatLog("Music is too long ! 7:15 max !");
+		if (API.getMedia() !== undefined) {
+			if (API.getMedia().duration > json.time) {
+				notif.play();
+				API.chatLog("Music is too long ! 8:00 max !");
+			}
 		}
 	} else {
 		item.lengthA.className = "ws-off";
@@ -420,6 +424,35 @@ function muteMeh() {
 		$("#woot")[0].setAttribute("onclick", "");
 		item.betterMeh.className = "ws-off";
 	}
+}
+function chatHandler(msg) {
+	if (json.afk && API.getUser().id == msg.uid && msg.type !== "emote") {
+		afk();
+		json.afk = false;
+	} else if (json.afk && msg.type == "mention") {
+		if (window.afkMessage !== undefined) {
+			API.sendChat("/me @" + msg.un + " [afk] " + window.afkMessage);
+		} else {
+			API.sendChat("/me @" + msg.un + " [afk] I am AFK right now.");
+		}
+	}
+}
+function afk(msg) {
+	if (json.afk) {
+		if (msg !== undefined) {
+			API.sendChat('/me is AFK: "' + msg + '".');
+			json.afk = false;
+		} else {
+			API.sendChat("/me is back.");
+		}
+	} else {
+		if (msg !== undefined) {
+			API.sendChat('/me is AFK: "' + msg + '".');
+		} else {
+			API.sendChat("/me is AFK.");
+		}
+	}
+	json.afk = !json.afk;
 }
 function voteAlert(data) {
 	//visual stuff
@@ -458,7 +491,7 @@ function slide() {
 function forceSkip() {
 	if (json.security === false) {
 		json.security = true;
-		API.chatLog(":warning: Security: you need to click once more to skip.");
+		API.chatLog(":warning: This will skip the DJ, click again to confirm.");
 	} else {
 		json.security = false;
 		API.moderateForceSkip();
@@ -522,16 +555,9 @@ function chatCommand(commande) {
 		break;
 		
 		case "/afk":
-			json.afk = !json.afk;
-			if (json.afk) {
-				if (args[1] !== undefined) {
-					API.sendChat('/me is AFK: "' + msg + '".');
-				} else {
-					API.sendChat("/me is AFK.");
-				}
-			} else {
-				API.sendChat("/me is back.");
-			}
+			if (msg.length === 0) msg = undefined;
+			else window.afkMessage = msg;
+			afk(msg);
 		break;
 		
 		/* Experimental
@@ -540,7 +566,7 @@ function chatCommand(commande) {
 				API.chatLog("Write either the pseudo or the id of the bot in your room after /bot");
 			} else {
 				args[1] = args[1].substr(1);
-				json.bot = API.getUserByName(args[1]).id + "";
+				json.bot = API.getUser(args[1]);
 				localStorage.setItem("ws-settings",JSON.stringify(json));
 			}
 		break;*/
@@ -567,12 +593,18 @@ function chatCommand(commande) {
 			API.chatLog("/vol [0-100]");
 			API.chatLog("/afk [message]");
 			API.chatLog("/whoami");
+			API.chatLog("/js [javaScript code]");
 			API.chatLog("/reload");
+			API.chatLog("/kill");
 			API.chatLog("/list");
 		break;
 		
 		case "/reload":
 			reload();
+		break;
+		
+		case "/kill":
+			menu(10);
 		break;
 		
 		case "/js":
