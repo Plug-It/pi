@@ -264,15 +264,13 @@
 	background: linear-gradient(hsla(20,90%,50%,0.8), hsla(20,90%,40%,0.8)) !important;
 }
 .user-content .avatars .grid .cell .top {
-	background: url(http://i.imgur.com/rtTbj2O.png),
-	linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,60%,0.1) 80%),
-	radial-gradient(hsl(210,10%,10%), hsl(210,10%,5%));
-	box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
+	background: linear-gradient(rgba(0,0,0,0)70%, hsla(210,10%,80%,0.2) 80%),
+	url(http://i.imgur.com/Rvawj99.png);
+	box-shadow: inset 0 0 40px #000;
 }
 .user-content .avatars .cell:hover .top, .user-content .avatars .cell.selected .top {
-	background: url(http://i.imgur.com/rtTbj2O.png),
-	linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,60%,0.2) 80%),
-	linear-gradient(hsl(200,100%,25%), hsl(200,100%,10%)) !important;
+	background: linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,100%,0.2) 80%),
+	url(http://i.imgur.com/X3dKn08.png);
 }
 .user-content .badges .cell {
 	background: radial-gradient(hsl(210,10%,10%), hsl(210,10%,5%)) !important;

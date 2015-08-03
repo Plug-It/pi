@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.2.0",
+		"V": "Beta 1.2.1",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -161,8 +161,9 @@ function init() {
 	$(window).bind("click", function() {
 		if (window.roomName === undefined) {
 			window.roomName = $("#room-name span")[0].innerHTML;
-		} else if ($("#room-name span")[0].innerHTML !== roomName) {
+		} else if ($("#room-name span")[0].innerHTML !== window.roomName) {
 			API.chatLog("Your room changed");
+			window.roomName = $("#room-name span")[0].innerHTML;
 			reload();
 		}
 	});
