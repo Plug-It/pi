@@ -83,7 +83,7 @@
 	background: linear-gradient(hsl(210,10%,20%), hsl(210,0%,15%));
 }
 .app-header #header-panel-bar .selected, .app-header #history-button.selected {
-	background: linear-gradient(hsl(210,60%,40%), hsl(210,60%,10%));
+	background: linear-gradient(hsl(220,60%,40%), hsl(220,60%,20%));
 }
 #footer {
 	box-shadow: 0px -1px 10px #000;

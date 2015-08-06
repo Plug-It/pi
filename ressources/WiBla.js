@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.2.1",
+		"V": "Beta 1.2.2",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -584,6 +584,14 @@ function chatCommand(commande) {
 			API.chatLog("PP: " + me.pp);
 		break;
 		
+		case "/ws":
+			API.sendChat("WiBla-Script: http://wibla.free.fr");
+		break;
+
+		case "/js":
+			execute(msg);
+		break;
+
 		/*case "/ban":
 		break;*/
 		
@@ -594,6 +602,7 @@ function chatCommand(commande) {
 			API.chatLog("/vol [0-100]");
 			API.chatLog("/afk [message]");
 			API.chatLog("/whoami");
+			API.chatLog("/ws");
 			API.chatLog("/js [javaScript code]");
 			API.chatLog("/reload");
 			API.chatLog("/kill");
@@ -606,10 +615,6 @@ function chatCommand(commande) {
 		
 		case "/kill":
 			menu(10);
-		break;
-		
-		case "/js":
-			execute(msg);
 		break;
 	}
 }
