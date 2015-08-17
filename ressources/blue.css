@@ -68,12 +68,23 @@
 #playback .background {
 	visibility: hidden;
 }
+.video-only #playback-container {
+	box-shadow: none;
+	border: none !important;
+}
+.video-only #ws-rmvDJ, .video-only #ws-skip {
+	display: none;
+}
+.video-only #vote {
+	width: auto !important;
+	left: 230px !important;
+}
 #user-menu .avatar {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(140,50%,90%,0.4) 80%),
 	linear-gradient(hsl(200,70%,20%), hsl(140,70%,20%)) !important;
 	box-shadow: inset 0 0 30px #000;
 }
-.app-header, #app-menu.in-room, #footer, #search {
+.app-header, #app-menu.in-room, #footer, #search, #video-only-dj {
 	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,10%,0.8));
 }
 .app-header {
@@ -97,11 +108,11 @@
 #footer .back {
 	background: linear-gradient(hsl(210,10%,30%), hsl(210,10%,20%)) !important;
 }
-#footer-user .buttons .button:hover, #footer .back:hover {
+#footer-user .buttons .button:hover, #footer .back:hover, #video-only-dj:hover {
 	background: radial-gradient(hsl(200,100%,60%), hsl(200,100%,30%)) !important;
 	box-shadow: inset 0 0 1px 2px hsla(0,0%,100%,0.3) !important;
 }
-#footer-user .buttons .button.inventory:hover .thumb {
+#footer-user .buttons .button.inventory:hover .thumb, #video-only-dj:hover .thumb {
 	border-color: #5bf !important;
 	box-shadow: 0 0 7px #5bf !important;
 }
@@ -157,35 +168,27 @@
 	background: linear-gradient(hsl(220,50%,40%), hsl(220,50%,30%)) !important;
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
 }
-#user-settings .container button {
-	border-radius: 10px;
-	background: linear-gradient(hsl(0,70%,20%), hsl(0,70%,10%));
-}
-#user-settings .container button:hover {
-	background: linear-gradient(hsl(10,100%,40%), hsl(0,100%,30%));
-}
-.subscribe-button {
-	border-radius: 10px;
-	background: linear-gradient(hsl(50,70%,20%), hsl(50,70%,10%));
-}
-.subscribe-button:hover {
-	background: linear-gradient(hsl(50,70%,40%), hsl(50,70%,30%));
-}
 #the-user-profile .notifications.section .row {
 	border-radius: 10px;
 	background: linear-gradient(hsl(210,100%,20%), hsl(210,100%,10%));
 }
-.tab-menu button, .dropdown, #dialog-user-role .role-menu {
+.tab-menu button, #user-settings .container button, .subscribe-button, .dropdown, #dialog-user-role .role-menu {
 	border-radius: 10px;
 	background: linear-gradient(hsl(220,5%,20%), hsl(220,5%,10%));
 	box-shadow: inset 0 0 2px hsla(0,0%,100%,0.5) !important;
+}
+#user-settings .container button:hover {
+	background: linear-gradient(hsl(10,80%,30%), hsl(0,80%,20%));
+}
+.subscribe-button:hover {
+	background: linear-gradient(hsl(40,70%,30%), hsl(40,70%,20%));
 }
 .tab-menu button:hover, .dropdown:hover {
 	background: linear-gradient(hsl(220,80%,20%), hsl(220,80%,10%));
 }
 .tab-menu .selected, .dropdown.open {
-	background: linear-gradient(hsl(220,100%,30%), hsl(220,100%,20%)) !important;
-	box-shadow: inset 0 0 7px hsla(0,0%,100%,0.5) !important;
+	background: linear-gradient(hsl(210,80%,40%), hsl(210,80%,30%)) !important;
+	box-shadow: inset 1px 1px 10px -1px hsla(220,80%,50%,0.5) !important;
 }
 .dropdown dt {
 	border-radius: 10px;
@@ -201,13 +204,16 @@
 .dropdown dd {
 	background: transparent;
 }
-.dropdown dd, #chat-suggestion, #dialog-user-role .role-menu .menu ul li {
-	background: hsla(210,10%,10%,0.8);
+.dropdown dd, #chat-suggestion, #dialog-user-role .role-menu .menu ul li, #search-suggestion li {
+	background: hsla(210,10%,10%,0.8) !important;
 }
 #dialog-user-role .role-menu .menu ul li {
 	border-color: hsla(210,10%,8%,0.8);
 }
-.dropdown dd .row:hover, .chat-suggestion-item[style='background: rgb(45, 49, 58);'], #dialog-user-role .role-menu .menu ul li:hover {
+.dropdown dd .row:hover,
+.chat-suggestion-item[style='background: rgb(45, 49, 58);'],
+#search-suggestion .search-suggestion-item.selected,
+#dialog-user-role .role-menu .menu ul li:hover {
 	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8)) !important;
 }
 #user-menu .count, .requests .count, .buttons .count, .request-count, .friends .header i {
@@ -263,6 +269,9 @@
 #user-friends .row .negative:hover {
 	background: linear-gradient(hsla(20,90%,50%,0.8), hsla(20,90%,40%,0.8)) !important;
 }
+.user-content .avatars .grid .cell, .user-content .avatars .grid .cell .top {
+	border-radius: 30px;
+}
 .user-content .avatars .grid .cell .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(210,10%,80%,0.2) 80%),
 	url(http://i.imgur.com/Rvawj99.png);
@@ -270,7 +279,7 @@
 }
 .user-content .avatars .cell:hover .top, .user-content .avatars .cell.selected .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,100%,0.2) 80%),
-	url(http://i.imgur.com/X3dKn08.png);
+	url(http://i.imgur.com/X3dKn08.png) !important;
 }
 .user-content .badges .cell {
 	background: radial-gradient(hsl(210,10%,10%), hsl(210,10%,5%)) !important;
@@ -287,7 +296,7 @@
 	background: url(https://cdn.plug.dj/_/static/images/badgebg.11c3e716ad95c5345d292b113a4d223bb2b70e80.png) !important;
 	box-shadow: inset 0 0 20px 2px hsla(0,0%,100%,0.2) !important;
 }
-.grid .cell .top .expires, .grid .cell .top .prices, #user-inventory .item, #the-user-profile .badge-box, #media-panel  {
+.grid .cell .top .expires, .grid .cell .top .prices, #the-user-profile .badge-box, #media-panel  {
 	background: transparent !important;
 }
 .grid .cell .top .expires span {
@@ -335,19 +344,31 @@
 /*--[dj-button]--*/
 #dj-button {
 	border-radius: 50px;
-	background: linear-gradient(hsla(220,100%,30%,0.3), hsla(220,100%,50%,0.3));
+	background: linear-gradient(hsla(210,10%,50%,0.3), hsla(210,10%,40%,0.3));
 	box-shadow: 0 0 10px #000;
 }
 #dj-button:hover {
-	background: linear-gradient(hsla(220,100%,30%,0.6), hsla(220,100%,50%,0.6));
+	background: linear-gradient(hsla(210,10%,50%,0.5), hsla(210,10%,40%,0.5));
 }
 #dj-button .left {
-	border-radius: 50px 50px 50px 50px;
-	background: linear-gradient(135deg, hsla(190,100%,60%,0.6), hsla(205,100%,50%,0.6)) !important;
+	border-radius: 50px 0 0 50px;
+	background: linear-gradient(135deg, hsla(210,80%,60%,0.6), hsla(210,80%,50%,0.6));
 	box-shadow: 0 0 10px #000;
 }
 #dj-button:hover .left {
-	background: linear-gradient(135deg, hsla(190,100%,60%,0.9), hsla(205,100%,50%,0.9)) !important;
+	background: linear-gradient(135deg, hsla(210,80%,60%,0.9), hsla(210,80%,50%,0.9));
+}
+#dj-button.is-leave .left, #dj-button.is-quit .left {
+	background: linear-gradient(135deg, hsla(15,80%,60%,0.6), hsla(15,80%,50%,0.6));
+}
+#dj-button.is-leave:hover .left, #dj-button.is-quit:hover .left {
+	background: linear-gradient(135deg, hsla(15,80%,60%,0.9), hsla(15,80%,50%,0.9));
+}
+#dj-button.is-locked .left, #dj-button.is-full .left {
+	background: linear-gradient(135deg, hsla(0,0%,10%,0.6), hsla(0,0%,5%,0.6));
+}
+#dj-button.is-locked:hover .left, #dj-button.is-full:hover .left {
+	background: linear-gradient(135deg, hsla(0,0%,10%,0.9), hsla(0,0%,5%,0.9));
 }
 /*--[vote]--*/
 #vote {
@@ -366,34 +387,34 @@
 	font-weight: bold;
 	color: #FFF;
 }
-.pop-menu.grab, .pop-menu.grab .bar {
+.pop-menu, .pop-menu .bar {
 	border-radius: 20px 20px 0 0;
 	background: transparent;
 }
-.pop-menu.grab .bar {
+.pop-menu .bar {
 	background: linear-gradient(hsla(260,50%,50%,0.8), hsla(260,50%,30%,0.8));
 }
-.pop-menu.grab .bar-divider {
+.pop-menu .bar-divider {
 	background: linear-gradient(hsla(0,0%,90%,0.8), hsla(0,0%,60%,0.8));
 }
-.pop-menu.grab .menu ul {
+.pop-menu .menu ul {
 	background: hsla(260,10%,7%,0.8);
 }
-.pop-menu.grab .menu ul i + span {
+.pop-menu .menu ul i + span {
 	font-weight: bold;
 }
-.pop-menu.grab .menu ul li:hover {
+.pop-menu .menu ul li:hover {
 	background: linear-gradient(hsla(260,50%,50%,0.2), hsla(260,50%,30%,0.2));;
 }
-.pop-menu.grab .menu ul .create:hover {
+.pop-menu .menu ul .create:hover {
 	background: linear-gradient(hsl(260,40%,50%), hsl(260,40%,30%));
 }
-.pop-menu.grab .menu::-webkit-scrollbar {
+.pop-menu .menu::-webkit-scrollbar {
 	background: hsl(260,10%,20%) !important;
 	box-shadow: inset 0 0 10px #000;
 	width: 10px;
 }
-.pop-menu.grab .menu::-webkit-scrollbar-thumb {
+.pop-menu .menu::-webkit-scrollbar-thumb {
 	background: linear-gradient(to right, hsl(260,40%,60%), hsl(260,40%,40%));
 	box-shadow: inset 0 0 5px hsla(0,0%,100%,0.3);
 }
@@ -435,13 +456,17 @@
 	box-shadow: 0px -2px 10px -1px #000;
 	border-radius: 50% 50% 0 0 !important;
 }
-#user-rollover .info i +span {
+#user-rollover .info i + span {
 	text-shadow: 0 0 5px #000;
 }
 .thumb {
 	background: hsla(210,10%,10%,0.4);
 }
-#user-rollover .info .badge-box, #user-rollover .background {
+#user-rollover .info .badge-box,
+#user-rollover .background,
+#video-only-dj .background,
+#search-suggestion,
+#search-suggestion ul {
 	background: rgba(0,0,0,0);
 }
 .thumb.large, .thumb, #user-rollover .meta.online .thumb {
@@ -607,16 +632,19 @@
 #grab-rs-list::-webkit-scrollbar,
 #meh-rs-list::-webkit-scrollbar {
 	width: 7px !important;
-	box-shadow: inset 0 0 6px #555;
+	box-shadow: inset -1px 0 7px hsla(0,0%,0%,0.7);
 }
 #chat-messages::-webkit-scrollbar-thumb,
 .dropdown dd::-webkit-scrollbar-thumb,
 #woot-rs-list::-webkit-scrollbar-thumb,
 #grab-rs-list::-webkit-scrollbar-thumb,
-#meh-rs-list::-webkit-scrollbar-thumb {
-	background: hsl(200,100%,40%);
-	box-shadow: inset 0 0 6px -2px #000;
+#meh-rs-list::-webkit-scrollbar-thumb,
+.jspDrag {
+	background: linear-gradient(to right, hsl(210,10%,50%), hsl(210,10%,20%));
+	box-shadow: inset 1px 0 7px hsla(0,0%,100%,0.5);
+	border-radius: 5px;
 }
+.jspTrack { box-shadow: inset -1px 0 10px hsla(0,0%,20%,1); }
 .app-right #chat-input,
 #dashboard .search,
 #search-bar,
@@ -662,6 +690,10 @@
 	background: linear-gradient(hsl(5,100%,60%), hsl(5,100%,50%));
 	box-shadow: 0 0 10px hsl(5,100%,50%);
 	color: #000;
+}
+/*#####[BA]#####*/
+.icon-chat-ambassador + span {
+	color: #9C0 !important;
 }
 /*#####[HOST]#####*/
 .icon-chat-host {
@@ -952,3 +984,14 @@
 #dialog-user-role .button.cancel span {
 	color: hsl(15,80%,50%);
 }
+#search-suggestion {
+	top: 48px;
+}
+#user-inventory .history .row {background: linear-gradient(hsl(220,10%,12%), hsl(220,10%,10%)) !important;}
+#user-inventory .history .row .item {background: linear-gradient(hsl(220,10%,20%), hsl(220,10%,15%)) !important;}
+#user-inventory .history .row:nth-child(1) {border-radius: 20px 20px 0 0;}
+#user-inventory .history .row:nth-child(1) .item {border-radius: 20px 0 0 0;}
+#user-inventory .history .row:nth-last-child(1) {border-radius: 0 0 20px 20px;}
+#user-inventory .history .row:nth-last-child(1) .item {border-radius: 0 0 0 20px;}
+#user-inventory .history .row .col {box-shadow: -1px 0 0 0 hsl(210,50%,20%) !important;}
+#user-inventory .history .jspPane .row {border-color: hsl(210,50%,20%); !important}

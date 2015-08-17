@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.2.2",
+		"V": "Beta 1.2.3",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -16,7 +16,7 @@ if(!$("#WiBla-CSS")[0]) {
 		"bg": "",
 		"betterMeh": false,
 		"security": false,
-		"afk": true,
+		"afk": false,
 		"time": 480,
 		"bot": "3455411"
 	};
@@ -145,7 +145,6 @@ function init() {
 	API.on(API.ADVANCE, json.security = false);
 	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
-	API.on(API.CHAT, chatHandler);
 
 	// Keyboard shorcuts
 	$(window).bind("keydown", function(k) {
@@ -160,10 +159,10 @@ function init() {
 	// on room change
 	$(window).bind("click", function() {
 		if (window.roomName === undefined) {
-			window.roomName = $("#room-name span")[0].innerHTML;
+			window.roomName = location.href;
 		} else if ($("#room-name span")[0].innerHTML !== window.roomName) {
 			API.chatLog("Your room changed");
-			window.roomName = $("#room-name span")[0].innerHTML;
+			window.roomName = location.href;
 			reload();
 		}
 	});
@@ -176,7 +175,7 @@ function init() {
 			var toAdd = $("#footer-user .info .progress")[0].style.width;
 			$("#footer-user .info .meta .bar .value")[0].innerHTML = xp + " " + toAdd;
 		}
-		if ($("#the-user-profile .experience.section .xp .value")[0] !== undefined) {
+		if ($("#the-user-profile .experience.section .xp .value")[0]) {
 			var	xp2 = $("#the-user-profile .experience.section .xp .value")[0].innerHTML,
 				elements2 = xp2.split(" ");
 				if (elements2.length == 3) {
@@ -253,7 +252,6 @@ function menu(choice) {
 				API.off(API.VOTE_UPDATE, voteAlert);
 				API.off(API.ADVANCE, autowoot);
 				API.off(API.ADVANCE, autojoin);
-				API.off(API.CHAT, chatHandler);
 				$(window).unbind();
 				clearInterval(levelBarInfo);
 				item.box.remove();
@@ -276,7 +274,7 @@ function menu(choice) {
 	localStorage.setItem("ws-settings",JSON.stringify(json));
 }
 function autowoot() {
-	if (json.autoW === true) {
+	if (json.autoW === true && !$("#meh.selected")[0]) {
 		$("#woot")[0].click();
 		item.woot.className = "ws-on";
 	} else {
@@ -424,18 +422,6 @@ function muteMeh() {
 		$("#meh")[0].setAttribute("onclick", "");
 		$("#woot")[0].setAttribute("onclick", "");
 		item.betterMeh.className = "ws-off";
-	}
-}
-function chatHandler(msg) {
-	if (json.afk && API.getUser().id == msg.uid && msg.type !== "emote") {
-		afk();
-		json.afk = false;
-	} else if (json.afk && msg.type == "mention") {
-		if (window.afkMessage !== undefined) {
-			API.sendChat("/me @" + msg.un + " [afk] " + window.afkMessage);
-		} else {
-			API.sendChat("/me @" + msg.un + " [afk] I am AFK right now.");
-		}
 	}
 }
 function afk(msg) {
