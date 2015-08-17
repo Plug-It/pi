@@ -160,7 +160,7 @@ function init() {
 	$(window).bind("click", function() {
 		if (window.roomName === undefined) {
 			window.roomName = location.href;
-		} else if ($("#room-name span")[0].innerHTML !== window.roomName) {
+		} else if (location.href !== window.roomName) {
 			API.chatLog("Your room changed");
 			window.roomName = location.href;
 			reload();
