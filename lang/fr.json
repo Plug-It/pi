@@ -1,42 +1,40 @@
 {
-	"menu": {
-		"aw": "Auto-woot",
-		"aj": "Auto-join",
-		"hv": "Vidéo caché",
-		"cs": "Thème custom",
-		"cb": "Fond custom",
-		"oc": "Vieux chat",
-		"sl": "Durée de musique limite",
-		"sm": "Voir mehs",
-		"mm": "Meilleur meh",
-		"dn": "Caché notifications",
-		"s": "Eteindre",
-	},
-	
-	"general": {
-		"loaded": "WiBla-Script $version chargé !",
-		"help": "Ecrivez /list pour voirs les commandes.",
-		"bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond du script\n\"default\" Fond de plug",
-		"songLimit": "Cette musique est trop longue ! 8:00 max !",
-		"wooted": " à wooté cette musique !",
-		"grabbed": " à grab cette musique !",
-		"meh": " à meh cette musique !",
-		"reloading": "Rechargement de WS...",
-		"confirmSkip": ":warning: Cela skipera le DJ, cliquez encore pour confirmer.",
-		"confirmEject": ":warning: Cela enlèvera le DJ de la cabine, cliquez encore pour confirmer.",
-		"etaM": "min(s) avant votre tours.",
-		"etaH": " min(s) avant votre tours.",
-	},
-	
-	"error": {
-		"menuOptions": "Utilisez menu(1-10/kill)",
-		"autoJoin1": "Ne peut pas auto-join: La Wait-List est bloquée",
-		"autoJoin2": "Ne peut pas auto-join: Mauvaise Playlist",
-		"autoJoin3": "Ne peut pas auto-join: La wait-list est pleine",
-		"nobodyPlaying": "Personne ne joue.",
-		"youPlay": "Vous êtes le DJ !",
-		"notInWaitList": "Vous n'êtes pas dans la Wait-List.",
-		"helpVol": "Utilisation: /vol [0-100]",
-		"unknowVariable": "Variable(s) inconnu",
-	}
+    "menu": {
+        "aw": "Auto-woot",
+        "aj": "Auto-join",
+        "hv": "Vidéo caché",
+        "cs": "Thème custom",
+        "cb": "Fond custom",
+        "oc": "Vieux chat",
+        "sl": "Durée de musique limite",
+        "sm": "Voir mehs",
+        "mm": "Meilleur meh",
+        "dn": "Cacher notifications",
+        "s": "Eteindre"
+    },
+    "general": {
+        "loaded": "WiBla-Script $version chargé !",
+        "help": "Ecrivez /list pour voirs les commandes.",
+        "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond du script\n\"default\" Fond de plug",
+        "songLimit": "Cette musique est trop longue ! 8:00 max !",
+        "wooted": " à wooté cette musique !",
+        "grabbed": " à grab cette musique !",
+        "meh": " à meh cette musique !",
+        "reloading": "Rechargement de WS...",
+        "confirmSkip": ":warning: Cela skipera le DJ, cliquez encore pour confirmer.",
+        "confirmEject": ":warning: Cela enlèvera le DJ de la cabine, cliquez encore pour confirmer.",
+        "etaM": "min(s) avant votre tours.",
+        "etaH": " min(s) avant votre tours."
+    },
+    "error": {
+        "menuOptions": "Utilisez menu(1-10/kill)",
+        "autoJoin1": "Ne peut pas auto-join: La Wait-List est bloquée",
+        "autoJoin2": "Ne peut pas auto-join: Mauvaise Playlist",
+        "autoJoin3": "Ne peut pas auto-join: La wait-list est pleine",
+        "nobodyPlaying": "Personne ne joue.",
+        "youPlay": "Vous êtes le DJ !",
+        "notInWaitList": "Vous n'êtes pas dans la Wait-List.",
+        "helpVol": "Utilisation: /vol [0-100]",
+        "unknowVariable": "Variable(s) inconnu"
+    }
 }
