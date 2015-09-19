@@ -6,35 +6,41 @@
         "cs": "Custom Style",
         "cb": "Custom Bg",
         "oc": "Old chat",
-        "sl": "Song limit",
+        "sl": "Duration alert",
         "sm": "Show mehs",
         "mm": "Mute on meh",
         "dn": "Disable notifications",
         "s": "Shutdown"
     },
-    "general": {
+    "log": {
         "loaded": "WiBla-Script $version loaded !",
         "help": "Type /list for commands list.",
         "bgPrompt": "Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background",
-        "songLimit": "Music is too long ! 8:00 max !",
         "wooted": " wooted this track !",
         "grabbed": " grabbed this track !",
         "meh": " meh'd this track !",
         "reloading": "Reloading WS...",
-        "confirmSkip": ":warning: This will skip the DJ, click again to confirm.",
-        "confirmEject": ":warning: This will remove the DJ from the wait-list, click again to confirm.",
         "etaM": "min(s) until you play.",
-        "etaH": " min(s) until you play."
-    },  
-    "error": {
+        "etaH": "min(s) until you play."
+    },
+    "info": {
+        "roomChange": "Your room changed.",
         "menuOptions": "Use: menu(1-10/kill)",
-        "autoJoin1": "Cannot auto-join: Wait-list is locked",
-        "autoJoin2": "Cannot auto-join: Invalid active playlist",
-        "autoJoin3": "Cannot auto-join: Wait-list is full",
         "nobodyPlaying": "Nobody is playing.",
         "youPlay": "You are the DJ !",
         "notInWaitList": "You are not in the Wait-List.",
-        "helpVol": "usage: /vol [0-100]",
+        "helpVol": "Usage: /vol [0-100]"
+    },
+    "warn": {
+        "songLimit": "Music is too long ! 8:00 max !",
+        "confirmSkip": "This will skip the DJ, click again to confirm.",
+        "confirmEject": "This will remove the DJ from the wait-list, click again to confirm.",
+        "isTrusted":"Never execute code from someone you don't fully trust !"
+    },
+    "error": {
+        "autoJoin1": "Wait-list is locked",
+        "autoJoin2": "Invalid active playlist",
+        "autoJoin3": "Wait-list is full",
         "unknowVariable": "Unknow variable(s)"
     }
 }
