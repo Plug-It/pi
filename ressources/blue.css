@@ -1,3 +1,7 @@
+@keyframes fadein {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
 /*--[PLUG]--*/
 #room-settings a:hover, #chat a:hover {
 	color: hsl(200,100%,55%) !important;
@@ -59,11 +63,6 @@
 	border-right: 10px solid hsla(220,100%,22%,0.9) !important;
 	border-left: 10px solid transparent !important;
 	border-bottom: 10px solid transparent !important;
-}
-#playback-container {
-	box-shadow: 0 0 150px #0bf;
-	border-color: hsl(210,100%,40%) !important;
-	border-radius: 0 0 4px 4px;
 }
 #playback .background {
 	visibility: hidden;
@@ -204,7 +203,7 @@
 .dropdown dd {
 	background: transparent;
 }
-.dropdown dd, #chat-suggestion, #dialog-user-role .role-menu .menu ul li, #search-suggestion li {
+.dropdown dd, #chat-suggestion, #dialog-user-role .role-menu .menu ul li, #search-suggestion li, #dialog-restricted-media .row.selected, {
 	background: hsla(210,10%,10%,0.8) !important;
 }
 #dialog-user-role .role-menu .menu ul li {
@@ -213,6 +212,7 @@
 .dropdown dd .row:hover,
 .chat-suggestion-item[style='background: rgb(45, 49, 58);'],
 #search-suggestion .search-suggestion-item.selected,
+#dialog-restricted-media .row.selected,
 #dialog-user-role .role-menu .menu ul li:hover {
 	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8)) !important;
 }
@@ -615,9 +615,6 @@
 	border: none !important;
 }
 /*########## [chat] ##########*/
-.app-right {
-	background: hsla(210,10%,10%,0.5) !important;
-}
 #chat-header {
 	background: rgba(30,35,40,0.7);
 	border: none !important;
@@ -630,7 +627,8 @@
 .dropdown dd::-webkit-scrollbar,
 #woot-rs-list::-webkit-scrollbar,
 #grab-rs-list::-webkit-scrollbar,
-#meh-rs-list::-webkit-scrollbar {
+#meh-rs-list::-webkit-scrollbar,
+.dialog::-webkit-scrollbar {
 	width: 7px !important;
 	box-shadow: inset -1px 0 7px hsla(0,0%,0%,0.7);
 }
@@ -639,6 +637,7 @@
 #woot-rs-list::-webkit-scrollbar-thumb,
 #grab-rs-list::-webkit-scrollbar-thumb,
 #meh-rs-list::-webkit-scrollbar-thumb,
+.dialog::-webkit-thumb,
 .jspDrag {
 	background: linear-gradient(to right, hsl(210,10%,50%), hsl(210,10%,20%));
 	box-shadow: inset 1px 0 7px hsla(0,0%,100%,0.5);
@@ -668,28 +667,36 @@
 }
 /*### [message] ###*/
 #chat .cm {
-	background: hsla(220,10%,10%,0.8);
-	box-shadow: inset 1px 1px 1px 0 hsla(220,10%,20%,0.8);
+	animation: fadein 0.2s;
 }
-#chat .cm.message:nth-child(2n+1) {
-	background: hsla(220,10%,5%,0.8);
-	box-shadow: inset 1px 1px 1px 0 hsla(220,10%,0%,0.8);
+#chat .cm {
+	background: linear-gradient(hsla(220,10%,20%,0.5), hsla(220,10%,15%,0.5));
+	box-shadow: inset 1px 1px 0 hsla(220,10%,20%,0.8);
+}
+#chat .cm.message:nth-child(odd) {
+	background: linear-gradient(hsla(220,10%,10%,0.5), hsla(220,10%,12%,0.5));
+	box-shadow: inset 1px 1px 0 hsla(220,10%,5%,0.8);
+	color: #ccc;
+}
+#chat .cm.message .timestamp {
+	color: #818285;
 }
 #chat .cm .badge-box {
-	background: rgba(0,0,0,0) !important;
+	background: transparent !important;
 }
-#chat .cm .timestamp {
-	color: #818587;
-}
-#chat .cm.deletable .delete-button {
-	border-radius: 8px;
+#chat .cm .delete-button {
+	border-radius: 4px;
 	background: linear-gradient(hsl(0,0%,30%), hsl(0,0%,40%));
 	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
 }
-#chat .cm.deletable .delete-button:hover {
+#chat .cm .delete-button:hover {
 	background: linear-gradient(hsl(5,100%,60%), hsl(5,100%,50%));
 	box-shadow: 0 0 10px hsl(5,100%,50%);
 	color: #000;
+}
+/*#####[YOU]#####*/
+#chat .cm .msg .from.you .un {
+	color: #0bf !important;
 }
 /*#####[BA]#####*/
 .icon-chat-ambassador + span {
@@ -793,14 +800,17 @@
 	border: none !important;
 }
 /*--[welcome & log]--*/
-#chat .cm.welcome, #chat .log {
-	border-radius: 0;
-	box-shadow: none;
-	background: none !important;
+#chat .cm.welcome {
+	color: hsl(210,80%,60%);
+	box-shadow: inset 0 0 0 1px hsl(210,50%,30%);
 }
 #chat .log {
-	background: hsla(220,30%,20%,0.8) !important;
+	background: linear-gradient(hsla(220,30%,20%,0.8), hsla(220,30%,15%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 -1px 1px hsla(220,30%,10%,0.8);
 }
+.cm strong {color: #fff !important;}
+.cm em {color: #999 !important;}
 /*--[moderation]--*/
 #chat .cm.moderation {
 	background: linear-gradient(hsla(260,50%,25%,0.8), hsla(260,50%,15%,0.8)),
@@ -903,7 +913,7 @@
 #chat .cm.emote .text {
 	font-style: normal;
 }
-/*--[RSSHIT]--*/
+/*--[RCS]--*/
 #woot-rs, #grab-rs, #meh-rs {
 	top: -1px;
 	border-radius: 10px 10px 0 0;
@@ -917,10 +927,15 @@
 #chat .cm.rsshit.message {
 	border: none !important;
 }
+.app-right {
+	background: hsla(210,10%,5%,0.9) !important;
+}
 #rcs-menu-container .container .group {
-	border-color: hsl(210,100%,20%) !important;
-	box-shadow: 0 0 2px hsl(210,100%,30%);
-	background: linear-gradient(to right, hsl(210,100%,7%), hsl(210,100%,10%)) !important;
+	border-color: hsl(220,50%,20%) !important;
+	background: linear-gradient(hsla(220,50%,10%,0.8), hsla(220,50%,7%,0.8)) !important;
+}
+.rcs.item.selected span {
+	color: hsl(200,60%,50%) !important;
 }
 /*--[Miscellanous]--*/
 #app-menu .button, #room .friends.has-requests .header {
@@ -959,10 +974,18 @@
 	background: hsla(210,10%,5%,0.8) !important;
 }
 .dialog .cancel {
+	border-radius: 0 0 0 20px;
 	background: linear-gradient(hsla(15,80%,50%,0.5), hsla(15,80%,30%,0.5)) !important;
 }
 .dialog .submit {
+	border-radius: 0 0 20px 0;
 	background: linear-gradient(hsla(210,100%,50%,0.5), hsla(210,100%,30%,0.5)) !important;
+}
+#dialog-restricted-media .divider {
+	background: hsl(225,50%,20%);
+}
+#dialog-restricted-media .submit {
+	border-radius: 0 0 20px 20px;
 }
 #dialog-level-up {
 	background: linear-gradient(hsl(210,10%,20%), hsl(210,10%,10%));

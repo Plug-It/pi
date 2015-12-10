@@ -1,31 +1,27 @@
 {
-	"dev": {
-	"WiBla": 4613422,
-	},
-	
-	"helper": {
-		"zurbo": 4506088,
-		"dano-em": 209178,
-		"Hideki": 3612920,
-	},
-	
-	"graphist": {
-		"Bil_Balle": 4336782,
-	},
-	
-	"translator": {
-	},
-	
-	"alpha-tester": {
-		"": 4726785,
-		"Maxqui26": 4272266,
-		"Nomyn": 4782448,
-		"♪ Burg ♪": 4656513,
-		"Cyril": 4024959,
-		"Adebisi": 3481629,
-		"Gattaca": 726785,
-	},
-	
-	"beta-tester": {
-	},
+    "dev": {
+    "WiBla": 4613422
+    },
+    "helper": {
+        "zurbo": 4506088,
+        "dano-em": 209178,
+        "Hideki": 3612920
+    },
+    "graphist": {
+        "Bil_Balle": 4336782
+    },
+    "translator": {
+    },
+    "alpha-tester": {
+        "": 4726785,
+        "Maxqui26": 4272266,
+        "Nomyn": 4782448,
+        "♪ Burg ♪": 4656513,
+        "Cyril": 4024959,
+        "Adebisi": 3481629,
+        "Gattaca": 726785
+    },
+    "beta-tester": {
+        "":""
+    },
 }
