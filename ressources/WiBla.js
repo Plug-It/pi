@@ -2,7 +2,7 @@
 
 if(!$("#WiBla-CSS")[0]) {
 	var defaultSettings = {
-		"V": "Beta 1.2.3",
+		"V": "Beta 1.3.0",
 		"showMenu": false,
 		"autoW": false,
 		"autoDJ": false,
@@ -24,11 +24,11 @@ if(!$("#WiBla-CSS")[0]) {
 	json = JSON.parse(localStorage.getItem("ws-settings"));
 	// if not
 	if (json === null || json === undefined) {
-  	json = defaultSettings;
+  		json = defaultSettings;
  	} else if (json.length !== defaultSettings.length) {
 		json = defaultSettings;
-  } else if (json.V !== defaultSettings.V) {
-  	json.V = defaultSettings.V;
+  	} else if (json.V !== defaultSettings.V) {
+  		json.V = defaultSettings.V;
  	}
 	// ####### [Global variables] #######
 	var old_chat, menu_css, purple_css, blue_css, notif, style,
@@ -38,11 +38,7 @@ if(!$("#WiBla-CSS")[0]) {
 	isDev = wibla || zurbo || dano,
 	hasPermBouncer = API.hasPermission(null, API.ROLE.BOUNCER) || isDev,
 	vol=API.getVolume();
-	/* Alpha & Beta tester privilege (not ready yet)
-	var name = API.getUser().username;
-	var id = API.getUser().id;
-	$.ajax({type: "POST",url: "https://rawgit.com/WiBla/Script/master/ressources/users.php?name=" + name + "&id=" + id,});*/
-
+	
 	// Running the specified version
 	init();
 }
@@ -145,9 +141,15 @@ function init() {
 	API.on(API.ADVANCE, json.security = false);
 	API.on(API.VOTE_UPDATE, voteAlert);
 	API.on(API.CHAT_COMMAND, chatCommand);
+	// API addition
+	API.moderateForceQuit = function() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("DELETE", location.origin + "/_/booth/remove/"+API.getDJ().id, true);
+		xhttp.send();
+	};
 
 	// Keyboard shorcuts
-	$(window).bind("keydown", function(k) {
+	$(window).on("keydown", function(k) {
 		if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
 			vol += 5;
 			API.setVolume(vol);
@@ -156,7 +158,12 @@ function init() {
 			API.setVolume(vol);
 		}
 	});
-	// on room change
+	// ScrollWheel volume changer
+	$("#volume").on("mousewheel", function(e){
+		if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-5);
+		else API.setVolume(API.getVolume()+5);
+	});
+	/* on room change
 	$(window).bind("click", function() {
 		if (window.roomName === undefined) {
 			window.roomName = location.href;
@@ -165,7 +172,7 @@ function init() {
 			window.roomName = location.href;
 			reload();
 		}
-	});
+	});*/
 	// show percentage in level bar
 	window.levelBarInfo = setInterval((function() {
 		var xp = $("#footer-user .info .meta .bar .value")[0].innerHTML,
@@ -271,7 +278,7 @@ function menu(choice) {
 			console.log("Use: menu(1-10)");
 	}
 
-	localStorage.setItem("ws-settings",JSON.stringify(json));
+	localStorage.setItem("ws-settings", JSON.stringify(json));
 }
 function autowoot() {
 	if (json.autoW === true && !$("#meh.selected")[0]) {
@@ -485,7 +492,13 @@ function forceSkip() {
 	}
 }
 function removeDJ() {
-	API.chatLog("This button will kick of the DJ from the wait-list, but doesn't work atm");
+	if (json.security === false) {
+		json.security = true;
+		API.chatLog(":warning: This will remove the DJ from the booth, click again to confirm.");
+	} else {
+		json.security = false;
+		API.moderateForceQuit();
+	}
 }
 function execute(code) {
 	try {eval(code);} catch(err) {API.chatLog(err+"");}
