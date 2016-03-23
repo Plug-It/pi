@@ -1,46 +1,48 @@
 {
-    "menu": {
-        "aw": "Auto-woot",
-        "aj": "Auto-join",
-        "hv": "Cacher vidéo",
-        "cs": "Theme custom",
-        "cb": "Fond custom",
-        "oc": "Mini chat",
-        "sl": "Alerte durée",
-        "sm": "Alerte meh",
-        "mm": "Meh muet",
-        "dn": "Enlever notifications",
-        "s": "Eteindre"
-    },
-    "log": {
-        "loaded": "WiBla-Script $version chargé !",
-        "help": "Ecrivez /list pour la liste de commandes.",
-        "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond par default du script\n\"default\" Fond par default de plug",
-        "wooted": " à woot !",
-        "grabbed": " à grab !",
-        "meh": " à meh !",
-        "reloading": "Rechargement de WS...",
-        "etaM": "min(s) avant votre tour.",
-        "etaH": "min(s) avant votre tour."
-    },
-    "info": {
-        "roomChange": "Vous avez changer de room.",
-        "menuOptions": "utilisez: menu(1-10/kill)",
-        "nobodyPlaying": "Personne ne joue.",
-        "youPlay": "Vous êtes le DJ !",
-        "notInWaitList": "Vous n'êtes pas dans la Wait-List.",
-        "helpVol": "Utilisation: /vol [0-100]"
-    },
-    "warn": {
-        "songLimit": "Musique trop longue ! 8:00 max !",
-        "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
-        "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
-        "isTrusted":"N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance !"
-    },
-    "error": {
-        "autoJoin1": "La Wait-list est bloquée",
-        "autoJoin2": "Playlist invalide",
-        "autoJoin3": "La Wait-list est pleine",
-        "unknowVariable": "Variable(s) inconnu(s)"
-    }
+  "menu": {
+    "aw": "Auto-woot",
+    "aj": "Auto-join",
+    "hv": "Cacher vidéo",
+    "cs": "Theme custom",
+    "cb": "Fond custom",
+    "oc": "Mini chat",
+    "sl": "Alerte durée",
+    "sm": "Alerte meh",
+    "mm": "Meh muet",
+    "nw": "Alerte navigation",
+    "dn": "Enlever notifications",
+    "s": "Eteindre"
+  },
+  "log": {
+    "loaded": "WiBla-Script $version chargé !",
+    "help": "Ecrivez /list pour la liste de commandes.",
+    "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond par default du script\n\"default\" Fond par default de plug",
+    "wooted": " à woot !",
+    "grabbed": " à grab !",
+    "meh": " à meh !",
+    "reloading": "Rechargement de WS...",
+    "etaM": "min(s) avant votre tour.",
+    "etaH": "min(s) avant votre tour."
+  },
+  "info": {
+    "roomChange": "Vous avez changer de room.",
+    "menuOptions": "utilisez: menu(1-10/kill)",
+    "nobodyPlaying": "Personne ne joue.",
+    "youPlay": "Vous êtes le DJ !",
+    "notInWaitList": "Vous n'êtes pas dans la Wait-List.",
+    "helpVol": "Utilisation: /vol [0-100]"
+  },
+  "warn": {
+    "songLimit": "Musique trop longue ! 8:00 max !",
+    "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
+    "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
+    "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance !",
+    "quit": "Êtes-vous sûr de vouloir quitter ?"
+  },
+  "error": {
+    "autoJoin1": "La Wait-list est bloquée",
+    "autoJoin2": "Playlist invalide",
+    "autoJoin3": "La Wait-list est pleine",
+    "unknowVariable": "Variable(s) inconnu(s)"
+  }
 }

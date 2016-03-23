@@ -51,42 +51,42 @@
 	text-shadow: 0 0 7px;
 	color: #DDD;
 }
-#Settings #ws-twitter:hover, #Settings #ws-twitter a:hover {
+#Settings #pi-twitter:hover, #Settings #pi-twitter a:hover {
 	color: #0bf !important;
 }
-#Settings #ws-off {
+#Settings #pi-off {
 	color: #A33 !important;
 }
-#Settings #ws-off:hover {
+#Settings #pi-off:hover {
 	color: #F33 !important;
 }
-#Settings #ws-V, #Settings #ws-twitter a {
+#Settings #pi-V, #Settings #pi-twitter a {
 	color: #5AD;
 }
-#Settings #ws-V:hover {
+#Settings #pi-V:hover {
 	background: none !important;
 	text-shadow: 0 0 0 #000 !important;
 	box-shadow: none !important;
 	cursor: default;
 	border-radius: none !important;
 }
-.ws-on {
+.pi-on {
 	color: #5A5 !important;
 }
-.ws-on:hover {
+.pi-on:hover {
 	color: #5E5 !important;
 }
-.ws-off {
+.pi-off {
 	color: #D85 !important;
 }
-.ws-off:hover {
+.pi-off:hover {
 	color: #F93 !important;
 }
-.ws-delChat {
+.pi-delChat {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/delChat.png);
 }
 
-/*placement du menu*/
+/* placement du menu */
 #history-button {
 	right: 54px !important;
 }
@@ -94,44 +94,55 @@
 	right: calc(+115px) !important;
 }
 
-/* Création du bouton Skip */
-.button.rmv, .button.skip {
-	width: 50% !important;
-	top: 0 !important;
-	background: hsla(210,10%,20%,0.8);
+/* menu de moderation */
+#pi-rmvDJ, #pi-skip {
+	position: absolute;
+	visibility: visible;
+	width: calc(50% - 2px) !important;
+
+	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8));
+	border: 2px solid #AAA;
+	border-top: 0;
+	text-align: center;
+	cursor: pointer;
 }
-.button.rmv:hover, .button.skip:hover {
-	background: hsla(210,10%,30%,0.8);
+#pi-rmvDJ:hover, #pi-skip:hover {
+	background: linear-gradient(hsla(210,10%,30%,0.8), hsla(210,10%,25%,0.8));
 }
-.button.rmv i {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/romveDJ.png) no-repeat center center;
-	background-size: 23px;
+#pi-rmvDJ img, #pi-skip img {
+	height: 23px;
+	margin-top: 3px;
 }
-.button.skip i {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/skip.png) no-repeat center center;
-	background-size: 23px;
+#pi-rmvDJ {
+	border-radius: 0 0 0 10px;
+	left: -1px;
+}
+#pi-skip {
+	position: relative;
+	left: calc(50% - 1px);
+	border-radius: 0 0 10px;
 }
 
 /* Screen selection */
 #chat-messages .cm:hover .msg {
 	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.2) !important;
 }
-#chat-messages .ws-selected .msg {
+#chat-messages .pi-selected .msg {
 	background: linear-gradient(hsla(90,80%,30%,0.8), hsla(90,80%,20%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
 	box-shadow: none !important;
 	cursor: pointer;
 }
-#chat-messages .ws-selected .msg,
-#chat-messages .ws-selected .msg .timestamp {
+#chat-messages .pi-selected .msg,
+#chat-messages .pi-selected .msg .timestamp {
 	color: #FFF !important;
 	font-weight: bolder;
 	text-shadow: 0 0 5px #000;
 }
-#chat-messages .ws-selected .badge-box {
+#chat-messages .pi-selected .badge-box {
 	background: rgba(0,0,0,0);
 }
-#chat-messages .ws-selected .badge-box i {
+#chat-messages .pi-selected .badge-box i {
 	border-color: #EEE;
 }
 
@@ -141,59 +152,70 @@
 	-moz-transition: all 0.25s;
 	-o-transition: all 0.25s;
 	transition: all 0.25s;
+	border: solid #000;
+	border-width: 0 1px 2px 1px;
+	border-radius: 3px;
 }
 #twitter-menu, #facebook-menu{
 	display: none !important;
 }
 
 /*--[Custom Logs]--*/
-#chat .cm.ws-warn {
+#chat .cm.pi-warn {
 	background: linear-gradient(hsla(60,80%,20%,0.8), hsla(60,80%,10%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(60,100%,30%);
 }
-#chat .cm.ws-error {
+#chat .cm.pi-error {
 	background: linear-gradient(hsla(0,80%,20%,0.8), hsla(0,80%,10%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(0,80%,30%);
 }
-#chat .cm.ws-info {
+#chat .cm.pi-info {
 	background: linear-gradient(hsla(260,50%,20%,0.8), hsla(260,50%,10%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(260,50%,30%);
 }
 /*--[BOT]--*/
-#chat .cm.emote.id-7872943 .bdg, #chat .cm.emote.id-7872943 .no-badge {
+#chat [data-cid*="5285179"] .bdg,
+#chat [data-cid*="5285179"] .no-badge {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
-#chat .cm.emote.id-7872943 .no-badge i {
+#chat [data-cid*="5285179"] .no-badge i {
 	display: none !important;
 }
-#chat .cm.emote.id-7872943 .icon-chat-subscriber {opacity: 0;width: 0;}
-#chat .cm.emote.id-7872943 .icon-chat-host {
+#chat [data-cid*="5285179"] .icon-chat-subscriber {display: none;}
+#chat [data-cid*="5285179"] [class*="icon-chat"] {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bot.png);
 	background-size: 15px;
 	background-position: 0 0 !important;
 }
+#chat [data-cid*="5285179"] .un:after {
+	content: " #H2G2";
+	color: #80C3FF;
+	font-style: italic;
+}
 /*--[DEV]--*/
-#chat .cm.id-4613422 .icon-chat-subscriber, #chat .cm.id-4506088 .icon-chat-subscriber, #chat .cm.id-209178 .icon-chat-subscriber {
+#chat [data-cid*="4613422"] .icon-chat-subscriber,
+#chat [data-cid*="4506088"] .icon-chat-subscriber,
+#chat [data-cid*="209178"] .icon-chat-subscriber {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
 	background-position: 0 0 !important;
 }
-#chat .cm.id-4613422 .bdg {
+#chat [data-cid*="4613422"] .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
-#chat .cm.id-4506088 .bdg {
+#chat [data-cid*="4506088"].bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
-#chat .cm.id-4613422 i.icon-chat-host,
-#chat .cm.id-4613422 i.icon-chat-cohost,
-#chat .cm.id-4613422 i.icon-chat-manager,
-#chat .cm.id-4613422 i.icon-chat-bouncer,
-#chat .cm.id-4613422 i.icon-chat-dj {
+#chat [data-cid*="4613422"] .icon-chat-host,
+#chat [data-cid*="4613422"] .icon-chat-cohost,
+#chat [data-cid*="4613422"] .icon-chat-manager,
+#chat [data-cid*="4613422"] .icon-chat-bouncer,
+#chat [data-cid*="4613422"] .icon-chat-dj {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
 	background-position: 0 0 !important;
 }

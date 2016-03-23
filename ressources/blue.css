@@ -71,7 +71,7 @@
 	box-shadow: none;
 	border: none !important;
 }
-.video-only #ws-rmvDJ, .video-only #ws-skip {
+.video-only #pi-rmvDJ, .video-only #pi-skip {
 	display: none;
 }
 .video-only #vote {
