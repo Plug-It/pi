@@ -30,7 +30,8 @@
     "nobodyPlaying": "Nobody is playing.",
     "youPlay": "You are the DJ !",
     "notInWaitList": "You are not in the Wait-List.",
-    "helpVol": "Usage: /vol [0-100]"
+    "helpVol": "Usage: /vol [0-100]",
+    "helpBot": "Write either the pseudo or the id of the bot."
   },
   "warn": {
     "songLimit": "Music is too long ! 8:00 max !",
@@ -43,6 +44,7 @@
     "autoJoin1": "Wait-list is locked",
     "autoJoin2": "Invalid active playlist",
     "autoJoin3": "Wait-list is full",
-    "unknowVariable": "Unknow variable(s)"
+    "unknowVariable": "Unknow variable(s)",
+    "noUserByName": "They are no user by this name"
   }
 }

@@ -21,8 +21,8 @@ else {
       transition: "all .25s ease-in-out"
     })
   );
-  var updateStatus = function(txt, status) {
-    $("#pi-status span").innerText = "Pi is loading..<br>"+txt+"<br>Status: "+status;
+  window.updateStatus = function(txt, status) {
+    $("#pi-status span")[0].innerHTML = "Pi is loading..<br>"+txt+"<br>Status: "+status;
   };
   
   // Load user language
@@ -30,7 +30,7 @@ else {
   var xhr = new XMLHttpRequest(), lang;
   xhr.onreadystatechange = function(){
     if (xhr.readyState == 4 && xhr.status == 200) {
-      window.lang = JSON.parse(xhr.responseText);
+      lang = JSON.parse(xhr.responseText);
       window.complete = function(txt) {
         txt = txt.split(" ");
         for (var i = 0; i < txt.length; i++) {
@@ -50,7 +50,7 @@ else {
     case "fr": lang = "fr"; break;
     default: lang = "en"; break;
   }
-  xhr.open('GET', 'https://rawgit.com/WiBla/Script/master/lang/'+lang+'.json', true);
+  xhr.open('GET', 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json', true);
   xhr.send();
   
   // Retrieve user settings if available
@@ -72,6 +72,7 @@ else {
     security: false,
     afk: false,
     time: 480,
+    "bot": 5285179
   };
   if (ls) {
     // Making sure user settings are up to date
@@ -84,16 +85,17 @@ else {
   }
   localStorage.setItem("pi-settings", JSON.stringify(settings));
 
-  // Get Plug + Script ranks
+  // Get Plug & Script ranks
   updateStatus("Fetching script ranks", 3);
-  var xhr = new XMLHttpRequest(), ranks;
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      ranks = JSON.parse(xhr.responseText);
+  // I use different xhr to avoid synchronous request while making it easy for me
+  var xhr1 = new XMLHttpRequest(), ranks;
+  xhr1.onreadystatechange = function() {
+    if (xhr1.readyState == 4 && xhr1.status == 200) {
+      ranks = JSON.parse(xhr1.responseText);
     }
   }
-  xhr.open('GET', 'https://rawgit.com/Plug-It/pi/master/ressources/ranks.json', true);
-  xhr.send();
+  xhr1.open('GET', 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json', true);
+  xhr1.send();
   var getRank = function(isRank, id) {
     arguments.length = 0 ? id = API.getUser().id : void(0);
     if (typeof isRank == "number") {
@@ -136,11 +138,11 @@ window.pi = {
 // ╚══════════════════╝
 version: '1.0.0',
 url: {
-  script: "https://rawgit.com/WiBla/Script/master/ressources/wibla.js",
-  menu_css: "https://rawgit.com/WiBla/Script/master/ressources/menu.css",
-  old_chat: "https://rawgit.com/WiBla/Script/master/ressources/old-chat.css",
-  blue_css: "https://rawgit.com/WiBla/Script/master/ressources/blue.css",
-  notif: "https://raw.githubusercontent.com/WiBla/Script/master/ressources/notif.wav",
+  script: "https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js",
+  menu_css: "https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css",
+  old_chat: "https://rawgit.com/Plug-It/pi/pre-release/ressources/old-chat.css",
+  blue_css: "https://rawgit.com/Plug-It/pi/pre-release/ressources/blue.css",
+  notif: "https://raw.githubusercontent.com/Plug-It/pi/pre-release/ressources/notif.wav",
 },
 dom: {
   woot: $("#pi-woot")[0],
@@ -174,16 +176,16 @@ setPlugSettings: function(option, value) {
 menu: function(choice) {
   choice += "";
   switch(choice) {
-    case "0": settings.showMenu = !settings.showMenu; slide();break;
-    case "1": settings.autoW = !settings.autoW; autowoot(); break;
-    case "2": settings.autoDJ = !settings.autoDJ; autojoin(); break;
-    case "3": settings.showVideo = !settings.showVideo; hideStream(); break;
-    case "4": settings.CSS = !settings.CSS; design(); break;
-    case "5": askBG(); break;
-    case "6": settings.oldChat = !settings.oldChat; oldChat(); break;
-    case "7": settings.alertDuration = !settings.alertDuration; alertDuration();break;
-    case "8": settings.meh = !settings.meh; voteAlert(); break;
-    case "9": settings.betterMeh = !settings.betterMeh; muteMeh(); break;
+    case "0": settings.showMenu = !settings.showMenu; pi.slide();break;
+    case "1": settings.autoW = !settings.autoW; pi.autowoot(); break;
+    case "2": settings.autoDJ = !settings.autoDJ; pi.autojoin(); break;
+    case "3": settings.showVideo = !settings.showVideo; pi.hideStream(); break;
+    case "4": settings.CSS = !settings.CSS; pi.design(); break;
+    case "5": pi.askBG(); break;
+    case "6": settings.oldChat = !settings.oldChat; pi.oldChat(); break;
+    case "7": settings.alertDuration = !settings.alertDuration; pi.alertDuration();break;
+    case "8": settings.meh = !settings.meh; pi.voteAlert(); break;
+    case "9": settings.betterMeh = !settings.betterMeh; pi.muteMeh(); break;
     case "10": settings.navWarn = !settings.navWarn; break;
     case "kill": pi.kill(); break;
     default: console.log(lang.info.menuOptions);
@@ -255,20 +257,20 @@ design: function() {
       pi.dom.css.className = "pi-off";
       break;
     case 2:
-      pi.dom.style.setAttribute("href", blue_css);
+      pi.dom.style.setAttribute("href", pi.url.blue_css);
       settings.bg = "reset"; askBG();
       pi.dom.css.className = "pi-on";
       break;
     case 3:
       pi.dom.style.setAttribute("href", purple_css);
-      settings.bg = "https://rawgit.com/WiBla/Script/master/images/background/1.png"; changeBG();
+      settings.bg = "https://rawgit.com/Plug-It/pi/pre-release/images/background/1.png"; changeBG();
   }
   localStorage.setItem("pi-settings",JSON.stringify(settings));
 },
 oldChat: function() {
   if (settings.oldChat) {
     pi.dom.oldChat.className = "pi-on";
-    pi.dom.oldStyle.setAttribute("href", old_chat);
+    pi.dom.oldStyle.setAttribute("href", pi.url.old_chat);
   } else {
     pi.dom.oldChat.className = "pi-off";
     pi.dom.oldStyle.setAttribute("href", "");
@@ -281,7 +283,7 @@ askBG: function() {
   }
   switch (settings.bg) {
     case "reset":
-      settings.bg = "https://raw.githubusercontent.com/WiBla/Script/master/images/background/default/FEDMC.jpg";
+      settings.bg = "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/FEDMC.jpg";
       changeBG();
     break;
     case "default":
@@ -378,7 +380,7 @@ voteAlert: function(data) {
 reload: function() {
   API.chatLog(lang.log.reloading);
   menu(10);
-  $.getScript("https://rawgit.com/WiBla/Script/master/ressources/WiBla.js");
+  $.getScript("https://rawgit.com/Plug-It/pi/pre-release/ressources/WiBla.js");
 },
 slide: function() {
   var show = settings.showMenu,
@@ -414,8 +416,8 @@ removeDJ: function() {
 execute: function(code) {
   try {eval(code);} catch(err) {API.chatLog(err+"");}
 },
-chatCommand: function(commande) {
-  var args = commande.split(" "), msg = [];
+chatCommand: function(cmd) {
+  var args = cmd.split(" "), msg = [];
   for (var i = 1; i < args.length; i++) {
     msg.push(args[i]);
   }
@@ -427,11 +429,8 @@ chatCommand: function(commande) {
     break;
     
     case "/love":
-      if (args[1] === undefined) {
-        API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
-      } else {
-        API.sendChat(msg + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
-      }
+      if (args[1] === undefined) API.sendChat(":heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
+      else API.sendChat(msg + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
     break;
     
     case "/eta":
@@ -458,11 +457,8 @@ chatCommand: function(commande) {
     break;
     
     case "/vol":
-      if (args[1] >= 0 && args[1] <= 100) {
-        API.setVolume(args[1]);
-      } else {
-        API.chatLog(lang.info.helpVol);
-      }
+      if (args[1] >= 0 && args[1] <= 100) API.setVolume(args[1]);
+      else API.chatLog(lang.info.helpVol);
     break;
     
     case "/afk":
@@ -471,22 +467,22 @@ chatCommand: function(commande) {
       afk(msg);
     break;
     
-    /* Experimental
     case "/bot":
-      if (args[1] === undefined) {
-        API.chatLog("Write either the pseudo or the id of the bot in your room after /bot");
-      } else {
-        args[1] = args[1].substr(1);
-        settings.bot = API.getUser(args[1]);
+      if (args[1] === undefined) API.chatLog(lang.info.helpBot);
+      else {
+        if (!isNaN(args[1])) settings.bot = Number(args[1]);
+        else if (API.getUserByName(args[1]) !== null) settings.bot = API.getUserByName(args[1]).id;
+        else API.chatLog(lang.error.noUserByName);
         localStorage.setItem("pi-settings",JSON.stringify(settings));
       }
-    break;*/
+    break;
     
     case "/whoami":
       var me = API.getUser();
       API.chatLog("Username: " + me.username);
       API.chatLog("ID: " + me.id);
       API.chatLog("Description: " + me.blurb);
+      API.chatLog("Profile: " + location.origin + "/@/" + API.getUser().slug);
       API.chatLog("Avatar: " + me.avatarID);
       API.chatLog("Badge: " + me.badge);
       API.chatLog("Lvl: " + me.level);
@@ -511,6 +507,7 @@ chatCommand: function(commande) {
       API.chatLog("/eta");
       API.chatLog("/vol [0-100]");
       API.chatLog("/afk [message]");
+      API.chatLog("/bot [id/pseudo]");
       API.chatLog("/whoami");
       API.chatLog("/pi");
       API.chatLog("/js [javaScript code]");
@@ -546,6 +543,13 @@ init: function(unload) {
       var xhr = new XMLHttpRequest();
       xhr.open("DELETE", location.origin+"/_/booth/remove/"+API.getDJ().id, true);
       xhr.send();
+    };
+    API.getUserByName = function(name) {
+      var audience = API.getUsers();
+      for (var i = 0; i < audience.length; i++) {
+        if (audience[i].rawun == name) return audience[i];
+      }
+      return null;
     };
     // #### [Events listener] ####
     // Navigation warning
@@ -592,11 +596,11 @@ init: function(unload) {
       }
       if ($("#the-user-profile .experience.section .xp .value")[0]) {
         var xp2 = $("#the-user-profile .experience.section .xp .value")[0].innerHTML,
-          elements2 = xp2.split(" ");
-          if (elements2.length == 3) {
-            var toAdd2 = $("#the-user-profile .experience.section .progress")[0].style.width;
-            $("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
-          }
+        elements2 = xp2.split(" ");
+        if (elements2.length == 3) {
+          var toAdd2 = $("#the-user-profile .experience.section .progress")[0].style.width;
+          $("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
+        }
       }
     }), 1000);
 
@@ -623,45 +627,45 @@ init: function(unload) {
       </ul>\
     </div>'));
     // Menu css
-    $("head").append($('<link id="WiBla-menu-CSS" rel="stylesheet" type="text/css" href="'+menu_css+'">'));
+    $("head").append($('<link id="WiBla-menu-CSS" rel="stylesheet" type="text/css" href="'+pi.url.menu_css+'">'));
     // General css
     $("head").append($('<link id="WiBla-CSS\" rel="stylesheet\" type="text/css" href="">'));
     // Old chat css
     $("head").append($('<link id="WiBla-Old-Chat-CSS" rel="stylesheet" type="text/css" href="">'));
     // DelChat icon
     $("#chat-header").append('<div id="del-chat-button" class="chat-header-button">\
-      <i class="icon pi-delChat"></i>\
+      <i id="pi-delChat" class="icon pi-delChat"></i>\
     </div>');
     // If at least bouncer
     if (getRank("Bouncer")) {
       // Moderation tools
       $("#playback-container").append($('<div id="pi-rmvDJ">\
-        <img src="https://raw.githubusercontent.com/WiBla/Script/master/images/other/romveDJ.png" alt="button remove from wait-list" />\
+        <img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/romveDJ.png" alt="button remove from wait-list" />\
       </div>\
       <div id="pi-skip">\
-        <img src="https://raw.githubusercontent.com/WiBla/Script/master/images/other/skip.png" alt="button skip" />\
+        <img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/skip.png" alt="button skip" />\
       </div>'));
     }
     // Click Event Binding
     $("body").on("click", function(e){
       switch (e.target.id) {
         // Menu
-        case "Box": menu(0); break;
-        case "pi-woot": menu(1); break;
-        case "pi-join": menu(2); break;
-        case "pi-video": menu(3); break;
-        case "pi-css": menu(4); break;
-        case "pi-bg": menu(5); break;
-        case "pi-old-chat": menu(6); break;
-        case "pi-lengthA": menu(7); break;
-        case "pi-mehA": menu(8); break;
-        case "pi-mutemeh": menu(9); break;
-        case "pi-navWarn": menu(10); break;
-        case "pi-off": menu("kill"); break;
+        case "Box": pi.menu(0); break;
+        case "pi-woot": pi.menu(1); break;
+        case "pi-join": pi.menu(2); break;
+        case "pi-video": pi.menu(3); break;
+        case "pi-css": pi.menu(4); break;
+        case "pi-bg": pi.menu(5); break;
+        case "pi-old-chat": pi.menu(6); break;
+        case "pi-lengthA": pi.menu(7); break;
+        case "pi-mehA": pi.menu(8); break;
+        case "pi-mutemeh": pi.menu(9); break;
+        case "pi-navWarn": pi.menu(10); break;
+        case "pi-off": pi.menu("kill"); break;
         // Tools
-        case "pi-rmvDJ": removeDJ(); break;
-        case "pi-skip": forceSkip(); break;
-        case "del-chat-button": API.sendChat('/clear'); break;
+        case "pi-rmvDJ": pi.removeDJ(); break;
+        case "pi-skip": pi.forceSkip(); break;
+        case "pi-delChat": API.sendChat('/clear'); break;
       }
     });
 
@@ -707,5 +711,9 @@ kill: function() {
   else console.error("[Plug-It] Couldn't unload script");
 }};
 // end of 'pi' declaration
-pi.init();
+function waitForLang(){
+  if (typeof lang !== "object") {setTimeout(waitForLang, 200);}
+  else pi.init();
+}
+waitForLang()
 })();
