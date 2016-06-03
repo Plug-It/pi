@@ -25,6 +25,15 @@ else {
     $("#pi-status span")[0].innerHTML = "Pi is loading..<br>"+txt+"<br>Status: "+status;
   };
   
+  // Get last commit of any project, used to know if an update is available
+  function getLastCommit(url, callback, placeholder) {
+    placeholder = new XMLHttpRequest;
+    placeholder.open('GET', url);
+    placeholder.onload = callback;
+    placeholder.send();
+  }
+  getLastCommit("https://api.github.com/repos/Plug-It/pi/commits/pre-release", function(data){window.thisCommit = JSON.parse(data.currentTarget.responseText);});
+
   // Load user language
   updateStatus("Loading user language", 1);
   var xhr = new XMLHttpRequest(), lang;
@@ -87,7 +96,7 @@ else {
 
   // Get Plug & Script ranks
   updateStatus("Fetching script ranks", 3);
-  // I use different xhr to avoid synchronous request while making it easy for me
+  // I use different xhr to avoid synchronous requests while making it easy for me
   var xhr1 = new XMLHttpRequest(), ranks;
   xhr1.onreadystatechange = function() {
     if (xhr1.readyState == 4 && xhr1.status == 200) {
@@ -146,6 +155,7 @@ url: {
 },
 dom: {
   woot: $("#pi-woot")[0],
+  mehA: $("#pi-mehA")[0],
 },
 // ╔══════════════════╗
 // ║    FUNCTIONS     ║
@@ -169,9 +179,43 @@ getPlugSettings: function(id) {
 },
 setPlugSettings: function(option, value) {
   var xhr = new XMLHttpRequest();
-  xhr.open("PUT", "https://stg.plug.dj/_/users/settings", true);
+  xhr.open("PUT", "https://plug.dj/_/users/settings", true);
   xhr.send({option:value});
 },
+log: function(txt, type) {
+  var white = "color: #EEE";
+  var pi = "color: #ABDA55";
+
+  switch(type) {
+    case "error": txt = "Error: " + txt;break;
+    case "warn":  txt = "Warn: "  + txt;break;
+    case "info":  txt = "Info: "  + txt;break;
+    case "debug": txt = "Debug: " + txt;break;
+    default: type = "log";break;
+  }
+
+  var logBox = $('\
+    <div class="cm pi-'+type+'">\
+      <div class="msg">\
+        <div class="text cid-undefined">\
+          '+txt+'\
+        </div>\
+      </div>\
+    </div>\
+  ');
+
+  $("#chat-messages").append(logBox);
+  console[type]("%c[%cPlug-It%c]%c",white,pi,white,"",txt);
+},
+getFriendsOnline: function(url, callback, xhr) {
+  xhr = new XMLHttpRequest;
+  xhr.open('GET', url);
+  xhr.onload = function(){
+    var data = xhr.responseText;
+    callback(data);
+  };
+  xhr.send();
+}
 /* Old functions */
 menu: function(choice) {
   choice += "";
@@ -565,7 +609,7 @@ init: function(unload) {
       }
     });
     // ScrollWheel volume changer
-    $("#volume").on("mousewheel", function(e){
+    $("#volume, #playback").on("mousewheel", function(e){
       e.preventDefault();
       if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-5);
       else API.setVolume(API.getVolume()+5);
@@ -585,7 +629,7 @@ init: function(unload) {
         pi.reload();
       }
     }); */
-    // show percentage in level bar
+    // show percentage in level bar (room for improvement using regExp)
     window.levelBarInfo = setInterval((function() {
       var xp = $("#footer-user .info .meta .bar .value")[0].innerHTML,
         elements = xp.split(" ");
@@ -602,7 +646,19 @@ init: function(unload) {
           $("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
         }
       }
-    }), 1000);
+    }), 60*1000);
+    window.friendsOnline = setInterval(pi.getFriendsOnline(
+      "https://plug.dj/_/friends",
+      function(data) {
+        var friends = JSON.parse(data).data;
+        var friendsOnline = 0;
+        for (var i = 0; i < friends.length; i++) {
+          if (typeof friends[i].room !== "undefined") friendsOnline++;
+        }
+        var count = $("#friends-button > span")[0].innerText.replace(/[0-9]*\//g,"");
+        count = friendsOnline + "/" + count;
+        $("#friends-button > span")[0].innerText = count;
+      }), 5*1000);
 
     // Creating DOM elements
     updateStatus("Creating script environement", 5);
@@ -709,11 +765,20 @@ kill: function() {
     return "killed";
   }
   else console.error("[Plug-It] Couldn't unload script");
+},
+checkForUpdates: function(isForced) {
+  getLastCommit("https://api.github.com/repos/Plug-It/pi/commits/pre-release", function(data){
+    var lastCommit = JSON.parse(data.currentTarget.responseText);
+    if (thisCommit.sha !== lastCommit.sha) {
+      if (confirm("An update is available:\n"+lastCommit.commit.message+"\n\nWould you like to update ?")) pi.reload();
+    }
+    else if (isForced) pi.log("No update available.", "info");
+  });
 }};
 // end of 'pi' declaration
 function waitForLang(){
   if (typeof lang !== "object") {setTimeout(waitForLang, 200);}
   else pi.init();
 }
-waitForLang()
+waitForLang();
 })();
