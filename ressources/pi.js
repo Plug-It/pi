@@ -587,6 +587,24 @@ init: function(unload) {
     });
     API.on(API.VOTE_UPDATE, pi.voteAlert);
     API.on(API.CHAT_COMMAND, pi.chatCommand);
+    API.on(API.CHAT, function(msg) {
+      // Self Deletion Magic
+      if (hasPermBouncer && msg.uid == API.getUser().id) {
+        var selector = "#chat [data-cid='"+msg.cid+"']";
+        if (!$(selector).length) return; // Prevent adding a second button
+        $(selector)[0].className += " deletable";
+        $(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
+        $(selector).on("mouseenter", function(){
+          $(selector).children()[0].style.display = "block";
+        });
+        $(selector).on("mouseleave", function(){
+          $(selector).children()[0].style.display = "none";
+        });
+        $(selector).children().on("click", function(){
+          API.moderateDeleteChat(msg.cid);
+        });
+      }
+    });
     // API addition
     API.moderateForceQuit = function() {
       var xhr = new XMLHttpRequest();
