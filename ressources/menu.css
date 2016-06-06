@@ -123,7 +123,7 @@
 	border-radius: 0 0 10px;
 }
 
-/* Screen selection */
+/* Screen selection 
 #chat-messages .cm:hover .msg {
 	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.2) !important;
 }
@@ -144,7 +144,7 @@
 }
 #chat-messages .pi-selected .badge-box i {
 	border-color: #EEE;
-}
+}*/
 
 /* Le reste */
 #playback-container {
@@ -161,6 +161,18 @@
 }
 
 /*--[Custom Logs]--*/
+#chat .cm .badge-box .bdg-piLogo {
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png) !important;
+	background-size: 30px !important;
+}
+#chat .cm .msg .from .icon-pi {
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon.png) !important;
+	background-size: 15px !important;
+	width: 15px; height: 15px;
+}
+#chat .cm .msg .from .icon-pi + .un {
+	color: #FFF !important;
+}
 #chat .cm.pi-warn {
 	background: linear-gradient(hsla(60,80%,20%,0.8), hsla(60,80%,10%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
@@ -207,7 +219,7 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="4506088"].bdg {
+#chat [data-cid*="4506088"] .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
@@ -220,22 +232,22 @@
 	background-position: 0 0 !important;
 }
 /*--[ALPHA TESTER]--*/
-#chat .cm.id-4726785 .bdg,
-#chat .cm.id-4272266 .bdg,
-#chat .cm.id-4782448 .bdg,
-#chat .cm.id-4656513 .bdg,
-#chat .cm.id-4024959 .bdg,
-#chat .cm.id-3481629 .bdg {
+#chat [data-cid*="4726785"] .bdg,
+#chat [data-cid*="4272266"] .bdg,
+#chat [data-cid*="4782448"] .bdg,
+#chat [data-cid*="4656513"] .bdg,
+#chat [data-cid*="4024959"] .bdg,
+#chat [data-cid*="3481629"] .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
 	background-position: 0 0 !important;
 }
 /*--[Designer]--*/
-#chat .cm.id-4336782 .bdg {
+#chat [data-cid*="4336782"] .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_designer.png);
 	background-size: 30px;
 	background-position: 0 0 !important;
 }
-#chat .cm.id-4336782 i.icon-chat-designer {
+#chat [data-cid*="4336782"] i.icon-chat-designer {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_designer.png);
 	background-position: 0 0 !important;
 }

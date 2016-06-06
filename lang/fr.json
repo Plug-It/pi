@@ -14,7 +14,7 @@
     "s": "Eteindre"
   },
   "log": {
-    "loaded": "WiBla-Script $version chargé !",
+    "loaded": "Plug-It $version chargé !",
     "help": "Ecrivez /list pour la liste de commandes.",
     "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond par default du script\n\"default\" Fond par default de plug",
     "wooted": " à woot !",

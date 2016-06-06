@@ -14,7 +14,7 @@
     "s": "Shutdown"
   },
   "log": {
-    "loaded": "WiBla-Script $version loaded !",
+    "loaded": "Plug-It $version loaded !",
     "help": "Type /list for commands list.",
     "bgPrompt": "Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background",
     "wooted": " wooted this track !",

@@ -26,11 +26,11 @@ else {
   };
   
   // Get last commit of any project, used to know if an update is available
-  function getLastCommit(url, callback, placeholder) {
-    placeholder = new XMLHttpRequest;
-    placeholder.open('GET', url);
-    placeholder.onload = callback;
-    placeholder.send();
+  function getLastCommit(url, callback) {
+    var xhr = new XMLHttpRequest;
+    xhr.open('GET', url);
+    xhr.onload = callback;
+    xhr.send();
   }
   getLastCommit("https://api.github.com/repos/Plug-It/pi/commits/pre-release", function(data){window.thisCommit = JSON.parse(data.currentTarget.responseText);});
 
@@ -139,6 +139,7 @@ else {
     }
     else return result;
   }
+  hasPermBouncer = getRank("Bouncer");
 }
 
 window.pi = {
@@ -152,10 +153,6 @@ url: {
   old_chat: "https://rawgit.com/Plug-It/pi/pre-release/ressources/old-chat.css",
   blue_css: "https://rawgit.com/Plug-It/pi/pre-release/ressources/blue.css",
   notif: "https://raw.githubusercontent.com/Plug-It/pi/pre-release/ressources/notif.wav",
-},
-dom: {
-  woot: $("#pi-woot")[0],
-  mehA: $("#pi-mehA")[0],
 },
 // ╔══════════════════╗
 // ║    FUNCTIONS     ║
@@ -196,26 +193,34 @@ log: function(txt, type) {
 
   var logBox = $('\
     <div class="cm pi-'+type+'">\
+      <div class="badge-box">\
+        <i class="bdg bdg-piLogo"></i>\
+      </div>\
       <div class="msg">\
+        <div class="from Plug-It">\
+          <i class="icon icon-pi"></i>\
+          <span class="un">[Plug-It]</span>\
+        </div>\
         <div class="text cid-undefined">\
           '+txt+'\
         </div>\
       </div>\
+      <div class="delete-button" style="display: none;">Delete</div>\
     </div>\
   ');
 
   $("#chat-messages").append(logBox);
   console[type]("%c[%cPlug-It%c]%c",white,pi,white,"",txt);
 },
-getFriendsOnline: function(url, callback, xhr) {
-  xhr = new XMLHttpRequest;
-  xhr.open('GET', url);
+getFriendsOnline: function(callback) {
+  var xhr = new XMLHttpRequest;
+  xhr.open('GET', "https://plug.dj/_/friends");
   xhr.onload = function(){
     var data = xhr.responseText;
     callback(data);
   };
   xhr.send();
-}
+},
 /* Old functions */
 menu: function(choice) {
   choice += "";
@@ -328,19 +333,19 @@ askBG: function() {
   switch (settings.bg) {
     case "reset":
       settings.bg = "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/FEDMC.jpg";
-      changeBG();
+      pi.changeBG();
     break;
     case "default":
       settings.bg = plugBG;
-      changeBG(true);
+      pi.changeBG(true);
     break;
     default:
       settings.bg = prompt(lang.log.bgPrompt);
       if (settings.bg !== null && settings.bg.length > 0) {
         if (settings.bg == "reset" || settings.bg == "default") {
-          askBG();
+          pi.askBG();
         } else {
-          changeBG();
+          pi.changeBG();
         }
       }
     break;
@@ -646,9 +651,8 @@ init: function(unload) {
           $("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
         }
       }
-    }), 60*1000);
+    }), 5*60*1000);
     window.friendsOnline = setInterval(pi.getFriendsOnline(
-      "https://plug.dj/_/friends",
       function(data) {
         var friends = JSON.parse(data).data;
         var friendsOnline = 0;
@@ -683,11 +687,11 @@ init: function(unload) {
       </ul>\
     </div>'));
     // Menu css
-    $("head").append($('<link id="WiBla-menu-CSS" rel="stylesheet" type="text/css" href="'+pi.url.menu_css+'">'));
+    $("head").append($('<link id="pi-menu-CSS" rel="stylesheet" type="text/css" href="'+pi.url.menu_css+'">'));
     // General css
-    $("head").append($('<link id="WiBla-CSS\" rel="stylesheet\" type="text/css" href="">'));
+    $("head").append($('<link id="pi-CSS\" rel="stylesheet\" type="text/css" href="">'));
     // Old chat css
-    $("head").append($('<link id="WiBla-Old-Chat-CSS" rel="stylesheet" type="text/css" href="">'));
+    $("head").append($('<link id="pi-oldchat-CSS" rel="stylesheet" type="text/css" href="">'));
     // DelChat icon
     $("#chat-header").append('<div id="del-chat-button" class="chat-header-button">\
       <i id="pi-delChat" class="icon pi-delChat"></i>\
@@ -707,6 +711,7 @@ init: function(unload) {
       switch (e.target.id) {
         // Menu
         case "Box": pi.menu(0); break;
+        case "icon": pi.menu(0); break;
         case "pi-woot": pi.menu(1); break;
         case "pi-join": pi.menu(2); break;
         case "pi-video": pi.menu(3); break;
@@ -724,17 +729,37 @@ init: function(unload) {
         case "pi-delChat": API.sendChat('/clear'); break;
       }
     });
+    this.dom = {
+      // Script
+      woot: $("#pi-woot")[0],
+      join: $("#pi-join")[0],
+      video: $("#pi-video")[0],
+      css: $("#pi-css")[0],
+      bg: $("#pi-bg")[0],
+      oldChat: $("#pi-old-chat")[0],
+      lengthA: $("#pi-lengthA")[0],
+      mehA: $("#pi-mehA")[0],
+      muteMeh: $("#pi-mutemeh")[0],
+      navWarn: $("#pi-navWarn")[0],
+      off: $("#pi-off")[0],
+      rmvDJ: $("#pi-rmvDJ")[0],
+      skip: $("#pi-skip")[0],
+      DelChat: $("#pi-delChat")[0],
+      oldStyle: $("#pi-oldchat-CSS")[0],
+      // Other
+      stream: $("#playback-container")[0]
+    },
 
     // Fully loaded
-    API.chatLog("Plug-It " + pi.version + " loaded !");
-    API.chatLog(lang.log.help);
+    pi.log(complete(lang.log.loaded));
+    pi.log(lang.log.help, "info");
     $('#pi-status').css({opacity:"0"});
     setTimeout(function(){$('#pi-status').remove();}, 250);
   } else {
     // Preventing making the video definitly desapear
     if (settings.showVideo === false) {
-      menu(3);
-      setTimeout(menu(10), 250);
+      pi.menu(3);
+      setTimeout(pi.menu(10), 250);
     }
     API.off(API.CHAT_COMMAND, pi.chatCommand);
     API.off(API.ADVANCE, pi.alertDuration);
@@ -746,10 +771,11 @@ init: function(unload) {
     $(window).off("keydown");
     $("#volume").off("mousewheel");
     clearInterval(levelBarInfo);
+    clearInterval(friendsOnline);
 
     // Removing DOM elements
     $("#Box, #Settings, #WiBla-menu-CSS, #WiBla-CSS, #WiBla-Old-Chat-CSS, #del-chat-button").remove();
-    if (getRank("Bouncer")) $("#pi-rmvDJ, #pi-skip").remove();
+    if (hasPermBouncer) $("#pi-rmvDJ, #pi-skip").remove();
 
     return "unloaded";
   }
