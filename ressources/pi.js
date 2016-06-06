@@ -240,7 +240,10 @@ menu: function(choice) {
     case "7": settings.alertDuration = !settings.alertDuration; pi.alertDuration();break;
     case "8": settings.meh = !settings.meh; pi.voteAlert(); break;
     case "9": settings.betterMeh = !settings.betterMeh; pi.muteMeh(); break;
-    case "10": settings.navWarn = !settings.navWarn; break;
+    case "10":
+      settings.navWarn = !settings.navWarn;
+      settings.navWarn ? pi.dom.navWarn.className = "pi-on" : pi.dom.navWarn.className = "pi-off";
+    break;
     case "kill": pi.kill(); break;
     default: console.log(lang.info.menuOptions);
   }
@@ -306,11 +309,11 @@ design: function() {
   if (settings.bg == "reset") askBG();
   if (settings.CSS) {
     pi.dom.style.setAttribute("href", pi.url.blue_css);
-    settings.bg = "reset"; askBG();
+    settings.bg = "reset"; pi.askBG();
     pi.dom.css.className = "pi-on";
   } else {
     pi.dom.style.setAttribute("href", '');
-    settings.bg = "default"; askBG();
+    settings.bg = "default"; pi.askBG();
     pi.dom.css.className = "pi-off";
   }
   localStorage.setItem("pi-settings",JSON.stringify(settings));
@@ -331,7 +334,7 @@ askBG: function() {
   }
   switch (settings.bg) {
     case "reset":
-      settings.bg = "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/FEDMC.jpg";
+      settings.bg = "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/custom.jpg";
       pi.changeBG();
     break;
     case "default":
@@ -512,7 +515,7 @@ chatCommand: function(cmd) {
     case "/afk":
       if (msg.length === 0) msg = undefined;
       else window.afkMessage = msg;
-      afk(msg);
+      pi.afk(msg);
     break;
     
     case "/bot":
@@ -756,12 +759,13 @@ init: function(unload) {
       oldChat: $("#pi-old-chat")[0],
       lengthA: $("#pi-lengthA")[0],
       mehA: $("#pi-mehA")[0],
-      muteMeh: $("#pi-mutemeh")[0],
+      betterMeh: $("#pi-mutemeh")[0],
       navWarn: $("#pi-navWarn")[0],
       off: $("#pi-off")[0],
       rmvDJ: $("#pi-rmvDJ")[0],
       skip: $("#pi-skip")[0],
       DelChat: $("#pi-delChat")[0],
+      style: $("#pi-CSS")[0],
       oldStyle: $("#pi-oldchat-CSS")[0],
       // Other
       stream: $("#playback-container")[0]
