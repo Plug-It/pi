@@ -180,8 +180,6 @@ setPlugSettings: function(option, value) {
   xhr.send({option:value});
 },
 log: function(txt, type) {
-  var white = "color: #EEE";
-  var pi = "color: #ABDA55";
 
   switch(type) {
     case "error": txt = "Error: " + txt;break;
@@ -192,7 +190,8 @@ log: function(txt, type) {
   }
 
   var logBox = $('\
-    <div class="cm pi-'+type+'">\
+    <div class="cm pi-'+type+' deletable">\
+      <div class="delete-button" style="display: none;">Delete</div>\
       <div class="badge-box">\
         <i class="bdg bdg-piLogo"></i>\
       </div>\
@@ -201,16 +200,22 @@ log: function(txt, type) {
           <i class="icon icon-pi"></i>\
           <span class="un">[Plug-It]</span>\
         </div>\
-        <div class="text cid-undefined">\
-          '+txt+'\
-        </div>\
+        <div class="text cid-undefined">'+txt+'</div>\
       </div>\
-      <div class="delete-button" style="display: none;">Delete</div>\
     </div>\
   ');
+  logBox.on("mouseenter", function(){
+    logBox.children()[0].style.display = "block";
+  });
+  logBox.on("mouseleave", function(){
+    logBox.children()[0].style.display = "none";
+  });
+  logBox.children().on("click", function(){
+    logBox.remove();
+  });
 
   $("#chat-messages").append(logBox);
-  console[type]("%c[%cPlug-It%c]%c",white,pi,white,"",txt);
+  console[type]("%c[%cPlug-It%c]%c","color: #EEE","color: #ABDA55","color: #EEE","",txt);
 },
 getFriendsOnline: function(callback) {
   var xhr = new XMLHttpRequest;
@@ -299,20 +304,14 @@ hideStream: function() {
 },
 design: function() {
   if (settings.bg == "reset") askBG();
-  switch(settings.CSS) {
-    case 1:
-      pi.dom.style.setAttribute("href", '');
-      settings.bg = "default"; askBG();
-      pi.dom.css.className = "pi-off";
-      break;
-    case 2:
-      pi.dom.style.setAttribute("href", pi.url.blue_css);
-      settings.bg = "reset"; askBG();
-      pi.dom.css.className = "pi-on";
-      break;
-    case 3:
-      pi.dom.style.setAttribute("href", purple_css);
-      settings.bg = "https://rawgit.com/Plug-It/pi/pre-release/images/background/1.png"; changeBG();
+  if (settings.CSS) {
+    pi.dom.style.setAttribute("href", pi.url.blue_css);
+    settings.bg = "reset"; askBG();
+    pi.dom.css.className = "pi-on";
+  } else {
+    pi.dom.style.setAttribute("href", '');
+    settings.bg = "default"; askBG();
+    pi.dom.css.className = "pi-off";
   }
   localStorage.setItem("pi-settings",JSON.stringify(settings));
 },
@@ -429,7 +428,7 @@ voteAlert: function(data) {
 reload: function() {
   API.chatLog(lang.log.reloading);
   menu(10);
-  $.getScript("https://rawgit.com/Plug-It/pi/pre-release/ressources/WiBla.js");
+  $.getScript("https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js");
 },
 slide: function() {
   var show = settings.showMenu,
@@ -540,7 +539,7 @@ chatCommand: function(cmd) {
     break;
     
     case "/pi":
-      API.sendChat("WiBla-Script: http://wibla.free.fr/plug/script/");
+      API.sendChat("Get Plug-It here: http://wibla.free.fr/plug/script/");
     break;
 
     case "/js":
@@ -771,6 +770,7 @@ init: function(unload) {
     // Fully loaded
     pi.log(complete(lang.log.loaded));
     pi.log(lang.log.help, "info");
+    pi.log("This is a pre-release, expect bugs !!!", "warn");
     $('#pi-status').css({opacity:"0"});
     setTimeout(function(){$('#pi-status').remove();}, 250);
   } else {
@@ -792,7 +792,7 @@ init: function(unload) {
     clearInterval(friendsOnline);
 
     // Removing DOM elements
-    $("#Box, #Settings, #WiBla-menu-CSS, #WiBla-CSS, #WiBla-Old-Chat-CSS, #del-chat-button").remove();
+    $("#Box, #Settings, #pi-menu-CSS, #pi-CSS, #pi-oldChat-CSS, #del-chat-button").remove();
     if (hasPermBouncer) $("#pi-rmvDJ, #pi-skip").remove();
 
     return "unloaded";
