@@ -20,9 +20,8 @@
     "wooted": " à woot !",
     "grabbed": " à grab !",
     "meh": " à meh !",
-    "reloading": "Rechargement de WS...",
-    "etaM": "min(s) avant votre tour.",
-    "etaH": "min(s) avant votre tour."
+    "reloading": "Rechargement de Plug-It...",
+    "eta": " avant votre tour."
   },
   "info": {
     "roomChange": "Vous avez changer de room.",
@@ -31,14 +30,15 @@
     "youPlay": "Vous êtes le DJ !",
     "notInWaitList": "Vous n'êtes pas dans la Wait-List.",
     "helpVol": "Utilisation: /vol [0-100]",
-    "helpBot": "Ecrivez le pseudo ou l'ID du bot."
+    "helpUserOrId": "Ecrivez le pseudo ou l'ID du bot."
   },
   "warn": {
     "songLimit": "Musique trop longue ! 8:00 max !",
     "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
     "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
     "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance !",
-    "quit": "Êtes-vous sûr de vouloir quitter ?"
+    "quit": "Êtes-vous sûr de vouloir quitter ?",
+    "inHistory": "$dj joue une musique dans l'historique qui à été joué par $historyDj"
   },
   "error": {
     "autoJoin1": "La Wait-list est bloquée",

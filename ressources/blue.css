@@ -768,7 +768,8 @@
 	color: #F95 !important;
 }
 /*#####[SUBS]#####*/
-.icon-chat-subscriber, #user-rollover .meta.subscriber .status i {
+.icon-chat-subscriber,
+#user-rollover .meta.subscriber.silver .status i {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/crown.png);
 	background-position: -1px 0 !important;
 }

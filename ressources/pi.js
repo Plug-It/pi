@@ -46,6 +46,8 @@ else {
           if (txt[i].charAt(0) == "$") {
             switch(txt[i]) {
               case "$version": txt[i] = pi.version; break;
+              case "$dj": txt[i] = API.getDJ().rawun; break;
+              case "$historyDj": txt[i] = arguments[1]; break;
               default: console.log(lang.error.unknowVariable);
             }
           }
@@ -66,22 +68,29 @@ else {
   updateStatus("Loading user settings", 2);
   var ls = localStorage.getItem('pi-settings');
   var settings = {
+    // General
     autoW: false,
     autoDJ: false,
+    betterMeh: false,
+    navWarn: false,
+    afk: false,
+    // Customisation
     showVideo: true,
     CSS: false,
     oldChat: false,
-    durationAlert: false,
-    woot: false,
-    meh: false,
-    grab: false,
     bg: "",
-    betterMeh: false,
-    navWarn: false,
-    security: false,
-    afk: false,
+    // Moderation
+    durationAlert: false,
     time: 480,
-    "bot": 5285179
+    historyAlert: false,
+    // Notifications
+    userWoot: false,
+    userMeh: false,
+    userGrab: false,
+    userJoin: false,
+    userLeft: false,
+    // Miscellaneous
+    security: false // can be removed by using sessionStorage
   };
   if (ls) {
     // Making sure user settings are up to date
@@ -146,7 +155,7 @@ window.pi = {
 // ╔══════════════════╗
 // ║    VARIABLES     ║
 // ╚══════════════════╝
-version: '1.0.0',
+version: '1.0.0 pre-9',
 url: {
   script: "https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js",
   menu_css: "https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css",
@@ -157,7 +166,6 @@ url: {
 // ╔══════════════════╗
 // ║    FUNCTIONS     ║
 // ╚══════════════════╝
-/* New functions */
 tooltip: function(set, direction, x,y, txt) {
   if (set) {
     var tooltip = $('<div id="tooltip" class="'+direction+'" style="top: '+y+'px; left: '+x+'px;"><span>'+txt+'</span><div class="corner"></div></div>');
@@ -175,9 +183,35 @@ getPlugSettings: function(id) {
   }
 },
 setPlugSettings: function(option, value) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("PUT", "https://plug.dj/_/users/settings", true);
-  xhr.send({option:value});
+  /* error 400
+  $.ajax({
+    url: "https://plug.dj/_/users/settings",
+    method: "PUT",
+    dataType: 'JSON',
+    data: JSON.stringify({option:value});
+  }); */
+
+  var json = JSON.parse(localStorage.getItem("settings"));
+  var id = API.getUser().id;
+  for (var i = 1; i < 20; i++) {
+    if (typeof json[i] !== "undefined") {
+      if (typeof json[i][id] !== "undefined") {
+        for (var obj in json[i][id]) {
+          if (obj == option) json[i][id][obj] = value;
+        }
+      }
+    }
+  }
+  localStorage.setItem("settings", JSON.stringify(json));
+},
+parseHTML: function(txt) {
+  txt = txt.split("\n");
+  for (var i = 0; i < txt.length; i++) {
+    if (i !== txt.length-1) {
+      txt[i] += "<br>";
+    }
+  }
+  return txt.join("");
 },
 log: function(txt, type) {
 
@@ -200,17 +234,17 @@ log: function(txt, type) {
           <i class="icon icon-pi"></i>\
           <span class="un">[Plug-It]</span>\
         </div>\
-        <div class="text cid-undefined">'+txt+'</div>\
+        <div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
       </div>\
     </div>\
   ');
   logBox.on("mouseenter", function(){
-    logBox.children()[0].style.display = "block";
+    logBox.find(".delete-button")[0].style.display = "block";
   });
   logBox.on("mouseleave", function(){
-    logBox.children()[0].style.display = "none";
+    logBox.find(".delete-button")[0].style.display = "none";
   });
-  logBox.children().on("click", function(){
+  logBox.find(".delete-button").on("click", function(){
     logBox.remove();
   });
 
@@ -226,7 +260,6 @@ getFriendsOnline: function(callback) {
   };
   xhr.send();
 },
-/* Old functions */
 menu: function(choice) {
   choice += "";
   switch(choice) {
@@ -238,7 +271,7 @@ menu: function(choice) {
     case "5": pi.askBG(); break;
     case "6": settings.oldChat = !settings.oldChat; pi.oldChat(); break;
     case "7": settings.alertDuration = !settings.alertDuration; pi.alertDuration();break;
-    case "8": settings.meh = !settings.meh; pi.voteAlert(); break;
+    case "8": settings.userMeh = !settings.userMeh; pi.voteAlert(); break;
     case "9": settings.betterMeh = !settings.betterMeh; pi.muteMeh(); break;
     case "10":
       settings.navWarn = !settings.navWarn;
@@ -266,13 +299,13 @@ autojoin: function() {
       if (dj.id !== API.getUser().id && API.getWaitListPosition() === -1) {
         switch (API.djJoin()) {
           case 1:
-            API.chatLog(lang.error.autoJoin1);
+            pi.log(lang.error.autoJoin1, "error");
           break;
           case 2:
-            API.chatLog(lang.error.autoJoin2);
+            pi.log(lang.error.autoJoin2, "error");
           break;
           case 3:
-            API.chatLog(lang.error.autoJoin3);
+            pi.log(lang.error.autoJoin3, "error");
           break;
         }
       }
@@ -377,7 +410,7 @@ alertDuration: function() {
     if (API.getMedia() !== undefined) {
       if (API.getMedia().duration > settings.time) {
         notif.play();
-        API.chatLog(lang.warn.songLimit);
+        pi.log(lang.warn.songLimit, "warn");
       }
     }
   } else {
@@ -414,22 +447,22 @@ afk: function(msg) {
 },
 voteAlert: function(data) {
   //visual stuff
-  if (settings.meh === true) {
+  if (settings.userMeh === true) {
     pi.dom.mehA.className = "pi-on";
   } else {
     pi.dom.mehA.className = "pi-off";
   }
   //notifications
   if (data !== undefined) {
-    if (data.vote == 1 && settings.woot === true) {
-      API.chatLog(data.user.username + lang.log.wooted);
-    } else if (data.vote == -1 && settings.meh === true) {
-      API.chatLog(data.user.username + lang.log.meh);
+    if (data.vote == 1 && settings.userWoot === true) {
+      pi.log(data.user.username + lang.log.wooted);
+    } else if (data.vote == -1 && settings.userMeh === true) {
+      pi.log(data.user.username + lang.log.meh);
     }
   }
 },
 reload: function() {
-  API.chatLog(lang.log.reloading);
+  pi.log(lang.log.reloading);
   menu(10);
   $.getScript("https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js");
 },
@@ -449,7 +482,7 @@ slide: function() {
 forceSkip: function() {
   if (settings.security === false) {
     settings.security = true;
-    API.chatLog(":warning: "  + lang.warn.confirmSkip);
+    pi.log(lang.warn.confirmSkip, "warn");
   } else {
     settings.security = false;
     API.moderateForceSkip();
@@ -458,14 +491,14 @@ forceSkip: function() {
 removeDJ: function() {
   if (settings.security === false) {
     settings.security = true;
-    API.chatLog(":warning: "  + lang.warn.confirmEject);
+    pi.log(lang.warn.confirmEject, "warn");
   } else {
     settings.security = false;
     API.moderateForceQuit();
   }
 },
 execute: function(code) {
-  try {eval(code);} catch(err) {API.chatLog(err+"");}
+  try {eval(code);} catch(err) {pi.log(err+"", "error");}
 },
 chatCommand: function(cmd) {
   var args = cmd.split(" "), msg = [];
@@ -484,32 +517,48 @@ chatCommand: function(cmd) {
       else API.sendChat(msg + " :heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse::heart_eyes::heartpulse:");
     break;
     
+    case "/fire":
+      API.sendChat(":fire: :fire: :fire: :fire: :fire: :fire: :fire: :fire: :fire: :fire:");
+    break;
+
     case "/eta":
       if (API.getUser().id == API.getDJ().id) {
-        API.chatLog(lang.info.youPlay);
+        pi.log(lang.info.youPlay, "info");
       } else if (API.getWaitListPosition() == -1) {
-        API.chatLog(lang.info.notInWaitList);
-      } else {
-        var eta = API.getWaitListPosition() + 1; //index 0
-        eta = eta * 4; //we assume that everyone plays 4mins music
-        eta = eta * 60; //transform in second
-        eta = eta + API.getTimeRemaining(); //to add the time remaining
-        eta = eta / 60; //then split in minutes
-        eta = Math.round(eta, 1); //gives a rounded result
-        if (eta >= 60) {
-          var etaH = eta / 60;
-          etaH = Math.round(etaH, 1); //gives hours
-          var etaM = eta % 60; //gives minutes
-          API.chatLog(etaH + "H" + etaM + lang.log.etaH);
+        pi.log(lang.info.notInWaitList, "info");
+      } else if (API.getWaitListPosition() == 0) {
+        var eta = API.getTimeRemaining();
+        if (eta >= 3600) {
+          var etaH = Math.floor(eta/60);
+          var etaM = eta%60;
+          pi.log(etaH+"h"+etaM+"m "+lang.log.eta);
+        } else if (eta >= 60) {
+          var etaM = Math.floor(eta/60);
+          var etaS = eta%60;
+          etaS < 10 ? etaS = "0"+etaS : void(0);
+          pi.log(etaM+"m"+etaS+"s "+lang.log.eta);
         } else {
-          API.chatLog(eta + " " + lang.log.etaM);
+          pi.log(eta+"s "+lang.log.eta);
+        }
+      } else {
+        var eta = (API.getWaitListPosition()+1)*4*60;
+        eta += API.getTimeRemaining();
+        if (eta >= 3600) {
+          var etaH = Math.floor(eta/60);
+          var etaM = eta%60;
+          pi.log(etaH+"h"+etaM+"m "+lang.log.eta);
+        } else {
+          var etaM = Math.floor(eta/60);
+          var etaS = eta%60;
+          etaS < 10 ? etaS = "0"+etaS : void(0);
+          pi.log(etaM+"m"+etaS+"s "+lang.log.eta);
         }
       }
     break;
     
     case "/vol":
       if (args[1] >= 0 && args[1] <= 100) API.setVolume(args[1]);
-      else API.chatLog(lang.info.helpVol);
+      else pi.log(lang.info.helpVol, "info");
     break;
     
     case "/afk":
@@ -518,61 +567,67 @@ chatCommand: function(cmd) {
       pi.afk(msg);
     break;
     
-    case "/bot":
-      if (args[1] === undefined) API.chatLog(lang.info.helpBot);
-      else {
-        if (!isNaN(args[1])) settings.bot = Number(args[1]);
-        else if (API.getUserByName(args[1]) !== null) settings.bot = API.getUserByName(args[1]).id;
-        else API.chatLog(lang.error.noUserByName);
-        localStorage.setItem("pi-settings",JSON.stringify(settings));
-      }
-    break;
-    
     case "/whoami":
       var me = API.getUser();
-      API.chatLog("Username: " + me.username);
-      API.chatLog("ID: " + me.id);
-      API.chatLog("Description: " + me.blurb);
-      API.chatLog("Profile: " + location.origin + "/@/" + API.getUser().slug);
-      API.chatLog("Avatar: " + me.avatarID);
-      API.chatLog("Badge: " + me.badge);
-      API.chatLog("Lvl: " + me.level);
-      API.chatLog("XP: " + me.xp);
-      API.chatLog("PP: " + me.pp);
+      pi.log("Username: " + me.username +
+      "\nID: " + me.id + 
+      "\nDescription: " + me.blurb +
+      "\nProfile: " + location.origin + "/@/" + me.username +
+      "\nAvatar: " + me.avatarID +
+      "\nBadge: " + me.badge +
+      "\nLvl: " + me.level +
+      "\nXP: " + me.xp +
+      "\nPP: " + me.pp);
     break;
     
+    case "/whois":
+    debugger;
+    if (typeof args[1] == "undefined") pi.log(lang.info.helpUserOrId, "info");
+    else if (typeof args[1] == "string") var user = API.getUserByName(args[1].replace("@", ""));
+    else var user = API.getUser(args[1]);
+      pi.log("Username: "+user.rawun+"\n\
+        ID: " +user.id+"\n\
+        Profile: "+location.origin + "/@/" + user.username+"\n\
+        language: "+user.language+"\n\
+        Avatar: "+user.avatarID+"\n\
+        Badge: "+user.badge+"\n\
+        Lvl: "+user.level+"\n\
+        Is friend: "+user.friend+"\n", "info");
+    break;
+
     case "/pi":
       API.sendChat("Get Plug-It here: http://wibla.free.fr/plug/script/");
     break;
 
     case "/js":
-      execute(msg);
+      pi.execute(msg);
     break;
 
     /*case "/ban":
     break;*/
     
     case "/list":
-      API.chatLog("/like <3 x 5");
-      API.chatLog("/love [@user]");
-      API.chatLog("/eta");
-      API.chatLog("/vol [0-100]");
-      API.chatLog("/afk [message]");
-      API.chatLog("/bot [id/pseudo]");
-      API.chatLog("/whoami");
-      API.chatLog("/pi");
-      API.chatLog("/js [javaScript code]");
-      API.chatLog("/reload");
-      API.chatLog("/kill");
-      API.chatLog("/list");
+      pi.log("/like <3 x 5\
+      \n/love [@user]\
+      \n/fire\
+      \n/eta\
+      \n/vol [0-100]\
+      \n/afk [message]\
+      \n/whoami\
+      \n/whois [id/pseudo]\
+      \n/pi\
+      \n/js [javaScript code]\
+      \n/reload\
+      \n/kill\
+      \n/list");
     break;
     
     case "/reload":
-      reload();
+      pi.reload();
     break;
     
     case "/kill":
-      menu(10);
+      pi.menu(10);
     break;
   }
 },
@@ -587,6 +642,13 @@ init: function(unload) {
       pi.alertDuration();
       settings.security = false;
     });
+    API.on(API.HISTORY_UPDATE, function(){
+      if (settings.historyAlert) {
+        for (var i = 0; i < API.getHistory().length; i++) {
+          if (API.getMedia().cid == API.getHistory()[i].media.cid) pi.log(complete(lang.warn.inHistory, API.getHistory()[i].user.username));
+        }
+      }
+    });
     API.on(API.VOTE_UPDATE, pi.voteAlert);
     API.on(API.CHAT_COMMAND, pi.chatCommand);
     API.on(API.CHAT, function(msg) {
@@ -597,26 +659,29 @@ init: function(unload) {
         $(selector)[0].className += " deletable";
         $(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
         $(selector).on("mouseenter", function(){
-          $(selector).children()[0].style.display = "block";
+          $(selector).find(".delete-button")[0].style.display = "block";
         });
         $(selector).on("mouseleave", function(){
-          $(selector).children()[0].style.display = "none";
+          $(selector).find(".delete-button")[0].style.display = "none";
         });
-        $(selector).children().on("click", function(){
+        $(selector).find(".delete-button").on("click", function(){
           API.moderateDeleteChat(msg.cid);
         });
       }
     });
     // API addition
     API.moderateForceQuit = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open("DELETE", location.origin+"/_/booth/remove/"+API.getDJ().id, true);
-      xhr.send();
+      $.ajax({
+        url: location.origin+"/_/booth/remove/"+API.getDJ().id,
+        method: "DELETE"
+      });
     };
     API.getUserByName = function(name) {
+      if (typeof name !== "string") return console.error("Name must be a string");
+      name = name.toLowerCase();
       var audience = API.getUsers();
       for (var i = 0; i < audience.length; i++) {
-        if (audience[i].rawun == name) return audience[i];
+        if (audience[i].rawun.toLowerCase() == name) return audience[i];
       }
       return null;
     };
@@ -638,51 +703,45 @@ init: function(unload) {
       e.preventDefault();
       if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-5);
       else API.setVolume(API.getVolume()+5);
+
+      pi.setPlugSettings("volume", API.getVolume());
     });
     $("#now-playing-media").on("mouseenter", function(){
       if (pi.getPlugSettings().tooltips) pi.tooltip(true, "left", $('#now-playing-bar').css("Left").replace("px",""),0, this.innerText);
     });
     $("#now-playing-media").on("mouseleave", function(){pi.tooltip(false);});
 
-    /* Room change event emmiter
-    $(window).bind("click", function() {
-      if (window.roomName === undefined) {
-        window.roomName = location.href;
-      } else if (location.href !== window.roomName) {
-        API.chatLog("Your room changed");
-        window.roomName = location.href;
+    // Show percentage in level bar
+    window.levelBarInfo = setInterval(function(){
+      $("#footer-user .info .meta .bar .value")[0].innerHTML = $("#footer-user .info .meta .bar .value")[0].innerHTML.replace(/ [0-9]*%/g, "") + " " + $("#footer-user .info .progress")[0].style.width;
+      
+      if ($("#the-user-profile .experience.section .xp .value")[0]) {
+        $("#the-user-profile .experience.section .xp .value")[0].innerHTML = $("#the-user-profile .experience.section .xp .value")[0].innerHTML.replace(/ [0-9]*%/g, "") + " " + $("#the-user-profile .experience.section .progress")[0].style.width;
+      }
+    }, 5*60*1000);
+    // Show how many friends are online
+    window.friendsOnline = setInterval(function(){
+      pi.getFriendsOnline(
+        function(data) {
+          var friends = JSON.parse(data).data;
+          var friendsOnline = 0;
+          for (var i = 0; i < friends.length; i++) {
+            if (typeof friends[i].room !== "undefined") friendsOnline++;
+          }
+          var count = $("#friends-button > span")[0].innerText.replace(/[0-9]*\//g,"");
+          count = friendsOnline + "/" + count;
+          $("#friends-button > span")[0].innerText = count;
+    })}, 5*1000);
+    window.roomURL = location.pathname
+    window.checkIfRoomChanged = setInterval(function(){
+      if (location.pathname !== window.roomURL) {
+        pi.log("Your room changed", "info");
+        window.roomURL = location.pathname; // If not set, script will reload infinitely
+        clearInterval(checkIfRoomChanged);
         pi.reload();
       }
-    }); */
-    // show percentage in level bar (room for improvement using regExp)
-    window.levelBarInfo = setInterval((function() {
-      var xp = $("#footer-user .info .meta .bar .value")[0].innerHTML,
-        elements = xp.split(" ");
-
-      if (elements.length == 3) {
-        var toAdd = $("#footer-user .info .progress")[0].style.width;
-        $("#footer-user .info .meta .bar .value")[0].innerHTML = xp + " " + toAdd;
-      }
-      if ($("#the-user-profile .experience.section .xp .value")[0]) {
-        var xp2 = $("#the-user-profile .experience.section .xp .value")[0].innerHTML,
-        elements2 = xp2.split(" ");
-        if (elements2.length == 3) {
-          var toAdd2 = $("#the-user-profile .experience.section .progress")[0].style.width;
-          $("#the-user-profile .experience.section .xp .value")[0].innerHTML = xp2 + " " + toAdd2;
-        }
-      }
-    }), 5*60*1000);
-    window.friendsOnline = setInterval(pi.getFriendsOnline(
-      function(data) {
-        var friends = JSON.parse(data).data;
-        var friendsOnline = 0;
-        for (var i = 0; i < friends.length; i++) {
-          if (typeof friends[i].room !== "undefined") friendsOnline++;
-        }
-        var count = $("#friends-button > span")[0].innerText.replace(/[0-9]*\//g,"");
-        count = friendsOnline + "/" + count;
-        $("#friends-button > span")[0].innerText = count;
-      }), 5*1000);
+    }, 2*1000);
+    window.checkIfUpdatesAvailable = setInterval(pi.checkForUpdates, 30*60*1000);
 
     // Creating DOM elements
     updateStatus("Creating script environement", 5);
@@ -749,7 +808,7 @@ init: function(unload) {
         case "pi-delChat": API.sendChat('/clear'); break;
       }
     });
-    this.dom = {
+    pi.dom = {
       // Script
       woot: $("#pi-woot")[0],
       join: $("#pi-join")[0],
@@ -789,8 +848,10 @@ init: function(unload) {
     API.off(API.ADVANCE, pi.autowoot);
     API.off(API.ADVANCE, pi.autojoin);
     delete API.moderateForceQuit;
+    delete API.getUserByName;
     window.onbeforeunload = null;
     $(window).off("keydown");
+    $("body").off("click");
     $("#volume").off("mousewheel");
     clearInterval(levelBarInfo);
     clearInterval(friendsOnline);
@@ -803,8 +864,9 @@ init: function(unload) {
   }
 },
 reload: function() {
+  pi.log(lang.log.reloading);
   if (pi.kill() == "killed") $.getScript(scriptURL);
-  else console.error("[Plug-It] Couldn't kill script");
+  else pi.log("[Plug-It] Couldn't kill script", "error");
 },
 kill: function() {
   if (pi.init(true) == "unloaded") {
@@ -812,15 +874,15 @@ kill: function() {
     pi = undefined;
     return "killed";
   }
-  else console.error("[Plug-It] Couldn't unload script");
+  else pi.log("[Plug-It] Couldn't unload script", "error");
 },
 checkForUpdates: function(isForced) {
   getLastCommit("https://api.github.com/repos/Plug-It/pi/commits/pre-release", function(data){
     var lastCommit = JSON.parse(data.currentTarget.responseText);
     if (thisCommit.sha !== lastCommit.sha) {
-      if (confirm("An update is available:\n"+lastCommit.commit.message+"\n\nWould you like to update ?")) pi.reload();
+      if (isForced) pi.reload;
+      else if (confirm("An update is available:\n"+lastCommit.commit.message+"\n\nWould you like to update ?")) pi.reload();
     }
-    else if (isForced) pi.log("No update available.", "info");
   });
 }};
 // end of 'pi' declaration
