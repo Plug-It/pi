@@ -21,7 +21,8 @@
     "grabbed": " grabbed this track !",
     "meh": " meh'd this track !",
     "reloading": "Reloading Plug-It...",
-    "eta": "until you play."
+    "eta": "until you play.",
+    "forcingReload": "An update is available, forcing you to reload. Sorry for the inconvenience."
   },
   "info": {
     "roomChange": "Your room changed.",
@@ -36,7 +37,7 @@
     "songLimit": "Music is too long ! 8:00 max !",
     "confirmSkip": "This will skip the DJ, click again to confirm.",
     "confirmEject": "This will remove the DJ from the wait-list, click again to confirm.",
-    "isTrusted": "Never execute code from someone you don't fully trust !",
+    "isTrusted": "Never execute code from someone you don't fully trust ! Try again to confirm.",
     "quit": "Are you sure you want to leave ?",
     "inHistory": "$dj is playing a song in history that was played by $historyDj"
   },

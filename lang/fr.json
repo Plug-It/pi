@@ -21,7 +21,8 @@
     "grabbed": " à grab !",
     "meh": " à meh !",
     "reloading": "Rechargement de Plug-It...",
-    "eta": " avant votre tour."
+    "eta": " avant votre tour.",
+    "forcingReload": "Une nouvelle mise à jours est diponible, rechargement forcé, désolé du dérangement."
   },
   "info": {
     "roomChange": "Vous avez changer de room.",
@@ -36,7 +37,7 @@
     "songLimit": "Musique trop longue ! 8:00 max !",
     "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
     "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
-    "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance !",
+    "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance ! Réessayez pour confirmer.",
     "quit": "Êtes-vous sûr de vouloir quitter ?",
     "inHistory": "$dj joue une musique dans l'historique qui à été joué par $historyDj"
   },

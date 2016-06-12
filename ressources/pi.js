@@ -36,33 +36,28 @@ else {
 
   // Load user language
   updateStatus("Loading user language", 1);
-  var xhr = new XMLHttpRequest(), lang;
-  xhr.onreadystatechange = function(){
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      lang = JSON.parse(xhr.responseText);
-      window.complete = function(txt) {
-        txt = txt.split(" ");
-        for (var i = 0; i < txt.length; i++) {
-          if (txt[i].charAt(0) == "$") {
-            switch(txt[i]) {
-              case "$version": txt[i] = pi.version; break;
-              case "$dj": txt[i] = API.getDJ().rawun; break;
-              case "$historyDj": txt[i] = arguments[1]; break;
-              default: console.log(lang.error.unknowVariable);
-            }
-          }
-        }
-        return txt.join(" ");
-      }
-    }
-  };
   switch (API.getUser().language) {
     case "en": lang = "en"; break;
     case "fr": lang = "fr"; break;
     default: lang = "en"; break;
   }
-  xhr.open('GET', 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json', true);
-  xhr.send();
+  $.getJSON("https://rawgit.com/Plug-It/pi/pre-release/lang/"+lang+".json", function(data) {
+    window.lang = data;
+    window.complete = function(txt) {
+      txt = txt.split(" ");
+      for (var i = 0; i < txt.length; i++) {
+        if (txt[i].charAt(0) == "$") {
+          switch(txt[i]) {
+            case "$version": txt[i] = pi.version; break;
+            case "$dj": txt[i] = API.getDJ().rawun; break;
+            case "$historyDj": txt[i] = arguments[1]; break;
+            default: console.log(lang.error.unknowVariable);
+          }
+        }
+      }
+      return txt.join(" ");
+    }
+  });
   
   // Retrieve user settings if available
   updateStatus("Loading user settings", 2);
@@ -71,6 +66,7 @@ else {
     // General
     autoW: false,
     autoDJ: false,
+    keyboardShortcuts: false,
     betterMeh: false,
     navWarn: false,
     afk: false,
@@ -88,11 +84,9 @@ else {
     userMeh: false,
     userGrab: false,
     userJoin: false,
-    userLeft: false,
-    // Miscellaneous
-    security: false // can be removed by using sessionStorage
+    userLeft: false
   };
-  if (ls) {
+  if (typeof ls == "string") {
     // Making sure user settings are up to date
     var usrSettings = JSON.parse(ls);
     for (var obj in settings) {
@@ -100,26 +94,29 @@ else {
         usrSettings[obj] = settings[obj];
       }
     }
+    localStorage.setItem("pi-settings", JSON.stringify(usrSettings));
+    settings = usrSettings;
+  } else {
+    localStorage.setItem("pi-settings", JSON.stringify(settings));
   }
-  localStorage.setItem("pi-settings", JSON.stringify(settings));
+
+  sessionStorage.setItem("modSkipWarn", false);
+  sessionStorage.setItem("modQuitWarn", false);
+  sessionStorage.setItem("trustWarn", false);
 
   // Get Plug & Script ranks
   updateStatus("Fetching script ranks", 3);
-  // I use different xhr to avoid synchronous requests while making it easy for me
-  var xhr1 = new XMLHttpRequest(), ranks;
-  xhr1.onreadystatechange = function() {
-    if (xhr1.readyState == 4 && xhr1.status == 200) {
-      ranks = JSON.parse(xhr1.responseText);
+  $.getJSON("https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json", function(data) {
+    window.ranks = data;
+  });
+  function getRank(id) {
+    var result = [], user;
+
+    if (!id) {
+      user = API.getUser();
+      id = user.id;
     }
-  }
-  xhr1.open('GET', 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json', true);
-  xhr1.send();
-  var getRank = function(isRank, id) {
-    arguments.length = 0 ? id = API.getUser().id : void(0);
-    if (typeof isRank == "number") {
-      id = isRank; isRank = undefined;
-    }
-    var result = [], user = API.getUser(id);
+    else user = API.getUser(id);
     // Plug ranks
     switch (user.role) {
       // I ommit 'break;' on purpose to inherit
@@ -139,23 +136,27 @@ else {
         if (id == ranks[rank][users]) result.push(rank);
       }
     }
-    // HasPerm
-    if (typeof isRank !== "undefined") {
-      for (var ranks in result) {
-        if (result[ranks] == isRank) return true;
-      }
-      return false;
-    }
-    else return result;
+    
+    return result;
   }
-  hasPermBouncer = getRank("Bouncer");
+  function isRank(rank, id) {
+    if (!rank) return null;
+    var result = getRank(id);
+
+    for (var ranks in result) {
+      result[ranks] = result[ranks].toLowerCase();
+      rank = rank.toLowerCase();
+      if (result[ranks] == rank) return true;
+    }
+    return false;
+  }
 }
 
 window.pi = {
 // ╔══════════════════╗
 // ║    VARIABLES     ║
 // ╚══════════════════╝
-version: '1.0.0 pre-9',
+version: '1.0.0 pre-10',
 url: {
   script: "https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js",
   menu_css: "https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css",
@@ -168,10 +169,14 @@ url: {
 // ╚══════════════════╝
 tooltip: function(set, direction, x,y, txt) {
   if (set) {
-    var tooltip = $('<div id="tooltip" class="'+direction+'" style="top: '+y+'px; left: '+x+'px;"><span>'+txt+'</span><div class="corner"></div></div>');
+    var tooltip = $('\
+      <div id="tooltip" class="'+direction+'" style="top: '+y+'px; left: '+x+'px;">\
+        <span>'+txt+'</span>\
+        <div class="corner"></div>\
+      </div>');
     $("body").append(tooltip);
   }
-  else if (!set) {
+  else {
     $("#tooltip").remove();
   }
 },
@@ -213,43 +218,54 @@ parseHTML: function(txt) {
   }
   return txt.join("");
 },
-log: function(txt, type) {
+log: function(txt, type, where) {
 
   switch(type) {
     case "error": txt = "Error: " + txt;break;
     case "warn":  txt = "Warn: "  + txt;break;
     case "info":  txt = "Info: "  + txt;break;
     case "debug": txt = "Debug: " + txt;break;
+
+    case "chat":
+    case "console":
+    case "both":
+      where = type; type = "log";
+    break;
+
     default: type = "log";break;
   }
 
-  var logBox = $('\
-    <div class="cm pi-'+type+' deletable">\
-      <div class="delete-button" style="display: none;">Delete</div>\
-      <div class="badge-box">\
-        <i class="bdg bdg-piLogo"></i>\
-      </div>\
-      <div class="msg">\
-        <div class="from Plug-It">\
-          <i class="icon icon-pi"></i>\
-          <span class="un">[Plug-It]</span>\
+  if (typeof where == "undefined" || where == "chat" || where == "both") {
+    // If style 'top' of .delete-button is set, his position is relative to #chat-messages instead of the .cm
+    var logBox = $('\
+      <div class="cm pi-'+type+' deletable">\
+        <div class="delete-button" style="display: none;top: initial !important;">Delete</div>\
+        <div class="badge-box">\
+          <i class="bdg bdg-piLogo"></i>\
         </div>\
-        <div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
+        <div class="msg">\
+          <div class="from Plug-It">\
+            <i class="icon icon-pi"></i>\
+            <span class="un">[Plug-It]</span>\
+          </div>\
+          <div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
+        </div>\
       </div>\
-    </div>\
-  ');
-  logBox.on("mouseenter", function(){
-    logBox.find(".delete-button")[0].style.display = "block";
-  });
-  logBox.on("mouseleave", function(){
-    logBox.find(".delete-button")[0].style.display = "none";
-  });
-  logBox.find(".delete-button").on("click", function(){
-    logBox.remove();
-  });
-
-  $("#chat-messages").append(logBox);
-  console[type]("%c[%cPlug-It%c]%c","color: #EEE","color: #ABDA55","color: #EEE","",txt);
+    ');
+    logBox.on("mouseenter", function(){
+      logBox.find(".delete-button")[0].style.display = "block";
+    });
+    logBox.on("mouseleave", function(){
+      logBox.find(".delete-button")[0].style.display = "none";
+    });
+    logBox.find(".delete-button").on("click", function(){
+      logBox.remove();
+    });
+    $("#chat-messages").append(logBox);
+  }
+  if (typeof where == "undefined" || where == "console" || where == "both") {
+    console[type]("%c[%cPlug-It%c]%c","color: #EEE","color: #ABDA55","color: #EEE","",txt);
+  }
 },
 getFriendsOnline: function(callback) {
   var xhr = new XMLHttpRequest;
@@ -277,6 +293,18 @@ menu: function(choice) {
       settings.navWarn = !settings.navWarn;
       settings.navWarn ? pi.dom.navWarn.className = "pi-on" : pi.dom.navWarn.className = "pi-off";
     break;
+    case "init":
+      pi.slide();
+      pi.autowoot();
+      pi.autojoin();
+      pi.hideStream();
+      pi.design();
+      pi.oldChat();
+      pi.alertDuration();
+      pi.voteAlert();
+      pi.muteMeh();
+      settings.navWarn ? pi.dom.navWarn.className = "pi-on" : pi.dom.navWarn.className = "pi-off";
+    break;
     case "kill": pi.kill(); break;
     default: console.log(lang.info.menuOptions);
   }
@@ -299,13 +327,13 @@ autojoin: function() {
       if (dj.id !== API.getUser().id && API.getWaitListPosition() === -1) {
         switch (API.djJoin()) {
           case 1:
-            pi.log(lang.error.autoJoin1, "error");
+            pi.log(lang.error.autoJoin1, "error", "chat");
           break;
           case 2:
-            pi.log(lang.error.autoJoin2, "error");
+            pi.log(lang.error.autoJoin2, "error", "chat");
           break;
           case 3:
-            pi.log(lang.error.autoJoin3, "error");
+            pi.log(lang.error.autoJoin3, "error", "chat");
           break;
         }
       }
@@ -320,7 +348,7 @@ hideStream: function() {
   if (settings.showVideo) {
     pi.dom.stream.style.visibility = "visible";
     pi.dom.stream.style.height = "281px";
-    if (hasPermBouncer) {
+    if (isRank("Bouncer")) {
       pi.dom.rmvDJ.style.top = pi.dom.skip.style.top = "283px";
     }
     $("#playback-controls")[0].style.visibility = "visible";
@@ -329,7 +357,7 @@ hideStream: function() {
   } else {
     pi.dom.stream.style.visibility = "hidden";
     pi.dom.stream.style.height = "0";
-    if (hasPermBouncer) {
+    if (isRank("Bouncer")) {
       pi.dom.rmvDJ.style.top = pi.dom.skip.style.top = "0";
     }
     $("#playback-controls")[0].style.visibility = "hidden";
@@ -410,7 +438,7 @@ alertDuration: function() {
     if (API.getMedia() !== undefined) {
       if (API.getMedia().duration > settings.time) {
         notif.play();
-        pi.log(lang.warn.songLimit, "warn");
+        pi.log(lang.warn.songLimit, "warn", "chat");
       }
     }
   } else {
@@ -455,9 +483,9 @@ voteAlert: function(data) {
   //notifications
   if (data !== undefined) {
     if (data.vote == 1 && settings.userWoot === true) {
-      pi.log(data.user.username + lang.log.wooted);
+      pi.log(data.user.username + lang.log.wooted, "chat");
     } else if (data.vote == -1 && settings.userMeh === true) {
-      pi.log(data.user.username + lang.log.meh);
+      pi.log(data.user.username + lang.log.meh, "chat");
     }
   }
 },
@@ -468,7 +496,7 @@ reload: function() {
 },
 slide: function() {
   var show = settings.showMenu,
-    menu = $("#Settings")[0];
+      menu = $("#Settings")[0];
   if (show === false) {
     menu.style.visibility = "hidden";
     menu.style.zIndex = "0";
@@ -480,25 +508,30 @@ slide: function() {
   }
 },
 forceSkip: function() {
-  if (settings.security === false) {
-    settings.security = true;
-    pi.log(lang.warn.confirmSkip, "warn");
+  if (sessionStorage.getItem("modSkipWarn") == "false") {
+    sessionStorage.setItem("modSkipWarn", "true");
+    pi.log(lang.warn.confirmSkip, "warn", "chat");
   } else {
-    settings.security = false;
+    sessionStorage.setItem("modSkipWarn", "false");;
     API.moderateForceSkip();
   }
 },
 removeDJ: function() {
-  if (settings.security === false) {
-    settings.security = true;
-    pi.log(lang.warn.confirmEject, "warn");
+  if (sessionStorage.getItem("modQuitWarn") == "false") {
+    sessionStorage.setItem("modQuitWarn", "true");;
+    pi.log(lang.warn.confirmEject, "warn", "chat");
   } else {
-    settings.security = false;
+    sessionStorage.setItem("modQuitWarn", "false");;
     API.moderateForceQuit();
   }
 },
 execute: function(code) {
-  try {eval(code);} catch(err) {pi.log(err+"", "error");}
+  if (sessionStorage.getItem("trustWarn") == "false") {
+    pi.log(lang.warn.isTrusted, "warn");
+    sessionStorage.setItem("trustWarn", "true");
+  } else {
+    try {eval(code);} catch(err){pi.log(err+"", "error", "chat");}
+  }
 },
 chatCommand: function(cmd) {
   var args = cmd.split(" "), msg = [];
@@ -523,42 +556,42 @@ chatCommand: function(cmd) {
 
     case "/eta":
       if (API.getUser().id == API.getDJ().id) {
-        pi.log(lang.info.youPlay, "info");
+        pi.log(lang.info.youPlay, "info", "chat");
       } else if (API.getWaitListPosition() == -1) {
-        pi.log(lang.info.notInWaitList, "info");
+        pi.log(lang.info.notInWaitList, "info", "chat");
       } else if (API.getWaitListPosition() == 0) {
         var eta = API.getTimeRemaining();
         if (eta >= 3600) {
           var etaH = Math.floor(eta/60);
           var etaM = eta%60;
-          pi.log(etaH+"h"+etaM+"m "+lang.log.eta);
+          pi.log(etaH+"h"+etaM+"m "+lang.log.eta, "chat");
         } else if (eta >= 60) {
           var etaM = Math.floor(eta/60);
           var etaS = eta%60;
           etaS < 10 ? etaS = "0"+etaS : void(0);
-          pi.log(etaM+"m"+etaS+"s "+lang.log.eta);
+          pi.log(etaM+"m"+etaS+"s "+lang.log.eta, "chat");
         } else {
-          pi.log(eta+"s "+lang.log.eta);
+          pi.log(eta+"s "+lang.log.eta, "chat");
         }
       } else {
-        var eta = (API.getWaitListPosition()+1)*4*60;
+        var eta = (API.getWaitListPosition())*4*60;
         eta += API.getTimeRemaining();
         if (eta >= 3600) {
           var etaH = Math.floor(eta/60);
           var etaM = eta%60;
-          pi.log(etaH+"h"+etaM+"m "+lang.log.eta);
+          pi.log(etaH+"h"+etaM+"m "+lang.log.eta, "chat");
         } else {
           var etaM = Math.floor(eta/60);
           var etaS = eta%60;
           etaS < 10 ? etaS = "0"+etaS : void(0);
-          pi.log(etaM+"m"+etaS+"s "+lang.log.eta);
+          pi.log(etaM+"m"+etaS+"s "+lang.log.eta, "chat");
         }
       }
     break;
     
     case "/vol":
       if (args[1] >= 0 && args[1] <= 100) API.setVolume(args[1]);
-      else pi.log(lang.info.helpVol, "info");
+      else pi.log(lang.info.helpVol, "info", "chat");
     break;
     
     case "/afk":
@@ -577,22 +610,23 @@ chatCommand: function(cmd) {
       "\nBadge: " + me.badge +
       "\nLvl: " + me.level +
       "\nXP: " + me.xp +
-      "\nPP: " + me.pp);
+      "\nPP: " + me.pp, "chat");
     break;
     
     case "/whois":
-    debugger;
-    if (typeof args[1] == "undefined") pi.log(lang.info.helpUserOrId, "info");
-    else if (typeof args[1] == "string") var user = API.getUserByName(args[1].replace("@", ""));
-    else var user = API.getUser(args[1]);
-      pi.log("Username: "+user.rawun+"\n\
+      if (typeof args[1] == "undefined") pi.log(lang.info.helpUserOrId, "info");
+      else if (typeof args[1] == "string") var user = API.getUserByName(args[1].replace("@", ""));
+      else var user = API.getUser(args[1]);
+      if (typeof user == "object") {
+        pi.log("Username: "+user.rawun+"\n\
         ID: " +user.id+"\n\
         Profile: "+location.origin + "/@/" + user.username+"\n\
         language: "+user.language+"\n\
         Avatar: "+user.avatarID+"\n\
         Badge: "+user.badge+"\n\
         Lvl: "+user.level+"\n\
-        Is friend: "+user.friend+"\n", "info");
+        Is friend: "+user.friend+"\n", "info", "chat");
+      }
     break;
 
     case "/pi":
@@ -619,7 +653,7 @@ chatCommand: function(cmd) {
       \n/js [javaScript code]\
       \n/reload\
       \n/kill\
-      \n/list");
+      \n/list", "chat");
     break;
     
     case "/reload":
@@ -633,19 +667,20 @@ chatCommand: function(cmd) {
 },
 /* Core */
 init: function(unload) {
-  if (typeof unload == "undefined") {
+  // API initalization
+  if (!unload) {
     updateStatus("Initalizating API & Events listener", 4);
-    // API initalization
     API.on(API.ADVANCE, function(){
       pi.autowoot();
       pi.autojoin();
       pi.alertDuration();
-      settings.security = false;
+      sessionStorage.setItem("modSkipWarn", "false");
+      sessionStorage.setItem("modQuitWarn", "false");
     });
     API.on(API.HISTORY_UPDATE, function(){
       if (settings.historyAlert) {
         for (var i = 0; i < API.getHistory().length; i++) {
-          if (API.getMedia().cid == API.getHistory()[i].media.cid) pi.log(complete(lang.warn.inHistory, API.getHistory()[i].user.username));
+          if (API.getMedia().cid == API.getHistory()[i].media.cid) pi.log(complete(lang.warn.inHistory, API.getHistory()[i].user.username, "chat"));
         }
       }
     });
@@ -653,7 +688,7 @@ init: function(unload) {
     API.on(API.CHAT_COMMAND, pi.chatCommand);
     API.on(API.CHAT, function(msg) {
       // Self Deletion Magic
-      if (hasPermBouncer && msg.uid == API.getUser().id) {
+      if (isRank("Bouncer") && msg.uid == API.getUser().id) {
         var selector = "#chat [data-cid='"+msg.cid+"']";
         if (!$(selector).length) return; // Prevent adding a second button
         $(selector)[0].className += " deletable";
@@ -669,7 +704,45 @@ init: function(unload) {
         });
       }
     });
-    // API addition
+  }
+  else {
+    API.off(API.ADVANCE, function(){
+      pi.autowoot();
+      pi.autojoin();
+      pi.alertDuration();
+      sessionStorage.setItem("modSkipWarn", "false");
+      sessionStorage.setItem("modQuitWarn", "false");
+    });
+    API.off(API.HISTORY_UPDATE, function(){
+      if (settings.historyAlert) {
+        for (var i = 0; i < API.getHistory().length; i++) {
+          if (API.getMedia().cid == API.getHistory()[i].media.cid) pi.log(complete(lang.warn.inHistory, API.getHistory()[i].user.username, "chat"));
+        }
+      }
+    });
+    API.off(API.VOTE_UPDATE, pi.voteAlert);
+    API.off(API.CHAT_COMMAND, pi.chatCommand);
+    API.off(API.CHAT, function(msg) {
+      // Self Deletion Magic
+      if (isRank("Bouncer") && msg.uid == API.getUser().id) {
+        var selector = "#chat [data-cid='"+msg.cid+"']";
+        if (!$(selector).length) return; // Prevent adding a second button
+        $(selector)[0].className += " deletable";
+        $(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
+        $(selector).on("mouseenter", function(){
+          $(selector).find(".delete-button")[0].style.display = "block";
+        });
+        $(selector).on("mouseleave", function(){
+          $(selector).find(".delete-button")[0].style.display = "none";
+        });
+        $(selector).find(".delete-button").on("click", function(){
+          API.moderateDeleteChat(msg.cid);
+        });
+      }
+    });
+  }
+  // API addition
+  if (!unload) {
     API.moderateForceQuit = function() {
       $.ajax({
         url: location.origin+"/_/booth/remove/"+API.getDJ().id,
@@ -685,20 +758,37 @@ init: function(unload) {
       }
       return null;
     };
-    // #### [Events listener] ####
-    // Navigation warning
+  }
+  else {
+    delete API.moderateForceQuit;
+    delete API.getUserByName;
+  }
+
+  // #### [Events listener] ####
+  // Navigation warning
+  if (!unload) {
     window.onbeforeunload = function() {
       if (settings.navWarn) return lang.warn.quit;
     };
-    // Keyboard shorcuts
+  }
+  else window.onbeforeunload = null;
+  // Keyboard shorcuts
+  if (!unload) {
     $(window).on("keydown", function(k) {
-      if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
-        API.setVolume(API.getVolume()+5);
-      } else if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
-        API.setVolume(API.getVolume()-5);
+      if (settings.keyboardShortcuts) {
+        if (k.keyCode == 107 && !$($("#chat-input")).attr("class")) {
+          API.setVolume(API.getVolume()+5);
+        } else if (k.keyCode == 109 && !$($("#chat-input")).attr("class")) {
+          API.setVolume(API.getVolume()-5);
+        }
+
+        pi.setPlugSettings("volume", API.getVolume());
       }
     });
-    // ScrollWheel volume changer
+  }
+  else $(window).off("keydown");
+  // ScrollWheel volume changer
+  if (!unload) {
     $("#volume, #playback").on("mousewheel", function(e){
       e.preventDefault();
       if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-5);
@@ -706,12 +796,11 @@ init: function(unload) {
 
       pi.setPlugSettings("volume", API.getVolume());
     });
-    $("#now-playing-media").on("mouseenter", function(){
-      if (pi.getPlugSettings().tooltips) pi.tooltip(true, "left", $('#now-playing-bar').css("Left").replace("px",""),0, this.innerText);
-    });
-    $("#now-playing-media").on("mouseleave", function(){pi.tooltip(false);});
+  }
+  else $("#volume, #playback").off("mousewheel");
 
-    // Show percentage in level bar
+  // setInterval
+  if (!unload) {
     window.levelBarInfo = setInterval(function(){
       $("#footer-user .info .meta .bar .value")[0].innerHTML = $("#footer-user .info .meta .bar .value")[0].innerHTML.replace(/ [0-9]*%/g, "") + " " + $("#footer-user .info .progress")[0].style.width;
       
@@ -719,7 +808,6 @@ init: function(unload) {
         $("#the-user-profile .experience.section .xp .value")[0].innerHTML = $("#the-user-profile .experience.section .xp .value")[0].innerHTML.replace(/ [0-9]*%/g, "") + " " + $("#the-user-profile .experience.section .progress")[0].style.width;
       }
     }, 5*60*1000);
-    // Show how many friends are online
     window.friendsOnline = setInterval(function(){
       pi.getFriendsOnline(
         function(data) {
@@ -731,7 +819,7 @@ init: function(unload) {
           var count = $("#friends-button > span")[0].innerText.replace(/[0-9]*\//g,"");
           count = friendsOnline + "/" + count;
           $("#friends-button > span")[0].innerText = count;
-    })}, 5*1000);
+    })}, 30*1000);
     window.roomURL = location.pathname
     window.checkIfRoomChanged = setInterval(function(){
       if (location.pathname !== window.roomURL) {
@@ -741,9 +829,23 @@ init: function(unload) {
         pi.reload();
       }
     }, 2*1000);
-    window.checkIfUpdatesAvailable = setInterval(pi.checkForUpdates, 30*60*1000);
+    window.checkIfUpdatesAvailable = setInterval(function(){pi.checkForUpdates()}, 30*60*1000);
+  }
+  else {
+    clearInterval(levelBarInfo);
+    clearInterval(friendsOnline);
+    clearInterval(checkIfRoomChanged);
+    clearInterval(checkIfUpdatesAvailable);
 
-    // Creating DOM elements
+    window.levelBarInfo = undefined;
+    window.friendsOnline = undefined;
+    window.roomURL = undefined;
+    window.checkIfRoomChanged = undefined;
+    window.checkIfUpdatesAvailable = undefined;
+  }
+
+  // Creating DOM elements
+  if (!unload) {
     updateStatus("Creating script environement", 5);
     // Menu icon
     $("#app").append($('<div id="Box"><div id="icon"></div></div>'));
@@ -776,7 +878,7 @@ init: function(unload) {
       <i id="pi-delChat" class="icon pi-delChat"></i>\
     </div>');
     // If at least bouncer
-    if (getRank("Bouncer")) {
+    if (isRank("Bouncer")) {
       // Moderation tools
       $("#playback-container").append($('<div id="pi-rmvDJ">\
         <img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/romveDJ.png" alt="button remove from wait-list" />\
@@ -785,7 +887,13 @@ init: function(unload) {
         <img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/skip.png" alt="button skip" />\
       </div>'));
     }
-    // Click Event Binding
+  }
+  else {
+    $("#Box, #Settings, #pi-menu-CSS, #pi-CSS, #pi-oldchat-CSS, #del-chat-button").remove();
+    if (isRank("Bouncer")) $("#pi-rmvDJ, #pi-skip").remove();
+  }
+  // Click Event Binding
+  if (!unload) {
     $("body").on("click", function(e){
       switch (e.target.id) {
         // Menu
@@ -808,6 +916,48 @@ init: function(unload) {
         case "pi-delChat": API.sendChat('/clear'); break;
       }
     });
+  }
+  // No need to unbind as elements are removed
+  // Tooltips
+  if (!unload) {
+    $("#now-playing-media").on("mouseenter", function(){
+      if (pi.getPlugSettings().tooltips) {
+        pi.tooltip(true, "left", $(this).offset().left+47,0, this.innerText);
+      }
+    });
+    $("#pi-skip").on("mouseenter", function(){
+      if (pi.getPlugSettings().tooltips) {
+        var x = $(this).offset().left + ($(this).width()/2);
+        var y = $(this).offset().top - ($(this).height()/2);
+        pi.tooltip(true, "left", x,y, "Will force skip the DJ.");
+      }
+    });
+    $("#pi-rmvDJ").on("mouseenter", function(){
+      if (pi.getPlugSettings().tooltips) {
+        var x = $(this).offset().left + ($(this).width()/2);
+        var y = $(this).offset().top - ($(this).height()/2);
+        pi.tooltip(true, "left", x,y, "Will remove the DJ from Wait-List and skip him.");
+      }
+    });
+    $("#pi-delChat").on("mouseenter", function(){
+      if (pi.getPlugSettings().tooltips) {
+        var x = $(this).offset().left + ($(this).width()/2);
+        var y = $(this).offset().top - ($(this).height()/2);
+        pi.tooltip(true, "left", x,y, "Clear chat");
+      }
+    });
+    $("#now-playing-media, #pi-skip, #pi-rmvDJ, #pi-delChat").on("mouseleave", function(){pi.tooltip();});
+  }
+  else {
+    $("#now-playing-media").off("mouseenter");
+    $("#pi-skip").off("mouseenter");
+    $("#pi-rmvDJ").off("mouseenter");
+    $("#pi-delChat").off("mouseenter");
+    $("#now-playing-media, #pi-skip, #pi-rmvDJ, #pi-delChat").off("mouseleave");
+  }
+
+  // Fully loaded
+  if (!unload) {
     pi.dom = {
       // Script
       woot: $("#pi-woot")[0],
@@ -828,45 +978,31 @@ init: function(unload) {
       oldStyle: $("#pi-oldchat-CSS")[0],
       // Other
       stream: $("#playback-container")[0]
-    },
+    };
+    pi.menu("init");
 
-    // Fully loaded
     pi.log(complete(lang.log.loaded));
     pi.log(lang.log.help, "info");
     pi.log("This is a pre-release, expect bugs !!!", "warn");
     $('#pi-status').css({opacity:"0"});
     setTimeout(function(){$('#pi-status').remove();}, 250);
-  } else {
-    // Preventing making the video definitly desapear
-    if (settings.showVideo === false) {
-      pi.menu(3);
-      setTimeout(pi.menu(10), 250);
-    }
-    API.off(API.CHAT_COMMAND, pi.chatCommand);
-    API.off(API.ADVANCE, pi.alertDuration);
-    API.off(API.VOTE_UPDATE, pi.voteAlert);
-    API.off(API.ADVANCE, pi.autowoot);
-    API.off(API.ADVANCE, pi.autojoin);
-    delete API.moderateForceQuit;
-    delete API.getUserByName;
-    window.onbeforeunload = null;
-    $(window).off("keydown");
-    $("body").off("click");
-    $("#volume").off("mousewheel");
-    clearInterval(levelBarInfo);
-    clearInterval(friendsOnline);
-
-    // Removing DOM elements
-    $("#Box, #Settings, #pi-menu-CSS, #pi-CSS, #pi-oldChat-CSS, #del-chat-button").remove();
-    if (hasPermBouncer) $("#pi-rmvDJ, #pi-skip").remove();
-
+  }
+  
+  // Preventing making the video definitly desapear
+  if (unload && settings.showVideo === false) {
+    pi.menu(3);
+    setTimeout(function(){
+      pi.menu(10);
+      return "unloaded";
+    }, 250);
+  } else if (unload) {
     return "unloaded";
   }
 },
 reload: function() {
   pi.log(lang.log.reloading);
   if (pi.kill() == "killed") $.getScript(scriptURL);
-  else pi.log("[Plug-It] Couldn't kill script", "error");
+  else pi.log("Unexpected error, couldn't kill script", "error", "console");
 },
 kill: function() {
   if (pi.init(true) == "unloaded") {
@@ -874,13 +1010,16 @@ kill: function() {
     pi = undefined;
     return "killed";
   }
-  else pi.log("[Plug-It] Couldn't unload script", "error");
+  else pi.log("Unexpected error, couldn't unload script", "error", "console");
 },
 checkForUpdates: function(isForced) {
   getLastCommit("https://api.github.com/repos/Plug-It/pi/commits/pre-release", function(data){
     var lastCommit = JSON.parse(data.currentTarget.responseText);
     if (thisCommit.sha !== lastCommit.sha) {
-      if (isForced) pi.reload;
+      if (isForced) {
+        pi.log(lang.log.forcingReload);
+        pi.reload();
+      }
       else if (confirm("An update is available:\n"+lastCommit.commit.message+"\n\nWould you like to update ?")) pi.reload();
     }
   });
