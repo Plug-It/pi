@@ -2,15 +2,19 @@
   "menu": {
     "aw": "Auto-woot",
     "aj": "Auto-join",
+    "ks": "Keyboard Shortcuts",
     "hv": "Hide video",
     "cs": "Custom Style",
     "cb": "Custom Bg",
     "oc": "Old chat",
-    "sl": "Duration alert",
-    "sm": "Show mehs",
+    "sl": "Song limit",
+    "ha": "History Alert",
+    "uj": "User Join",
+    "ul": "User Leave",
+    "ug": "User Grab",
+    "um": "User meh",
     "mm": "Mute on meh",
     "nw": "Navigation warn",
-    "dn": "Disable notifications",
     "s": "Shutdown"
   },
   "log": {
@@ -38,7 +42,6 @@
     "confirmSkip": "This will skip the DJ, click again to confirm.",
     "confirmEject": "This will remove the DJ from the wait-list, click again to confirm.",
     "isTrusted": "Never execute code from someone you don't fully trust ! Try again to confirm.",
-    "quit": "Are you sure you want to leave ?",
     "inHistory": "$dj is playing a song in history that was played by $historyDj"
   },
   "error": {

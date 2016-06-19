@@ -1,6 +1,6 @@
 @keyframes fadein {
 	from {opacity: 0;}
-	to {opacity: 1;}
+	to   {opacity: 1;}
 }
 /*--[PLUG]--*/
 #room-settings a:hover, #chat a:hover {
@@ -832,54 +832,6 @@
 	color: hsl(60,90%,70%) !important;
 }
 /*--[MENTION]--*/
-#chat .cm.mention.role-host {
-	background: linear-gradient(hsla(200,100%,30%,0.8), hsla(200,100%,20%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
-}
-#chat .cm.mention.role-host .name, #chat .cm.mention.role-host .timestamp {
-	color: hsl(200,100%,50%);
-}
-#chat .cm.mention.role-cohost {
-	background: linear-gradient(hsla(210,100%,30%,0.8), hsla(210,100%,20%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
-}
-#chat .cm.mention.role-cohost .name, #chat .cm.mention.role-cohost .timestamp {
-	color: hsl(210,100%,50%);
-}
-#chat .cm.mention.role-manager {
-	background: linear-gradient(hsla(350,85%,20%,0.8), hsla(350,85%,10%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(350,50%,50%);
-}
-#chat .cm.mention.role-manager .name, #chat .cm.mention.role-manager .timestamp {
-	color: #E15;
-}
-#chat .cm.mention.role-bouncer {
-	background: linear-gradient(hsla(354,100%,20%,0.8), hsla(354,100%,10%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(354,50%,50%);
-}
-#chat .cm.mention.role-bouncer .name, #chat .cm.mention.role-bouncer .timestamp {
-	color: #F45;
-}
-#chat .cm.mention.role-dj {
-	background: linear-gradient(hsla(20,100%,30%,0.8), hsla(20,100%,20%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(20,50%,50%);
-}
-#chat .cm.mention.role-dj .name, #chat .cm.mention.role-dj .timestamp {
-	color: hsl(20,100%,60%);
-}
-#chat .cm.mention.role-subscriber {
-	background: linear-gradient(hsla(40,100%,30%,0.8), hsla(40,100%,20%,0.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(30,50%,50%);
-}
-#chat .cm.mention.role-subscriber .name, #chat .cm.mention.role-subscriber .timestamp, #user-rollover .meta.subscriber .status span {
-	color: hsl(40,100%,60%);
-}
 #chat .cm.mention {
 	background: linear-gradient(hsla(77,100%,20%,0.8), hsla(77,100%,11%,0.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
@@ -887,10 +839,58 @@
 	border: none !important;
 }
 #chat .cm.mention .name, #chat .cm.mention .timestamp {
-	color: hsl(77,100%,50%);
+	color: hsl(77,100%,40%);
 }
 #chat .cm.mention .msg .from .un {
-	color: hsl(77,100%,40%);
+	color: hsl(77,100%,50%);
+}
+#chat .cm.mention.is-subscriber {
+	background: linear-gradient(hsla(40,100%,30%,0.8), hsla(40,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(30,50%,50%);
+}
+#chat .cm.mention.is-subscriber .name, #chat .cm.mention.is-subscriber .timestamp, #user-rollover .meta.subscriber .status span {
+	color: hsl(40,100%,60%);
+}
+#chat .cm.mention.is-dj {
+	background: linear-gradient(hsla(20,100%,30%,0.8), hsla(20,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(20,50%,50%);
+}
+#chat .cm.mention.is-dj .name, #chat .cm.mention.is-dj .timestamp {
+	color: hsl(20,100%,60%);
+}
+#chat .cm.mention.is-bouncer {
+	background: linear-gradient(hsla(354,100%,20%,0.8), hsla(354,100%,10%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(354,50%,50%);
+}
+#chat .cm.mention.is-bouncer .name, #chat .cm.mention.is-bouncer .timestamp {
+	color: #F45;
+}
+#chat .cm.mention.is-manager {
+	background: linear-gradient(hsla(350,85%,20%,0.8), hsla(350,85%,10%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(350,50%,50%);
+}
+#chat .cm.mention.is-manager .name, #chat .cm.mention.is-manager .timestamp {
+	color: #E15;
+}
+#chat .cm.mention.is-cohost {
+	background: linear-gradient(hsla(210,100%,30%,0.8), hsla(210,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
+}
+#chat .cm.mention.is-cohost .name, #chat .cm.mention.is-cohost .timestamp {
+	color: hsl(210,100%,50%);
+}
+#chat .cm.mention.is-host {
+	background: linear-gradient(hsla(200,100%,30%,0.8), hsla(200,100%,20%,0.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,0.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
+}
+#chat .cm.mention.is-host .name, #chat .cm.mention.is-host .timestamp {
+	color: hsl(200,100%,50%);
 }
 #chat .cm.mention .msg {
 	/*fix RCS*/

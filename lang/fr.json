@@ -2,15 +2,19 @@
   "menu": {
     "aw": "Auto-woot",
     "aj": "Auto-join",
+    "ks": "Raccourcis clavier",
     "hv": "Cacher vidéo",
     "cs": "Theme custom",
     "cb": "Fond custom",
     "oc": "Mini chat",
     "sl": "Alerte durée",
-    "sm": "Alerte meh",
+    "ha": "Alerte historique",
+    "uj": "Plugger rejoind",
+    "ul": "Plugger part",
+    "ug": "Plugger grab",
+    "um": "Plugger meh",
     "mm": "Meh muet",
     "nw": "Alerte navigation",
-    "dn": "Enlever notifications",
     "s": "Eteindre"
   },
   "log": {
@@ -38,7 +42,6 @@
     "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
     "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
     "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance ! Réessayez pour confirmer.",
-    "quit": "Êtes-vous sûr de vouloir quitter ?",
     "inHistory": "$dj joue une musique dans l'historique qui à été joué par $historyDj"
   },
   "error": {

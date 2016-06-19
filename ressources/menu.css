@@ -1,5 +1,5 @@
 /*le logo*/
-#Box, #icon {
+#pi-logo, #icon {
 	position: absolute;
 	right: 345px; top: 0;
 	width: 54px; height: 54px;
@@ -14,76 +14,50 @@
 	top: -54px; left: 0;
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover-54.jpg);
 }
-#Box:hover #icon, #icon:hover {
+#pi-logo:hover #icon, #icon:hover {
 	top: 0px;
 }
-#Box:hover {
+#pi-logo:hover {
 	background-position: 0 54px;
 }
 /*le menu*/
-#Settings {
+#pi-menu {
 	position: absolute;
 	right: 200px; top: 54px;
-	width: 145px;
+	width: 150px;
 	z-index: 0;
-	font-family: arial;
+	font-family: Roboto;
 	visibility: hidden;
 	background: linear-gradient(to left, #0a0a0a, #111);
-	border: 2px solid #eee;
-	border-right: 0; border-top: 0;
-	border-radius: 0 0 0 15px;
-	box-shadow: inset 1px -1px 10px #0a0a0a;
-	transition: ease-in-out 0.25s;
+	transition: ease-in-out .25s;
 }
-#Settings ul {
-	list-style-type: none;
+#pi-menu *::selection {
+	background: transparent;
 }
-#Settings li {
+#pi-menu h2 {
 	cursor: pointer;
-	text-align: center;
-	font-size: 22px;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 2px 0;
+	background: #222;
+}
+#pi-menu ul {list-style-type: none;}
+#pi-menu li {
+	cursor: pointer;
+	font-size: 17px;
 	color: #808691;
 }
-#Settings li:hover {
-	background: linear-gradient(#1A1A1A, #111);
-	border-radius: 4px;
-	box-shadow: 0 0 3px;
-	text-shadow: 0 0 7px;
-	color: #DDD;
+#pi-menu a {color: #888;}
+#pi-menu a:hover {color: #8AD;}
+#pi-menu #pi-V:hover {cursor: default;}
+#pi-menu *[class^="pi"]:before {
+	content: "\2713";
+	margin: 0 2px;
 }
-#Settings #pi-twitter:hover, #Settings #pi-twitter a:hover {
-	color: #0bf !important;
-}
-#Settings #pi-off {
-	color: #A33 !important;
-}
-#Settings #pi-off:hover {
-	color: #F33 !important;
-}
-#Settings #pi-V, #Settings #pi-twitter a {
-	color: #5AD;
-}
-#Settings #pi-V:hover {
-	background: none !important;
-	text-shadow: 0 0 0 #000 !important;
-	box-shadow: none !important;
-	cursor: default;
-	border-radius: none !important;
-}
-.pi-on {
-	color: #5A5 !important;
-}
-.pi-on:hover {
-	color: #5E5 !important;
-}
-.pi-off {
-	color: #D85 !important;
-}
-.pi-off:hover {
-	color: #F93 !important;
-}
+#pi-menu .pi-on, #pi-menu .pi-on:before {color: #5bf;}
+#pi-menu .pi-off, #pi-menu .pi-off:before {color: #888;}
 .pi-delChat {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/delChat.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/master/images/other/delChat.png);
 }
 
 /* placement du menu */
@@ -156,7 +130,7 @@
 	border-width: 0 1px 2px 1px;
 	border-radius: 3px;
 }
-#twitter-menu, #facebook-menu{
+#twitter-menu, #facebook-menu {
 	display: none !important;
 }
 
@@ -189,16 +163,16 @@
 	box-shadow: inset 0 0 0 1px hsl(260,50%,30%);
 }
 /*--[BOT]--*/
-#chat [data-cid*="5285179"] .bdg,
-#chat [data-cid*="5285179"] .no-badge {
+#chat .is-bot .bdg,
+#chat .is-bot .no-badge {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="5285179"] .no-badge i {
+#chat .is-bot .no-badge i {
 	display: none !important;
 }
-#chat [data-cid*="5285179"] .icon-chat-subscriber {display: none;}
-#chat [data-cid*="5285179"] [class*="icon-chat"] {
+#chat .is-bot .icon-chat-subscriber {display: none;}
+#chat .is-bot [class*="icon-chat"] {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bot.png);
 	background-size: 15px;
 	background-position: 0 0 !important;
@@ -209,12 +183,6 @@
 	font-style: italic;
 }
 /*--[DEV]--*/
-#chat [data-cid*="4613422"] .icon-chat-subscriber,
-#chat [data-cid*="4506088"] .icon-chat-subscriber,
-#chat [data-cid*="209178"] .icon-chat-subscriber {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
-	background-position: 0 0 !important;
-}
 #chat [data-cid*="4613422"] .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
@@ -223,31 +191,26 @@
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="4613422"] .icon-chat-host,
-#chat [data-cid*="4613422"] .icon-chat-cohost,
-#chat [data-cid*="4613422"] .icon-chat-manager,
-#chat [data-cid*="4613422"] .icon-chat-bouncer,
-#chat [data-cid*="4613422"] .icon-chat-dj {
+#chat .is-dev [class*="icon-chat"] {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
 	background-position: 0 0 !important;
 }
+#chat .is-dev .icon-chat-subscriber {
+	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
+	background-position: 0 0 !important;
+}
 /*--[ALPHA TESTER]--*/
-#chat [data-cid*="4726785"] .bdg,
-#chat [data-cid*="4272266"] .bdg,
-#chat [data-cid*="4782448"] .bdg,
-#chat [data-cid*="4656513"] .bdg,
-#chat [data-cid*="4024959"] .bdg,
-#chat [data-cid*="3481629"] .bdg {
+#chat .is-alpha .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
 	background-position: 0 0 !important;
 }
 /*--[Designer]--*/
-#chat [data-cid*="4336782"] .bdg {
+#chat .is-graphist .bdg {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_designer.png);
 	background-size: 30px;
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="4336782"] i.icon-chat-designer {
+#chat .is-graphist [class*="icon-chat"] {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_designer.png);
 	background-position: 0 0 !important;
 }
