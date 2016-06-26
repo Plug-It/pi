@@ -49,7 +49,7 @@ If everything is correct, your translation will be available for everyone :)
 
 ## Team
   - Founder/Dev
-    - [WiBla](https://plug.dj/@/WiBla)
+    - [WiBla](https://plug.dj/@/wibla)
   - Helpers
     - [Zurbo](https://plug.dj/@/zurbo): So much.. ♥
     - [Hideki](https://plug.dj/@/hideki): CSS/UI

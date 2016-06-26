@@ -56,6 +56,20 @@
 }
 #pi-menu .pi-on, #pi-menu .pi-on:before {color: #5bf;}
 #pi-menu .pi-off, #pi-menu .pi-off:before {color: #888;}
+#pi-menu #pi-off {
+	display: inline-block;
+	width: 100%;
+	margin-top: 5px;
+	padding: 2px 0;
+	cursor: pointer;
+	color: #811;
+	text-align: center;
+	background: #111;
+}
+#pi-menu #pi-off:hover {
+	color: #EEE;
+	background: #300;
+}
 .pi-delChat {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/master/images/other/delChat.png);
 }
@@ -136,32 +150,73 @@
 
 /*--[Custom Logs]--*/
 #chat .cm .badge-box .bdg-piLogo {
-	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png) !important;
-	background-size: 30px !important;
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png);
+	background-size: 30px;
 }
 #chat .cm .msg .from .icon-pi {
-	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon.png) !important;
-	background-size: 15px !important;
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon.png);
+	background-size: 15px;
 	width: 15px; height: 15px;
 }
-#chat .cm .msg .from .icon-pi + .un {
-	color: #FFF !important;
+#chat .cm.pi-log .msg .from .un,
+#chat .cm.pi-log .msg .from .timestamp {color: #0BF;}
+#chat .cm.pi-log {
+	background: linear-gradient(hsla(210,10%,20%,.8), hsla(210,10%,10%,.8)),
+	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
+	box-shadow: inset 0 0 0 1px hsl(210,50%,30%);
 }
-#chat .cm.pi-warn {
-	background: linear-gradient(hsla(60,80%,20%,0.8), hsla(60,80%,10%,0.8)),
-	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(60,100%,30%);
+#chat .cm.pi-info .badge-box .bdg-piLogo,
+#chat .cm.pi-info .msg .from .icon-pi {
+	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
+	background-position: 0% 12.5%;
+	background-size: 4100%;
 }
-#chat .cm.pi-error {
-	background: linear-gradient(hsla(0,80%,20%,0.8), hsla(0,80%,10%,0.8)),
-	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(0,80%,30%);
-}
+#chat .cm.pi-info .msg .from .un,
+#chat .cm.pi-info .msg .from .timestamp {color: #A5E;}
 #chat .cm.pi-info {
 	background: linear-gradient(hsla(260,50%,20%,0.8), hsla(260,50%,10%,0.8)),
-	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
+	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
 	box-shadow: inset 0 0 0 1px hsl(260,50%,30%);
 }
+#chat .cm.pi-warn .badge-box .bdg-piLogo,
+#chat .cm.pi-warn .msg .from .icon-pi {
+	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
+	background-position: 5% 27.5%;
+	background-size: 4100%;
+}
+#chat .cm.pi-warn .msg .from .un,
+#chat .cm.pi-warn .msg .from .timestamp {color: #ED5;}
+#chat .cm.pi-warn {
+	background: linear-gradient(hsla(50,80%,20%,0.8), hsla(50,80%,10%,0.8)),
+	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
+	box-shadow: inset 0 0 0 1px hsl(50,50%,30%);
+}
+#chat .cm.pi-error .badge-box .bdg-piLogo,
+#chat .cm.pi-error .msg .from .icon-pi {
+	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
+	background-position: 10% 17.5%;
+	background-size: 4100%;
+}
+#chat .cm.pi-error .msg .from .un,
+#chat .cm.pi-error .msg .from .timestamp {color: #D33;}
+#chat .cm.pi-error {
+	background: linear-gradient(hsla(0,80%,20%,0.8), hsla(0,80%,10%,0.8)),
+	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
+	box-shadow: inset 0 0 0 1px hsl(0,80%,30%);
+}
+#chat .cm.pi-debug .badge-box .bdg-piLogo,
+#chat .cm.pi-debug .msg .from .icon-pi {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git70.png);
+	background-size: 100%;
+}
+#chat .cm.pi-debug .msg .from .un,
+#chat .cm.pi-debug .msg .from .timestamp {color: #FA5;}
+#chat .cm.pi-debug {
+	background: linear-gradient(hsla(35,80%,20%,0.8), hsla(35,80%,10%,0.8)),
+	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
+	box-shadow: inset 0 0 0 1px hsl(35,80%,30%);
+}
+
 /*--[BOT]--*/
 #chat .is-bot .bdg,
 #chat .is-bot .no-badge {
@@ -212,5 +267,6 @@
 }
 #chat .is-graphist [class*="icon-chat"] {
 	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_designer.png);
+	background-size: 15px;
 	background-position: 0 0 !important;
 }

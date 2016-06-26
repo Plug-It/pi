@@ -101,7 +101,7 @@ window.pi = {
 // ╔══════════════════╗
 // ║    VARIABLES     ║
 // ╚══════════════════╝
-version: '1.0.0 pre-11',
+version: '1.0.0 pre-12',
 url: {
   script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
   menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -225,6 +225,29 @@ log: function(txt, type, where, callback) {
   }
 
   if (typeof where == "undefined" || where == 'chat' || where == 'both') {
+    var timestamp = pi.getPlugSettings().chatTimestamps;
+    if (timestamp) {
+      var time = new Date();
+      var h = time.getHours();
+      var m = time.getMinutes();
+      h = h<10 ? "0"+h : m;
+      m = m<10 ? "0"+m : m;
+      
+      if (timestamp == 12) {
+        var am;
+
+        if (h >= 12) {
+          am = "pm";
+          h -= 12;
+        }
+        else am = "am";
+
+        time = h+":"+m+am;
+      }
+      else {
+        time = h+":"+m;
+      }
+    }
     // If style 'top' of .delete-button is set, his position is relative to #chat-messages instead of the .cm
     var logBox = $('\
       <div class="cm pi-'+type+' deletable">\
@@ -236,6 +259,7 @@ log: function(txt, type, where, callback) {
           <div class="from Plug-It">\
             <i class="icon icon-pi"></i>\
             <span class="un">[Plug-It]</span>\
+            <span class="timestamp" style="display: '+ (timestamp ? 'inline-block' : 'none') +';">'+time+'</span>\
           </div>\
           <div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
         </div>\
@@ -632,19 +656,19 @@ chatCommand: function(cmd) {
     break;
     
     case '/whois':
-      if (typeof args[1] == 'undefined') pi.log(lang.info.helpUserOrId, 'info');
-      else if (typeof args[1] == 'string') var user = API.getUserByName(args[1].replace('@', ''));
-      else var user = API.getUser(args[1]);
-      if (typeof user == 'object') {
-        pi.log('Username: '+user.rawun+'\n\
-        ID: ' +user.id+'\n\
-        Profile: '+location.origin + '/@/' + user.username+'\n\
-        language: '+user.language+'\n\
-        Avatar: '+user.avatarID+'\n\
-        Badge: '+user.badge+'\n\
-        Lvl: '+user.level+'\n\
-        Is friend: '+user.friend+'\n', 'info', 'chat');
-      }
+      if (typeof msg == 'undefined') pi.log(lang.info.helpUserOrId, 'info');
+      else if (isNaN(msg)) var user = API.getUserByName(msg.replace('@', ''));
+      else var user = API.getUser(msg);
+      if (typeof user !== 'null') {
+        pi.log('Username: '+user.rawun +
+        '\nID: ' +user.id +
+        (user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : void(0)) +
+        '\nlanguage: '+user.language +
+        '\nAvatar: '+user.avatarID +
+        '\nBadge: '+user.badge +
+        '\nLvl: '+user.level +
+        '\nFriend: '+user.friend+'\n', 'info', 'chat');
+      } else pi.log('Could not get user, verify the id/pseudo', 'error', 'chat');
     break;
 
     case '/pi':
@@ -698,9 +722,23 @@ init: function(unload) {
     API.on(API.ADVANCE, apiAdvance);
     API.on(API.HISTORY_UPDATE, function(){
       if (settings.historyAlert) {
+        var histo = API.getHistory();
+        var media = API.getMedia();
+        var dj = API.getDJ();
+
         // i = 1 to jump the first item being the current song
-        for (var i = 1; i < API.getHistory().length; i++) {
-          if (API.getMedia().cid == API.getHistory()[i].media.cid) pi.log(pi.complete(lang.warn.inHistory, API.getHistory()[i].user.username, 'chat'));
+        for (var i = 1; i < histo.length; i++) {
+          if (media.format == histo[i].media.format && media.cid == histo[i].media.cid) {
+            pi.log(
+              pi.parseHTML(
+                dj.username + ' is playing a song in history :\n'+
+                'Author : ' + histo[i].media.author +'\n'+
+                'Title : ' + histo[i].media.title +'\n'+
+                'Played by : ' + histo[i].user.username + ' '+(i-1)+' songs ago.\n'
+                + (API.hasPermission(pi.user, API.ROLE.BOUNCER) ? 'Click here to force skip.' : void(0))
+              )
+            , 'warn', 'chat', (API.hasPermission(pi.user, API.ROLE.BOUNCER) ? function(){API.moderateForceSkip();} : null));
+          }
         }
       }
     });
@@ -742,6 +780,18 @@ init: function(unload) {
       if (sender.silver) $(selector)[0].className += ' is-silversubscriber';
       if (sender.friend) $(selector)[0].className += ' is-friend';
 
+      /* Chat images
+      var imgRE = new RegExp(/(http(s)?:\/\/(www.)?).+\.(jpg|jpeg|gif|png|apng|svg|bmp)/ig);
+      var result = msg.message.match(imgRE);
+      if (typeof result !== 'null' && result.length > 0) {
+        for (var i = 0; i < result.length; i++) {
+          var link = '<img src="'+result[i]+'" alt="'+result[i]+'">';
+          msg.message = msg.message.replace(result[i], link);
+        }
+        $(selector).find(".text")[0].innerHTML = msg.message;
+      }
+      */
+
       // Self Deletion Magic
       if (msg.uid == pi.user.id && API.hasPermission(pi.user, API.ROLE.BOUNCER)) {
         $(selector)[0].className += ' deletable';
@@ -755,6 +805,11 @@ init: function(unload) {
         $(selector).find('.delete-button').on('click', function(){
           API.moderateDeleteChat(msg.cid);
         });
+      }
+      // Auto AFK responder
+      if (msg.type == 'mention' && settings.afk && msg.uid !== pi.user.id) {
+        if (typeof afkMessage !== "undefined") API.sendChat('@'+msg.un + ' I am afk: '+afkMessage);
+        else API.sendChat('@'+msg.un + ' I am afk.');
       }
     });
   }
@@ -800,15 +855,28 @@ init: function(unload) {
   else window.onbeforeunload = null;
   // Keyboard shorcuts
   if (!unload) {
-    $(window).on('keydown', function(k) {
+    $(document).on('keydown', function(e) {
       if (settings.keyboardShortcuts) {
-        if (k.keyCode == 107 && !$($('#chat-input')).attr('class')) {
-          API.setVolume(API.getVolume()+5);
-        } else if (k.keyCode == 109 && !$($('#chat-input')).attr('class')) {
-          API.setVolume(API.getVolume()-5);
+        switch (e.key) {
+          case "+":
+            if (!$($('#chat-input')).attr('class')) {
+              API.setVolume(API.getVolume()+5);
+              pi.setPlugSettings('volume', API.getVolume());
+            }
+          break;
+          case "-":
+            if (!$($('#chat-input')).attr('class')) {
+              API.setVolume(API.getVolume()-5);
+              pi.setPlugSettings('volume', API.getVolume());
+            }
+          break;
+          case "l":
+            if (e.ctrlKey) {
+            e.preventDefault();
+            API.sendChat("/clear");
+          }
+          break;
         }
-
-        pi.setPlugSettings('volume', API.getVolume());
       }
     });
   }
@@ -908,10 +976,10 @@ init: function(unload) {
         <h2>About</h2>\
         <p>\
           Plug-It '+pi.version+'.<br>\
-          Developed by: <a href="https://twitter.com/WiBla7" target="blank">@WiBla7</a><br>\
-          <a href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">Rate the extension</a><br>\
-          <a href="https://github.com/Plug-It/pi/tree/pre-release#contribute">Help translate !</a><br>\
-          <a href="https://github.com/Plug-It/pi/issues">Bug report</a><br>\
+          Developed by: <a target="_blank" href="https://twitter.com/WiBla7" target="blank">@WiBla7</a><br>\
+          <a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">Rate the extension</a><br>\
+          <a target="_blank" href="https://github.com/Plug-It/pi/tree/pre-release#contribute">Help translate !</a><br>\
+          <a target="_blank" href="https://github.com/Plug-It/pi/issues">Bug report</a><br>\
           <span id="pi-off">'+lang.menu.s+'</span>\
         </p>\
       </ul>\
