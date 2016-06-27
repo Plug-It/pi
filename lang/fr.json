@@ -3,52 +3,52 @@
     "aw": "Auto-woot",
     "aj": "Auto-join",
     "ks": "Raccourcis clavier",
-    "hv": "Cacher vidéo",
-    "cs": "Theme custom",
-    "cb": "Fond custom",
+    "hv": "Cacher la vidéo",
+    "cs": "Thème personnalisé",
+    "cb": "Fond personnalisé",
     "oc": "Mini chat",
     "sl": "Alerte durée",
     "ha": "Alerte historique",
-    "uj": "Plugger rejoind",
-    "ul": "Plugger part",
-    "ug": "Plugger grab",
-    "um": "Plugger meh",
+    "uj": "Utilisateur rejoint",
+    "ul": "Utilisateur part",
+    "ug": "Utilisateur grab",
+    "um": "Utilisateur meh",
     "mm": "Meh muet",
-    "nw": "Alerte navigation",
-    "s": "Eteindre"
+    "nw": "Alerte de navigation",
+    "s": "Éteindre"
   },
   "log": {
     "loaded": "Plug-It $version chargé !",
-    "help": "Ecrivez /list pour la liste de commandes.",
+    "help": "Ecrivez /list pour la liste des commandes.",
     "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond par default du script\n\"default\" Fond par default de plug",
-    "wooted": " à woot !",
-    "grabbed": " à grab !",
-    "meh": " à meh !",
+    "wooted": " a woot !",
+    "grabbed": " a grab !",
+    "meh": " a meh !",
     "reloading": "Rechargement de Plug-It...",
     "eta": " avant votre tour.",
-    "forcingReload": "Une nouvelle mise à jours est diponible, rechargement forcé, désolé du dérangement."
+    "forcingReload": "Une nouvelle mise à jour est diponible, rechargement forcé, désolé du dérangement."
   },
   "info": {
-    "roomChange": "Vous avez changer de room.",
+    "roomChange": "Vous avez changé de communauté.",
     "menuOptions": "utilisez: menu(1-10/kill)",
     "nobodyPlaying": "Personne ne joue.",
     "youPlay": "Vous êtes le DJ !",
-    "notInWaitList": "Vous n'êtes pas dans la Wait-List.",
+    "notInWaitList": "Vous n'êtes pas dans la liste d'attente.",
     "helpVol": "Utilisation: /vol [0-100]",
     "helpUserOrId": "Ecrivez le pseudo ou l'ID du bot."
   },
   "warn": {
     "songLimit": "Musique trop longue ! 8:00 max !",
-    "confirmSkip": "Cela skipera le DJ, clickez encore pour confirmer.",
-    "confirmEject": "Cela enlevera le DJ de la Wait-list, clickez encore pour confirmer.",
-    "isTrusted": "N'éxecutez jamais du code de quelqu'un dont vous n'avez pas entièrement confiance ! Réessayez pour confirmer.",
-    "inHistory": "$dj joue une musique dans l'historique qui à été joué par $historyDj"
+    "confirmSkip": "Ceci sautera le DJ, cliquez encore pour confirmer.",
+    "confirmEject": "Ceci enlèvera le DJ de la liste d'attente, cliquez encore pour confirmer.",
+    "isTrusted": "N'éxecutez jamais du code créé par quelqu'un dont vous n'avez pas entièrement confiance! Réessayez pour confirmer.",
+    "inHistory": "$dj joue une musique dans l'historique, précédemment joué par $historyDj"
   },
   "error": {
-    "autoJoin1": "La Wait-list est bloquée",
+    "autoJoin1": "La liste d'attente est bloquée",
     "autoJoin2": "Playlist invalide",
-    "autoJoin3": "La Wait-list est pleine",
-    "unknowVariable": "Variable(s) inconnu(s)",
+    "autoJoin3": "La liste d'attente est pleine",
+    "unknowVariable": "Variable(s) inconnue(s)",
     "noUserByName": "Aucun utilisateur avec ce pseudo trouvé."
   }
 }
