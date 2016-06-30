@@ -41,7 +41,7 @@
     "songLimit": "Musique trop longue ! 8:00 max !",
     "confirmSkip": "Ceci sautera le DJ, cliquez encore pour confirmer.",
     "confirmEject": "Ceci enlèvera le DJ de la liste d'attente, cliquez encore pour confirmer.",
-    "isTrusted": "N'éxecutez jamais du code créé par quelqu'un dont vous n'avez pas entièrement confiance! Réessayez pour confirmer.",
+    "isTrusted": "N'éxecutez jamais du code créé par quelqu'un dont vous n'avez pas entièrement confiance! Cliquez ici pour confirmer et exécuter le code.",
     "inHistory": "$dj joue une musique dans l'historique, précédemment joué par $historyDj"
   },
   "error": {

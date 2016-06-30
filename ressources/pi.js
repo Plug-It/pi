@@ -101,7 +101,7 @@ window.pi = {
 // ╔══════════════════╗
 // ║    VARIABLES     ║
 // ╚══════════════════╝
-version: '1.0.0 pre-13',
+version: '1.0.0 pre-14',
 url: {
 	script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 	menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -292,7 +292,8 @@ log: function(txt, type, where, callback) {
 				this.remove();
 			});
 		}
-		// Make the chat scroll to custom log ONLY if scrollbar was at the bottom already (prevents annoying scroll when looking at chat history)
+		// BIG SCROLL ISSUE TO FIX (ASAP)
+		/* Make the chat scroll to custom log ONLY if scrollbar was at the bottom already (prevents annoying scroll when looking at chat history)
 		var $chat = $("#chat-messages");
 		if ($chat.height() + $chat.scrollTop() == $chat[0].scrollHeight) {
 			var scrollIntoView = setInterval(function(){
@@ -302,6 +303,7 @@ log: function(txt, type, where, callback) {
 				}
 			}, 10);
 		}
+		*/
 		$('#chat-messages').append($logBox);
 	}
 	if (typeof where == "undefined" || where == 'console' || where == 'both') {
@@ -588,8 +590,8 @@ removeDJ: function() {
 },
 execute: function(code) {
 	if (sessionStorage.getItem('trustWarn') == 'false') {
-		pi.log(lang.warn.isTrusted, 'warn');
 		sessionStorage.setItem('trustWarn', 'true');
+		pi.log(lang.warn.isTrusted, 'warn', 'chat', function(){pi.execute(code)});
 	} else {
 		try {eval(code);} catch(err){pi.log(err+'', 'error', 'chat');}
 	}
