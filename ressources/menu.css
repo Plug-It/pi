@@ -25,7 +25,7 @@
 	position: absolute;
 	right: 200px; top: 54px;
 	width: 150px;
-	z-index: 0;
+	z-index: 7 !important; /* otherwise #avatars-container gets in the way */
 	font-family: Roboto;
 	visibility: hidden;
 	background: linear-gradient(to left, #0a0a0a, #111);
@@ -70,7 +70,7 @@
 	color: #EEE;
 	background: #300;
 }
-.pi-delChat {
+#pi-delchat .icon.pi-delchat {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/master/images/other/delChat.png);
 }
 
