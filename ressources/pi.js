@@ -22,7 +22,7 @@ else {
 		})
 	);
 	window.updateStatus = function(txt, status) {
-		$('#pi-status span')[0].innerHTML = 'Pi is loading..<br>'+txt+'<br>Status: '+status;
+		$('#pi-status span')[0].innerHTML = 'PI is loading..<br>'+txt+'<br>Status: '+status;
 	};
 	
 	// Get last commit of any project, used to know if an update is available
@@ -101,7 +101,7 @@ window.pi = {
 // ╔══════════════════╗
 // ║    VARIABLES     ║
 // ╚══════════════════╝
-version: '1.0.0 pre-14',
+version: '1.0.0 pre-15',
 url: {
 	script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 	menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -169,6 +169,51 @@ tooltip: function(set, type, x,y, txt) {
 		$('#tooltip').each(function(){this.remove();});
 	}
 },
+modal: function(set) {
+	if (set) {
+		var $dialog = $('\
+			<div id="dialog-media-update" class="dialog">\
+				<div class="dialog-frame">\
+					<span class="title">Set background\'s image</span>\
+					<i class="icon icon-dialog-close"></i>\
+				</div>\
+				\
+				<div class="dialog-body">\
+					<div class="dialog-input-container" style="position:relative;top:10px;">\
+						<span class="dialog-input-label">URL</span>\
+						<div class="dialog-input-background">\
+							<input type="text" placeholder=".jpg .png .gif.." name="url">\
+						</div>\
+						<p style="position:relative;top:55px;">\
+								Type :<br>\
+								"default" for plug\'s default background<br>\
+								"reset" for script\'s default background\
+							</p>\
+					</div>\
+				</div>\
+				\
+				<div class="dialog-frame">\
+					<div class="button cancel"><span>Cancel</span></div>\
+					<div class="button submit"><span>Save</span></div>\
+				</div>\
+			</div>\
+		');
+
+		$dialog.find('.dialog-frame i, .button.cancel').on('click', function(){pi.modal(false)});
+		$dialog.find('.button.submit').on('click', function(){
+			settings.bg = $dialog.find('input[name="url"]')[0].value;
+			pi.askBG(settings.bg);
+			pi.modal(false);
+		});
+
+		$('#dialog-container').append($dialog);
+		$('#dialog-container')[0].style.display = "block";
+	}
+	else if (!set) {
+		$('#dialog-container')[0].style.display = "none";
+		$('#dialog-container *').each(function(){this.remove();});
+	}
+},
 getPlugSettings: function(id) {
 	if (typeof id == 'undefined') id = pi.user.id;
 	var json = JSON.parse(localStorage.getItem('settings'));
@@ -196,8 +241,8 @@ setPlugSettings: function(option, value) {
 	}
 
 	var json = JSON.parse(localStorage.getItem('settings'));
-	var id = API.getUser().id;
-	for (var i = 1; i < 20; i++) {
+	var id = pi.user.id;
+	for (var i = 1; i < 5; i++) {
 		if (typeof json[i] !== 'undefined') {
 			if (typeof json[i][id] !== 'undefined') {
 				for (var obj in json[i][id]) {
@@ -292,18 +337,17 @@ log: function(txt, type, where, callback) {
 				this.remove();
 			});
 		}
-		// BIG SCROLL ISSUE TO FIX (ASAP)
-		/* Make the chat scroll to custom log ONLY if scrollbar was at the bottom already (prevents annoying scroll when looking at chat history)
+		// Make the chat scroll to custom log
 		var $chat = $("#chat-messages");
-		if ($chat.height() + $chat.scrollTop() == $chat[0].scrollHeight) {
+		// Only if chat is overflowing  & already scrolled to bottom
+		if ($chat.height() + $chat.scrollTop() == $chat[0].scrollHeight && $chat[0].scrollHeight > $chat.height()) {
 			var scrollIntoView = setInterval(function(){
-				if ($logBox.length > 0) {
-					$logBox[0].scrollIntoView();
-					clearInterval(scrollIntoView)
+				if ($($logBox).length > 0) {
+					$chat.scrollTop($chat[0].scrollHeight);
+					clearInterval(scrollIntoView);
 				}
-			}, 10);
+			}, 5);
 		}
-		*/
 		$('#chat-messages').append($logBox);
 	}
 	if (typeof where == "undefined" || where == 'console' || where == 'both') {
@@ -327,7 +371,7 @@ menu: function(choice) {
 		case '2': settings.autoDJ = !settings.autoDJ; pi.autojoin(); break;
 		case '3': settings.showVideo = !settings.showVideo; pi.hideStream(); break;
 		case '4': settings.CSS = !settings.CSS; pi.design(); break;
-		case '5': pi.askBG(); break;
+		case '5': pi.modal(true); break;
 		case '6': settings.oldChat = !settings.oldChat; pi.oldChat(); break;
 		case '7': settings.alertDuration = !settings.alertDuration; pi.alertDuration(); break;
 		case '8': settings.userMeh = !settings.userMeh; pi.voteAlert(); break;
@@ -353,7 +397,6 @@ menu: function(choice) {
 		break;
 		
 		case 'init':
-			pi.slide();
 			pi.autowoot();
 			pi.autojoin();
 			pi.hideStream();
@@ -453,7 +496,7 @@ oldChat: function() {
 	}
 },
 askBG: function() {
-	style = $('.room-background')[0].getAttribute('style').split(' ');
+		var style = $('.room-background')[0].getAttribute('style').split(' ');
 	if (typeof(plugBG) == 'undefined') {
 		window.plugBG = style[9];
 	}
@@ -467,14 +510,7 @@ askBG: function() {
 			pi.changeBG(true);
 		break;
 		default:
-			settings.bg = prompt(lang.log.bgPrompt);
-			if (settings.bg !== null && settings.bg.length > 0) {
-				if (settings.bg == 'reset' || settings.bg == 'default') {
-					pi.askBG();
-				} else {
-					pi.changeBG();
-				}
-			}
+			pi.changeBG(true);
 		break;
 	}
 },
@@ -511,12 +547,16 @@ alertDuration: function() {
 },
 muteMeh: function() {
 	if (settings.betterMeh) {
-		$('#meh')[0].setAttribute('onclick', 'vol=API.getVolume();API.setVolume(0);');
-		$('#woot')[0].setAttribute('onclick', 'if(API.getVolume()===0){API.setVolume(vol)};');
+		$('#meh').on('click', function(){
+			if (settings.betterMeh) API.setVolume(0);
+		});
+		$('#woot').on('click', function(){
+			if (settings.betterMeh && API.getVolume() == 0) {
+				API.setVolume(pi.getPlugSettings().volume);
+			};
+		});
 		pi.dom.betterMeh.className = 'pi-on';
 	} else {
-		$('#meh')[0].setAttribute('onclick', '');
-		$('#woot')[0].setAttribute('onclick', '');
 		pi.dom.betterMeh.className = 'pi-off';
 	}
 },
@@ -653,7 +693,10 @@ chatCommand: function(cmd) {
 		break;
 		
 		case '/vol':
-			if (args[1] >= 0 && args[1] <= 100) API.setVolume(args[1]);
+			if (args[1] >= 0 && args[1] <= 100) {
+				API.setVolume(args[1]);
+				pi.setPlugSettings("volume", args[1]);
+			}
 			else pi.log(lang.info.helpVol, 'info', 'chat');
 		break;
 		
@@ -668,7 +711,7 @@ chatCommand: function(cmd) {
 			pi.log('Username: ' + me.username +
 			'\nID: ' + me.id + 
 			'\nDescription: ' + me.blurb +
-			'\nProfile: ' + location.origin + '/@/' + me.username +
+			(me.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : "") +
 			'\nAvatar: ' + me.avatarID +
 			'\nBadge: ' + me.badge +
 			'\nLvl: ' + me.level +
@@ -678,7 +721,7 @@ chatCommand: function(cmd) {
 		
 		case '/whois':
 			if (typeof msg == 'undefined') pi.log(lang.info.helpUserOrId, 'info');
-			else if (isNaN(msg)) var user = API.getUserByName(msg.replace('@', ''));
+			else if (isNaN(msg)) var user = API.getUserByName(msg.replace('@', '').trim());
 			else var user = API.getUser(msg);
 			if (typeof user !== 'null') {
 				pi.log('Username: '+user.rawun +
@@ -699,9 +742,6 @@ chatCommand: function(cmd) {
 		case '/js':
 			pi.execute(msg);
 		break;
-
-		/*case '/ban':
-		break;*/
 		
 		case '/list':
 			pi.log('/like <3 x 5\
@@ -724,7 +764,7 @@ chatCommand: function(cmd) {
 		break;
 		
 		case '/kill':
-			pi.menu(10);
+			pi.menu('kill');
 		break;
 	}
 },
@@ -967,7 +1007,7 @@ init: function(unload) {
 		// Menu icon
 		$('#app').append($('<div id="pi-logo"><div id="icon"></div></div>'));
 		// Menu itself
-		$('#app').append($('<div id="pi-menu">\
+		$('#app').append($('<div id="pi-menu" style="visibility: hidden;">\
 			<ul>\
 				<h2>General</h2>\
 				<ul>\
@@ -1178,19 +1218,20 @@ init: function(unload) {
 		pi.menu('init');
 
 		pi.log(pi.complete(lang.log.loaded));
-		pi.log(lang.log.help, 'info');
-		pi.log('This is a pre-release, expect bugs !!!', 'warn');
+		pi.log(lang.log.help, 'info', 'chat');
+		pi.log('This is a pre-release, expect bugs !!!', 'warn', 'chat');
 		$('#pi-status').css({opacity:'0'});
 		setTimeout(function(){$('#pi-status').remove();}, 250);
 	}
 	
 	// Preventing making the video definitly desapear
-	if (unload && settings.showVideo === false) {
+	if (unload && !settings.showVideo) {
 		pi.menu(3);
 		settings.showVideo = false;
 		localStorage.setItem('pi-settings', JSON.stringify(settings));
 		return 'unloaded';
-	} else if (unload) {
+	}
+	if (unload) {
 		sessionStorage.removeItem('modQuitWarn');
 		sessionStorage.removeItem('modSkipWarn');
 		sessionStorage.removeItem('trustWarn');
