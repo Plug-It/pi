@@ -1,0 +1,72 @@
+{
+  "menu": {
+    "titles": {
+      "general": "Geral",
+      "customisation": "Costumização",
+      "moderation": "Moderação",
+      "notifications": "Notificações",
+      "about": "Sobre"
+    },
+    "aw": "Auto-woot",
+    "aj": "Auto-join",
+    "ks": "Atalhos do Teclado",
+    "mm": "Mute on meh",
+    "ar": "Mensagem AFK",
+    "nw": "Aviso de Navegação",
+    "hv": "Esconder vídeo",
+    "cs": "Estilo Personalizado",
+    "cb": "Fundo Personalizado",
+    "oc": "Chat Antigo",
+    "of": "Rodapé Antigo",
+    "sm": "Lista de reprodução e Histórico pequenos",
+    "ui": "Informações do Usuários",
+    "sl": "Limite de Música",
+    "ha": "Alerta de Histórico",
+    "ba": "Alerta da Cabine",
+    "uj": "Entrada de Usuário",
+    "ul": "Saída de Usuário",
+    "ug": "Add de Usuário",
+    "um": "Chato de Usuário",
+    "s": "Desligar"
+  },
+  "tooltips": {
+    "clearChat": "Limpar Chat",
+    "rmvDJ": "Pular e remover o DJ da cabine",
+    "skip": "Pular a DJ"
+  },
+  "log": {
+    "loaded": "Plug-It $version carregado !",
+    "help": "Digite /list para a lista de comandos.",
+    "preRelease": "Este é um pré-lançamento, espere erros !!!",
+    "bgPrompt": "Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background",
+    "wooted": " wooted this track !",
+    "grabbed": " grabbed this track  !",
+    "meh": " meh'd this track  !",
+    "reloading": "Recarregando Plug-It...",
+    "eta": "Tempo estimado até você tocar",
+    "forcingReload": "Uma atualização está disponível, forçando você a recarregar. Desculpe pela inconveniência."
+  },
+  "info": {
+    "roomChange": "Sua sala mudou.",
+    "menuOptions": "Use: menu(1-10/kill)",
+    "nobodyPlaying": "Ninguém está tocando.",
+    "youPlay": "Você é o DJ!",
+    "notInWaitList": "Você não está na lista de espera.",
+    "helpVol": "Usage: /vol [0-100]",
+    "helpUserOrId": "Write either the pseudo or the id of the bot."
+  },
+  "warn": {
+    "songLimit": "A música é muito longa! $limit max !",
+    "confirmSkip": "Isso vai pular o DJ, clique novamente para confirmar.",
+    "confirmEject": "Isto irá remover o DJ da lista de espera, clique novamente para confirmar.",
+    "isTrusted": "Nunca execute o código de alguém que você não confia totalmente ! Clique aqui para confirmar e executar o código.",
+    "inHistory": "$dj está tocando uma música do histórico que foi tocada por $historyDj"
+  },
+  "error": {
+    "autoJoin1": "Lista de espera está trancada",
+    "autoJoin2": "Invalid active playlist",
+    "autoJoin3": "Lista de espera está cheia",
+    "unknowVariable": "Unknow variable(s)",
+    "noUserByName": "They are no user by this name"
+  }
+}
