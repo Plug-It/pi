@@ -58,7 +58,8 @@ If everything is correct, your translation will be available for everyone :)
   - Designer
     - [Bil_Balle](https://plug.dj/@/bil-balle)
   - Translator
-    - None so far. It could be you !
+    - [ProDjMx](https://plug.dj/@/prodjmx): French
+    - [Sad User](https://plug.dj/@/sad-user): Portuguese
 
 ## Thanks
 **Big thanks to all of the Alpha/Beta users, you've been so kind and patient. I would have quit long time ago if you weren't here.**

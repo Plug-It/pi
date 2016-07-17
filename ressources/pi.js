@@ -61,19 +61,6 @@ else {
 				url: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json',
 				success: function(data) {
 					ranks = data;
-					var wait = setInterval(function(){
-						if (typeof pi.init !== 'function') return;
-						pi.init();
-						clearInterval(wait);
-					}, 100);
-					setTimeout(function(){
-						if (!$('#pi-menu').length) {
-							// Timeout after 10s
-							API.chatLog('[Plug-It] Could not init.');
-							console.log('[Plug-It] Could not init.');
-							clearInterval(wait);
-						}
-					}, 10*1000);
 				},
 				error: function(e){
 					console.log('[Plug-It] Unexpected error: '+e.responseText);
@@ -142,7 +129,7 @@ window.pi = {
 	// ╔══════════════════╗
 	// ║    VARIABLES     ║
 	// ╚══════════════════╝
-	version: '1.0.0 pre-17',
+	version: '1.0.0 pre-18',
 	url: {
 		script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 		menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -1162,15 +1149,14 @@ window.pi = {
 						<li id="pi-old-chat">'+lang.menu.oc+'</li>\
 						<li id="pi-old-footer">'+lang.menu.of+'</li>\
 						<li id="pi-small-media">'+lang.menu.sm+'</li>\
-					</ul>'
-					+(API.hasPermission(pi.user, API.ROLE.BOUNCER) ?
-						'<h2>'+lang.menu.titles.moderation+'</h2>\
+					</ul>\
+					<h2>'+lang.menu.titles.moderation+'</h2>\
 						<ul>\
 							<li id="pi-userInfo">'+lang.menu.ui+'</li>\
 							<li id="pi-lengthA">'+lang.menu.sl+'</li>\
 							<li id="pi-historyA">'+lang.menu.ha+'</li>\
-						</ul>' : '')+
-					'<h2>'+lang.menu.titles.notifications+'</h2>\
+						</ul>\
+					<h2>'+lang.menu.titles.notifications+'</h2>\
 					<ul>\
 						<li id="pi-userJoin">'+lang.menu.uj+'</li>\
 						<li id="pi-userLeave">'+lang.menu.ul+'</li>\
@@ -1423,4 +1409,9 @@ window.pi = {
 		});
 	}
 };
+function wait(){
+	if (typeof lang !== 'object' || typeof ranks !== 'object') {setTimeout(wait, 100);}
+	else pi.init();
+}
+wait();
 })();
