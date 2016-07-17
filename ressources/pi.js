@@ -43,22 +43,59 @@ else {
 	// Load user language
 	updateStatus('Loading user language', 1);
 	switch (API.getUser().language) {
-		case 'en': lang = 'en'; break;
 		case 'fr': lang = 'fr'; break;
+		case 'pt': lang = 'pt'; break;
+		case 'en':
 		default: lang = 'en'; break;
 	}
-	$.getJSON('https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json', function(data) {
-		lang = data;
+	$.ajax({
+		dataType: 'json',
+		url: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
+		// url: 'https://dl.dropboxusercontent.com/s/ty75kzhs3ci458l/en.json',
+		success: function(data) {
+			lang = data;
+
+			updateStatus('Fetching script ranks', 2);
+			$.ajax({
+				dataType: 'json',
+				url: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json',
+				success: function(data) {
+					ranks = data;
+					var wait = setInterval(function(){
+						if (typeof pi.init !== 'function') return;
+						pi.init();
+						clearInterval(wait);
+					}, 100);
+					setTimeout(function(){
+						if (!$('#pi-menu').length) {
+							// Timeout after 10s
+							API.chatLog('[Plug-It] Could not init.');
+							console.log('[Plug-It] Could not init.');
+							clearInterval(wait);
+						}
+					}, 10*1000);
+				},
+				error: function(e){
+					console.log('[Plug-It] Unexpected error: '+e.responseText);
+					API.chatLog('[Plug-It] Unexpected error: '+e.responseText);
+				}
+			});
+		},
+		error: function(e){
+			console.log('[Plug-It] Unexpected error: '+e.responseText);
+			API.chatLog('[Plug-It] Unexpected error: '+e.responseText);
+		}
 	});
 	
 	// Retrieve user settings if available
-	updateStatus('Loading user settings', 2);
+	updateStatus('Loading user settings', 3);
 	var ls = localStorage.getItem('pi-settings');
 	var settings = {
 		// General
 		autoW: false,
 		autoDJ: false,
 		keyboardShortcuts: false,
+		chatCommands: true,
 		betterMeh: false,
 		navWarn: false,
 		afk: false,
@@ -75,6 +112,8 @@ else {
 		time: 480,
 		historyAlert: false,
 		// Notifications
+		boothAlert: false,
+		boothPosition: 3,
 		userMeh: false,
 		userGrab: false,
 		userJoin: false,
@@ -97,20 +136,13 @@ else {
 	sessionStorage.setItem('modSkipWarn', false);
 	sessionStorage.setItem('modQuitWarn', false);
 	sessionStorage.setItem('trustWarn', false);
-
-	// Get Plug & Script ranks
-	updateStatus('Fetching script ranks', 3);
-	$.getJSON('https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json', function(data) {
-		ranks = data;
-	});
-	
 }
 
 window.pi = {
 	// ╔══════════════════╗
 	// ║    VARIABLES     ║
 	// ╚══════════════════╝
-	version: '1.0.0 pre-16',
+	version: '1.0.0 pre-17',
 	url: {
 		script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 		menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -169,6 +201,7 @@ window.pi = {
 	},
 	tooltip: function(set, type, x,y, txt) {
 		if (set) {
+			if ($('#tooltip').length) $('#tooltip').remove();;
 			var $tooltip = $('\
 				<div id="tooltip" class="'+type+'" style="top: '+y+'px; left: '+x+'px;">\
 					<span>'+txt+'</span>\
@@ -177,39 +210,80 @@ window.pi = {
 			$('body').append($tooltip);
 		}
 		else {
-			$('#tooltip').each(function(){this.remove();});
+			// Trickery in case they could be multiple #tooltip to remove all of them
+			var $next = $('#tooltip').next();
+			if ($next.length) {
+				while ($next[0].id == 'tooltip') {
+					$('#tooltip').next().remove();
+					$next = $('#tooltip').next();
+				}
+			}
+			$('#tooltip').remove();
 		}
 	},
-	modal: function(set) {
+	modal: function(set, type) {
 		if (set) {
-			var $dialog = $('\
-				<div id="dialog-media-update" class="dialog">\
-					<div class="dialog-frame">\
-						<span class="title">Set background\'s image</span>\
-						<i class="icon icon-dialog-close"></i>\
-					</div>\
-					\
-					<div class="dialog-body">\
-						<div class="dialog-input-container" style="position:relative;top:10px;">\
-							<span class="dialog-input-label">URL</span>\
-							<div class="dialog-input-background">\
-								<input type="text" placeholder=".jpg .png .gif.." name="url">\
+			switch(type) {
+				case 'test':
+					var $dialog = $('\
+						<div id="dialog-media-update" class="dialog">\
+							<div class="dialog-frame">\
+								<span class="title">Set background\'s image</span>\
+								<i class="icon icon-dialog-close"></i>\
 							</div>\
-							<p style="position:relative;top:55px;">\
-									Type :<br>\
-									"default" for plug\'s default background<br>\
-									"reset" for script\'s default background\
-								</p>\
+							\
+							<div class="dialog-body">\
+								<div class="dialog-input-container" style="position:relative;top:10px;">\
+									<span class="dialog-input-label">URL</span>\
+									<div class="dialog-input-background">\
+										<input type="text" placeholder=".jpg .png .gif.." name="url">\
+									</div>\
+									<p style="position:relative;top:55px;">\
+											Type :<br>\
+											"default" for plug\'s default background<br>\
+											"reset" for script\'s default background\
+										</p>\
+								</div>\
+							</div>\
+							\
+							<div class="dialog-frame">\
+								<div class="button cancel"><span>Cancel</span></div>\
+								<div class="button submit"><span>Save</span></div>\
+							</div>\
 						</div>\
-					</div>\
-					\
-					<div class="dialog-frame">\
-						<div class="button cancel"><span>Cancel</span></div>\
-						<div class="button submit"><span>Save</span></div>\
-					</div>\
-				</div>\
-			');
-
+					');
+				break;
+				case 'custom-bg':
+					var $dialog = $('\
+						<div id="dialog-media-update" class="dialog">\
+							<div class="dialog-frame">\
+								<span class="title">Set background\'s image</span>\
+								<i class="icon icon-dialog-close"></i>\
+							</div>\
+							\
+							<div class="dialog-body">\
+								<div class="dialog-input-container" style="position:relative;top:10px;">\
+									<span class="dialog-input-label">URL</span>\
+									<div class="dialog-input-background">\
+										<input type="text" placeholder=".jpg .png .gif.." name="url">\
+									</div>\
+									<p style="position:relative;top:55px;">\
+											Type :<br>\
+											"default" for plug\'s default background<br>\
+											"reset" for script\'s default background\
+										</p>\
+								</div>\
+							</div>\
+							\
+							<div class="dialog-frame">\
+								<div class="button cancel"><span>Cancel</span></div>\
+								<div class="button submit"><span>Save</span></div>\
+							</div>\
+						</div>\
+					');
+				break;
+			}
+			
 			$dialog.find('.dialog-frame i, .button.cancel').on('click', function(){pi.modal(false)});
 			$dialog.find('.button.submit').on('click', function(){
 				settings.bg = $dialog.find('input[name="url"]')[0].value;
@@ -366,13 +440,13 @@ window.pi = {
 		}
 	},
 	getFriendsOnline: function(callback) {
-		var xhr = new XMLHttpRequest;
-		xhr.open('GET', 'https://plug.dj/_/friends');
-		xhr.onload = function(){
-			var data = xhr.responseText;
-			callback(data);
-		};
-		xhr.send();
+		$.ajax({
+			url: 'https://plug.dj/_/friends',
+			method: 'GET',
+			success: function(data){
+				callback(data);
+			}
+		});
 	},
 	menu: function(choice) {
 		choice += '';
@@ -382,7 +456,7 @@ window.pi = {
 			case '2': settings.autoDJ = !settings.autoDJ; pi.autojoin(); break;
 			case '3': settings.showVideo = !settings.showVideo; pi.hideStream(); break;
 			case '4': settings.CSS = !settings.CSS; pi.design(); break;
-			case '5': pi.modal(true); break;
+			case '5': pi.modal(true, 'custom-bg'); break;
 			case '6': settings.oldChat = !settings.oldChat; pi.oldChat(); break;
 			case '7': settings.alertDuration = !settings.alertDuration; pi.alertDuration(); break;
 			case '8': settings.userMeh = !settings.userMeh; pi.voteAlert(); break;
@@ -434,7 +508,7 @@ window.pi = {
 				settings.userLeave ? pi.dom.userLeave.className = 'pi-on' : pi.dom.userLeave.className = 'pi-off';
 				settings.afk ? pi.dom.afkResponder.className = 'pi-on' : pi.dom.afkResponder.className = 'pi-off';
 			break;
-			case 'kill': pi.kill(); break;
+			case 'kill': pi.close(); break;
 			default: console.log(lang.info.menuOptions);
 		}
 
@@ -577,7 +651,7 @@ window.pi = {
 			pi.dom.lengthA.className = 'pi-on';
 			if (API.getMedia() !== undefined) {
 				if (API.getMedia().duration > settings.time) {
-					notif.play();
+					// notif.play();
 					pi.log(lang.warn.songLimit, 'warn', 'chat');
 				}
 			}
@@ -586,19 +660,22 @@ window.pi = {
 		}
 	},
 	muteMeh: function() {
-		var mute = function(){if(settings.betterMeh)API.setVolume(0);};
-		var restoreVol = function(){if(API.getVolume()==0)API.setVolume(pi.getPlugSettings().volume);};
+		var restoreVol = function() {
+			API.setVolume(pi.getPlugSettings().volume);
+			API.off(API.ADVANCE, restoreVol);
+			$('#woot').off('click', restoreVol);
+		};
+		var mute = function() {
+			API.setVolume(0);
+			API.on(API.ADVANCE, restoreVol);
+			$('#woot').on('click', restoreVol);
+		};
 
 		if (settings.betterMeh) {
 			$('#meh').on('click', mute);
-			API.once(API.ADVANCE, restoreVol);
-			$('#woot').on('click', restoreVol);
-
 			pi.dom.betterMeh.className = 'pi-on';
 		} else {
-			$('#meh').off('click', '#meh', mute);
-			$('#woot').off('click', '#woot', restoreVol);
-
+			$('#meh').off('click', mute);
 			pi.dom.betterMeh.className = 'pi-off';
 		}
 	},
@@ -675,6 +752,7 @@ window.pi = {
 		}
 	},
 	chatCommand: function(cmd) {
+		if (!settings.chatCommands) return;
 		var args = cmd.split(' '), msg = [];
 		for (var i = 1; i < args.length; i++) {
 			msg.push(args[i]);
@@ -756,7 +834,8 @@ window.pi = {
 				if (msg.length === 0) msg = undefined;
 				else window.afkMessage = msg;
 
-				pi.menu(16);
+				$('chat-input-field').blur(); // Allow to change the placeholder
+				setTimeout(function(){pi.menu(16)}, 200);
 			break;
 			
 			case '/whoami':
@@ -764,7 +843,7 @@ window.pi = {
 				pi.log('Username: ' + me.username +
 				'\nID: ' + me.id + 
 				'\nDescription: ' + me.blurb +
-				(me.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : "") +
+				(me.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
 				'\nAvatar: ' + me.avatarID +
 				'\nBadge: ' + me.badge +
 				'\nLvl: ' + me.level +
@@ -779,7 +858,7 @@ window.pi = {
 				if (typeof user !== 'null') {
 					pi.log('Username: '+user.rawun +
 					'\nID: ' +user.id +
-					(user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : "") +
+					(typeof user.slug !== undefined && user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
 					'\nlanguage: '+user.language +
 					'\nAvatar: '+user.avatarID +
 					'\nBadge: '+user.badge +
@@ -898,7 +977,7 @@ window.pi = {
 				if (sender.friend) $(selector)[0].className += ' is-friend';
 
 				/* Chat images
-				var imgRE = new RegExp(/(http(s)?:\/\/(www.)?).+\.(jpg|jpeg|gif|png|apng|svg|bmp)/ig);
+				var imgRE = new RegExp(/(http(s)?:\/\/(www.)?).+\.(jpg|jpeg|gif|png|svg|bmp)/ig);
 				var result = msg.message.match(imgRE);
 				if (typeof result !== 'null' && result.length > 0) {
 					for (var i = 0; i < result.length; i++) {
@@ -926,7 +1005,7 @@ window.pi = {
 				// Auto AFK responder with 60s cooldown (prevents spam)
 				if (msg.type == 'mention' && settings.afk && msg.uid !== pi.user.id && (new Date().getTime() - afkCD)/1000/60 > 1) {
 					afkCD = new Date().getTime();
-					if (typeof afkMessage !== "undefined") API.sendChat('@'+msg.un + ' I am afk: '+afkMessage);
+					if (typeof afkMessage !== "undefined") API.sendChat('@'+msg.un + ' [AFK]: '+afkMessage);
 					else API.sendChat('@'+msg.un + ' I am afk.');
 				}
 			});
@@ -1023,7 +1102,7 @@ window.pi = {
 			window.friendsOnline = setInterval(function(){
 				pi.getFriendsOnline(
 					function(data) {
-						var friends = JSON.parse(data).data;
+						var friends = data.data;
 						var friendsOnline = 0;
 						for (var i = 0; i < friends.length; i++) {
 							if (typeof friends[i].room !== 'undefined') friendsOnline++;
@@ -1066,38 +1145,39 @@ window.pi = {
 			// Menu itself
 			$('#app').append($('<div id="pi-menu" style="visibility: hidden;">\
 				<ul>\
-					<h2>General</h2>\
+					<h2>'+lang.menu.titles.general+'</h2>\
 					<ul>\
 						<li id="pi-woot">'+lang.menu.aw+'</li>\
 						<li id="pi-join">'+lang.menu.aj+'</li>\
 						<li id="pi-keyShortcut">'+lang.menu.ks+'</li>\
 						<li id="pi-mutemeh">'+lang.menu.mm+'</li>\
-						<li id="pi-afkResponder">AFK responder</li>\
+						<li id="pi-afkResponder">'+lang.menu.ar+'</li>\
 						<li id="pi-navWarn">'+lang.menu.nw+'</li>\
 					</ul>\
-					<h2>Customisation</h2>\
+					<h2>'+lang.menu.titles.customisation+'</h2>\
 					<ul>\
 						<li id="pi-video">'+lang.menu.hv+'</li>\
 						<li id="pi-css">'+lang.menu.cs+'</li>\
 						<li id="pi-bg">'+lang.menu.cb+'</li>\
 						<li id="pi-old-chat">'+lang.menu.oc+'</li>\
-						<li id="pi-old-footer">Old footer</li>\
-						<li id="pi-small-media">Small media list</li>\
-					</ul>\
-					<h2>Moderation</h2>\
-					<ul>\
-						<li id="pi-userInfo">User informations</li>\
-						<li id="pi-lengthA">'+lang.menu.sl+'</li>\
-						<li id="pi-historyA">'+lang.menu.ha+'</li>\
-					</ul>\
-					<h2>Notifications</h2>\
+						<li id="pi-old-footer">'+lang.menu.of+'</li>\
+						<li id="pi-small-media">'+lang.menu.sm+'</li>\
+					</ul>'
+					+(API.hasPermission(pi.user, API.ROLE.BOUNCER) ?
+						'<h2>'+lang.menu.titles.moderation+'</h2>\
+						<ul>\
+							<li id="pi-userInfo">'+lang.menu.ui+'</li>\
+							<li id="pi-lengthA">'+lang.menu.sl+'</li>\
+							<li id="pi-historyA">'+lang.menu.ha+'</li>\
+						</ul>' : '')+
+					'<h2>'+lang.menu.titles.notifications+'</h2>\
 					<ul>\
 						<li id="pi-userJoin">'+lang.menu.uj+'</li>\
 						<li id="pi-userLeave">'+lang.menu.ul+'</li>\
 						<li id="pi-userGrab">'+lang.menu.ug+'</li>\
 						<li id="pi-userMeh">'+lang.menu.um+'</li>\
 					</ul>\
-					<h2>About</h2>\
+					<h2>'+lang.menu.titles.about+'</h2>\
 					<p>\
 						Plug-It '+pi.version+'.<br>\
 						Developed by: <a target="_blank" href="https://twitter.com/WiBla7" target="blank">@WiBla7</a><br>\
@@ -1229,21 +1309,21 @@ window.pi = {
 				if (pi.getPlugSettings().tooltips) {
 					var x = $(this).offset().left + ($(this).width()/2);
 					var y = $(this).offset().top - ($(this).height()/2);
-					pi.tooltip(true, 'left', x,y, 'Will remove the DJ from Wait-List and skip him.');
+					pi.tooltip(true, 'left', x,y, lang.tooltips.rmvDJ);
 				}
 			});
 			$('#pi-skip').on('mouseenter', function(){
 				if (pi.getPlugSettings().tooltips) {
 					var x = $(this).offset().left + ($(this).width()/2);
 					var y = $(this).offset().top - ($(this).height()/2);
-					pi.tooltip(true, 'left', x,y, 'Will force skip the DJ.');
+					pi.tooltip(true, 'left', x,y, lang.tooltips.skip);
 				}
 			});
 			$('#pi-delchat').on('mouseenter', function(){
 				if (pi.getPlugSettings().tooltips) {
 					var x = $(this).offset().left + ($(this).width()/2);
 					var y = $(this).offset().top - ($(this).height()/2);
-					pi.tooltip(true, 'left', x,y, 'Clear chat');
+					pi.tooltip(true, 'left', x,y, lang.tooltips.clearChat);
 				}
 			});
 			$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat').on('mouseleave', function(){pi.tooltip();});
@@ -1296,10 +1376,9 @@ window.pi = {
 			};
 			pi.menu('init');
 
-			pi.log(pi.complete(lang.log.loaded + '\n'+
-				(new Date().getTime() - startTime)+'ms'));
+			pi.log(pi.complete(lang.log.loaded + ' ' + (new Date().getTime() - startTime)+'ms'));
 			pi.log(lang.log.help, 'info', 'chat');
-			pi.log('This is a pre-release, expect bugs !!!', 'warn', 'chat');
+			pi.log(lang.log.preRelease, 'warn', 'chat');
 			$('#pi-status').css({opacity:'0'});
 			setTimeout(function(){$('#pi-status').remove();}, 250);
 		}
@@ -1320,10 +1399,10 @@ window.pi = {
 	},
 	reload: function() {
 		pi.log(lang.log.reloading);
-		if (pi.kill() == 'killed') $.getScript(scriptURL);
+		if (pi.close() == 'killed') $.getScript(scriptURL);
 		else pi.log('Unexpected error, couldn\'t kill script', 'error');
 	},
-	kill: function() {
+	close: function() {
 		if (pi.init(true) == 'unloaded') {
 			window.scriptURL = pi.url.script; // Allow to reload
 			pi = undefined;
@@ -1344,9 +1423,4 @@ window.pi = {
 		});
 	}
 };
-function wait(){
-	if (typeof lang !== 'object' || typeof ranks !== 'object') {setTimeout(wait, 200);}
-	else pi.init();
-}
-wait();
 })();

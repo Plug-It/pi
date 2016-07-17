@@ -1,25 +1,43 @@
 {
   "menu": {
+    "titles": {
+      "general": "General",
+      "customisation": "Customisation",
+      "moderation": "Moderation",
+      "notifications": "Notifications",
+      "about": "About"
+    },
     "aw": "Auto-woot",
     "aj": "Auto-join",
     "ks": "Keyboard Shortcuts",
+    "mm": "Mute on meh",
+    "ar": "AFK responder",
+    "nw": "Navigation warn",
     "hv": "Hide video",
     "cs": "Custom Style",
     "cb": "Custom Bg",
     "oc": "Old chat",
+    "of": "Old footer",
+    "sm": "Small media list",
+    "ui": "User informations",
     "sl": "Song limit",
-    "ha": "History Alert",
-    "uj": "User Join",
-    "ul": "User Leave",
-    "ug": "User Grab",
+    "ha": "History alert",
+    "ba": "Booth alert",
+    "uj": "User join",
+    "ul": "User leave",
+    "ug": "User grab",
     "um": "User meh",
-    "mm": "Mute on meh",
-    "nw": "Navigation warn",
     "s": "Shutdown"
+  },
+  "tooltips": {
+    "clearChat": "Clear chat",
+    "rmvDJ": "Skip and remove the DJ from booth",
+    "skip": "Skip the DJ"
   },
   "log": {
     "loaded": "Plug-It $version loaded !",
     "help": "Type /list for commands list.",
+    "preRelease": "This is a pre-release, expect bugs !!!",
     "bgPrompt": "Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background",
     "wooted": " wooted this track !",
     "grabbed": " grabbed this track !",
@@ -38,7 +56,7 @@
     "helpUserOrId": "Write either the pseudo or the id of the bot."
   },
   "warn": {
-    "songLimit": "Music is too long ! 8:00 max !",
+    "songLimit": "Music is too long ! $limit max !",
     "confirmSkip": "This will skip the DJ, click again to confirm.",
     "confirmEject": "This will remove the DJ from the wait-list, click again to confirm.",
     "isTrusted": "Never execute code from someone you don't fully trust ! Click here to confirm and execute code.",

@@ -1,25 +1,43 @@
 {
   "menu": {
+    "titles": {
+      "general": "Générale",
+      "customisation": "Customisation",
+      "moderation": "Modération",
+      "notifications": "Notifications",
+      "about": "À propos"
+    },
     "aw": "Auto-woot",
     "aj": "Auto-join",
     "ks": "Raccourcis clavier",
+    "mm": "Meh muet",
+    "ar": "Répondeur AFK",
+    "nw": "Alerte de navigation",
     "hv": "Cacher la vidéo",
     "cs": "Thème personnalisé",
     "cb": "Fond personnalisé",
     "oc": "Mini chat",
+    "of": "Ancien menu",
+    "sm": "Petite liste de musique",
+    "ui": "Informations utilisateur",
     "sl": "Alerte durée",
     "ha": "Alerte historique",
+    "ba": "Alerte DJ",
     "uj": "Utilisateur rejoint",
     "ul": "Utilisateur part",
     "ug": "Utilisateur grab",
     "um": "Utilisateur meh",
-    "mm": "Meh muet",
-    "nw": "Alerte de navigation",
     "s": "Éteindre"
+  },
+  "tooltips": {
+    "clearChat": "Vider chat",
+    "rmvDJ": "Fait passer et enlève le DJ de la cabine",
+    "skip": "Fait passer le DJ"
   },
   "log": {
     "loaded": "Plug-It $version chargé !",
     "help": "Ecrivez /list pour la liste des commandes.",
+    "preRelease": "Ceci est une version d'éssai, attendez-vous à des bugs !!!",
     "bgPrompt": "URL de l'image:\nEcrivez:\n\"reset\" Fond par default du script\n\"default\" Fond par default de plug",
     "wooted": " a woot !",
     "grabbed": " a grab !",
@@ -38,7 +56,7 @@
     "helpUserOrId": "Ecrivez le pseudo ou l'ID du bot."
   },
   "warn": {
-    "songLimit": "Musique trop longue ! 8:00 max !",
+    "songLimit": "Musique trop longue ! $limit max !",
     "confirmSkip": "Ceci sautera le DJ, cliquez encore pour confirmer.",
     "confirmEject": "Ceci enlèvera le DJ de la liste d'attente, cliquez encore pour confirmer.",
     "isTrusted": "N'éxecutez jamais du code créé par quelqu'un dont vous n'avez pas entièrement confiance! Cliquez ici pour confirmer et exécuter le code.",
