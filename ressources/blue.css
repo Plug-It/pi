@@ -67,8 +67,7 @@
 #playback .background {
 	visibility: hidden;
 }
-.video-only #playback-container {
-	box-shadow: none;
+#playback-container {
 	border: none !important;
 }
 .video-only #pi-rmvDJ, .video-only #pi-skip {

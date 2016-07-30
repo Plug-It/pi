@@ -10,7 +10,7 @@
     "aw": "Auto-woot",
     "aj": "Auto-join",
     "ks": "Atalhos do Teclado",
-    "mm": "Mute on meh",
+    "mm": "Mute ao dar meh",
     "ar": "Mensagem AFK",
     "nw": "Aviso de Navegação",
     "hv": "Esconder vídeo",
@@ -38,10 +38,10 @@
     "loaded": "Plug-It $version carregado !",
     "help": "Digite /list para a lista de comandos.",
     "preRelease": "Este é um pré-lançamento, espere erros !!!",
-    "bgPrompt": "Image URL:\nType:\n\"reset\" default script background\n\"default\" default plug background",
-    "wooted": " wooted this track !",
-    "grabbed": " grabbed this track !",
-    "meh": " meh'd this track !",
+    "bgPrompt": "URL da imagem:\nDigite:\n\"reset\" fundo de script padrão\n\"default\" fundo do plug padrão",
+    "wooted": " votou Legal nessa música !",
+    "grabbed": " Adicionou essa música !",
+    "meh": " votou Chato nessa música !",
     "reloading": "Recarregando Plug-It...",
     "eta": "Tempo estimado até você tocar",
     "forcingReload": "Uma atualização está disponível, forçando você a recarregar. Desculpe pela inconveniência."
@@ -53,20 +53,20 @@
     "youPlay": "Você é o DJ!",
     "notInWaitList": "Você não está na lista de espera.",
     "helpVol": "Usage: /vol [0-100]",
-    "helpUserOrId": "Write either the pseudo or the id of the bot."
-  },
-  "warn": {
-    "songLimit": "A música é muito longa! $limit max !",
-    "confirmSkip": "Isso vai pular o DJ, clique novamente para confirmar.",
-    "confirmEject": "Isto irá remover o DJ da lista de espera, clique novamente para confirmar.",
-    "isTrusted": "Nunca execute o código de alguém que você não confia totalmente ! Clique aqui para confirmar e executar o código.",
-    "inHistory": "$dj está tocando uma música do histórico que foi tocada por $historyDj"
-  },
-  "error": {
-    "autoJoin1": "Lista de espera está trancada",
-    "autoJoin2": "Invalid active playlist",
-    "autoJoin3": "Lista de espera está cheia",
-    "unknowVariable": "Unknow variable(s)",
-    "noUserByName": "They are no user by this name"
+      "helpUserOrId": "Write either the pseudo or the id of the bot."
+    },
+    "warn": {
+      "songLimit": "A música é muito longa! $limit max !",
+      "confirmSkip": "Isso vai pular o DJ, clique novamente para confirmar.",
+      "confirmEject": "Isto irá remover o DJ da lista de espera, clique novamente para confirmar.",
+      "isTrusted": "Nunca execute o código de alguém que você não confia totalmente ! Clique aqui para confirmar e executar o código.",
+      "inHistory": "$dj está tocando uma música do histórico que foi tocada por $historyDj"
+    },
+    "error": {
+      "autoJoin1": "Lista de espera está trancada",
+      "autoJoin2": "Invalid active playlist",
+      "autoJoin3": "Lista de espera está cheia",
+      "unknowVariable": "Unknow variable(s)",
+      "noUserByName": "Não a nenhum usuário com esse nome"
+    }
   }
-}

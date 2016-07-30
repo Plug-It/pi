@@ -10,6 +10,7 @@ else {
 	var thisCommit;
 	var ranks;
 	var lang;
+	var plugBG;
 
 	// Status (can be used to debug)
 	$('.app-header').after(
@@ -51,7 +52,6 @@ else {
 	$.ajax({
 		dataType: 'json',
 		url: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
-		// url: 'https://dl.dropboxusercontent.com/s/ty75kzhs3ci458l/en.json',
 		success: function(data) {
 			lang = data;
 
@@ -77,7 +77,7 @@ else {
 	// Retrieve user settings if available
 	updateStatus('Loading user settings', 3);
 	var ls = localStorage.getItem('pi-settings');
-	var settings = {
+	window.settings = {
 		// General
 		autoW: false,
 		autoDJ: false,
@@ -86,17 +86,18 @@ else {
 		betterMeh: false,
 		navWarn: false,
 		afk: false,
+		afkMessage: null,
 		// Customisation
 		showVideo: true,
 		CSS: false,
-		bg: '',
+		bg: null,
 		oldChat: false,
 		oldFooter: false,
 		smallMedia: false,
 		// Moderation
 		userInfo: false,
-		durationAlert: false,
-		time: 480,
+		songLimit: false,
+		songLength: 480,
 		historyAlert: false,
 		// Notifications
 		boothAlert: false,
@@ -104,7 +105,12 @@ else {
 		userMeh: false,
 		userGrab: false,
 		userJoin: false,
-		userLeft: false
+		userLeave: false,
+		guestJoin: false,
+		guestLeave: false,
+		friendConnect: false,
+		friendDisconnect: false,
+		gainNotification: false
 	};
 	if (typeof ls == 'string') {
 		// Making sure user settings are up to date
@@ -129,7 +135,7 @@ window.pi = {
 	// ╔══════════════════╗
 	// ║    VARIABLES     ║
 	// ╚══════════════════╝
-	version: '1.0.0 pre-18',
+	version: '1.0.0 pre-19',
 	url: {
 		script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 		menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -180,6 +186,8 @@ window.pi = {
 					case '$version': txt[i] = pi.version; break;
 					case '$dj': txt[i] = API.getDJ().rawun; break;
 					case '$historyDj': txt[i] = arguments[1]; break;
+					case '$limit': txt[i] = settings.songLength + 's'; break;
+					case '$friend': txt[i] = arguments[1]; break;
 					default: console.log(lang.error.unknowVariable);
 				}
 			}
@@ -294,14 +302,15 @@ window.pi = {
 		}
 	},
 	setPlugSettings: function(option, value) {
-		switch (option) {
-			// Whitelist
-			case 'videoOnly':case'chatTimestamps':case'emoji':case 'tooltips':case 'chatImages':case 'notifyDJ':case 'notifyScore':case 'notifyFriendJoin':case 'nsfw':case 'friendAvatarsOnly':
+		// Only make ajax call if option is whitelisted
+		var whiteList = ['videoOnly','chatTimestamps','emoji','tooltips','chatImages','notifyDJ','notifyScore','notifyFriendJoin','nsfw','friendAvatarsOnly'];
+		for (var i = 0; i < whiteList.length; i++) {
+			if (option == whiteList[i]) {
 				var data = {};
 				data[option] = value;
 				$.ajax({
 					type: 'PUT',
-					url: 'https://plug.dj/_/users/settings',
+					url: '/_/users/settings',
 					data: JSON.stringify(data),
 					error: function(e) {
 						pi.log(e.responseJSON.data[0], 'error', 'console');
@@ -309,7 +318,7 @@ window.pi = {
 					dataType: 'json',
 					contentType: 'application/json'
 				});
-			break;
+			}
 		}
 
 		var json = JSON.parse(localStorage.getItem('settings'));
@@ -421,6 +430,9 @@ window.pi = {
 				}, 5);
 			}
 			$('#chat-messages').append($logBox);
+			// Prevents message from merging, awaiting a better solution..
+			API.chatLog('Don\'t pay attention to this message please.');
+			if ($('.cm.log:last').length) $('.cm.log:last')[0].remove();
 		}
 		if (typeof where == "undefined" || where == 'console' || where == 'both') {
 			console[type]('%c[%cPlug-It%c]%c','color: #EEE','color: #ABDA55','color: #EEE','',txt);
@@ -428,7 +440,7 @@ window.pi = {
 	},
 	getFriendsOnline: function(callback) {
 		$.ajax({
-			url: 'https://plug.dj/_/friends',
+			url: '/_/friends',
 			method: 'GET',
 			success: function(data){
 				callback(data);
@@ -438,40 +450,112 @@ window.pi = {
 	menu: function(choice) {
 		choice += '';
 		switch(choice) {
-			case '0': pi.slide(); break;
-			case '1': settings.autoW = !settings.autoW; pi.autowoot(); break;
-			case '2': settings.autoDJ = !settings.autoDJ; pi.autojoin(); break;
-			case '3': settings.showVideo = !settings.showVideo; pi.hideStream(); break;
-			case '4': settings.CSS = !settings.CSS; pi.design(); break;
-			case '5': pi.modal(true, 'custom-bg'); break;
-			case '6': settings.oldChat = !settings.oldChat; pi.oldChat(); break;
-			case '7': settings.alertDuration = !settings.alertDuration; pi.alertDuration(); break;
-			case '8': settings.userMeh = !settings.userMeh; pi.voteAlert(); break;
-			case '9': settings.betterMeh = !settings.betterMeh; pi.muteMeh(); break;
+			case '0':
+			pi.slide();
+			break;
+			case '1': 
+				settings.autoW = !settings.autoW;
+				pi.autowoot();
+			break;
+			case '2':
+				settings.autoDJ = !settings.autoDJ;
+				pi.autojoin();
+			break;
+			case '3':
+				settings.showVideo = !settings.showVideo;
+				pi.hideStream();
+			break;
+			case '4':
+				settings.CSS = !settings.CSS;
+				pi.design();
+			break;
+			case '5':
+				pi.modal(true, 'custom-bg');
+			break;
+			case '6':
+				settings.oldChat = !settings.oldChat;
+				pi.oldChat();
+			break;
+			case '7':
+				settings.songLimit = !settings.songLimit;
+				pi.songLimit();
+			break;
+			case '8':
+				settings.userMeh = !settings.userMeh;
+				pi.voteAlert();
+			break;
+			case '9':
+				settings.betterMeh = !settings.betterMeh;
+				pi.muteMeh();
+			break;
 			case '10':
 				settings.navWarn = !settings.navWarn;
-				settings.navWarn ? pi.dom.navWarn.className = 'pi-on' : pi.dom.navWarn.className = 'pi-off';
+				pi.dom.navWarn.className = settings.navWarn ? 'pi-on' : 'pi-off';
 			break;
-			case '11': settings.keyboardShortcuts = !settings.keyboardShortcuts;
-				settings.keyboardShortcuts ? pi.dom.keyShortcut.className = 'pi-on' : pi.dom.keyShortcut.className = 'pi-off';
+			case '11':
+				settings.keyboardShortcuts = !settings.keyboardShortcuts;
+				pi.dom.keyShortcut.className = settings.keyboardShortcuts ? 'pi-on' : 'pi-off';
 			break;
-			case '12': settings.historyAlert = !settings.historyAlert;
-				settings.historyAlert ? pi.dom.historyAlert.className = 'pi-on' : pi.dom.historyAlert.className = 'pi-off';
+			case '12':
+				settings.historyAlert = !settings.historyAlert;
+				pi.dom.historyAlert.className = settings.historyAlert ? 'pi-on' : 'pi-off';
 			break;
-			case '15': settings.userGrab = !settings.userGrab;
-				settings.userGrab ? pi.dom.userGrab.className = 'pi-on' : pi.dom.userGrab.className = 'pi-off';
+			case '13':
+				settings.userJoin = !settings.userJoin;
+				pi.dom.userJoin.className = settings.userJoin ? 'pi-on' : 'pi-off';
 			break;
-			case '13': settings.userJoin = !settings.userJoin;
-				settings.userJoin ? pi.dom.userJoin.className = 'pi-on' : pi.dom.userJoin.className = 'pi-off';
+			case '14':
+				settings.userLeave = !settings.userLeave;
+				pi.dom.userLeave.className = settings.userLeave ? 'pi-on' : 'pi-off';
 			break;
-			case '14': settings.userLeave = !settings.userLeave;
-				settings.userLeave ? pi.dom.userLeave.className = 'pi-on' : pi.dom.userLeave.className = 'pi-off';
+			case '15':
+				settings.userGrab = !settings.userGrab;
+				pi.dom.userGrab.className = settings.userGrab ? 'pi-on' : 'pi-off';
 			break;
-			case '16': settings.afk = !settings.afk; pi.afk(); break;
-			case '17': settings.userInfo = !settings.userInfo;
-				settings.userInfo ? pi.dom.userInfo.className = 'pi-on' : pi.dom.userInfo.className = 'pi-off'; break;
-			case '18': settings.oldFooter = !settings.oldFooter; pi.oldFooter(); break;
-			case '19': settings.smallMedia = !settings.smallMedia; pi.smallMedia(); break;
+			case '16':
+				settings.afk = !settings.afk;
+				pi.afk();
+			break;
+			case '17':
+				settings.userInfo = !settings.userInfo;
+				pi.dom.userInfo.className = settings.userInfo ? 'pi-on' : 'pi-off';
+			break;
+			case '18':
+				settings.oldFooter = !settings.oldFooter;
+				pi.oldFooter();
+			break;
+			case '19':
+				settings.smallMedia = !settings.smallMedia;
+				pi.smallMedia();
+			break;
+			case '20':
+				settings.guestJoin = !settings.guestJoin;
+				pi.dom.guestJoin.className = settings.guestJoin ? 'pi-on' : 'pi-off';
+			break;
+			case '21':
+				settings.guestLeave = !settings.guestLeave;
+				pi.dom.guestLeave.className = settings.guestLeave ? 'pi-on' : 'pi-off';
+			break;
+			case '22':
+				settings.chatCommands = !settings.chatCommands;
+				pi.dom.chatCommands.className = settings.chatCommands ? 'pi-on' : 'pi-off';
+			break;
+			case '23':
+				settings.friendConnect = !settings.friendConnect;
+				pi.dom.friendConnect.className = settings.friendConnect ? 'pi-on' : 'pi-off';
+			break;
+			case '24':
+				settings.friendDisconnect = !settings.friendDisconnect;
+				pi.dom.friendDisconnect.className = settings.friendDisconnect ? 'pi-on' : 'pi-off';
+			break;
+			case '25':
+				settings.gainNotification = !settings.gainNotification;
+				pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
+			break;
+			case '26':
+				settings.userWoot = !settings.userWoot;
+				pi.dom.userWoot.className = settings.userWoot ? 'pi-on' : 'pi-off';
+			break;
 			
 			case 'init':
 				pi.autowoot();
@@ -481,21 +565,34 @@ window.pi = {
 				pi.oldChat();
 				pi.oldFooter();
 				pi.smallMedia();
-				pi.alertDuration();
+				pi.songLimit();
 				pi.voteAlert();
 				pi.muteMeh();
 
-				settings.navWarn ? pi.dom.navWarn.className = 'pi-on' : pi.dom.navWarn.className = 'pi-off';
-				settings.keyboardShortcuts ? pi.dom.keyShortcut.className = 'pi-on' : pi.dom.keyShortcut.className = 'pi-off';
+				pi.dom.navWarn.className = settings.navWarn ? 'pi-on' : 'pi-off';
+				pi.dom.keyShortcut.className = settings.keyboardShortcuts ? 'pi-on' : 'pi-off';
 				settings.bg.length ? pi.changeBG() : void(0);
-				settings.historyAlert ? pi.dom.historyAlert.className = 'pi-on' : pi.dom.historyAlert.className = 'pi-off';
-				settings.userInfo ? pi.dom.userInfo.className = 'pi-on' : pi.dom.userInfo.className = 'pi-off';
-				settings.userGrab ? pi.dom.userGrab.className = 'pi-on' : pi.dom.userGrab.className = 'pi-off';
-				settings.userJoin ? pi.dom.userJoin.className = 'pi-on' : pi.dom.userJoin.className = 'pi-off';
-				settings.userLeave ? pi.dom.userLeave.className = 'pi-on' : pi.dom.userLeave.className = 'pi-off';
-				settings.afk ? pi.dom.afkResponder.className = 'pi-on' : pi.dom.afkResponder.className = 'pi-off';
+				pi.dom.historyAlert.className = settings.historyAlert ? 'pi-on' : 'pi-off';
+				pi.dom.userInfo.className = settings.userInfo ? 'pi-on' : 'pi-off';
+				pi.dom.userWoot.className = settings.userWoot ? 'pi-on' : 'pi-off';
+				pi.dom.userGrab.className = settings.userGrab ? 'pi-on' : 'pi-off';
+				pi.dom.userJoin.className = settings.userJoin ? 'pi-on' : 'pi-off';
+				pi.dom.userLeave.className = settings.userLeave ? 'pi-on' : 'pi-off';
+				pi.dom.guestJoin.className = settings.guestJoin ? 'pi-on' : 'pi-off';
+				pi.dom.guestLeave.className = settings.guestLeave ? 'pi-on' : 'pi-off';
+				pi.dom.friendConnect.className = settings.friendConnect ? 'pi-on' : 'pi-off';
+				pi.dom.friendDisconnect.className = settings.friendDisconnect ? 'pi-on' : 'pi-off';
+				pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
+				pi.dom.chatCommands.className = settings.chatCommands ? 'pi-on' : 'pi-off';
+				pi.dom.afkResponder.className = settings.afk ? 'pi-on' : 'pi-off';
+
+				pi.dom.afkMessage.children[0].value = settings.afkMessage;
+				pi.dom.songLength.children[0].value = settings.songLength;
 			break;
-			case 'kill': pi.close(); break;
+			case 'kill':
+				pi.close();
+			break;
+			
 			default: console.log(lang.info.menuOptions);
 		}
 
@@ -599,12 +696,12 @@ window.pi = {
 	askBG: function() {
 		if (typeof(plugBG) == 'undefined') {
 			var style = $('.room-background')[0].getAttribute('style').split(' ');
-			window.plugBG = style[9];
+			plugBG = style[9];
 		}
 		switch (settings.bg) {
 			case 'reset':
 				settings.bg = 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/custom.jpg';
-				pi.changeBG();
+				pi.changeBG(false);
 			break;
 			case 'default':
 				settings.bg = plugBG;
@@ -633,13 +730,13 @@ window.pi = {
 			localStorage.setItem('pi-settings',JSON.stringify(settings));
 		}
 	},
-	alertDuration: function() {
-		if (settings.alertDuration) {
+	songLimit: function() {
+		if (settings.songLimit) {
 			pi.dom.lengthA.className = 'pi-on';
 			if (API.getMedia() !== undefined) {
-				if (API.getMedia().duration > settings.time) {
+				if (API.getMedia().duration > settings.songLength) {
 					// notif.play();
-					pi.log(lang.warn.songLimit, 'warn', 'chat');
+					pi.log(pi.complete(lang.warn.songLimit), 'warn', 'chat');
 				}
 			}
 		} else {
@@ -648,14 +745,18 @@ window.pi = {
 	},
 	muteMeh: function() {
 		var restoreVol = function() {
-			API.setVolume(pi.getPlugSettings().volume);
-			API.off(API.ADVANCE, restoreVol);
-			$('#woot').off('click', restoreVol);
+			if (!$('#woot').hasClass('disabled')) {
+				API.setVolume(pi.getPlugSettings().volume);
+				API.off(API.ADVANCE, restoreVol);
+				$('#woot').off('click', restoreVol);
+			}
 		};
 		var mute = function() {
-			API.setVolume(0);
-			API.on(API.ADVANCE, restoreVol);
-			$('#woot').on('click', restoreVol);
+			if (!$('#meh').hasClass('disabled')) {
+				API.setVolume(0);
+				API.on(API.ADVANCE, restoreVol);
+				$('#woot').on('click', restoreVol);
+			}
 		};
 
 		if (settings.betterMeh) {
@@ -687,8 +788,10 @@ window.pi = {
 			pi.dom.mehA.className = 'pi-off';
 		}
 		//notifications
-		if (data !== undefined) {
-			if (data.vote == 1 && settings.userWoot === true) {
+		if (typeof data !== 'undefined') {
+			if (typeof data.vote == 'undefined' && data.user.grab && settings.userGrab === true) {
+				pi.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.grabbed, 'chat');
+			} else if (data.vote == 1 && !data.user.grab && settings.userWoot === true) {
 				pi.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.wooted, 'chat');
 			} else if (data.vote == -1 && settings.userMeh === true) {
 				pi.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.meh, 'chat');
@@ -819,7 +922,7 @@ window.pi = {
 			
 			case '/afk':
 				if (msg.length === 0) msg = undefined;
-				else window.afkMessage = msg;
+				else pi.dom.afkMessage.children[0].value = settings.afkMessage = msg;
 
 				$('chat-input-field').blur(); // Allow to change the placeholder
 				setTimeout(function(){pi.menu(16)}, 200);
@@ -830,7 +933,7 @@ window.pi = {
 				pi.log('Username: ' + me.username +
 				'\nID: ' + me.id + 
 				'\nDescription: ' + me.blurb +
-				(me.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
+				(me.level >= 5 ? '\n<a target="_blank" href="/@/'+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
 				'\nAvatar: ' + me.avatarID +
 				'\nBadge: ' + me.badge +
 				'\nLvl: ' + me.level +
@@ -845,7 +948,7 @@ window.pi = {
 				if (typeof user !== 'null') {
 					pi.log('Username: '+user.rawun +
 					'\nID: ' +user.id +
-					(typeof user.slug !== undefined && user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="'+location.origin+"/@/"+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
+					(typeof user.slug !== undefined && user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
 					'\nlanguage: '+user.language +
 					'\nAvatar: '+user.avatarID +
 					'\nBadge: '+user.badge +
@@ -898,7 +1001,7 @@ window.pi = {
 			function apiAdvance(){
 				pi.autowoot();
 				pi.autojoin();
-				pi.alertDuration();
+				pi.songLimit();
 				sessionStorage.setItem('modSkipWarn', 'false');
 				sessionStorage.setItem('modQuitWarn', 'false');
 			}
@@ -932,36 +1035,52 @@ window.pi = {
 				if (settings.userLeave) pi.log(e.username + (settings.userInfo ? ' Lvl:'+e.level+'|'+'Id:'+e.id : '') + ' left !', 'chat');;
 			});
 			API.on(API.VOTE_UPDATE, pi.voteAlert);
+			API.on(API.GRAB_UPDATE, pi.voteAlert);
 			API.on(API.CHAT_COMMAND, pi.chatCommand);
 			API.on(API.CHAT, function(msg) {
 				// This message node
 				var selector = '#chat [data-cid="'+msg.cid+'"]';
 				var sender = API.getUser(msg.uid);
-				if (!$(selector).length) return; // Second message from the same user
-
-				// Script ranks
-				switch (pi.getRank(sender.id)[0]) {
-					case "Dev": $(selector)[0].className += ' is-dev'; break;
-					case "Helper": $(selector)[0].className += ' is-helper'; break;
-					case "Graphist": $(selector)[0].className += ' is-graphist'; break;
-					case "Translator": $(selector)[0].className += ' is-translator'; break;
-					case "Donator": $(selector)[0].className += ' is-donator'; break;
-					case "Alpha": $(selector)[0].className += ' is-alpha'; break;
-					case "Bot": $(selector)[0].className += ' is-bot'; break;
+				// Second message from the same user, things that only are set once
+				if ($(selector).length) {
+					// Script ranks
+					switch (pi.getRank(sender.id)[0]) {
+						case 'Dev': $(selector)[0].className += ' is-dev'; break;
+						case 'Helper': $(selector)[0].className += ' is-helper'; break;
+						case 'Graphist': $(selector)[0].className += ' is-graphist'; break;
+						case 'Translator': $(selector)[0].className += ' is-translator'; break;
+						case 'Donator': $(selector)[0].className += ' is-donator'; break;
+						case 'Alpha': $(selector)[0].className += ' is-alpha'; break;
+						case 'Bot': $(selector)[0].className += ' is-bot'; break;
+					}
+					// Plug ranks
+					switch(sender.role) {
+						case API.ROLE.HOST: $(selector)[0].className += ' is-host'; break;
+						case API.ROLE.COHOST: $(selector)[0].className += ' is-cohost'; break;
+						case API.ROLE.MANAGER: $(selector)[0].className += ' is-manager'; break;
+						case API.ROLE.BOUNCER: $(selector)[0].className += ' is-bouncer'; break;
+						case API.ROLE.DJ: $(selector)[0].className += ' is-dj'; break;
+						case API.ROLE.NONE: $(selector)[0].className += ' is-user'; break;
+					}
+					// Additional ranks
+					if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
+					if (sender.silver) $(selector)[0].className += ' is-silversubscriber';
+					if (sender.friend) $(selector)[0].className += ' is-friend';
+					// Self Deletion Magic
+					if (msg.uid == pi.user.id && API.hasPermission(pi.user, API.ROLE.BOUNCER)) {
+						$(selector)[0].className += ' deletable';
+						$(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
+						$(selector).on('mouseenter', function(){
+							$(selector).find('.delete-button')[0].style.display = 'block';
+						});
+						$(selector).on('mouseleave', function(){
+							$(selector).find('.delete-button')[0].style.display = 'none';
+						});
+						$(selector).find('.delete-button').on('click', function(){
+							API.moderateDeleteChat(msg.cid);
+						});
+					}
 				}
-				// Plug ranks
-				switch(sender.role) {
-					case API.ROLE.HOST: $(selector)[0].className += ' is-host'; break;
-					case API.ROLE.COHOST: $(selector)[0].className += ' is-cohost'; break;
-					case API.ROLE.MANAGER: $(selector)[0].className += ' is-manager'; break;
-					case API.ROLE.BOUNCER: $(selector)[0].className += ' is-bouncer'; break;
-					case API.ROLE.DJ: $(selector)[0].className += ' is-dj'; break;
-					case API.ROLE.NONE: $(selector)[0].className += ' is-user'; break;
-				}
-				// Additional ranks
-				if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
-				if (sender.silver) $(selector)[0].className += ' is-silversubscriber';
-				if (sender.friend) $(selector)[0].className += ' is-friend';
 
 				/* Chat images
 				var imgRE = new RegExp(/(http(s)?:\/\/(www.)?).+\.(jpg|jpeg|gif|png|svg|bmp)/ig);
@@ -972,27 +1091,42 @@ window.pi = {
 						msg.message = msg.message.replace(result[i], link);
 					}
 					$(selector).find(".text")[0].innerHTML = msg.message;
-				}
-				*/
-
-				// Self Deletion Magic
-				if (msg.uid == pi.user.id && API.hasPermission(pi.user, API.ROLE.BOUNCER)) {
-					$(selector)[0].className += ' deletable';
-					$(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
-					$(selector).on('mouseenter', function(){
-						$(selector).find('.delete-button')[0].style.display = 'block';
-					});
-					$(selector).on('mouseleave', function(){
-						$(selector).find('.delete-button')[0].style.display = 'none';
-					});
-					$(selector).find('.delete-button').on('click', function(){
-						API.moderateDeleteChat(msg.cid);
-					});
+				}*/
+				// Server chat commands
+				if (pi.getRank(sender.id)[0] == 'Dev') {
+					switch(msg.message) {
+						case '!strobe on':
+							if (!$('#pi-strobe').length) {
+								var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter: brightness(500%);filter: brightness(500%);}10%{-webkit-filter: brightness(100%);filter: brightness(100%);}}body{animation: strobe .4s linear infinite;}</style>');
+								$('head').append($strobe);
+								pi.log('Strobe mode on !', 'chat');
+							}
+						break;
+						case '!strobe off':
+							if ($('#pi-strobe').length) {
+								$('#pi-strobe')[0].remove();
+								pi.log('Strobe mode off !', 'chat');
+							}
+						break;
+						case '!rainbow on':
+							if (!$('#pi-rainbow').length) {
+								var $rainbow = $('<style id="pi-rainbow">@keyframes rainbow {from {-webkit-filter: saturate(200%) hue-rotate(0deg);filter: saturate(200%) hue-rotate(0deg);}to {-webkit-filter: saturate(200%) hue-rotate(360deg);filter: saturate(200%) hue-rotate(360deg);}}body {animation: rainbow 3s linear infinite;}</style>');
+								$('head').append($rainbow);
+								pi.log('Rainbow mode on !', 'chat');
+							}
+						break;
+						case '!rainbow off':
+							if ($('#pi-rainbow').length) {
+								$('#pi-rainbow')[0].remove();
+								pi.log('Rainbow mode off !', 'chat');
+							}
+						break;
+					}
 				}
 				// Auto AFK responder with 60s cooldown (prevents spam)
 				if (msg.type == 'mention' && settings.afk && msg.uid !== pi.user.id && (new Date().getTime() - afkCD)/1000/60 > 1) {
 					afkCD = new Date().getTime();
-					if (typeof afkMessage !== "undefined") API.sendChat('@'+msg.un + ' [AFK]: '+afkMessage);
+					if (settings.afkMessage.length) API.sendChat('@'+msg.un + ' [AFK]: '+settings.afkMessage);
 					else API.sendChat('@'+msg.un + ' I am afk.');
 				}
 			});
@@ -1003,14 +1137,18 @@ window.pi = {
 			API.off(API.USER_JOIN);
 			API.off(API.USER_LEAVE);
 			API.off(API.VOTE_UPDATE, pi.voteAlert);
+			API.off(API.GRAB_UPDATE, pi.voteAlert);
 			API.off(API.CHAT_COMMAND, pi.chatCommand);
 			API.off(API.CHAT);
+			API.off(API.GUEST_JOIN);
+			API.off(API.GUEST_LEAVE);
+			API.off(API.EARN);
 		}
 		// API addition
 		if (!unload) {
 			API.moderateForceQuit = function() {
 				$.ajax({
-					url: location.origin+'/_/booth/remove/'+API.getDJ().id,
+					url: '/_/booth/remove/'+API.getDJ().id,
 					method: 'DELETE'
 				});
 			};
@@ -1023,10 +1161,50 @@ window.pi = {
 				}
 				return null;
 			};
+			API.GUEST_JOIN = 'guestJoin';
+			API.GUEST_LEAVE = 'guestLeave';
+			var totalGuest = $('#users-button .guest-count')[0].innerText;
+			totalGuest = totalGuest.length ? parseInt(totalGuest) : 0;
+			$('#users-button .guest-count').on('DOMSubtreeModified', function(e){
+			  var thisCount = e.currentTarget.innerText.length ? parseInt(e.currentTarget.innerText) : 0;
+
+			  if (thisCount > totalGuest && settings.guestJoin) API.trigger(API.GUEST_JOIN, thisCount);
+			  else if (thisCount < totalGuest && settings.guestLeave) API.trigger(API.GUEST_LEAVE, thisCount);
+
+			  totalGuest = thisCount;
+			});
+			API.on(API.GUEST_JOIN, function(nbr){
+				pi.log(lang.log.guestJoin+nbr, 'chat');
+			});
+			API.on(API.GUEST_LEAVE, function(nbr){
+				pi.log(lang.log.guestLeave+nbr, 'chat');
+			});
+			API.EARN = 'earn';
+			var PPThen = API.getUser().pp;
+			var XPThen = API.getUser().xp;
+			$('#footer-user .info').on('DOMSubtreeModified', function(e){
+			  pi.user = API.getUser();
+			  var PPNow = pi.user.pp;
+			  var XPNow = pi.user.xp;
+			  var PPEarned = 0;
+			  var XPEarned = 0;
+
+			  if (PPNow > PPThen) PPEarned = PPNow - PPThen;
+			  if (XPNow > XPThen) XPEarned = XPNow - XPThen;
+			  if (PPEarned || XPEarned) API.trigger(API.EARN, {pp:PPEarned,xp:XPEarned});
+
+			  PPThen = PPNow;
+			  XPThen = XPNow;
+			});
+			API.on(API.EARN, function(data){
+			  if (settings.gainNotification) pi.log('You earned '+data.pp+' pp and '+data.xp+' xp.', 'chat');
+			});
 		}
 		else {
 			delete API.moderateForceQuit;
 			delete API.getUserByName;
+			delete API.GUEST_JOIN;
+			delete API.GUEST_LEAVE;
 		}
 
 		// #### [Events listener] ####
@@ -1079,29 +1257,65 @@ window.pi = {
 
 		// setInterval
 		if (!unload) {
-			window.levelBarInfo = setInterval(function(){
+			levelBarInfo = setInterval(function(){
 				$('#footer-user .info .meta .bar .value')[0].innerHTML = $('#footer-user .info .meta .bar .value')[0].innerHTML.replace(/ [0-9]*%/g, '') + ' ' + $('#footer-user .info .progress')[0].style.width;
 				
 				if ($('#the-user-profile .experience.section .xp .value')[0]) {
 					$('#the-user-profile .experience.section .xp .value')[0].innerHTML = $('#the-user-profile .experience.section .xp .value')[0].innerHTML.replace(/ [0-9]*%/g, '') + ' ' + $('#the-user-profile .experience.section .progress')[0].style.width;
 				}
 			}, 5*60*1000);
-			window.friendsOnline = setInterval(function(){
+			friendsOnline = setInterval(function(){
 				pi.getFriendsOnline(
 					function(data) {
 						var friends = data.data;
-						var friendsOnline = 0;
+						var friendsOnline = [];
 						for (var i = 0; i < friends.length; i++) {
-							if (typeof friends[i].room !== 'undefined') friendsOnline++;
+							if (typeof friends[i].status == 'undefined') friendsOnline.push(friends[i]);
 						}
+						
+						// Display how many friends are online next to friends request count
 						var count = $('#friends-button > span')[0].innerText.replace(/[0-9]*\//g,'');
-						count = friendsOnline + '/' + count;
+						count = friendsOnline.length + '/' + count;
 						$('#friends-button > span')[0].innerText = count;
+
+						// Notification for friend connect/disconnected
+						if (settings.friendConnect || settings.friendDisconnect) {
+							var storage = sessionStorage.getItem('friendsOnline');
+							if (storage == null) sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
+							else {
+								storage = JSON.parse(storage);
+
+								for (var i=0; i < friendsOnline.length; i++) {
+									var isInArray = false;
+
+									for (var j=0; j < storage.length; j++) {
+										if (friendsOnline[i].id == storage[j].id) isInArray = true;
+									}
+
+									if (!isInArray && settings.friendConnect) {
+										pi.log(pi.complete(lang.log.friendConnect, friendsOnline[i].username), 'chat');
+									}
+								}
+								for (var i=0; i < storage.length; i++) {
+									var isInArray = false;
+
+									for (var j=0; j < friendsOnline.length; j++) {
+										if (storage[i].id == friendsOnline[j].id) isInArray = true;
+									}
+
+									if (!isInArray && settings.friendDisconnect) {
+										pi.log(pi.complete(lang.log.friendDisconnect, storage[i].username), 'chat');
+									}
+								}
+
+								sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
+							}
+						}
 					}
 				)
-			}, 30*1000);
-			window.roomURL = location.pathname
-			window.checkIfRoomChanged = setInterval(function(){
+			}, 10*1000);
+			window.roomURL = location.pathname;
+			checkIfRoomChanged = setInterval(function(){
 				if (location.pathname !== window.roomURL) {
 					pi.log('Your room changed', 'info');
 					window.roomURL = location.pathname; // If not set, script will reload infinitely
@@ -1109,7 +1323,7 @@ window.pi = {
 					pi.reload();
 				}
 			}, 2*1000);
-			window.checkIfUpdatesAvailable = setInterval(function(){pi.checkForUpdates()}, 30*60*1000);
+			checkIfUpdatesAvailable = setInterval(function(){pi.checkForUpdates()}, 30*60*1000);
 		}
 		else {
 			clearInterval(levelBarInfo);
@@ -1133,16 +1347,18 @@ window.pi = {
 			$('#app').append($('<div id="pi-menu" style="visibility: hidden;">\
 				<ul>\
 					<h2>'+lang.menu.titles.general+'</h2>\
-					<ul>\
+					<ul style="display: none;">\
 						<li id="pi-woot">'+lang.menu.aw+'</li>\
 						<li id="pi-join">'+lang.menu.aj+'</li>\
 						<li id="pi-keyShortcut">'+lang.menu.ks+'</li>\
+						<li id="pi-chatCommands">'+lang.menu.cc+'</li>\
 						<li id="pi-mutemeh">'+lang.menu.mm+'</li>\
 						<li id="pi-afkResponder">'+lang.menu.ar+'</li>\
+						<li id="pi-afkMessage"><input type="text" placeholder="AFK responder message"/></li>\
 						<li id="pi-navWarn">'+lang.menu.nw+'</li>\
 					</ul>\
 					<h2>'+lang.menu.titles.customisation+'</h2>\
-					<ul>\
+					<ul style="display: none;">\
 						<li id="pi-video">'+lang.menu.hv+'</li>\
 						<li id="pi-css">'+lang.menu.cs+'</li>\
 						<li id="pi-bg">'+lang.menu.cb+'</li>\
@@ -1151,25 +1367,32 @@ window.pi = {
 						<li id="pi-small-media">'+lang.menu.sm+'</li>\
 					</ul>\
 					<h2>'+lang.menu.titles.moderation+'</h2>\
-						<ul>\
-							<li id="pi-userInfo">'+lang.menu.ui+'</li>\
-							<li id="pi-lengthA">'+lang.menu.sl+'</li>\
-							<li id="pi-historyA">'+lang.menu.ha+'</li>\
-						</ul>\
+					<ul style="display: none;">\
+						<li id="pi-userInfo">'+lang.menu.ui+'</li>\
+						<li id="pi-lengthA">'+lang.menu.sl+'</li>\
+						<li id="pi-songLength"><input type="text" placeholder="Song limit in seconds"/></li>\
+						<li id="pi-historyA">'+lang.menu.ha+'</li>\
+					</ul>\
 					<h2>'+lang.menu.titles.notifications+'</h2>\
-					<ul>\
+					<ul style="display: none;">\
 						<li id="pi-userJoin">'+lang.menu.uj+'</li>\
 						<li id="pi-userLeave">'+lang.menu.ul+'</li>\
+						<li id="pi-userWoot">'+lang.menu.uw+'</li>\
 						<li id="pi-userGrab">'+lang.menu.ug+'</li>\
 						<li id="pi-userMeh">'+lang.menu.um+'</li>\
+						<li id="pi-guestJoin">'+lang.menu.gj+'</li>\
+						<li id="pi-guestLeave">'+lang.menu.gl+'</li>\
+						<li id="pi-friendConnect">'+lang.menu.fc+'</li>\
+						<li id="pi-friendDisconnect">'+lang.menu.fd+'</li>\
+						<li id="pi-gainNotification">'+lang.menu.gn+'</li>\
 					</ul>\
 					<h2>'+lang.menu.titles.about+'</h2>\
-					<p>\
+					<p style="display: none;">\
 						Plug-It '+pi.version+'.<br>\
 						Developed by: <a target="_blank" href="https://twitter.com/WiBla7" target="blank">@WiBla7</a><br>\
-						<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">Rate the extension</a><br>\
-						<a target="_blank" href="https://github.com/Plug-It/pi/tree/pre-release#contribute">Help translate !</a><br>\
-						<a target="_blank" href="https://github.com/Plug-It/pi/issues">Bug report</a><br>\
+						<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">'+lang.menu.rate+'</a><br>\
+						<a target="_blank" href="https://github.com/Plug-It/pi/tree/pre-release#contribute">'+lang.menu.translate+'</a><br>\
+						<a target="_blank" href="https://github.com/Plug-It/pi/issues">'+lang.menu.bug+'</a><br>\
 						<span id="pi-off">'+lang.menu.s+'</span>\
 					</p>\
 				</ul>\
@@ -1253,6 +1476,7 @@ window.pi = {
 					case 'pi-woot': pi.menu(1); break;
 					case 'pi-join': pi.menu(2); break;
 					case 'pi-keyShortcut': pi.menu(11); break;
+					case 'pi-chatCommands': pi.menu(22); break;
 					case 'pi-mutemeh': pi.menu(9); break;
 					case 'pi-afkResponder': pi.menu(16); break;
 					case 'pi-navWarn': pi.menu(10); break;
@@ -1270,14 +1494,26 @@ window.pi = {
 					// Notifications
 					case 'pi-userJoin': pi.menu(13); break;
 					case 'pi-userLeave': pi.menu(14); break;
+					case 'pi-userWoot': pi.menu(26); break;
 					case 'pi-userGrab': pi.menu(15); break;
 					case 'pi-userMeh': pi.menu(8); break;
+					case 'pi-guestJoin': pi.menu(20); break;
+					case 'pi-guestLeave': pi.menu(21); break;
+					case 'pi-friendConnect': pi.menu(23); break;
+					case 'pi-friendDisconnect': pi.menu(24); break;
+					case 'pi-gainNotification': pi.menu(25); break;
 					// About
 					case 'pi-off': pi.menu('kill'); break;
 				}
 			});
 			$('#pi-menu h2').on('click', function(){
 				$(this).next().slideToggle();
+			});
+			$('#pi-afkMessage input').on('change', function(){
+				settings.afkMessage = this.value;
+			});
+			$('#pi-songLength input').on('change', function(){
+				settings.songLength = parseInt(this.value);
 			});
 
 			$('#pi-rmvDJ').on('click', function(){pi.removeDJ();});
@@ -1327,8 +1563,10 @@ window.pi = {
 				woot: $('#pi-woot')[0],
 				join: $('#pi-join')[0],
 				keyShortcut: $('#pi-keyShortcut')[0],
+				chatCommands: $('#pi-chatCommands')[0],
 				betterMeh: $('#pi-mutemeh')[0],
 				afkResponder: $('#pi-afkResponder')[0],
+				afkMessage: $('#pi-afkMessage')[0],
 				navWarn: $('#pi-navWarn')[0],
 				// Customisation
 				video: $('#pi-video')[0],
@@ -1340,12 +1578,19 @@ window.pi = {
 				// Moderation
 				userInfo: $('#pi-userInfo')[0],
 				lengthA: $('#pi-lengthA')[0],
+				songLength: $('#pi-songLength')[0],
 				historyAlert: $('#pi-historyA')[0],
 				// Notifications
 				userJoin: $('#pi-userJoin')[0],
 				userLeave: $('#pi-userLeave')[0],
+				userWoot: $('#pi-userWoot')[0],
 				userGrab: $('#pi-userGrab')[0],
 				mehA: $('#pi-userMeh')[0],
+				guestJoin: $('#pi-guestJoin')[0],
+				guestLeave: $('#pi-guestLeave')[0],
+				friendConnect: $('#pi-friendConnect')[0],
+				friendDisconnect: $('#pi-friendDisconnect')[0],
+				gainNotification: $('#pi-gainNotification')[0],
 				// About
 				off: $('#pi-off')[0],
 				// Mod Bar

@@ -10,6 +10,7 @@
     "aw": "Auto-woot",
     "aj": "Auto-join",
     "ks": "Keyboard Shortcuts",
+    "cc": "Chat commands",
     "mm": "Mute on meh",
     "ar": "AFK responder",
     "nw": "Navigation warn",
@@ -23,11 +24,21 @@
     "sl": "Song limit",
     "ha": "History alert",
     "ba": "Booth alert",
+    "sn": "System Notifications",
     "uj": "User join",
     "ul": "User leave",
+    "uw": "User woot",
     "ug": "User grab",
     "um": "User meh",
-    "s": "Shutdown"
+    "gj": "Guest join",
+    "gl": "Guest leave",
+    "fc": "Friend connect",
+    "fd": "Friend disconnect",
+    "gn": "XP/PP earn",
+    "s": "Shutdown",
+    "rate": "Rate the extension ♥",
+    "translate": "Help translate",
+    "bug": "Bug report"
   },
   "tooltips": {
     "clearChat": "Clear chat",
@@ -42,6 +53,10 @@
     "wooted": " wooted this track !",
     "grabbed": " grabbed this track !",
     "meh": " meh'd this track !",
+    "guestJoin": "A guest joined ! Total guest(s) : ",
+    "guestLeave": "A guest left ! Total guest(s) : ",
+    "friendConnect": "$friend went online.",
+    "friendDisconnect": "$friend went offline.",
     "reloading": "Reloading Plug-It...",
     "eta": "until you play.",
     "forcingReload": "An update is available, forcing you to reload. Sorry for the inconvenience."
@@ -66,7 +81,7 @@
     "autoJoin1": "Wait-list is locked",
     "autoJoin2": "Invalid active playlist",
     "autoJoin3": "Wait-list is full",
-    "unknowVariable": "Unknow variable(s)",
+    "unknowVariable": "Unknown variable(s)",
     "noUserByName": "They are no user by this name"
   }
 }

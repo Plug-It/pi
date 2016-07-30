@@ -6,13 +6,13 @@
 	z-index: 20;
 	cursor: pointer;
 	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-54.jpg);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/icon-54.jpg);
 	transition: ease-in-out 0.30s;
 }
 #icon {
 	position: relative;
 	top: -54px; left: 0;
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/other/icon-hover-54.jpg);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/icon-hover-54.jpg);
 }
 #pi-logo:hover #icon, #icon:hover {
 	top: 0px;
@@ -33,6 +33,22 @@
 }
 #pi-menu *::selection {
 	background: transparent;
+}
+#pi-menu input {
+	border: none;
+	width: 145px !important;
+	padding: 2px;
+
+	background: linear-gradient(to top, hsla(220,100%,15%,.7), hsla(220,100%,10%,.7));
+	color: #888;
+}
+#pi-menu input:focus {
+	color: #EEE;
+	box-shadow: inset 0 0 0 1px #05F;
+	background: linear-gradient(to top, hsl(220,100%,30%), hsl(220,100%,20%));
+}
+#pi-menu input::selection {
+	background: #0bf;
 }
 #pi-menu h2 {
 	cursor: pointer;
@@ -91,6 +107,7 @@
 	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8));
 	border: 2px solid #AAA;
 	border-top: 0;
+	margin-top: -2px;
 	text-align: center;
 	cursor: pointer;
 }
@@ -218,19 +235,28 @@
 }
 
 /*--[BOT]--*/
+#chat .is-dev .un::before,
+#chat .is-helper .un::before,
+#chat .is-graphist .un::before,
+#chat .is-translator .un::before,
+#chat .is-alpha .un::before,
+#chat .is-bot .un::before {
+	content: "\0000a0";
+	width: 15px; height: 15px;
+	position: relative;
+	top: 1px; left: -2px;
+	float: left;
+}
 #chat .is-bot .bdg,
 #chat .is-bot .no-badge {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_bot.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
 #chat .is-bot .no-badge i {
 	display: none !important;
 }
-#chat .is-bot .icon-chat-subscriber {display: none;}
-#chat .is-bot [class*="icon-chat"] {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_bot.png);
-	background-size: 15px;
-	background-position: 0 0 !important;
+#chat .is-bot .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_bot.png) no-repeat 0 0 / 15px;
 }
 #chat [data-cid*="5285179"] .un:after {
 	content: " #H2G2";
@@ -239,34 +265,29 @@
 }
 /*--[DEV]--*/
 #chat [data-cid*="4613422"] .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_wibla.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
 #chat [data-cid*="4506088"] .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_zurbo.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
-#chat .is-dev [class*="icon-chat"] {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_dev.png);
-	background-position: 0 0 !important;
+#chat .is-dev .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_dev.png) no-repeat 0 0 / 15px;
 }
-#chat .is-dev .icon-chat-subscriber {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_git.png);
-	background-position: 0 0 !important;
+/*--[HELPER]--*/
+#chat .is-helper .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git.png) no-repeat 0 0 / 15px;
+}
+/*--[GRAPHIST]--*/
+#chat .is-graphist .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_designer.png) no-repeat 0 0 / 15px;
+}
+/*--[TRANSLATOR]--*/
+#chat .is-translator .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_translator.png) no-repeat 0 0 / 15px;
 }
 /*--[ALPHA TESTER]--*/
-#chat .is-alpha .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/Badge%20alpha.png);
-	background-position: 0 0 !important;
-}
-/*--[Designer]--*/
-#chat .is-graphist .bdg {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/badge_designer.png);
-	background-size: 30px;
-	background-position: 0 0 !important;
-}
-#chat .is-graphist [class*="icon-chat"] {
-	background: url(https://raw.githubusercontent.com/WiBla/Script/master/images/chat/rank_designer.png);
-	background-size: 15px;
-	background-position: 0 0 !important;
+#chat .is-alpha .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/Badge%20alpha.png) no-repeat 0 0 / 17px;
 }
