@@ -273,7 +273,7 @@
 	background-position: 0 0 !important;
 }
 #chat .is-dev .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_dev.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi.png) no-repeat 0 0 / 15px;
 }
 /*--[HELPER]--*/
 #chat .is-helper .un::before {
@@ -289,5 +289,5 @@
 }
 /*--[ALPHA TESTER]--*/
 #chat .is-alpha .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/Badge%20alpha.png) no-repeat 0 0 / 17px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
 }

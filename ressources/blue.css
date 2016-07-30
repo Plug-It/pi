@@ -949,7 +949,10 @@
 	background: linear-gradient(to right, hsl(210,100%,40%), hsl(210,100%,30%));
 }
 #app-menu .button i {
-	background: url(https://rawgit.com/WiBla/Script/master/images/other/room-logo.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/room-logo.png) !important;
+}
+#room-bar .icon-room {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/room-icon_31.png) !important;
 }
 #app-menu .list {
 	background: linear-gradient(hsl(220,10%,10%), hsl(220,10%,20%));
