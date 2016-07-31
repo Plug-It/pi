@@ -135,7 +135,7 @@ window.pi = {
 	// ╔══════════════════╗
 	// ║    VARIABLES     ║
 	// ╚══════════════════╝
-	version: '1.0.0 pre-19 Patch 1',
+	version: '1.0.0 pre-19 Patch 2',
 	url: {
 		script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 		menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',

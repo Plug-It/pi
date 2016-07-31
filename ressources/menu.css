@@ -263,7 +263,7 @@
 	color: #80C3FF;
 	font-style: italic;
 }
-/*--[DEV]--*/
+/*--[VIP]--*/
 #chat [data-cid*="4613422"] .bdg {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
@@ -272,6 +272,11 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
+#chat [data-cid*="6604002"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_amy.png);
+	background-position: 0 0 !important;
+}
+/*--[DEV]--*/
 #chat .is-dev .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi.png) no-repeat 0 0 / 15px;
 }
