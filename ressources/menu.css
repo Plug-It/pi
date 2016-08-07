@@ -1,4 +1,4 @@
-/*le logo*/
+/* Menu Icon */
 #pi-logo, #icon {
 	position: absolute;
 	right: 345px; top: 0;
@@ -20,7 +20,7 @@
 #pi-logo:hover {
 	background-position: 0 54px;
 }
-/*le menu*/
+/* Menu itself */
 #pi-menu {
 	position: absolute;
 	right: 200px; top: 54px;
@@ -90,7 +90,7 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/master/images/other/delChat.png);
 }
 
-/* placement du menu */
+/* Menu's placement */
 #history-button {
 	right: 54px !important;
 }
@@ -98,7 +98,7 @@
 	right: calc(+115px) !important;
 }
 
-/* menu de moderation */
+/* Mod bar */
 #pi-rmvDJ, #pi-skip {
 	position: absolute;
 	visibility: visible;
@@ -128,7 +128,43 @@
 	border-radius: 0 0 10px;
 }
 
-/* Screen selection 
+/* Votes list */
+#pi-votes {
+	position: absolute;
+	bottom: 61px;
+	width: 255px;
+	background: rgba(10,10,10,0.8);
+	box-shadow: 0 0 10px #000;
+	border-radius: 10px 10px 0 0; /* Otherwise, background appears behind header */
+	z-index: -1; /* Make the menu appear behind votes */
+}
+#pi-votes #header {
+	text-align: center;
+	font-size: 1.2em;
+	border-radius: 10px 10px 0 0;
+}
+#pi-votes ul {
+	height: 170px;
+	list-style-type: none;
+	overflow-y: scroll;
+}
+#pi-votes li {
+	padding: 0px 5px;
+}
+#pi-votes.woot #header {
+	background: linear-gradient(135deg, hsla(90,80%,50%,.8), hsla(90,80%,30%,.8));
+	box-shadow: inset 0 0 10px hsl(70,100%,40%);
+}
+#pi-votes.grab #header {
+	background: linear-gradient(hsla(270,70%,50%,.8), hsla(265,70%,30%,.8));
+	box-shadow: inset 0 0 10px hsl(280,100%,40%);
+}
+#pi-votes.meh #header {
+	background: linear-gradient(225deg, hsla(5,80%,50%,.8), hsla(0,80%,40%,.8)) !important;
+	box-shadow: inset 0 0 10px hsl(15,100%,50%) !important;
+}
+
+/* Chat selection 
 #chat-messages .cm:hover .msg {
 	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.2) !important;
 }
@@ -151,7 +187,7 @@
 	border-color: #EEE;
 }*/
 
-/* Le reste */
+/* Miscellaneous */
 #playback-container {
 	-webkit-transition: all 0.25s;
 	-moz-transition: all 0.25s;
@@ -165,7 +201,7 @@
 	display: none !important;
 }
 
-/*--[Custom Logs]--*/
+/* [CUSTOM LOGS] */
 #chat .cm .badge-box .bdg-piLogo {
 	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png);
 	background-size: 30px;
@@ -175,6 +211,7 @@
 	background-size: 15px;
 	width: 15px; height: 15px;
 }
+/* Log */
 #chat .cm.pi-log .msg .from .un,
 #chat .cm.pi-log .msg .from .timestamp {color: #0BF;}
 #chat .cm.pi-log {
@@ -182,6 +219,7 @@
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
 	box-shadow: inset 0 0 0 1px hsl(210,50%,30%);
 }
+/* Info */
 #chat .cm.pi-info .badge-box .bdg-piLogo,
 #chat .cm.pi-info .msg .from .icon-pi {
 	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
@@ -195,6 +233,7 @@
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
 	box-shadow: inset 0 0 0 1px hsl(260,50%,30%);
 }
+/* Warn */
 #chat .cm.pi-warn .badge-box .bdg-piLogo,
 #chat .cm.pi-warn .msg .from .icon-pi {
 	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
@@ -208,6 +247,7 @@
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
 	box-shadow: inset 0 0 0 1px hsl(50,50%,30%);
 }
+/* Error */
 #chat .cm.pi-error .badge-box .bdg-piLogo,
 #chat .cm.pi-error .msg .from .icon-pi {
 	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
@@ -221,6 +261,7 @@
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2));
 	box-shadow: inset 0 0 0 1px hsl(0,80%,30%);
 }
+/* Debug */
 #chat .cm.pi-debug .badge-box .bdg-piLogo,
 #chat .cm.pi-debug .msg .from .icon-pi {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git70.png);
@@ -234,7 +275,7 @@
 	box-shadow: inset 0 0 0 1px hsl(35,80%,30%);
 }
 
-/*--[BOT]--*/
+/* [RANKS] */
 #chat .is-dev .un::before,
 #chat .is-helper .un::before,
 #chat .is-graphist .un::before,
@@ -247,6 +288,7 @@
 	top: 1px; left: -2px;
 	float: left;
 }
+/* Bot */
 #chat .is-bot .bdg,
 #chat .is-bot .no-badge {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_bot.png) !important;
@@ -263,7 +305,7 @@
 	color: #80C3FF;
 	font-style: italic;
 }
-/*--[VIP]--*/
+/* VIP */
 #chat [data-cid*="4613422"] .bdg {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_wibla.png);
 	background-position: 0 0 !important;
@@ -276,23 +318,23 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_amy.png);
 	background-position: 0 0 !important;
 }
-/*--[DEV]--*/
+/* Dev */
 #chat .is-dev .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi.png) no-repeat 0 0 / 15px;
 }
-/*--[HELPER]--*/
+/* Helper */
 #chat .is-helper .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git.png) no-repeat 0 0 / 15px;
 }
-/*--[GRAPHIST]--*/
+/* Graphist */
 #chat .is-graphist .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_designer.png) no-repeat 0 0 / 15px;
 }
-/*--[TRANSLATOR]--*/
+/* Translator */
 #chat .is-translator .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_translator.png) no-repeat 0 0 / 15px;
 }
-/*--[ALPHA TESTER]--*/
+/* Alpha tester */
 #chat .is-alpha .un::before {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
 }

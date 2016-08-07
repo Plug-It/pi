@@ -3,23 +3,33 @@
  */
 
 ;(function(){
-if (typeof pi !== 'undefined') pi.reload();
-else {
-	var startTime = new Date().getTime();
-	var afkCD = startTime;
-	var thisCommit;
-	var ranks;
-	var lang;
-	var plugBG;
+	if (typeof pi !== 'undefined') pi.reload();
+	else {
+		var startTime = new Date().getTime();
+		var afkCD = startTime;
+		var thisCommit;
+		var ranks;
+		var lang;
+		var plugBG;
+		var woots = [];
+		var grabs = [];
+		var mehs = [];
+		var users = API.getUsers();
+		// I could use filter, but this is more efficient
+		for (var i = 1; i < users.length; i++) {
+			if (users[i].vote == 1) woots.push(users[i]);
+			else if (users[i].vote == -1) mehs.push(user[i]);
+			if (users[i].grab) grabs.push(users[i]);
+		}
 
 	// Status (can be used to debug)
 	$('.app-header').after(
 		$('<div id="pi-status">\
-			<img height="" src="">\
+			<img height="30px" src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi70.png">\
 			<span></span>\
 		</div>').css({
 			position: 'absolute',
-			top: '65px', left: '15px',
+			top: '65px', left: '10px',
 			padding: '5px',
 			color: '#DDD',
 			background: '#181C21',
@@ -46,7 +56,6 @@ else {
 	switch (API.getUser().language) {
 		case 'fr': lang = 'fr'; break;
 		case 'pt': lang = 'pt'; break;
-		case 'en':
 		default: lang = 'en'; break;
 	}
 	$.ajax({
@@ -87,6 +96,7 @@ else {
 		navWarn: false,
 		afk: false,
 		afkMessage: null,
+		showVotes: false,
 		// Customisation
 		showVideo: true,
 		CSS: false,
@@ -100,6 +110,7 @@ else {
 		songLength: 480,
 		historyAlert: false,
 		// Notifications
+		systemNotifications: false,
 		boothAlert: false,
 		boothPosition: 3,
 		userMeh: false,
@@ -116,7 +127,7 @@ else {
 		// Making sure user settings are up to date
 		var usrSettings = JSON.parse(ls);
 		for (var obj in settings) {
-			if (!usrSettings[obj]) {
+			if (typeof usrSettings[obj] == 'undefined') {
 				usrSettings[obj] = settings[obj];
 			}
 		}
@@ -135,7 +146,7 @@ window.pi = {
 	// ╔══════════════════╗
 	// ║    VARIABLES     ║
 	// ╚══════════════════╝
-	version: '1.0.0 pre-19 Patch 2',
+	version: '1.0.0 pre-20',
 	url: {
 		script: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/pi.js',
 		menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/menu.css',
@@ -199,8 +210,8 @@ window.pi = {
 			if ($('#tooltip').length) $('#tooltip').remove();;
 			var $tooltip = $('\
 				<div id="tooltip" class="'+type+'" style="top: '+y+'px; left: '+x+'px;">\
-					<span>'+txt+'</span>\
-					<div class="corner"></div>\
+				<span>'+txt+'</span>\
+				<div class="corner"></div>\
 				</div>');
 			$('body').append($tooltip);
 		}
@@ -220,61 +231,61 @@ window.pi = {
 		if (set) {
 			switch(type) {
 				case 'test':
-					var $dialog = $('\
-						<div id="dialog-media-update" class="dialog">\
-							<div class="dialog-frame">\
-								<span class="title">Set background\'s image</span>\
-								<i class="icon icon-dialog-close"></i>\
-							</div>\
-							\
-							<div class="dialog-body">\
-								<div class="dialog-input-container" style="position:relative;top:10px;">\
-									<span class="dialog-input-label">URL</span>\
-									<div class="dialog-input-background">\
-										<input type="text" placeholder=".jpg .png .gif.." name="url">\
-									</div>\
-									<p style="position:relative;top:55px;">\
-											Type :<br>\
-											"default" for plug\'s default background<br>\
-											"reset" for script\'s default background\
-										</p>\
-								</div>\
-							</div>\
-							\
-							<div class="dialog-frame">\
-								<div class="button cancel"><span>Cancel</span></div>\
-								<div class="button submit"><span>Save</span></div>\
-							</div>\
-						</div>\
+				var $dialog = $('\
+					<div id="dialog-media-update" class="dialog">\
+					<div class="dialog-frame">\
+					<span class="title">Set background\'s image</span>\
+					<i class="icon icon-dialog-close"></i>\
+					</div>\
+					\
+					<div class="dialog-body">\
+					<div class="dialog-input-container" style="position:relative;top:10px;">\
+					<span class="dialog-input-label">URL</span>\
+					<div class="dialog-input-background">\
+					<input type="text" placeholder=".jpg .png .gif.." name="url">\
+					</div>\
+					<p style="position:relative;top:55px;">\
+					Type :<br>\
+					"default" for plug\'s default background<br>\
+					"reset" for script\'s default background\
+					</p>\
+					</div>\
+					</div>\
+					\
+					<div class="dialog-frame">\
+					<div class="button cancel"><span>Cancel</span></div>\
+					<div class="button submit"><span>Save</span></div>\
+					</div>\
+					</div>\
 					');
 				break;
 				case 'custom-bg':
-					var $dialog = $('\
-						<div id="dialog-media-update" class="dialog">\
-							<div class="dialog-frame">\
-								<span class="title">Set background\'s image</span>\
-								<i class="icon icon-dialog-close"></i>\
-							</div>\
-							\
-							<div class="dialog-body">\
-								<div class="dialog-input-container" style="position:relative;top:10px;">\
-									<span class="dialog-input-label">URL</span>\
-									<div class="dialog-input-background">\
-										<input type="text" placeholder=".jpg .png .gif.." name="url">\
-									</div>\
-									<p style="position:relative;top:55px;">\
-											Type :<br>\
-											"default" for plug\'s default background<br>\
-											"reset" for script\'s default background\
-										</p>\
-								</div>\
-							</div>\
-							\
-							<div class="dialog-frame">\
-								<div class="button cancel"><span>Cancel</span></div>\
-								<div class="button submit"><span>Save</span></div>\
-							</div>\
-						</div>\
+				var $dialog = $('\
+					<div id="dialog-media-update" class="dialog">\
+					<div class="dialog-frame">\
+					<span class="title">Set background\'s image</span>\
+					<i class="icon icon-dialog-close"></i>\
+					</div>\
+					\
+					<div class="dialog-body">\
+					<div class="dialog-input-container" style="position:relative;top:10px;">\
+					<span class="dialog-input-label">URL</span>\
+					<div class="dialog-input-background">\
+					<input type="text" placeholder=".jpg .png .gif.." name="url">\
+					</div>\
+					<p style="position:relative;top:55px;">\
+					Type :<br>\
+					"default" for plug\'s default background<br>\
+					"reset" for script\'s default background\
+					</p>\
+					</div>\
+					</div>\
+					\
+					<div class="dialog-frame">\
+					<div class="button cancel"><span>Cancel</span></div>\
+					<div class="button submit"><span>Save</span></div>\
+					</div>\
+					</div>\
 					');
 				break;
 			}
@@ -292,6 +303,42 @@ window.pi = {
 		else if (!set) {
 			$('#dialog-container')[0].style.display = "none";
 			$('#dialog-container *').each(function(){this.remove();});
+		}
+	},
+	showVotes: function(set, type, votes) {
+		if (set) {
+			// reset
+			if ($('#pi-votes').length) pi.showVotes(false);
+			var list = '';
+
+			if (votes.length !== 0) {
+				for (var i = 0; i < votes.length; i++) {
+					list += '<li>'+votes[i].rawun+'</li>\n';
+				}
+			}
+			var $votes = $('\
+				<div id="pi-votes" class="'+type+'">\
+					<div id="header">'+type.capitalize()+'s</div>\
+					<ul>'+list+'</ul>\
+				</div>');
+			$votes.on('mouseleave', function(){this.remove();});
+			$('#vote').append($votes);
+		} else {
+			var piVotes = $('#pi-votes');
+			while (piVotes.length) {
+				piVotes.remove();
+				piVotes = $('#pi-votes');
+			}
+		}
+	},
+	notify: function(title,content,events) {
+		var options = {
+			body: content,
+			icon: "https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png"
+		};
+		var n = new Notification(title,options);
+		for (var type in events) {
+			n[type] = events[type];
 		}
 	},
 	getPlugSettings: function(id) {
@@ -353,7 +400,7 @@ window.pi = {
 			case 'chat':
 			case 'console':
 			case 'both':
-				where = type; type = 'log';
+			where = type; type = 'log';
 			break;
 
 			default: type = 'log';break;
@@ -386,20 +433,20 @@ window.pi = {
 			// If style 'top' of .delete-button is set, his position is relative to #chat-messages instead of the .cm
 			var $logBox = $('\
 				<div class="cm pi-'+type+' deletable">\
-					<div class="delete-button" style="display: none;top: initial !important;">Delete</div>\
-					<div class="badge-box">\
-						<i class="bdg bdg-piLogo"></i>\
-					</div>\
-					<div class="msg">\
-						<div class="from Plug-It">\
-							<i class="icon icon-pi"></i>\
-							<span class="un">[Plug-It]</span>\
-							<span class="timestamp" style="display: '+ (timestamp ? 'inline-block' : 'none') +';">'+time+'</span>\
-						</div>\
-						<div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
-					</div>\
+				<div class="delete-button" style="display: none;top: initial !important;">Delete</div>\
+				<div class="badge-box">\
+				<i class="bdg bdg-piLogo"></i>\
 				</div>\
-			');
+				<div class="msg">\
+				<div class="from Plug-It">\
+				<i class="icon icon-pi"></i>\
+				<span class="un">[Plug-It]</span>\
+				<span class="timestamp" style="display: '+ (timestamp ? 'inline-block' : 'none') +';">'+time+'</span>\
+				</div>\
+				<div class="text cid-undefined">'+pi.parseHTML(txt)+'</div>\
+				</div>\
+				</div>\
+				');
 			// Delete button
 			$logBox.on('mouseenter', function(){
 				$logBox.find('.delete-button')[0].style.display = 'block';
@@ -441,17 +488,56 @@ window.pi = {
 	getFriendsOnline: function(callback) {
 		$.ajax({
 			url: '/_/friends',
-			method: 'GET',
 			success: function(data){
 				callback(data);
 			}
+		});
+	},
+	getPlaylists: function(callback){
+		$.ajax({
+			url: '/_/playlists',
+			success: function(data){
+				callback(data);
+			}
+		});
+	},
+	getPlaylist: function(id, callback){
+		if (typeof id !== 'undefined') if (!isNaN(id))
+			$.ajax({
+				url: '/_/playlists/'+id+'/media',
+				success: function(data){
+					callback(data);
+				}
+			});
+	},
+	checkForDuplicates: function(excludedPL){
+		pi.log('Checking for duplicates..', 'chat');
+		var allSongs = [];
+		var allSongsPL = [];
+		if (typeof excludedPL == 'undefined') var excludedPL = '';
+		pi.getPlaylists(function(playlists){
+			playlists.data.forEach(function(playlist,i,array){
+				if (excludedPL.indexOf(playlist.name) == -1) {
+					pi.getPlaylist(playlist.id, function(songs){
+						songs.data.forEach(function(song,i,array){
+							for (var i = 0; i < allSongs.length; i++) {
+								if (song.cid == allSongs[i].cid) {
+									pi.log(pi.parseHTML('We got a duplicate !\n'+song.author+' - '+song.title+'\n'+playlist.name + ' - ' + allSongsPL[i].name), 'chat');
+								}
+							}
+							allSongs.push(song);
+							allSongsPL.push(playlist);
+						});
+					});
+				}
+			});
 		});
 	},
 	menu: function(choice) {
 		choice += '';
 		switch(choice) {
 			case '0':
-			pi.slide();
+				pi.slide();
 			break;
 			case '1': 
 				settings.autoW = !settings.autoW;
@@ -556,10 +642,24 @@ window.pi = {
 				settings.userWoot = !settings.userWoot;
 				pi.dom.userWoot.className = settings.userWoot ? 'pi-on' : 'pi-off';
 			break;
+			case '27':
+				settings.systemNotifications = !settings.systemNotifications;
+				pi.dom.systemNotifications.className = settings.systemNotifications ? 'pi-on' : 'pi-off';
+				if (settings.systemNotifications && Notification.permission == 'default') {
+					Notification.requestPermission(function(status){
+						if (Notification.permission !== status) Notification.permission = status;
+					});
+				}
+			break;
+			case '28':
+				settings.showVotes = !settings.showVotes;
+				pi.dom.showVotes.className = settings.showVotes ? 'pi-on' : 'pi-off';
+			break;
 			
 			case 'init':
 				pi.autowoot();
 				pi.autojoin();
+				pi.afk();
 				pi.hideStream();
 				pi.design();
 				pi.oldChat();
@@ -570,8 +670,9 @@ window.pi = {
 				pi.muteMeh();
 
 				pi.dom.navWarn.className = settings.navWarn ? 'pi-on' : 'pi-off';
+				pi.dom.showVotes.className = settings.showVotes ? 'pi-on' : 'pi-off';
 				pi.dom.keyShortcut.className = settings.keyboardShortcuts ? 'pi-on' : 'pi-off';
-				settings.bg.length ? pi.changeBG() : void(0);
+				settings.bg.length ? pi.changeBG() : void 0;
 				pi.dom.historyAlert.className = settings.historyAlert ? 'pi-on' : 'pi-off';
 				pi.dom.userInfo.className = settings.userInfo ? 'pi-on' : 'pi-off';
 				pi.dom.userWoot.className = settings.userWoot ? 'pi-on' : 'pi-off';
@@ -585,6 +686,7 @@ window.pi = {
 				pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
 				pi.dom.chatCommands.className = settings.chatCommands ? 'pi-on' : 'pi-off';
 				pi.dom.afkResponder.className = settings.afk ? 'pi-on' : 'pi-off';
+				pi.dom.systemNotifications.className = settings.systemNotifications ? 'pi-on' : 'pi-off';
 
 				pi.dom.afkMessage.children[0].value = settings.afkMessage;
 				pi.dom.songLength.children[0].value = settings.songLength;
@@ -614,13 +716,13 @@ window.pi = {
 				if (dj.id !== API.getUser().id && API.getWaitListPosition() === -1) {
 					switch (API.djJoin()) {
 						case 1:
-							pi.log(lang.error.autoJoin1, 'error', 'chat');
+						pi.log(lang.error.autoJoin1, 'error', 'chat');
 						break;
 						case 2:
-							pi.log(lang.error.autoJoin2, 'error', 'chat');
+						pi.log(lang.error.autoJoin2, 'error', 'chat');
 						break;
 						case 3:
-							pi.log(lang.error.autoJoin3, 'error', 'chat');
+						pi.log(lang.error.autoJoin3, 'error', 'chat');
 						break;
 					}
 				}
@@ -708,7 +810,7 @@ window.pi = {
 				pi.changeBG(true);
 			break;
 			default:
-				pi.changeBG(true);
+				pi.changeBG(false);
 			break;
 		}
 	},
@@ -911,49 +1013,65 @@ window.pi = {
 					}
 				}
 			break;
-			
+		
 			case '/vol':
 				if (args[1] >= 0 && args[1] <= 100) {
 					API.setVolume(args[1]);
 					pi.setPlugSettings("volume", args[1]);
-				}
-				else pi.log(lang.info.helpVol, 'info', 'chat');
+				}	else pi.log(lang.info.helpVol, 'info', 'chat');
 			break;
-			
+		
 			case '/afk':
 				if (msg.length === 0) msg = undefined;
 				else pi.dom.afkMessage.children[0].value = settings.afkMessage = msg;
-
 				$('chat-input-field').blur(); // Allow to change the placeholder
 				setTimeout(function(){pi.menu(16)}, 200);
 			break;
-			
+
+			case '/grabed?':
+				var thisSong = API.getMedia();
+				pi.getPlaylists(function(playlists){
+					var playlist = playlists.data;
+					for (var i = 0; i < playlists.length; i++) {
+						pi.getPlaylist(playlists[i].id, function(songs){
+							songs = songs.data;
+							for (var j = 0; j < songs.length; j++) {
+								if (songs[j].cid == thisSong.cid) {
+									pi.log('Yes, in '+playlist.name+'.', 'chat');
+								}
+							}
+						});
+					}
+					pi.log('Probably not.');
+				});
+			break;
+
 			case '/whoami':
 				var me = API.getUser();
 				pi.log('Username: ' + me.username +
-				'\nID: ' + me.id + 
-				'\nDescription: ' + me.blurb +
-				(me.level >= 5 ? '\n<a target="_blank" href="/@/'+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
-				'\nAvatar: ' + me.avatarID +
-				'\nBadge: ' + me.badge +
-				'\nLvl: ' + me.level +
-				'\nXP: ' + me.xp +
-				'\nPP: ' + me.pp, 'chat');
+					'\nID: ' + me.id + 
+					'\nDescription: ' + me.blurb +
+					(me.level >= 5 ? '\n<a target="_blank" href="/@/'+me.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
+					'\nAvatar: ' + me.avatarID +
+					'\nBadge: ' + me.badge +
+					'\nLvl: ' + me.level +
+					'\nXP: ' + me.xp +
+					'\nPP: ' + me.pp, 'chat');
 			break;
-			
+
 			case '/whois':
 				if (typeof msg == 'undefined') pi.log(lang.info.helpUserOrId, 'info');
 				else if (isNaN(msg)) var user = API.getUserByName(msg.replace('@', '').trim());
 				else var user = API.getUser(msg);
 				if (typeof user !== 'null') {
 					pi.log('Username: '+user.rawun +
-					'\nID: ' +user.id +
-					(typeof user.slug !== undefined && user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
-					'\nlanguage: '+user.language +
-					'\nAvatar: '+user.avatarID +
-					'\nBadge: '+user.badge +
-					'\nLvl: '+user.level +
-					'\nFriend: '+user.friend+'\n', 'info', 'chat');
+						'\nID: ' +user.id +
+						(typeof user.slug !== 'undefined' && user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.username.toLowerCase().replace(/([^A-z] )|( [^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
+						'\nlanguage: '+user.language +
+						'\nAvatar: '+user.avatarID +
+						'\nBadge: '+user.badge +
+						'\nLvl: '+user.level +
+						'\nFriend: '+user.friend+'\n', 'info', 'chat');
 				} else pi.log('Could not get user, verify the id/pseudo', 'error', 'chat');
 			break;
 
@@ -964,30 +1082,31 @@ window.pi = {
 			case '/js':
 				pi.execute(msg);
 			break;
-			
+
 			case '/list':
 				pi.log('/like <3 x 5\
-				\n/love [@user]\
-				\n/door [@user]\
-				\n/doorrun [@user]\
-				\n/fire\
-				\n/troll\
-				\n/eta\
-				\n/vol [0-100]\
-				\n/afk [message]\
-				\n/whoami\
-				\n/whois [id/pseudo]\
-				\n/pi\
-				\n/js [javaScript code]\
-				\n/reload\
-				\n/kill\
-				\n/list', 'chat');
+					\n/love [@user]\
+					\n/door [@user]\
+					\n/doorrun [@user]\
+					\n/fire\
+					\n/troll\
+					\n/eta\
+					\n/vol [0-100]\
+					\n/afk [message]\
+					\n/grabed? [message]\
+					\n/whoami\
+					\n/whois [id/pseudo]\
+					\n/pi\
+					\n/js [javaScript code]\
+					\n/reload\
+					\n/kill\
+					\n/list', 'chat');
 			break;
-			
+
 			case '/reload':
 				pi.reload();
 			break;
-			
+
 			case '/kill':
 				pi.menu('kill');
 			break;
@@ -995,6 +1114,11 @@ window.pi = {
 	},
 	/* Core */
 	init: function(unload) {
+		// Prototypes
+		String.prototype.capitalize = function() {
+			return this.charAt(0).toUpperCase() + this.slice(1);
+		}
+
 		// API initalization
 		if (!unload) {
 			updateStatus('Initalizating API & Events listener', 4);
@@ -1002,8 +1126,46 @@ window.pi = {
 				pi.autowoot();
 				pi.autojoin();
 				pi.songLimit();
+				woots = [];
+				grabs = [];
+				mehs  = [];
 				sessionStorage.setItem('modSkipWarn', 'false');
 				sessionStorage.setItem('modQuitWarn', 'false');
+			}
+			function grabUpdate(e){
+				pi.voteAlert(e);
+				for (var i = 0; i < woots.length; i++) {
+					if (woots[i].id == e.id) {
+						// Prevent forced woot event
+						var index = woots.indexOf(woots[i]);
+						if (index >= 0) woots.splice(index, 1);
+					}
+				}
+				grabs.push(e.user);
+			}
+			function voteUpdate(e){
+				pi.voteAlert(e);
+				if (e.vote == 1) {
+					for (var i = 0; i < mehs.length; i++) {
+						// If user changes vote from meh to woot
+						if (mehs[i].id == e.user.id) {
+							// remove user from mehs list
+							var index = mehs.indexOf(mehs[i]);
+							if (index >= 0) mehs.splice(index, 1);
+						}
+					}
+					woots.push(e.user);
+				} else if (e.vote == -1) {
+					for (var i = 0; i < woots.length; i++) {
+						// If user changes vote from woot to meh
+						if (woots[i].id == e.user.id) {
+							// remove user from woots list
+							var index = woots.indexOf(woots[i]);
+							if (index >= 0) woots.splice(index, 1);
+						}
+					}
+					mehs.push(e.user);
+				}
 			}
 			API.on(API.ADVANCE, apiAdvance);
 			API.on(API.HISTORY_UPDATE, function(){
@@ -1021,9 +1183,12 @@ window.pi = {
 									'Author : ' + histo[i].media.author +'\n'+
 									'Title : ' + histo[i].media.title +'\n'+
 									'Played by : ' + histo[i].user.username + ' '+(i-1)+' songs ago.\n'
-									+ (API.hasPermission(pi.user, API.ROLE.BOUNCER) ? 'Click here to force skip.' : void(0))
-								)
-							, 'warn', 'chat', (API.hasPermission(pi.user, API.ROLE.BOUNCER) ? function(){API.moderateForceSkip();} : null));
+									+ (API.hasPermission(pi.user, API.ROLE.BOUNCER) ? 'Click here to force skip.' : null)
+									),
+								'warn',
+								'chat',
+								(API.hasPermission(pi.user, API.ROLE.BOUNCER) ? function(){API.moderateForceSkip();} : null)
+							);
 						}
 					}
 				}
@@ -1034,8 +1199,8 @@ window.pi = {
 			API.on(API.USER_LEAVE, function(e){
 				if (settings.userLeave) pi.log(e.username + (settings.userInfo ? ' Lvl:'+e.level+'|'+'Id:'+e.id : '') + ' left !', 'chat');;
 			});
-			API.on(API.VOTE_UPDATE, pi.voteAlert);
-			API.on(API.GRAB_UPDATE, pi.voteAlert);
+			API.on(API.VOTE_UPDATE, voteUpdate);
+			API.on(API.GRAB_UPDATE, grabUpdate);
 			API.on(API.CHAT_COMMAND, pi.chatCommand);
 			API.on(API.CHAT, function(msg) {
 				// This message node
@@ -1083,43 +1248,47 @@ window.pi = {
 				}
 
 				/* Chat images
+				var links = $("<div>"+msg.message+"</div>").find('a');
 				var imgRE = new RegExp(/(http(s)?:\/\/(www.)?).+\.(jpg|jpeg|gif|png|svg|bmp)/ig);
-				var result = msg.message.match(imgRE);
-				if (typeof result !== 'null' && result.length > 0) {
-					for (var i = 0; i < result.length; i++) {
-						var link = '<img src="'+result[i]+'" alt="'+result[i]+'">';
-						msg.message = msg.message.replace(result[i], link);
+				for (var i = 0; i < link.length; i++) {
+					var result = links[i].innerText.match(imgRE);
+					if (typeof result !== 'null' && result.length > 0) {
+						var before = links[0].previousSibling;
+						var after = links[0].nextSibling;
+						links[i].innerHTML = '<img alt="'+links[i].innerText+'" src="'+links[i].innerText+'">';
+						msg.message = before + links[i] + after;
 					}
-					$(selector).find(".text")[0].innerHTML = msg.message;
-				}*/
+				}
+				$(selector).find(".text")[0].innerHTML = msg.message;
+				*/
 				// Server chat commands
 				if (pi.getRank(sender.id)[0] == 'Dev') {
 					switch(msg.message) {
 						case '!strobe on':
-							if (!$('#pi-strobe').length) {
-								var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter: brightness(500%);filter: brightness(500%);}10%{-webkit-filter: brightness(100%);filter: brightness(100%);}}body{animation: strobe .4s linear infinite;}</style>');
-								$('head').append($strobe);
-								pi.log('Strobe mode on !', 'chat');
-							}
+						if (!$('#pi-strobe').length) {
+							var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter:brightness(200%);filter:brightness(200%)}10%{-webkit-filter:brightness(10%);filter:brightness(10%)}}@keyframes strobe2{0%{box-shadow:0 20px 200px #fff}10%{box-shadow:none}}#avatars-container,#dj-button,#vote,.room-background{-webkit-filter:brightness(10%);filter:brightness(10%)}#avatars-container{animation:strobe .45s linear infinite}#playback-container{box-shadow:none!important;animation:strobe2 .45s linear infinite}</style>');
+							$('head').append($strobe);
+							pi.log('Strobe mode on !', 'chat');
+						}
 						break;
 						case '!strobe off':
-							if ($('#pi-strobe').length) {
-								$('#pi-strobe')[0].remove();
-								pi.log('Strobe mode off !', 'chat');
-							}
+						if ($('#pi-strobe').length) {
+							$('#pi-strobe')[0].remove();
+							pi.log('Strobe mode off !', 'chat');
+						}
 						break;
 						case '!rainbow on':
-							if (!$('#pi-rainbow').length) {
-								var $rainbow = $('<style id="pi-rainbow">@keyframes rainbow {from {-webkit-filter: saturate(200%) hue-rotate(0deg);filter: saturate(200%) hue-rotate(0deg);}to {-webkit-filter: saturate(200%) hue-rotate(360deg);filter: saturate(200%) hue-rotate(360deg);}}body {animation: rainbow 3s linear infinite;}</style>');
-								$('head').append($rainbow);
-								pi.log('Rainbow mode on !', 'chat');
-							}
+						if (!$('#pi-rainbow').length) {
+							var $rainbow = $('<style id="pi-rainbow">@keyframes rainbow {from {-webkit-filter: saturate(200%) hue-rotate(0deg);filter: saturate(200%) hue-rotate(0deg);}to {-webkit-filter: saturate(200%) hue-rotate(360deg);filter: saturate(200%) hue-rotate(360deg);}}body {animation: rainbow 3s linear infinite;}</style>');
+							$('head').append($rainbow);
+							pi.log('Rainbow mode on !', 'chat');
+						}
 						break;
 						case '!rainbow off':
-							if ($('#pi-rainbow').length) {
-								$('#pi-rainbow')[0].remove();
-								pi.log('Rainbow mode off !', 'chat');
-							}
+						if ($('#pi-rainbow').length) {
+							$('#pi-rainbow')[0].remove();
+							pi.log('Rainbow mode off !', 'chat');
+						}
 						break;
 					}
 				}
@@ -1128,6 +1297,18 @@ window.pi = {
 					afkCD = new Date().getTime();
 					if (settings.afkMessage.length) API.sendChat('@'+msg.un + ' [AFK]: '+settings.afkMessage);
 					else API.sendChat('@'+msg.un + ' I am afk.');
+				}
+				// System notifications on mention and window blured
+				else if (msg.type == 'mention' && !document.hasFocus() && !settings.afk) {
+					pi.notify(
+						'You have been mentioned by '+sender.rawun+':',
+						// removing all unwanted html tags (like emoji)
+						$("<div>"+msg.message+"</div>").text()+'\n\nClick here to reply.',
+						{
+							onclick: function(){window.focus(); this.close();},
+							onerror: function(e){console.log(e);}
+						}
+					);
 				}
 			});
 		}
@@ -1142,7 +1323,9 @@ window.pi = {
 			API.off(API.CHAT);
 			API.off(API.GUEST_JOIN);
 			API.off(API.GUEST_LEAVE);
+			$('#users-button .guest-count').off('DOMSubtreeModified');
 			API.off(API.EARN);
+			$('#footer-user .info').off('DOMSubtreeModified');
 		}
 		// API addition
 		if (!unload) {
@@ -1153,25 +1336,29 @@ window.pi = {
 				});
 			};
 			API.getUserByName = function(name) {
-				if (typeof name !== 'string') return console.error('Name must be a string');
-				name = name.toLowerCase();
-				var audience = API.getUsers();
-				for (var i = 0; i < audience.length; i++) {
-					if (audience[i].rawun.toLowerCase() == name) return audience[i];
+				if (typeof name == 'undefined') {
+					console.error('A name must be provided !');
+					return undefined;
+				} else {
+					var users = API.getUsers();
+					name = name.toLowerCase();
+					for (var i = 0; i < users.length; i++) {
+						if (name == users[i].rawun.toLowerCase()) return users[i];
+					}
+					return null;
 				}
-				return null;
 			};
 			API.GUEST_JOIN = 'guestJoin';
 			API.GUEST_LEAVE = 'guestLeave';
 			var totalGuest = $('#users-button .guest-count')[0].innerText;
 			totalGuest = totalGuest.length ? parseInt(totalGuest) : 0;
 			$('#users-button .guest-count').on('DOMSubtreeModified', function(e){
-			  var thisCount = e.currentTarget.innerText.length ? parseInt(e.currentTarget.innerText) : 0;
+				var thisCount = e.currentTarget.innerText.length ? parseInt(e.currentTarget.innerText) : 0;
 
-			  if (thisCount > totalGuest && settings.guestJoin) API.trigger(API.GUEST_JOIN, thisCount);
-			  else if (thisCount < totalGuest && settings.guestLeave) API.trigger(API.GUEST_LEAVE, thisCount);
+				if (thisCount > totalGuest && settings.guestJoin) API.trigger(API.GUEST_JOIN, thisCount);
+				else if (thisCount < totalGuest && settings.guestLeave) API.trigger(API.GUEST_LEAVE, thisCount);
 
-			  totalGuest = thisCount;
+				totalGuest = thisCount;
 			});
 			API.on(API.GUEST_JOIN, function(nbr){
 				pi.log(lang.log.guestJoin+nbr, 'chat');
@@ -1183,21 +1370,21 @@ window.pi = {
 			var PPThen = API.getUser().pp;
 			var XPThen = API.getUser().xp;
 			$('#footer-user .info').on('DOMSubtreeModified', function(e){
-			  pi.user = API.getUser();
-			  var PPNow = pi.user.pp;
-			  var XPNow = pi.user.xp;
-			  var PPEarned = 0;
-			  var XPEarned = 0;
+				pi.user = API.getUser();
+				var PPNow = pi.user.pp;
+				var XPNow = pi.user.xp;
+				var PPEarned = 0;
+				var XPEarned = 0;
 
-			  if (PPNow > PPThen) PPEarned = PPNow - PPThen;
-			  if (XPNow > XPThen) XPEarned = XPNow - XPThen;
-			  if (PPEarned || XPEarned) API.trigger(API.EARN, {pp:PPEarned,xp:XPEarned});
+				if (PPNow > PPThen) PPEarned = PPNow - PPThen;
+				if (XPNow > XPThen) XPEarned = XPNow - XPThen;
+				if (PPEarned || XPEarned) API.trigger(API.EARN, {pp:PPEarned,xp:XPEarned});
 
-			  PPThen = PPNow;
-			  XPThen = XPNow;
+				PPThen = PPNow;
+				XPThen = XPNow;
 			});
 			API.on(API.EARN, function(data){
-			  if (settings.gainNotification) pi.log('You earned '+data.pp+' pp and '+data.xp+' xp.', 'chat');
+				if (settings.gainNotification) pi.log('You earned '+data.pp+' pp and '+data.xp+' xp.', 'chat');
 			});
 		}
 		else {
@@ -1205,6 +1392,7 @@ window.pi = {
 			delete API.getUserByName;
 			delete API.GUEST_JOIN;
 			delete API.GUEST_LEAVE;
+			delete API.EARN;
 		}
 
 		// #### [Events listener] ####
@@ -1221,19 +1409,19 @@ window.pi = {
 				if (settings.keyboardShortcuts) {
 					switch (e.key) {
 						case "+":
-							if (!$($('#chat-input')).attr('class')) {
-								API.setVolume(API.getVolume()+5);
-								pi.setPlugSettings('volume', API.getVolume());
-							}
+						if (!$($('#chat-input')).attr('class')) {
+							API.setVolume(API.getVolume()+5);
+							pi.setPlugSettings('volume', API.getVolume());
+						}
 						break;
 						case "-":
-							if (!$($('#chat-input')).attr('class')) {
-								API.setVolume(API.getVolume()-5);
-								pi.setPlugSettings('volume', API.getVolume());
-							}
+						if (!$($('#chat-input')).attr('class')) {
+							API.setVolume(API.getVolume()-5);
+							pi.setPlugSettings('volume', API.getVolume());
+						}
 						break;
 						case "l":
-							if (e.ctrlKey) {
+						if (e.ctrlKey) {
 							e.preventDefault();
 							API.sendChat("/clear");
 						}
@@ -1247,9 +1435,13 @@ window.pi = {
 		if (!unload) {
 			$('#volume, #playback').on('mousewheel', function(e){
 				e.preventDefault();
-				if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-5);
-				else API.setVolume(API.getVolume()+5);
+				var i;
+				if (e.ctrlKey) i = 1;
+				else i = 5;
 
+				if (e.originalEvent.deltaY > 0) API.setVolume(API.getVolume()-i);
+				else API.setVolume(API.getVolume()+i);
+				
 				pi.setPlugSettings('volume', API.getVolume());
 			});
 		}
@@ -1312,7 +1504,7 @@ window.pi = {
 							}
 						}
 					}
-				)
+					)
 			}, 10*1000);
 			window.roomURL = location.pathname;
 			checkIfRoomChanged = setInterval(function(){
@@ -1346,47 +1538,49 @@ window.pi = {
 			// Menu itself
 			$('#app').append($('<div id="pi-menu" style="visibility: hidden;">\
 				<ul>\
-					<h2>'+lang.menu.titles.general+'</h2>\
-					<ul style="display: none;">\
-						<li id="pi-woot">'+lang.menu.aw+'</li>\
-						<li id="pi-join">'+lang.menu.aj+'</li>\
-						<li id="pi-keyShortcut">'+lang.menu.ks+'</li>\
-						<li id="pi-chatCommands">'+lang.menu.cc+'</li>\
-						<li id="pi-mutemeh">'+lang.menu.mm+'</li>\
-						<li id="pi-afkResponder">'+lang.menu.ar+'</li>\
-						<li id="pi-afkMessage"><input type="text" placeholder="AFK responder message"/></li>\
-						<li id="pi-navWarn">'+lang.menu.nw+'</li>\
-					</ul>\
-					<h2>'+lang.menu.titles.customisation+'</h2>\
-					<ul style="display: none;">\
-						<li id="pi-video">'+lang.menu.hv+'</li>\
-						<li id="pi-css">'+lang.menu.cs+'</li>\
-						<li id="pi-bg">'+lang.menu.cb+'</li>\
-						<li id="pi-old-chat">'+lang.menu.oc+'</li>\
-						<li id="pi-old-footer">'+lang.menu.of+'</li>\
-						<li id="pi-small-media">'+lang.menu.sm+'</li>\
-					</ul>\
-					<h2>'+lang.menu.titles.moderation+'</h2>\
-					<ul style="display: none;">\
-						<li id="pi-userInfo">'+lang.menu.ui+'</li>\
-						<li id="pi-lengthA">'+lang.menu.sl+'</li>\
-						<li id="pi-songLength"><input type="text" placeholder="Song limit in seconds"/></li>\
-						<li id="pi-historyA">'+lang.menu.ha+'</li>\
-					</ul>\
-					<h2>'+lang.menu.titles.notifications+'</h2>\
-					<ul style="display: none;">\
-						<li id="pi-userJoin">'+lang.menu.uj+'</li>\
-						<li id="pi-userLeave">'+lang.menu.ul+'</li>\
-						<li id="pi-userWoot">'+lang.menu.uw+'</li>\
-						<li id="pi-userGrab">'+lang.menu.ug+'</li>\
-						<li id="pi-userMeh">'+lang.menu.um+'</li>\
-						<li id="pi-guestJoin">'+lang.menu.gj+'</li>\
-						<li id="pi-guestLeave">'+lang.menu.gl+'</li>\
-						<li id="pi-friendConnect">'+lang.menu.fc+'</li>\
-						<li id="pi-friendDisconnect">'+lang.menu.fd+'</li>\
-						<li id="pi-gainNotification">'+lang.menu.gn+'</li>\
-					</ul>\
-					<h2>'+lang.menu.titles.about+'</h2>\
+				<h2>'+lang.menu.titles.general+'</h2>\
+				<ul style="display: none;">\
+					<li id="pi-woot">'+lang.menu.aw+'</li>\
+					<li id="pi-join">'+lang.menu.aj+'</li>\
+					<li id="pi-keyShortcut">'+lang.menu.ks+'</li>\
+					<li id="pi-chatCommands">'+lang.menu.cc+'</li>\
+					<li id="pi-mutemeh">'+lang.menu.mm+'</li>\
+					<li id="pi-afkResponder">'+lang.menu.ar+'</li>\
+					<li id="pi-afkMessage"><input type="text" placeholder="AFK responder message"/></li>\
+					<li id="pi-navWarn">'+lang.menu.nw+'</li>\
+					<li id="pi-showVotes">'+lang.menu.sv+'</li>\
+				</ul>\
+				<h2>'+lang.menu.titles.customisation+'</h2>\
+				<ul style="display: none;">\
+					<li id="pi-video">'+lang.menu.hv+'</li>\
+					<li id="pi-css">'+lang.menu.cs+'</li>\
+					<li id="pi-bg">'+lang.menu.cb+'</li>\
+					<li id="pi-old-chat">'+lang.menu.oc+'</li>\
+					<li id="pi-old-footer">'+lang.menu.of+'</li>\
+					<li id="pi-small-media">'+lang.menu.sm+'</li>\
+				</ul>\
+				<h2>'+lang.menu.titles.moderation+'</h2>\
+				<ul style="display: none;">\
+					<li id="pi-userInfo">'+lang.menu.ui+'</li>\
+					<li id="pi-lengthA">'+lang.menu.sl+'</li>\
+					<li id="pi-songLength"><input type="text" placeholder="Song limit in seconds"/></li>\
+					<li id="pi-historyA">'+lang.menu.ha+'</li>\
+				</ul>\
+				<h2>'+lang.menu.titles.notifications+'</h2>\
+				<ul style="display: none;">\
+					<li id="pi-systemNotifications">'+lang.menu.sn+'</li>\
+					<li id="pi-userJoin">'+lang.menu.uj+'</li>\
+					<li id="pi-userLeave">'+lang.menu.ul+'</li>\
+					<li id="pi-userWoot">'+lang.menu.uw+'</li>\
+					<li id="pi-userGrab">'+lang.menu.ug+'</li>\
+					<li id="pi-userMeh">'+lang.menu.um+'</li>\
+					<li id="pi-guestJoin">'+lang.menu.gj+'</li>\
+					<li id="pi-guestLeave">'+lang.menu.gl+'</li>\
+					<li id="pi-friendConnect">'+lang.menu.fc+'</li>\
+					<li id="pi-friendDisconnect">'+lang.menu.fd+'</li>\
+					<li id="pi-gainNotification">'+lang.menu.gn+'</li>\
+				</ul>\
+				<h2>'+lang.menu.titles.about+'</h2>\
 					<p style="display: none;">\
 						Plug-It '+pi.version+'.<br>\
 						Developed by: <a target="_blank" href="https://twitter.com/WiBla7" target="blank">@WiBla7</a><br>\
@@ -1396,7 +1590,7 @@ window.pi = {
 						<span id="pi-off">'+lang.menu.s+'</span>\
 					</p>\
 				</ul>\
-			</div>'));
+				</div>'));
 			// Menu css
 			$('head').append($('<link id="pi-menu-CSS" rel="stylesheet" type="text/css" href="'+pi.url.menu_css+'">'));
 			// General css
@@ -1410,7 +1604,7 @@ window.pi = {
 			// DelChat icon
 			$('#chat-header').append('<div id="pi-delchat" class="chat-header-button">\
 				<i class="icon pi-delchat"></i>\
-			</div>');
+				</div>');
 			// If at least bouncer
 			if (API.hasPermission(pi.user, API.ROLE.BOUNCER)) {
 				// Moderation tools
@@ -1480,6 +1674,7 @@ window.pi = {
 					case 'pi-mutemeh': pi.menu(9); break;
 					case 'pi-afkResponder': pi.menu(16); break;
 					case 'pi-navWarn': pi.menu(10); break;
+					case 'pi-showVotes': pi.menu(28); break;
 					// Customisation
 					case 'pi-video': pi.menu(3); break;
 					case 'pi-css': pi.menu(4); break;
@@ -1492,6 +1687,7 @@ window.pi = {
 					case 'pi-lengthA': pi.menu(7); break;
 					case 'pi-historyA': pi.menu(12); break;
 					// Notifications
+					case 'pi-systemNotifications': pi.menu(27); break;
 					case 'pi-userJoin': pi.menu(13); break;
 					case 'pi-userLeave': pi.menu(14); break;
 					case 'pi-userWoot': pi.menu(26); break;
@@ -1511,9 +1707,11 @@ window.pi = {
 			});
 			$('#pi-afkMessage input').on('change', function(){
 				settings.afkMessage = this.value;
+				localStorage.setItem('pi-settings', JSON.stringify(settings));
 			});
 			$('#pi-songLength input').on('change', function(){
 				settings.songLength = parseInt(this.value);
+				localStorage.setItem('pi-settings', JSON.stringify(settings));
 			});
 
 			$('#pi-rmvDJ').on('click', function(){pi.removeDJ();});
@@ -1549,6 +1747,23 @@ window.pi = {
 				}
 			});
 			$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat').on('mouseleave', function(){pi.tooltip();});
+			// Show votes
+			$("#woot, #grab, #meh").on('mouseenter', function(){
+				if (settings.showVotes) {
+					var votes;
+					switch (this.id) {
+						case 'woot': votes = woots; break;
+						case 'grab': votes = grabs; break;
+						case 'meh':  votes = mehs;  break;
+						default: votes = []; break;
+					}
+					pi.showVotes(true, this.id, votes);
+				}
+			});
+			$("#woot, #grab, #meh").on('mouseleave', function(e){
+				// do not remove element if moving from #votes to #pi-votes
+				if (!$(e.toElement).closest('#pi-votes').length) pi.showVotes(false);
+			});
 		}
 		else {
 			$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat').off('mouseenter');
@@ -1568,6 +1783,7 @@ window.pi = {
 				afkResponder: $('#pi-afkResponder')[0],
 				afkMessage: $('#pi-afkMessage')[0],
 				navWarn: $('#pi-navWarn')[0],
+				showVotes: $('#pi-showVotes')[0],
 				// Customisation
 				video: $('#pi-video')[0],
 				css: $('#pi-css')[0],
@@ -1581,6 +1797,7 @@ window.pi = {
 				songLength: $('#pi-songLength')[0],
 				historyAlert: $('#pi-historyA')[0],
 				// Notifications
+				systemNotifications: $('#pi-systemNotifications')[0],
 				userJoin: $('#pi-userJoin')[0],
 				userLeave: $('#pi-userLeave')[0],
 				userWoot: $('#pi-userWoot')[0],
@@ -1608,8 +1825,11 @@ window.pi = {
 			pi.menu('init');
 
 			pi.log(pi.complete(lang.log.loaded + ' ' + (new Date().getTime() - startTime)+'ms'));
-			pi.log(lang.log.help, 'info', 'chat');
-			pi.log(lang.log.preRelease, 'warn', 'chat');
+			// If usrSettings is undefined: first time we run the script
+			if (!usrSettings) {
+				pi.log(lang.log.help, 'info', 'chat');
+				pi.log(lang.log.preRelease, 'warn', 'chat');
+			}
 			$('#pi-status').css({opacity:'0'});
 			setTimeout(function(){$('#pi-status').remove();}, 250);
 		}
@@ -1618,8 +1838,6 @@ window.pi = {
 		if (unload && !settings.showVideo) {
 			pi.menu(3);
 			settings.showVideo = false;
-			localStorage.setItem('pi-settings', JSON.stringify(settings));
-			return 'unloaded';
 		}
 		if (unload) {
 			sessionStorage.removeItem('modQuitWarn');
