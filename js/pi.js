@@ -257,7 +257,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					isAlpha: true
+					pre: 21
 				},
 				_event: {
 					advance: function(song) {
@@ -767,7 +767,7 @@
 							break;
 
 							case 'kill':
-								pi.menu('off');
+								pi._close();
 							break;
 
 							default:
@@ -1877,7 +1877,15 @@
 						return result;
 					},
 					getReadableVersion: function() {
-						return pi.version.major+"."+pi.version.minor+"."+pi.version.patch+(pi.version.isAlpha ? ' Alpha' : '');
+						let subVersion = '';
+
+						if (pi.version.pre) {
+							subVersion = ' Pre ' + pi.version.pre;
+						} else if (pi.version.isAlpha) {
+							subVersion = ' Alpha ' + pi.version.pre;
+						}
+
+						return pi.version.major+'.'+pi.version.minor+'.'+pi.version.patch+subVersion;
 					},
 					getRoomRules: function(which) {
 						if (typeof roomSettings.rules === 'undefined') return true;
@@ -2656,11 +2664,12 @@
 						break;
 
 						case 'off':
+							pi._tool.saveSettings();
 							pi._close();
 						break;
 					}
 
-					pi._tool.saveSettings();
+					if (choice !== 'off') pi._tool.saveSettings();
 				},
 				muteMeh: function() {
 					var restoreVol = function() {
