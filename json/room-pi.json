@@ -1,5 +1,5 @@
 {
-  "room":   "Electro's house",
+  "room":   "enjoy-the-drop",
   "author": "WiBla",
   "icon":   "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/room-icon_31.png",
   "css":    "https://rawgit.com/Plug-It/pi/pre-release/ressources/blue.css",
@@ -39,9 +39,21 @@
     "subscriber":       "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/crown.png",
     "silversubscriber": null
   },
-  "autocomplete": [],
   "emotes": {
     "pls": "http://image.noelshack.com/fichiers/2014/36/1409765752-pls.jpg",
-    "blc": "http://i.makeagif.com/media/6-23-2015/JKchPr.gif"
+    "blc": "http://i.makeagif.com/media/6-23-2015/JKchPr.gif",
+    "fml": "http://i180.photobucket.com/albums/x290/BoricuaLea/FML.gif",
+    "deal": "http://forgifs.com/gallery/d/228031-2/Cat-skateboarding-deal-with-it.gif",
+    "puke": "http://r17.imgfast.net/users/1711/45/00/52/smiles/3371175543.png",
+    "fu":   "http://i.imgur.com/RsIJu8F.png",
+    "zuftg": "http://m.memegen.com/3goixp.jpg",
+    "turbo": "http://i.imgur.com/23fRgdq.png",
+    "facepalm": "https://electroallergique.files.wordpress.com/2015/08/picard-facepalm-2_0.jpg",
+    "sadtroll": "http://i.imgur.com/Lkbppg0.png",
+    "lsdbob": "http://i.imgur.com/58rrTyb.gif",
+    "smokeit": "https://media.giphy.com/media/WgiZXpXNIzzYA/giphy.gif",
+    "luvyou": "http://i.imgur.com/xmxP7Mb.jpg",
+    "shock": "https://i.imgur.com/NruwA2a.gif",
+    "dclap": "https://66.media.tumblr.com/fe8e6f7be3529403e2d29982eeb43016/tumblr_o3uz85XMfL1udh5n8o1_r3_400.gif"
   }
 }

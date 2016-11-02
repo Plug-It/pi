@@ -1,0 +1,62 @@
+{
+  "author": "WiBla",
+  "colors": {
+    "chat": {
+      "admin":            "",
+      "ambassador":       "#9C0",
+      "host":             "#5BF",
+      "cohost":           "#58F",
+      "manager":          "#E15",
+      "bouncer":          "#F45",
+      "rdj":              "#F95",
+      "subscriber":       "#FB3",
+      "silversubscriber": "",
+      "friend":           "",
+      "user":             ""
+    }
+  },
+  "css": {
+    "import": ["https://rawgit.com/Plug-It/pi/pre-release/ressources/blue.css"],
+    "rule": {
+      ".cm.extplug-user-join":         { "": "" },
+      ".cm.extplug-friend-join":       { "": "" },
+      ".cm.extplug-user-leave":        { "padding-left": "5px" },
+      ".cm.extplug-user-leave .text":  { "color": "#F33" },
+      ".cm.extplug-user-leave:before": {
+        "content": "-",
+        "color": "#F33",
+        "display": "block",
+        "height": "0px",
+        "position": "relative",
+        "top": "5px"
+      },
+      ".cm.extplug-friend-leave":      { "": "" },
+      ".cm.extplug-grab":              { "": "" },
+      ".cm.extplug-woot":              { "": "" },
+      ".cm.extplug-meh":               { "": "" },
+      ".cm..extplug-advance .text":    { "color": "#777" }
+    }
+  },
+  "images": {
+    "background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/custom.jpg",
+    "booth":            "",
+    "icons": {
+      "admin":            "",
+      "ambassador":       "",
+      "host":             "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_host.png",
+      "cohost":           "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_cohost.png",
+      "manager":          "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_manager.png",
+      "bouncer":          "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_bouncer.png",
+      "rdj":              "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_dj.png",
+      "subscriber":       "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/crown.png",
+      "silversubscriber": ""
+    },
+    "playback":         ""
+  },
+  "rules": {
+    "allowAutojoin":    "true",
+    "allowAutorespond": "true",
+    "allowAutowoot":    "true",
+    "allowEmotes":      "true"
+  }
+}

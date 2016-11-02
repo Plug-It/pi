@@ -1,24 +1,22 @@
-.media-list .row {
+.media-list.history .row {
   height: 40px !important;
 }
-
-.media-list img {
+.media-list.history img {
   margin: 5px 10px !important;
   width: 40px !important;
   height: 30px !important;
 }
-
-.media-list .meta {
+.media-list.history .meta {
   height: 39px !important;
   margin-left: 60px !important;
 }
-.media-list .meta .author {
+.media-list.history .meta .author {
   left: 2px !important;
   top: 2px !important;
   width: 76% !important;
 }
-.media-list .meta .name,
-.media-list .meta .title {
+.media-list.history .meta .name,
+.media-list.history .meta .title {
   top: 2px !important;
   right: 2px;
   width: auto;
@@ -35,7 +33,6 @@
   text-align: right;
   font-weight: 400;
 }
-
 .media-list.history .score {
   position: absolute;
   top: 20px;
@@ -46,19 +43,14 @@
   font-size: 14px;
 }
 .media-list.history .actions {
-  top: 5px;
-  right: 15px;
-  width: 30px;
-  height: 30px;
+  top: 0px; right: 10px;
 }
-.media-list .actions div i {
-  top: 0px;
-  left: 2px;
-  cursor: pointer;
+.media-list.history .actions,
+.media-list.history .actions:hover .add {
+  width: 40px; height: 40px;
+  border-radius: 100% !important;
 }
-
-.media-list .actions {
-  top: 5px;
-  right: 15px;
-  height: 30px;
+.media-list.history .actions i {
+  top: 5px !important;
+  left: 7px !important;
 }

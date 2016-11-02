@@ -17,4 +17,4 @@
 /* Radiant */
 #chat .rsshit {min-height: 10px !important;}
 #chat .rsshit .msg {padding: 5px 8px 6px 10px;}
-#chat .rsshit .from, #chat .rsshit .badge-box, #rs-skip-button {display: none;}
+#chat .rsshit .from, #chat .rsshit .badge-box {display: none;}
