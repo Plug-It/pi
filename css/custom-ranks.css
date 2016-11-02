@@ -91,7 +91,7 @@
 }
 /*#####[YOU]#####*/
 #chat .cm .msg .from.you .un {
-	color: #0bf !important;
+	color: #0bf;
 }
 /*#####[BA]#####*/
 .icon-chat-ambassador + span {
@@ -99,7 +99,7 @@
 }
 /*#####[HOST]#####*/
 .icon-chat-host {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_host.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_host.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-host + span,
@@ -114,7 +114,7 @@
 }
 /*#####[CO-HOSTS]#####*/
 .icon-chat-cohost {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_cohost.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_cohost.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-cohost + span,
@@ -123,7 +123,7 @@
 }
 /*#####[MANAGER]#####*/
 .icon-chat-manager {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_manager.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_manager.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-manager + span,
@@ -136,7 +136,7 @@
 	background: linear-gradient(to right, hsla(0,100%,20%,.5), hsla(0,100%,30%,.5)) !important;
 }/*#####[BOUNCER]#####*/
 .icon-chat-bouncer {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_bouncer.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bouncer.png) !important;
 	background-position: 1px 0 !important;
 }
 .icon-chat-bouncer + span,
@@ -150,7 +150,7 @@
 }
 /*#####[DJ]#####*/
 .icon-chat-dj {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_dj.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_dj.png) !important;
 	background-position: 0 0 !important;
 }
 #user-lists .group.dj {
@@ -165,7 +165,7 @@
 /*#####[SUBS]#####*/
 .icon-chat-subscriber,
 #user-rollover .meta.subscriber:not(.silver) .status i {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/crown.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/crown.png) !important;
 	background-position: -1px 0 !important;
 }
 .icon-chat-subscriber + span {

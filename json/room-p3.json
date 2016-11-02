@@ -16,7 +16,7 @@
     }
   },
   "css": {
-    "import": ["https://rawgit.com/Plug-It/pi/pre-release/ressources/blue.css"],
+    "import": ["https://rawgit.com/Plug-It/pi/pre-release/css/blue.css"],
     "rule": {
       ".cm.extplug-user-join":         { "": "" },
       ".cm.extplug-friend-join":       { "": "" },
@@ -38,17 +38,17 @@
     }
   },
   "images": {
-    "background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/custom.jpg",
+    "background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/default/custom.jpg",
     "booth":            "",
     "icons": {
       "admin":            "",
       "ambassador":       "",
-      "host":             "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_host.png",
-      "cohost":           "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_cohost.png",
-      "manager":          "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_manager.png",
-      "bouncer":          "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_bouncer.png",
-      "rdj":              "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/rank_dj.png",
-      "subscriber":       "https://raw.githubusercontent.com/Plug-It/pi/master/images/chat/crown.png",
+      "host":             "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_host.png",
+      "cohost":           "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_cohost.png",
+      "manager":          "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_manager.png",
+      "bouncer":          "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bouncer.png",
+      "rdj":              "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_dj.png",
+      "subscriber":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/crown.png",
       "silversubscriber": ""
     },
     "playback":         ""

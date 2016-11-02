@@ -76,14 +76,13 @@
 ;(function load() {
 	var isPlugRoom = new RegExp('(http(?:s)?:\/\/(?:[a-z]+.)*plug\.dj\/)(?!dashboard|about|press|ba|terms|privacy|subscribe|plot|_\/|@\/)(.+)', 'i');
 	if (isPlugRoom.test(location.href)) {
-		API.chatLog('This version of Plug-It is experimental and can break at any time.');
 		if (typeof pi !== 'undefined') pi._reload();
 		else if (plugReady()) {
 
 			// Status (can be used to debug)
 			$('.app-header').after($(
 				'<div id="pi-status">'+
-					'<img height="30px" src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi70.png">'+
+					'<img height="30px" src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_pi70.png">'+
 					'<span></span>'+
 				'</div>').css({
 					"position": "absolute",
@@ -128,8 +127,7 @@
 			}
 			$.ajax({
 				dataType: 'json',
-				url: 'https://dl.dropboxusercontent.com/s/u7qmkliqws8d4f9/en.json',
-				// url: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
+				url: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
 				success: function(data) {
 					lang = data;
 					// Since execute is outside of clusure and therefore can't access private vars,
@@ -139,8 +137,7 @@
 					updateStatus('Loading script ranks', 2);
 					$.ajax({
 						dataType: 'json',
-						url: 'https://dl.dropboxusercontent.com/s/hql8yxk4ne9h2p2/ranks.json',
-						// url: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json',
+						url: 'https://rawgit.com/Plug-It/pi/pre-release/json/ranks.json',
 						success: function(data) {
 							ranks = data;
 							init();
@@ -170,16 +167,17 @@
 			const startTime = new Date().getTime();
 			const delay = (API.getUser().gRole >= 3 ? 100 : 3500);
 			const url = {
-				script: 'https://dl.dropboxusercontent.com/s/hibdi5qofzsk5dg/pi.js',
+				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
 				styles: {
-					blue_css: 'https://dl.dropboxusercontent.com/s/nzworpoonu5sa9x/blue.css',
-					menu_css: 'https://dl.dropboxusercontent.com/s/7zkn6auwm76mpjq/menu.css',
-					old_chat: 'https://dl.dropboxusercontent.com/s/tx6pa53nfhqphn2/old-chat.css',
-					old_footer: 'https://dl.dropboxusercontent.com/s/s869vblp5iblazu/old-footer.css',
-					small_history: 'https://dl.dropboxusercontent.com/s/813108zvgo1syfw/small-history.css'
+					blue_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css',
+					custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css',
+					menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css',
+					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
+					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
+					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css'
 				},
 				images: {
-					background: "https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/background/default/custom.jpg"
+					background: "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/default/custom.jpg"
 				},
 				sounds: {
 					// https://www.freesound.org/people/TheGertz/sounds/235911/
@@ -734,7 +732,7 @@
 							break;
 
 							case 'pi':
-								API.sendChat('Get Plug-It : http://wibla.free.fr/plug/script');
+								API.sendChat('Get Plug-It : https://github.com/Plug-It/pi/tree/pre-release');
 							break;
 
 							case 'js':
@@ -1392,10 +1390,10 @@
 						// Moderation tools
 						$('#playback-container').append($(
 							'<div id="pi-rmvDJ">'+
-								'<img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/romveDJ.png" alt="button remove from wait-list" />'+
+								'<img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/romveDJ.png" alt="button remove from wait-list" />'+
 							'</div>'+
 							'<div id="pi-skip">'+
-								'<img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/skip.png" alt="button skip" />'+
+								'<img src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/skip.png" alt="button skip" />'+
 							'</div>'
 						));
 					}
@@ -1654,7 +1652,7 @@
 						API.getAnyUser = function(id, callback) {
 							if (isNaN(id) || typeof callback !== 'function') return;
 							$.ajax({
-								url: 'https://plug.dj/_/users/'+id,
+								url: '/_/users/'+id,
 								success: function(data) {
 									callback(data.data[0]);
 								},

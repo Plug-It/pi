@@ -281,12 +281,12 @@
 }
 .user-content .avatars .grid .cell .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(210,10%,80%,.2) 80%),
-	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/shop.png) !important;
+	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/shop.png) !important;
 	box-shadow: inset 0 0 40px #000;
 }
 .user-content .avatars .cell:hover .top, .user-content .avatars .cell.selected .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,100%,.2) 80%),
-	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/shop-hover.png) !important;
+	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/shop-hover.png) !important;
 }
 .user-content .badges .cell {
 	background: radial-gradient(hsl(210,10%,10%), hsl(210,10%,5%)) !important;
@@ -847,10 +847,10 @@
 	background: linear-gradient(to right, hsl(210,100%,40%), hsl(210,100%,30%));
 }
 #app-menu .button i {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/room-logo.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/room-logo.png) !important;
 }
 #room-bar .icon-room {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/room-icon_31.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/room-icon_31.png) !important;
 }
 #app-menu .list {
 	background: linear-gradient(hsl(220,10%,10%), hsl(220,10%,20%));
@@ -1064,7 +1064,7 @@
 }
 /*#####[HOST]#####*/
 .icon-chat-host {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_host.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_host.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-host + span,
@@ -1079,7 +1079,7 @@
 }
 /*#####[CO-HOSTS]#####*/
 .icon-chat-cohost {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_cohost.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_cohost.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-cohost + span,
@@ -1088,7 +1088,7 @@
 }
 /*#####[MANAGER]#####*/
 .icon-chat-manager {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_manager.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_manager.png) !important;
 	background-position: 2px 0 !important;
 }
 .icon-chat-manager + span,
@@ -1101,7 +1101,7 @@
 	background: linear-gradient(to right, hsla(0,100%,20%,.5), hsla(0,100%,30%,.5)) !important;
 }/*#####[BOUNCER]#####*/
 .icon-chat-bouncer {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_bouncer.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bouncer.png) !important;
 	background-position: 1px 0 !important;
 }
 .icon-chat-bouncer + span,
@@ -1115,7 +1115,7 @@
 }
 /*#####[DJ]#####*/
 .icon-chat-dj {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_dj.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_dj.png) !important;
 	background-position: 0 0 !important;
 }
 #user-lists .group.dj {
@@ -1130,7 +1130,7 @@
 /*#####[SUBS]#####*/
 .icon-chat-subscriber,
 #user-rollover .meta.subscriber:not(.silver) .status i {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/crown.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/crown.png) !important;
 	background-position: -1px 0 !important;
 }
 .icon-chat-subscriber + span {
@@ -1146,5 +1146,5 @@
 
 
 .icon {
-  background-image: url('https://dl.dropboxusercontent.com/s/ikzp6z6va9wz2tp/icons.png');
+  background-image: url('https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icons.png');
 }

@@ -6,13 +6,13 @@
 	z-index: 20;
 	cursor: pointer;
 	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/icon-54.jpg);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.jpg);
 	transition: ease-in-out 0.30s;
 }
 #icon {
 	position: relative;
 	top: -54px; left: 0;
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/other/icon-hover-54.jpg);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-hover-54.jpg);
 }
 #pi-logo:hover #icon, #icon:hover {
 	top: 0px;
@@ -163,7 +163,7 @@
 	box-shadow: inset 0 0 10px hsl(15,100%,50%) !important;
 }
 
-/* Chat selection 
+/* Chat selection
 #chat-messages .cm:hover .msg {
 	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,0.2) !important;
 }
@@ -269,7 +269,7 @@
 /* Debug */
 #chat .cm.pi-debug .badge-box .bdg-piLogo,
 #chat .cm.pi-debug .msg .from .icon-pi {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git70.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_git70.png);
 	background-size: 100%;
 }
 #chat .cm.pi-debug .msg .from .un,
@@ -296,14 +296,14 @@
 /* Bot */
 #chat .is-bot .bdg,
 #chat .is-bot .no-badge {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_bot.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
 #chat .is-bot .no-badge i {
 	display: none !important;
 }
 #chat .is-bot .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_bot.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bot.png) no-repeat 0 0 / 15px;
 }
 #chat [data-cid*="5285179"] .un:after {
 	content: " #H2G2";
@@ -329,34 +329,34 @@
 }
 /* VIP */
 #chat [data-cid*="4613422"] .bdg {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_wibla.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
 #chat [data-cid*="4506088"] .bdg {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_zurbo.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
 #chat [data-cid*="6604002"] .bdg {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge_amy.png);
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_amy.png);
 	background-position: 0 0 !important;
 }
 /* Dev */
 #chat .is-dev .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_pi.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_pi.png) no-repeat 0 0 / 15px;
 }
 /* Helper */
 #chat .is-helper .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_git.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_git.png) no-repeat 0 0 / 15px;
 }
 /* Graphist */
 #chat .is-graphist .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_designer.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_designer.png) no-repeat 0 0 / 15px;
 }
 /* Translator */
 #chat .is-translator .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/rank_translator.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_translator.png) no-repeat 0 0 / 15px;
 }
 /* Alpha tester */
 #chat .is-alpha .un::before {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/images/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
 }
