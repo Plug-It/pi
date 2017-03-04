@@ -1,94 +1,3 @@
-/* Menu Icon */
-#pi-logo, #icon {
-	position: absolute;
-	right: 345px; top: 0;
-	width: 54px; height: 54px;
-	z-index: 20;
-	cursor: pointer;
-	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
-	background:	url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png) no-repeat;
-	transition: all ease-in-out .3s;
-}
-#icon {
-	top: 0px; left: 0;
-	background:
-		url(//dl.dropbox.com/s/rae2vv1ie4qsu5o/icon-54-hover.png) no-repeat,
-		radial-gradient(circle at top left, hsla(0,0%,100%,.5), transparent),
-		linear-gradient(135deg, hsl(190,70%,50%), hsl(220,70%,50%));
-	box-shadow:
-		inset 0 -2px 0 -1px #0a0a0a,
-		inset 0 0 5px hsla(0,0%,100%,.5);
-}
-/* Transition from #pi-logo to #icon */
-#icon {opacity: 0;}
-#icon:hover {opacity: 1;}
-
-/* Menu itself */
-#pi-menu {
-	position: absolute;
-	right: 345px;
-	top: 54px;
-	width: 150px;
-	z-index: 7 !important; /* otherwise #avatars-container gets in the way */
-	font-family: Roboto;
-	background: linear-gradient(to left, #0a0a0a, #111);
-}
-#pi-menu *::selection {
-	background: transparent;
-}
-#pi-menu input {
-	border: none;
-	width: 145px !important;
-	padding: 2px;
-
-	background: linear-gradient(to top, hsla(220,100%,15%,.7), hsla(220,100%,10%,.7));
-	color: #888;
-}
-#pi-menu input:focus {
-	color: #EEE;
-	box-shadow: inset 0 0 0 1px #05F;
-	background: linear-gradient(to top, hsl(220,100%,30%), hsl(220,100%,20%));
-}
-#pi-menu input::selection {
-	background: #0bf;
-}
-#pi-menu h2 {
-	cursor: pointer;
-	font-weight: normal;
-	font-size: 18px;
-	margin: 2px 0;
-	background: #222;
-}
-#pi-menu ul {list-style-type: none;}
-#pi-menu li {
-	cursor: pointer;
-	font-size: 17px;
-	color: #808691;
-}
-#pi-menu a {color: #888;}
-#pi-menu a:hover {color: #8AD;}
-#pi-menu #pi-V:hover {cursor: default;}
-#pi-menu *[class^="pi"]:before {
-	content: "\2713";
-	margin: 0 2px;
-}
-#pi-menu .pi-on, #pi-menu .pi-on:before {color: #5bf;}
-#pi-menu .pi-off, #pi-menu .pi-off:before {color: #888;}
-#pi-menu #pi-off {
-	display: inline-block;
-	width: 100%;
-	margin-top: 5px;
-	padding: 2px 0;
-	cursor: pointer;
-	color: #811;
-	text-align: center;
-	background: #111;
-}
-#pi-menu #pi-off:hover {
-	color: #EEE;
-	background: #300;
-}
-
 /* Chat headers button a bit more compact */
 #chat-sound-button {
   margin-left: 5px !important;
@@ -105,42 +14,6 @@
 }
 #pi-afk .pi-afk.off {
 	background-position: 0 0;
-}
-
-/* Menu's placement */
-#history-button {
-	right: 54px !important;
-}
-#now-playing-time, #volume, #button {
-	right: calc(+115px) !important;
-}
-
-/* Mod bar */
-#pi-rmvDJ,
-#pi-skip {
-	position: absolute;
-	visibility: visible;
-	width: calc(50% - 2px); height: 30px;
-
-	background: linear-gradient(hsla(210,10%,20%,0.8), hsla(210,10%,15%,0.8));
-	border: 2px solid #AAA;
-	border-top: 0;
-	text-align: center;
-	cursor: pointer;
-	transition: all .25s linear;
-}
-#pi-rmvDJ:hover,
-#pi-skip:hover {
-	background: linear-gradient(hsla(210,10%,30%,0.8), hsla(210,10%,25%,0.8));
-}
-#pi-rmvDJ {
-	border-radius: 0 0 0 10px;
-	left: -1px;
-}
-#pi-skip {
-	position: relative;
-	left: calc(50% - 1px);
-	border-radius: 0 0 10px;
 }
 
 /* Votes list */
@@ -212,16 +85,11 @@
 	border-color: #EEE;
 }*/
 
-/* Miscellaneous */
-#playback-container {
-	transition: all 0.25s;
-	border: solid #000;
-	border-width: 0 1px 2px 1px;
-	border-radius: 3px;
+#chat-input {
+  left: 5px;
+  width: calc(100% - 10px);
 }
-#twitter-menu, #facebook-menu {
-	display: none !important;
-}
+
 .cm .from .un {
 	/* fix when message is too high */
 	vertical-align: top !important;
@@ -242,25 +110,13 @@
 
 /* [CUSTOM LOGS] */
 #chat .cm .badge-box .bdg-piLogo {
-	background: no-repeat url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png);
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png);
 	background-size: 30px;
 }
 #chat .cm .msg .from .icon-pi {
-	background: no-repeat url(//dl.dropbox.com/s/18p6e3gsger5ptr/icon-19.png);
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/extension/master/icon.png);
 	background-size: 15px;
 	width: 15px; height: 15px;
-}
-/* Delete button */
-#chat .cm.pi-log .delete-button {
-	border-radius: 4px;
-	background: linear-gradient(hsl(0,0%,30%), hsl(0,0%,40%));
-	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
-	transition: all linear .25s;
-}
-#chat .cm.pi-log .delete-button:hover {
-	background: linear-gradient(hsl(5,100%,60%), hsl(5,100%,50%));
-	box-shadow: 0 0 10px hsl(5,100%,50%);
-	color: #000;
 }
 /* Log */
 #chat .cm.pi-log .msg .from .un,
@@ -342,14 +198,13 @@
 }
 
 /* [RANKS] */
-#chat .pi-dev .un::before,
-#chat .pi-helper .un::before,
-#chat .pi-graphist .un::before,
-#chat .pi-translator .un::before,
-#chat .pi-community-manager .un::before,
-#chat .pi-alpha .un::before,
-#chat .pi-bot .un::before,
-#chat .pi-discord-bot .un::before {
+#chat .is-dev .un::before,
+#chat .is-helper .un::before,
+#chat .is-graphist .un::before,
+#chat .is-translator .un::before,
+#chat .is-community-manager .un::before,
+#chat .is-alpha .un::before,
+#chat .is-bot .un::before {
 	content: "\0000a0";
 	width: 15px; height: 15px;
 	position: relative;
@@ -357,15 +212,15 @@
 	float: left;
 }
 /* Bot */
-#chat .pi-bot .bdg,
-#chat .pi-bot .no-badge {
+#chat .is-bot .bdg,
+#chat .is-bot .no-badge {
 	background: url(https://dl.dropboxusercontent.com/s/goy2s0zwb4znd9h/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
-#chat .pi-bot .no-badge i {
+#chat .is-bot .no-badge i {
 	display: none !important;
 }
-#chat .pi-bot .un::before {
+#chat .is-bot .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/ln432fkdegx236w/rank_bot.png) no-repeat 0 0 / 15px;
 }
 #chat [data-cid*="5285179"] .un:after {
@@ -373,46 +228,46 @@
 	color: #80C3FF;
 	font-style: italic;
 }
-#chat .pi-bot {
+#chat .emote.is-bot {
 	background: linear-gradient(hsla(219,100%,20%,.8), hsla(219,100%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	border-left: none !important;
 	text-align: left;
-	box-shadow: inset 0 0 0 1px hsla(220,100%,50%,.5) !important;
+	box-shadow: inset 0 0 0 1px hsla(220,100%,50%,.5);
 	border: none !important;
 }
-#chat .pi-bot .un,
-#chat .pi-bot .timestamp {
+#chat .emote.is-bot .un, #chat .emote.is-bot .timestamp {
 	color: hsl(210,100%,60%) !important;
 }
-#chat .pi-bot i {
+#chat .emote.is-bot i {
 	display: inline !important;
 }
-#chat .emote.pi-bot .text {
+#chat .emote.is-bot .text {
 	font-style: normal;
 }
 /* Alpha tester */
-#chat .pi-alpha .un::before {
+#chat .is-alpha .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/3umq0404eq6wtsn/badge%20alpha.png) no-repeat 0 0 / 17px;
 }
 /* Community Manager */
-#chat .pi-community-manager .un::before {
+#chat .is-community-manager .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/gq1fsgwsj864wom/rank_cm.png) no-repeat 0 0 / 15px;
 }
 /* Translator */
-#chat .pi-translator .un::before {
+#chat .is-translator .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/glwcrjm3cj0jwmx/rank_translator.png) no-repeat 0 0 / 15px;
 }
 /* Graphist */
-#chat .pi-graphist .un::before {
+#chat .is-graphist .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/hqt3uvc261qojtr/rank_designer.png) no-repeat 0 0 / 15px;
 }
 /* Helper */
-#chat .pi-helper .un::before {
+#chat .is-helper .un::before {
 	background: url(https://dl.dropboxusercontent.com/s/o3hvjc1ta68syjc/rank_git.png) no-repeat 0 0 / 15px;
 }
 /* Dev */
-#chat .pi-dev .un::before {
-	background: url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png) no-repeat 0 0 / 15px;
+#chat .is-dev .un::before {
+	background: url(https://dl.dropboxusercontent.com/s/cwqmach13k8silq/icon-54.png) no-repeat 0 0 / 15px;
 }
 /* VIP */
 #chat [data-cid*="4613422"] .bdg {
@@ -426,32 +281,4 @@
 #chat [data-cid*="6604002"] .bdg {
 	background: url(https://dl.dropboxusercontent.com/s/0jovfcarwkc7mop/badge_amy.png);
 	background-position: 0 0 !important;
-}
-/* Discord Bot */
-#chat .pi-discord-bot .bdg,
-#chat .pi-discord-bot .no-badge {
-	background: url(https://discordapp.com/assets/1c8a54f25d101bdc607cec7228247a9a.svg);
-	background-position: 0 0 !important;
-}
-#chat .pi-discord-bot .no-badge i {
-	display: none !important;
-}
-#chat .pi-discord-bot .un::before {
-	background: url(https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg) no-repeat 0 0 / 15px;
-}
-#chat .pi-discord-bot {
-	background: linear-gradient(#2C2F33, #23272A),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
-	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,.2) !important;
-}
-#chat .pi-discord-bot .un,
-#chat .pi-discord-bot .timestamp {
-	color: #7289DA !important;
-}
-#chat .pi-discord-bot .text {
-	color: #FFF !important;
-}
-#chat .pi-discord-bot .text .discord-username {
-	font-weight: 600;
-	color: #99AAB5;
 }

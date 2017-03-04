@@ -22,6 +22,7 @@
     "oc": "Chat Antigo",
     "of": "Rodapé Antigo",
     "sm": "Playlist\/Histórico Compactos",
+    "cd": "Confirm chat deletion",
     "ui": "Informação de Usuários",
     "sl": "Limite de Duração",
     "ha": "Alerta de Histórico",
@@ -47,6 +48,7 @@
   },
   "tooltips": {
     "clearChat": "Limpar Chat",
+    "afk": "Toggle yourself as AFK",
     "rmvDJ": "Pular e remover DJ",
     "skip": "Pular o DJ"
   },
@@ -60,7 +62,7 @@
     "meh": " votou Chato nesta música !",
     "guestJoin": "Um visitante entrou ! Total de Visitante(s): ",
     "guestLeave": "Um visitante saiu ! Total de Visitante(s): ",
-    "friendRoomChange": "%%FRIEND%% is now in <a href='/%%LINK%%'>%%NAME%%</a>",
+    "friendRoomChange": "%%FRIEND%% is now in <a href='/%%LINK%%'>%%NAME%%</a>.",
     "friendConnect": "%%FRIEND%% went online in <a href='/%%LINK%%'>%%NAME%%</a>.",
     "friendDisconnect": "%%FRIEND%% está agora offline.",
     "reloading": "Recarregando Plug-It...",
@@ -68,10 +70,11 @@
     "forcingReload": "Uma atualização está disponível, forçando você a recarregar. Desculpe pela incoveniência."
   },
   "info": {
-    "roomChange": "Você trocou de salas, reloading Plug-It..",
+    "roomChange": "Você trocou de salas, reloading Plug-It...",
     "nobodyPlaying": "Ninguém está tocando.",
     "youPlay": "Você é o DJ !",
     "notInWaitList": "Você não está na Lista de Espera.",
+    "songStats": "%%USER%% played %%AUTHOR%% - %%TITLE%%\n%%WOOTS%% woot(s), %%GRABS%% grab(s), %%MEHS%% meh(s).",
     "helpVol": "Modo de Uso: \/vol [0-100]",
     "helpUserOrId": "Especifique o nome ou id do usuário.",
     "fastBanHelp": "Você precisa ser pelo menos coordenador, e o menu de usuário precisa estar visível."

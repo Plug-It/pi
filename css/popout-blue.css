@@ -7,7 +7,7 @@
 	color: hsl(200,100%,55%) !important;
 	text-shadow: 0 0 5px;
 }
-#search-menu .menu ul i, #search-menu-icon {
+#search-menu .menu ul  i, #search-menu-icon {
 	/*Adblock fix*/
 	display: inline !important;
 }
@@ -105,7 +105,7 @@
 	linear-gradient(hsl(200,70%,20%), hsl(140,70%,20%)) !important;
 	box-shadow: inset 0 0 30px #000;
 }
-.app-header, #app-menu.in-room, #footer, #search, #video-only-dj {
+.app-header, #app-menu.in-room, #footer, #search, #video-only-dj, #meta {
 	background: linear-gradient(hsla(210,10%,20%,.8), hsla(210,10%,10%,.8));
 }
 .app-header {
@@ -127,10 +127,10 @@
 	color: hsl(10,80%,55%);
 }
 #footer .back {
-	background: linear-gradient(hsl(200,10%,20%), hsl(200,10%,10%)) !important;
+	background: linear-gradient(hsl(210,10%,30%), hsl(210,10%,20%)) !important;
 }
 #footer-user .buttons .button:hover, #footer .back:hover, #video-only-dj:hover {
-	background: linear-gradient(hsl(200,50%,40%), hsl(200,50%,35%)) !important;
+	background: radial-gradient(hsl(200,100%,60%), hsl(200,100%,30%)) !important;
 	box-shadow: inset 0 0 1px 2px hsla(0,0%,100%,.3) !important;
 }
 #footer-user .buttons .button.inventory:hover .thumb, #video-only-dj:hover .thumb {
@@ -324,7 +324,7 @@
 	background: url(https://cdn.plug.dj/_/static/images/badgebg.11c3e716ad95c5345d292b113a4d223bb2b70e80.png) !important;
 	box-shadow: inset 0 0 20px 2px hsla(0,0%,100%,.2) !important;
 }
-.grid .cell .top .expires, .grid .cell .top .prices, #the-user-profile .badge-box, #media-panel {
+.grid .cell .top .expires, .grid .cell .top .prices, #the-user-profile .badge-box, #media-panel  {
 	background: transparent !important;
 }
 .grid .cell .top .expires span {
@@ -383,26 +383,6 @@
 	border-radius: 0 20px 20px 0;
 	background: linear-gradient(rgba(255,255,255,.2), rgba(0,0,0,0)) !important;
 }
-/*--[draging media]--*/
-.drag-media-box {
-	margin-top: 2px; margin-left: 2px;
-
-	background: linear-gradient(hsla(210,50%,50%,.8), hsla(220,50%,50%,.8));
-	border-radius: 0 10px 10px 10px;
-}
-.drag-media-corner {
-	top: -2px; left: -2px;
-}
-#playlist-menu .menu .row.drag-over {
-	background: hsla(210,80%,50%,.3);
-}
-#playlist-create.drag-over {
-	background: linear-gradient(hsl(210,50%,50%), hsl(220,50%,50%));
-}
-#playlist-create .drop-zone {
-	margin: 0;
-	padding: 24px 27px;
-}
 /*--[dj-button]--*/
 #dj-button {
 	border-radius: 50px;
@@ -435,11 +415,10 @@
 /*--[vote]--*/
 #vote {
 	box-shadow: 0 0 10px #000;
-	border-radius: 40px;
-	width: 255px !important;
+	width: 100% !important;
 }
-#app #vote .bottom {
-	background: rgba(0,0,0,0);
+#vote .bottom {
+	background: rgba(0,0,0,0) !important;
 }
 #woot, #grab, #meh {
 	margin-top: 0 !important;
@@ -481,7 +460,6 @@
 	box-shadow: inset 0 0 5px hsla(0,0%,100%,.3);
 }
 #woot {
-	border-radius: 30px 0 0 30px;
 	background: linear-gradient(135deg, hsla(0,0%,50%,.3), hsla(0,0%,30%,.3)) !important;
 	box-shadow: inset 0 0 10px hsl(0,0%,40%) !important;
 }
@@ -500,7 +478,6 @@
 #meh {
 	background: linear-gradient(225deg, hsla(0,0%,50%,.3), hsla(0,0%,30%,.3)) !important;
 	box-shadow: inset 0 0 10px hsl(0,0%,40%) !important;
-	border-radius: 0 30px 30px 0;
 	margin-right: 0 !important;
 }
 #meh.selected, #meh-rs .title {
@@ -625,8 +602,7 @@
 	background: linear-gradient(to right, hsl(220,100%,30%), hsl(220,100%,40%)) !important;
 	box-shadow: 0 0 2px 1px hsl(205,100%,50%);
 }
-#playlist-menu .count,
-#playlist-menu .menu .row.drag-over .name {
+#playlist-menu .count {
 	color: hsl(205,100%,60%) !important;
 }
 #media-panel .media-list .playlist-media-first-item.selected {
@@ -640,11 +616,10 @@
 	border-radius: 7px;
 	border-bottom: none !important;
 }
-#media-panel .media-list .playlist-media-item.in-history,
-#media-panel .media-list .playlist-media-last-item.in-history {
+#media-panel .media-list .playlist-media-item.in-history, #media-panel .media-list .playlist-media-last-item.in-history,  {
 	color: hsl(20,80%,55%);
-	background: hsla(30,100%,30%,.1);
-	box-shadow: inset 0 1px 0 hsl(30,80%,20%);
+	box-shadow: inset 0 0 1px 1px hsla(30,100%,30%,.5);
+	border-radius: 7px;
 }
 .playlist-media-item:nth-child(2n+1) {
 	color: #AAA;
@@ -685,6 +660,9 @@
 }
 #chat-messages {
 	border-color: #555;
+	background:
+		linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
+		#111 url('https://i.imgur.com/kCoqkEt.png') no-repeat center center / cover;
 	box-shadow: 0 51px 0 rgba(30,35,40,.7);
 }
 #chat-messages::-webkit-scrollbar,
@@ -708,7 +686,7 @@
 	border-radius: 5px;
 }
 .jspTrack { box-shadow: inset -1px 0 10px hsla(0,0%,20%,1); }
-.app-right #chat-input,
+#chat-input,
 #dashboard .search,
 #search-bar,
 #filter-bar,
@@ -726,7 +704,7 @@
 	color: #888 !important;
 	font-weight: bold;
 }
-#chat-input.focused #chat-input-field{
+#chat-input.focused #chat-input-field {
 	color: #EEE !important;
 }
 /*### [message] ###*/
@@ -745,14 +723,14 @@
 #chat .cm.message .timestamp {
 	color: #818285;
 }
-#chat .cm .badge-box {
+#chat .cm .badge-box,
+.slider {
 	background: transparent !important;
 }
 #chat .cm .delete-button {
 	border-radius: 4px;
 	background: linear-gradient(hsl(0,0%,30%), hsl(0,0%,40%));
 	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
-	transition: all linear .25s;
 }
 #chat .cm .delete-button:hover {
 	background: linear-gradient(hsl(5,100%,60%), hsl(5,100%,50%));
@@ -969,6 +947,248 @@
 #user-inventory .history .row .col {box-shadow: -1px 0 0 0 hsl(210,50%,20%) !important;}
 #user-inventory .history .jspPane .row {border-color: hsl(210,50%,20%); !important}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--[MENTION]--*/
+#chat .cm.mention {
+	background: linear-gradient(hsla(77,100%,20%,.8), hsla(77,100%,11%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(77,100%,30%);
+	border: none !important;
+}
+#chat .cm.mention .name, #chat .cm.mention .timestamp {
+	color: hsl(77,100%,40%);
+}
+#chat .cm.mention .msg .from .un {
+	color: hsl(77,100%,50%);
+}
+/* Silver sub's mentions */
+#chat .cm.mention.is-silver-subscriber {
+	background: linear-gradient(hsla(0,0%,30%,.8), hsla(0,0%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
+}
+#chat .cm.mention.is-silver-subscriber .name,
+#chat .cm.mention.is-silver-subscriber .timestamp,
+#user-rollover .meta.silver.subscriber .status span {
+	color: hsl(220,25%,70%);
+}
+#chat .cm.mention.is-silver-subscriber .msg .from .un {
+	color: hsl(220,10%,70%);
+}
+/* Sub's mentions */
+#chat .cm.mention.is-subscriber {
+	background: linear-gradient(hsla(40,100%,30%,.8), hsla(40,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(30,50%,50%);
+}
+#chat .cm.mention.is-subscriber .name,
+#chat .cm.mention.is-subscriber .timestamp,
+#user-rollover .meta.subscriber .status span {
+	color: hsl(40,100%,60%);
+}
+/* DJ's mentions */
+#chat .cm.mention.is-dj {
+	background: linear-gradient(hsla(20,100%,30%,.8), hsla(20,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(20,50%,50%);
+}
+#chat .cm.mention.is-dj .name,
+#chat .cm.mention.is-dj .timestamp {
+	color: hsl(20,100%,60%);
+}
+/* Bouncer's mentions */
+#chat .cm.mention.is-bouncer {
+	background: linear-gradient(hsla(354,100%,20%,.8), hsla(354,100%,10%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(354,50%,50%);
+}
+#chat .cm.mention.is-bouncer .name,
+#chat .cm.mention.is-bouncer .timestamp {
+	color: #F45;
+}
+/* Manager's mentions */
+#chat .cm.mention.is-manager {
+	background: linear-gradient(hsla(350,85%,20%,.8), hsla(350,85%,10%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(350,50%,50%);
+}
+#chat .cm.mention.is-manager .name, #chat .cm.mention.is-manager .timestamp {
+	color: #E15;
+}
+/* Co-host's mentions */
+#chat .cm.mention.is-cohost {
+	background: linear-gradient(hsla(210,100%,30%,.8), hsla(210,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
+}
+#chat .cm.mention.is-cohost .name,
+#chat .cm.mention.is-cohost .timestamp {
+	color: hsl(210,100%,50%);
+}
+/* Host's mentions */
+#chat .cm.mention.is-host {
+	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
+}
+#chat .cm.mention.is-host .name,
+#chat .cm.mention.is-host .timestamp {
+	color: hsl(200,100%,50%);
+}
+/* BA's mentions */
+#chat .cm.mention.role-ambassador.from-ambassador {
+	background: linear-gradient(hsla(80,100%,30%,.8), hsla(80,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(80,50%,50%);
+}
+#chat .cm.mention.role-ambassador.from-ambassador .name,
+#chat .cm.mention.role-ambassador.from-ambassador .timestamp {
+	color: hsl(80,50%,50%);
+}
+/* Admin's mentions */
+#chat .cm.mention.role-admin.from-admin {
+	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
+}
+#chat .cm.mention.role-admin.from-admin .name,
+#chat .cm.mention.role-admin.from-admin .timestamp {
+	color: hsl(200,50%,60%);
+}
+#chat .cm.mention .msg {
+	/*fix RCS*/
+	background: none !important;
+}
+/*#####[YOU]#####*/
+#chat .cm .msg .from.you .un {
+	color: #0bf;
+}
+/*#####[BA]#####*/
+.icon-chat-ambassador + span {
+	color: #9C0 !important;
+}
+/*#####[HOST]#####*/
+.icon-chat-host {
+	background: url(https://dl.dropboxusercontent.com/s/uupws63t6x527j5/rank_host.png) !important;
+	background-position: 2px 0 !important;
+}
+.icon-chat-host + span,
+#user-lists .group.host ~ .user span,
+#dialog-user-role .role-menu .menu ul .host span {
+	color: #5BF !important;
+}
+#user-lists .group.host {
+	color: #5BF;
+	background: linear-gradient(to right, hsla(210,100%,30%,.5), hsla(210,100%,40%,.5)) !important;
+	top: 1px;
+}
+/*#####[CO-HOSTS]#####*/
+.icon-chat-cohost {
+	background: url(https://dl.dropboxusercontent.com/s/wqebovkqs08loqu/rank_cohost.png) !important;
+	background-position: 2px 0 !important;
+}
+.icon-chat-cohost + span,
+#dialog-user-role .dialog-body .role-menu .menu ul .cohost span {
+	color: #58f !important;
+}
+/*#####[MANAGER]#####*/
+.icon-chat-manager {
+	background: url(https://dl.dropboxusercontent.com/s/q9ncyzeofjjsar5/rank_manager.png) !important;
+	background-position: 2px 0 !important;
+}
+.icon-chat-manager + span,
+#user-lists .group.manager ~ .user span,
+#dialog-user-role .role-menu .menu ul .manager span {
+	color: #E15 !important;
+}
+#user-lists .group.manager {
+	color: #E15;
+	background: linear-gradient(to right, hsla(0,100%,20%,.5), hsla(0,100%,30%,.5)) !important;
+}/*#####[BOUNCER]#####*/
+.icon-chat-bouncer {
+	background: url(https://dl.dropboxusercontent.com/s/m54vbgt2vxu9ou4/rank_bouncer.png) !important;
+	background-position: 1px 0 !important;
+}
+.icon-chat-bouncer + span,
+#user-lists .group.bouncer ~ .user span,
+#dialog-user-role .role-menu .menu ul .bouncer span {
+	color: #F45 !important;
+}
+#user-lists .group.bouncer {
+	color: #F45;
+	background: linear-gradient(to right, hsla(10,100%,30%,.5), hsla(10,100%,40%,.5)) !important;
+}
+/*#####[DJ]#####*/
+.icon-chat-dj {
+	background: url(https://dl.dropboxusercontent.com/s/8bw986vlgxcc7l9/rank_dj.png) !important;
+	background-position: 0 0 !important;
+}
+#user-lists .group.dj {
+	color: #F95;
+	background: linear-gradient(to right, hsla(20,100%,30%,.5), hsla(30,100%,40%,.5)) !important;
+}
+.icon-chat-dj + span,
+#user-lists .group.dj ~ .user span,
+#dialog-user-role .role-menu .menu ul .dj span {
+	color: #F95 !important;
+}
+/*#####[SUBS]#####*/
+.icon-chat-subscriber,
+#user-rollover .meta.subscriber:not(.silver) .status i {
+	background: url(https://dl.dropboxusercontent.com/s/kiy0zlp4d9kuvak/crown.png) !important;
+	background-position: -1px 0 !important;
+}
+.icon-chat-subscriber + span {
+	color: #FB3 !important;
+}
+#user-lists .group {
+	border: none !important;
+	box-shadow: 0 0 1px 1px;
+}
+
+
+
+
+
 .icon {
-	background-image: url('https://dl.dropboxusercontent.com/s/ikzp6z6va9wz2tp/icons.png');
+  background-image: url('https://dl.dropboxusercontent.com/s/ikzp6z6va9wz2tp/icons.png');
 }

@@ -1,45 +1,44 @@
 {
-  "Dev": {
-    "WiBla": 4613422
-  },
-  "Helper": {
-    "zurbo": 4506088,
-    "Hideki": 3612920,
-    "dano-em": 209178
-  },
-  "Graphist": {
-    "Bil_Balle": 4336782
-  },
-  "Translator": {
-    "ProDjMx": 4123271,
-    "Burkes": 3703511
-  },
-  "Donator": {
-    "Silver Disc": {
-      "": null
-    },
-    "Gold Disc": {
-      "": null
-    },
-    "Platinum Disc": {
-      "": null
-    },
-    "Diamond Disc": {
-      "": null
-    }
-  },
-  "Alpha": {
-    "Gattaca": 4726785,
-    "Maxqui26": 4272266,
-    "Nomyn": 4782448,
-    "burg": 4656513,
-    "Cyril": 4024959,
-    "Adebisi": 3481629,
-    "Lelexfashion": 3944670,
-    "ZephyrPure": 4544136,
-    "Nucko": 5037218
-  },
-  "Bot": {
-    "Marvin": 5285179
-  }
+	"Dev": {
+		"WiBla": 4613422
+	},
+	"Helper": {
+		"zurbo": 4506088,
+		"Hideki": 3612920,
+		"dano-em": 209178
+	},
+	"Graphist": {
+		"Bil_Balle": 4336782
+	},
+	"Translator": {
+		"ProDjMx": 4123271,
+		"Burkes": 3703511
+	},
+	"Community Manager": {
+		"Mr.Elaaps": 4676611,
+		"Maxqui26": 4272266,
+		"Isebella": 6464162
+	},
+	"Donator": {
+		"Silver Disc": {
+			"": null
+		},
+		"Gold Disc": {
+			"": null
+		},
+		"Platinum Disc": {
+			"": null
+		},
+		"Diamond Disc": {
+			"": null
+		}
+	},
+	"Alpha": {
+		"Gattaca": 4726785,
+		"Maxqui26": 4272266,
+		"Nomyn": 4782448,
+		"burg": 4656513,
+		"Lelexfashion": 3944670,
+		"Nucko": 5037218
+	}
 }

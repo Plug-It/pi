@@ -1,0 +1,71 @@
+.cell {
+	width: 150px !important; height: 170px !important;
+	margin: 0 5px 5px 0 !important;
+	border-radius: 5px !important;
+}
+.cell .bar {
+	height: 20px !important;
+}
+.cell .bar .population {
+	top: 0 !important; left: 0 !important;
+}
+.cell .population div {
+	margin: 0 !important;
+}
+.cell .nsfw {
+	top: 2px !important; right: 21px !important;
+}
+.cell .favorite {
+	width: 20px !important; height: 20px !important;
+}
+.cell .favorite i {
+	top: -5px !important; left: -5px !important;
+}
+.cell .media {
+	top: 20px !important; left: 0 !important;
+	width: 152px !important; height: 100px !important;
+}
+.cell .meta {
+	margin-top: 119px !important;
+}
+.cell:hover .meta {
+	margin: 20px 0 0 !important;
+	height: 150px !important;
+}
+.cell .meta .friends {
+	margin: 0 !important;
+}
+.cell .meta .friends .image,
+.cell .meta .friends .thumb, {
+	width: 20px !important;
+}
+.cell .meta div {
+	width: 150px !important;
+}
+.cell .meta .now-playing {
+	margin: 0 !important;
+	font-size: 10px;
+}
+.cell .meta .now-playing > i,
+.cell .meta .divider,
+.cell .population div .divider {
+	display: none;
+}
+.cell .meta .room {
+	font-size: 15px !important;
+	margin: 0 !important;
+}
+.cell .meta .host {
+	margin: 0 !important;
+	top: 0 !important;
+	text-align: left !important;
+	left: -60px;
+	width: 212px !important;
+}
+.cell .meta .join {
+	margin-left: 0px !important;
+	width: 30px !important; height: 30px !important;
+}
+.cell .meta .join .label {
+	margin-top: -5px !important;
+}
