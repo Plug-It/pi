@@ -74,14 +74,14 @@
 */
 
 ;(function load() {
-	var isPlugRoom = new RegExp('(http(?:s)?:\/\/(?:[a-z]+.)*plug\.dj\/)(?!about|press|ba|terms|privacy|subscribe|teams|jobs|plot|_\/|@\/)(.+)', 'i');
+	var isPlugRoom = /(http(?:s)?:\/\/(?:[a-z]+\.)*plug\.dj\/)(?!about$|ba$|forgot-password$|giftsub\/\d|jobs$|legal$|partners$|plot$|privacy$|purchase$|subscribe$|team$|terms$|press$|_\/|@\/|!\/)(.+)/i;
 	if (isPlugRoom.test(location.href)) {
 		if (typeof pi !== 'undefined') pi._reload();
 		else if (plugReady()) {
 			// Status (can be used to debug)
 			$('.app-header').after($(
 				'<div id="pi-status">'+
-					'<img height="30px" src="https://dl.dropbox.com/s/cwqmach13k8silq/icon-54.png">'+
+					'<img height="30px" src="https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png">'+
 					'<span></span>'+
 				'</div>').css({
 					"position": "absolute",
@@ -120,38 +120,43 @@
 			var lang, ranks, roomSettings;
 			updateStatus('Loading language', 1);
 			switch (API.getUser().language) {
+				case 'de': lang = 'de'; break;
 				case 'fr': lang = 'fr'; break;
+				case 'pl': lang = 'pl'; break;
 				case 'pt': lang = 'pt'; break;
+				/* Dropbox links
+				case 'fr': lang = 'https://dl.dropbox.com/s/8peqyax976mmhke/fr-dev.json'; break;
+				case 'pl': lang = 'https://dl.dropbox.com/s/2bjwjyr29ysbj02/pl-dev.json'; break;
+				case 'pt': lang = 'https://dl.dropbox.com/s/cd1wkki39y9pd4q/pt-dev.json'; break;
+				default: lang = 'https://dl.dropbox.com/s/nm1xybmx6ecx15q/en-dev.json'; break;*/
 				default: lang = 'en'; break;
 			}
 			$.ajax({
 				dataType: 'json',
-				url: 'https://dl.dropboxusercontent.com/s/u7qmkliqws8d4f9/en.json',
-				// url: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
+				url: 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
+				// url: lang,
 				success: function(data) {
 					lang = data;
-					// Since execute is outside of clusure and therefore can't access private vars,
-					// make the warn for execution available everywhere
-					window.executeWarn = lang.warn.isTrusted;
-
-					updateStatus('Loading script ranks', 2);
-					$.ajax({
-						dataType: 'json',
-						url: 'https://dl.dropboxusercontent.com/s/hql8yxk4ne9h2p2/ranks.json',
-						// url: 'https://rawgit.com/Plug-It/pi/pre-release/ressources/ranks.json',
-						success: function(data) {
-							ranks = data;
-							init();
-						},
-						error: function(e) {
-							console.log('[Plug-It] Error while loading script ranks:\n', e);
-							API.chatLog('[Plug-It] Error while loading script ranks: ' + e.statusText + '. Check the console for more info.');
-						}
-					});
 				},
 				error: function(e) {
-					console.log('[Plug-It] Error while loading trnaslation:\n', e);
-					API.chatLog('[Plug-It] Error while loading trnaslation: ' + e.statusText + '. Check the console for more info.');
+					console.log('[Plug-It] Error while loading translation:\n', e);
+					API.chatLog('[Plug-It] Error while loading translation: ' + e.statusText + '. Check the console for more info.');
+				}
+			});
+
+			// Load script ranks
+			updateStatus('Loading script ranks', 2);
+			$.ajax({
+				dataType: 'json',
+				url: 'https://rawgit.com/Plug-It/pi/pre-release/json/ranks.json',
+				// url: 'https://dl.dropboxusercontent.com/s/hql8yxk4ne9h2p2/ranks.json',
+				success: function(data) {
+					ranks = data;
+					init();
+				},
+				error: function(e) {
+					console.log('[Plug-It] Error while loading script ranks:\n', e);
+					API.chatLog('[Plug-It] Error while loading script ranks: ' + e.statusText + '. Check the console for more info.');
 				}
 			});
 		} else {
@@ -168,25 +173,25 @@
 			const startTime = new Date().getTime();
 			const delay = (API.getUser().gRole >= 3 ? 100 : 3500);
 			const url = {
-				script: 'https://dl.dropboxusercontent.com/s/hibdi5qofzsk5dg/pi.js',
+				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js', //'https://dl.dropboxusercontent.com/s/zu2q7nk9nvu3own/pi-dev.js',
 				styles: {
-					blue_css: 'https://dl.dropboxusercontent.com/s/nzworpoonu5sa9x/blue.css',
-					menu_css: 'https://dl.dropboxusercontent.com/s/7zkn6auwm76mpjq/menu.css',
-					popout: 'https://dl.dropboxusercontent.com/s/d4wslgg6h7tlzho/popout.css',
-					popout_blue: 'https://dl.dropboxusercontent.com/s/v57shpcm3z0z4op/popout-blue.css',
-					custom_ranks: 'https://dl.dropboxusercontent.com/s/65tdpnvkzys1mv8/custom-ranks.css',
-					old_chat: 'https://dl.dropboxusercontent.com/s/tx6pa53nfhqphn2/old-chat.css',
-					old_footer: 'https://dl.dropboxusercontent.com/s/s869vblp5iblazu/old-footer.css',
-					small_history: 'https://dl.dropboxusercontent.com/s/813108zvgo1syfw/small-history.css'
+					blue_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css', //'https://dl.dropboxusercontent.com/s/nzworpoonu5sa9x/blue.css',
+					menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css', //'https://dl.dropboxusercontent.com/s/g4f26wa9qe9g5zz/menu-dev.css',
+					popout: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout.css', //'https://dl.dropboxusercontent.com/s/d4wslgg6h7tlzho/popout.css',
+					popout_blue: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout-blue.css', //'https://dl.dropboxusercontent.com/s/v57shpcm3z0z4op/popout-blue.css',
+					custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css', //'https://dl.dropboxusercontent.com/s/65tdpnvkzys1mv8/custom-ranks.css',
+					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css', //'https://dl.dropboxusercontent.com/s/tx6pa53nfhqphn2/old-chat.css',
+					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css', //'https://dl.dropboxusercontent.com/s/s869vblp5iblazu/old-footer.css',
+					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css' //'https://dl.dropboxusercontent.com/s/813108zvgo1syfw/small-history.css'
 				},
 				images: {
-					background: "https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg"
+					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg' //'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg'
 				},
 				sounds: {
 					// https://www.freesound.org/people/TheGertz/sounds/235911/
-					notification: "https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav",
+					notification:  'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/notification.wav', //'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
 					// https://www.freesound.org/people/soneproject/sounds/255102/
-					jingle: 'https://dl.dropboxusercontent.com/s/0zg1yrg4sq06vny/jingle.wav'
+					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav' //'https://dl.dropboxusercontent.com/s/0zg1yrg4sq06vny/jingle.wav'
 				},
 				visu: [
 					'https://rawgit.com/WiBla/visu/master/hyperspace/index.html',
@@ -237,7 +242,7 @@
 				historyAlert: false,
 				// Notifications
 				systemNotifications: false,
-				songstats: false,
+				songStats: false,
 				userJoin: false,
 				userLeave: false,
 				boothAlert: false,
@@ -261,6 +266,8 @@
 				'voteShortcut': startTime - 5000
 			};
 			var emotes = {};
+			var modules = {};
+			var unread = false; // used to notify on unread messages + window blurred
 			var woots = API.getUsers().filter(x => x.vote == 1);
 			var grabs = API.getUsers().filter(x => x.grab);
 			var mehs  = API.getUsers().filter(x => x.vote == -1);
@@ -276,7 +283,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 22
+					pre: 23
 				},
 				_event: {
 					advance: function(song) {
@@ -318,22 +325,33 @@
 
 						if (settings.boothAlert &&
 						    API.getWaitListPosition()+1 === settings.boothPosition) {
-							pi._tool.log('Booth alert : You will be playing in '+settings.boothPosition+' turn, make sure to pick a song !', 'warn chat');
+							pi._tool.log(
+								pi._tool.replaceString(lang.warn.boothAlert, {pos: settings.boothPosition})
+								, 'warn chat'
+							);
 							if (!document.hasFocus() && pi._tool.getPlugSettings().chatSound) {
 								new Audio(url.sounds.notification).play();
 							}
 						}
 
-						if (settings.songstats) {
-							pi._tool.log(song.lastPlay.dj.username+" played "+song.lastPlay.media.author+" - "+song.lastPlay.media.title+" and received :\n"+
-								song.lastPlay.score.positive+" woot(s) "+song.lastPlay.score.grabs+" grab(s) and "+song.lastPlay.score.negative+" meh(s)", 'info chat');
+						if (settings.songStats) {
+							pi._tool.log(
+								pi._tool.replaceString(lang.info.songStats, {
+									dj: song.lastPlay.dj.username,
+									author: song.lastPlay.media.author,
+									title: song.lastPlay.media.title,
+									woots: song.lastPlay.score.positive,
+									grabs: song.lastPlay.score.grabs,
+									mehs: song.lastPlay.score.negative
+								}), 'info chat'
+							);
 						}
 
 						if (settings.stuckSkip && API.hasPermission(null, API.ROLE.BOUNCER)) {
 							setTimeout(function() {
 								// verifying the song is the same AND setting is still enbaled
-								if (song.media.cid === API.getMedia.cid && settings.stuckSkip) {
-									API.sendChat('Song is stuck, force skipping..');
+								if (song.media.cid === API.getMedia().cid && settings.stuckSkip) {
+									API.sendChat(lang.userchat.songStuck);
 									API.moderateForceSkip();
 								}
 							}, song.media.duration*1000 + 5000);
@@ -342,8 +360,8 @@
 						// Checking if the next media is in room history
 						// This is on a timeout because this can happen:
 						// http://i.imgur.com/kAy7QRN.png (only when after
-						// your own play due to playlist refreshing, thanks ReAnna
-						// fot this info BTW !)
+						// your own play due to playlist refreshing,
+						// thanks ReAnna fot this info BTW !)
 						setTimeout(function() {
 							if (settings.skipNextMediaInHistory && API.getWaitListPosition() === 0 && API.getNextMedia().inHistory) {
 								$.ajax({
@@ -354,16 +372,16 @@
 										ids: [API.getNextMedia().media.id]
 									}),
 									success: function() {
-										pi._tool.log('Your next media has been skipped because it\'s in the room\'s history.', 'info chat');
+										pi._tool.log(lang.info.nextMediaSkip, 'info chat');
 									},
 									error: function() {
-										pi._tool.log('Your next media is in the room history !', 'warn chat');
+										pi._tool.log(lang.warn.nextMediaInHistory, 'warn chat');
 									},
 									dataType: 'json',
 									contentType: 'application/json'
 								});
 							}
-						}, 5000);
+						}, 10000);
 
 						sessionStorage.setItem('modSkipWarn', 'false');
 						sessionStorage.setItem('modQuitWarn', 'false');
@@ -416,7 +434,7 @@
 							// Self Deletion Magic
 							if (msg.uid == API.getUser().id && API.hasPermission(null, API.ROLE.BOUNCER)) {
 								$(selector)[0].className += ' deletable';
-								$(selector).prepend('<div class="delete-button" style="display: none;">Delete</div>');
+								$(selector).prepend('<div class="delete-button" style="display: none;">'+lang.glossary.delete+'</div>');
 								$(selector).on('mouseenter', function() {
 									if ($(selector).find('.delete-button').length) {
 										$(selector).find('.delete-button')[0].style.display = 'block';
@@ -502,26 +520,26 @@
 								if (!$('#pi-strobe').length) {
 									var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter:brightness(200%);filter:brightness(200%)}10%{-webkit-filter:brightness(10%);filter:brightness(10%)}}@keyframes strobe2{0%{box-shadow:0 20px 200px #fff}10%{box-shadow:none}}#avatars-container,#dj-button,#vote,.room-background{-webkit-filter:brightness(10%);filter:brightness(10%)}#avatars-container{animation:strobe .45s linear infinite}#playback-container{box-shadow:none!important;animation:strobe2 .45s linear infinite}</style>');
 									$('head').append($strobe);
-									pi._tool.log('Strobe mode on !', 'chat');
+									pi._tool.log(pi._tool.replaceString(lang.log.strobeOn, {user: sender.username}), 'chat');
 								}
 								break;
 								case '!strobe off':
 								if ($('#pi-strobe').length) {
 									$('#pi-strobe')[0].remove();
-									pi._tool.log('Strobe mode off !', 'chat');
+									pi._tool.log(pi._tool.replaceString(lang.log.strobeOff, {user: sender.username}), 'chat');
 								}
 								break;
 								case '!rainbow on':
 								if (!$('#pi-rainbow').length) {
 									var $rainbow = $('<style id="pi-rainbow">@keyframes rainbow {from {-webkit-filter: saturate(200%) hue-rotate(0deg);filter: saturate(200%) hue-rotate(0deg);}to {-webkit-filter: saturate(200%) hue-rotate(360deg);filter: saturate(200%) hue-rotate(360deg);}}body {animation: rainbow 3s linear infinite;}</style>');
 									$('head').append($rainbow);
-									pi._tool.log('Rainbow mode on !', 'chat');
+									pi._tool.log(pi._tool.replaceString(lang.log.rainbowOn, {user: sender.username}), 'chat');
 								}
 								break;
 								case '!rainbow off':
 								if ($('#pi-rainbow').length) {
 									$('#pi-rainbow')[0].remove();
-									pi._tool.log('Rainbow mode off !', 'chat');
+									pi._tool.log(pi._tool.replaceString(lang.log.rainbowOff, {user: sender.username}), 'chat');
 								}
 								break;
 							}
@@ -542,21 +560,22 @@
 							}
 						}
 						// Auto AFK responder with 60s cooldown (prevents spam)
-						if (msg.type == 'mention' &&
+						if (((msg.sound && msg.sound === "mention") || msg.type == 'mention') &&
 						    msg.uid !== API.getUser().id &&
 						    settings.afk &&
 						    pi._tool.getRoomRules('allowAutorespond') &&
 						    (new Date().getTime() - cooldown.afkResponder)/1000/60 > 1) {
-							cooldown.afkResponder = new Date().getTime();
 							if (settings.afkMessage.length) API.sendChat('@'+msg.un + ' [AFK]: '+settings.afkMessage);
-							else API.sendChat('@'+msg.un + ' I am afk.');
+							else API.sendChat(pi._tool.replaceString(lang.userchat.afkResponder, {mention: msg.un}));
+							cooldown.afkResponder = new Date().getTime();
 						}
 						// System notifications on mention and window blured
-						else if (msg.type == 'mention' && !document.hasFocus() && !settings.afk) {
+						else if (((msg.sound && msg.sound === "mention") || msg.type == 'mention') &&
+							!document.hasFocus() && !settings.afk) {
 							pi._tool.notify(
-								'You have been mentioned by '+sender.rawun+':',
+								pi._tool.replaceString(lang.notifications.mentioned, {user: sender.username}),
 								// removing all unwanted html tags (like emoji)
-								$("<div>"+msg.message+"</div>").text()+'\n\nClick here to reply.',
+								$("<div>"+msg.message+"</div>").text()+'\n\n'+lang.notifications.reply,
 								{
 									onclick: function() {window.focus(); this.close();},
 									onerror: function(e){console.log(e);}
@@ -583,6 +602,16 @@
 								}, 3*1000);
 							});
 						}
+						// If WINDOW blurred, prepend page title with asterics to indicate new messages
+						if (msg.type !== 'log' && !document.hasFocus() && !unread) {
+							unread = true;
+							document.title = "* " + API.getRoomName();
+							window.onfocus = function() {
+								document.title = API.getRoomName();
+								unread = false;
+								window.onfocus = undefined;
+							}
+						}
 					},
 					chatCommand: function(cmd) {
 						// contains = "/command and arguments";
@@ -601,7 +630,8 @@
 									let user = API.getUser(lastMention[0].getAttribute('data-cid').split('-')[0]);
 									API.sendChat('@'+user.username +' '+msg);
 								} else {
-									pi._tool.log('Could not find your last mention.');
+									pi._tool.log(lang.error.noLastMention, 'chat error');
+									$('#chat-input-field')[0].value = msg;
 								}
 							break;
 
@@ -658,15 +688,19 @@
 								// Getting the user, either by username or ID
 								var newBot;
 								if (isNaN(args[0])) {
-									newBot = API.getUserByName(args[0].replace('@', '')).id;
+									newBot = API.getUserByName(args[0].replace('@', ''));
+									if (typeof newBot === 'Object') newBot = newBot.id;
+									else {
+										return pi.tool.log(lang.error.userNotFound, 'error chat');
+									}
 								}
 
 								if (settings.bot.indexOf(newBot) !== -1) {
 									settings.bot.splice(settings.bot.indexOf(newBot), 1);
-									pi._tool.log('Removed ' + API.getUser(newBot).username + ' as a bot.', 'success chat');
+									pi._tool.log(pi._tool.replaceString(lang.success.removedBot, {bot: API.getUser(newBot).username}), 'success chat');
 								} else {
 									settings.bot.push(newBot);
-									pi._tool.log('Added ' + API.getUser(newBot).username + ' as a bot.', 'success chat');
+									pi._tool.log(pi._tool.replaceString(lang.success.addedBot, {bot: API.getUser(newBot).username}), 'success chat');
 								}
 							break;
 
@@ -676,42 +710,49 @@
 								// Getting the user, either by username or ID
 								var newBot;
 								if (isNaN(args[0])) {
-									newBot = API.getUserByName(args[0].replace('@', '')).id;
+									newBot = API.getUserByName(args[0].replace('@', ''));
+									if (typeof newBot === 'Object') newBot = newBot.id;
+									else {
+										return pi.tool.log(lang.error.userNotFound, 'error chat');
+									}
 								}
 
 								if (settings.discordbot.indexOf(newBot) !== -1) {
 									settings.discordbot.splice(settings.discordbot.indexOf(newBot), 1);
-									pi._tool.log('Removed ' + API.getUser(newBot).username + ' as a discord bot.', 'success chat');
+									pi._tool.log(pi._tool.replaceString(lang.success.removedDiscordBot, {bot: API.getUser(newBot).username}), 'success chat');
 								} else {
 									settings.discordbot.push(newBot);
-									pi._tool.log('Added ' + API.getUser(newBot).username+ ' as a discord bot', 'success chat');
+									pi._tool.log(pi._tool.replaceString(lang.success.addedDiscordBot, {bot: API.getUser(newBot).username}), 'success chat');
 								}
 							break;
 
 							case 'kick':
 								var self = API.getUser();
-								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log('You do not have sufficent permissions.', 'error chat');
+								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
 
 								// Since username can have spaces, keep only the last args as time
 								var time = args.length > 1 && !isNaN(args[args.length-1]) ? args.pop() : 5;
 								var user = args.join(' ');
 
 								if (isNaN(user)) {
-									user = API.getUserByName(user.replace('@', '').trim());
+									user = API.getUserByName(user.replace('@', ''));
+									if (typeof user === 'Object') user = user.id;
+									else {
+										return pi.tool.log(lang.error.userNotFound, 'error chat');
+									}
 								}	else {
 									user = API.getUser(user);
 								}
 
-								if (user === null) return pi._tool.log('Could not get user.', 'error chat');
-								if (user.id === self.id) return pi._tool.log('Cannot kick yourself.', 'error chat');
-								if (self.role <= user.role) return pi._tool.log('You can\'t kick user with greater or equal rank than you.', 'error chat');
-								API.sendChat('@'+user.username+' you will be kicked for '+time+' seconds.');
+								if (user.id === self.id) return pi._tool.log(lang.error.selfKick, 'error chat');
+								if (self.role <= user.role) return pi._tool.log(lang.error.staffKick, 'error chat');
+								API.sendChat(pi._tool.replaceString(lang.userchat.kicking, {user: user.username, time: time}));
 								setTimeout(function(){API.moderateKickUser(user.id, time)}, 3000);
 							break;
 
 							case 'ban':
 								var self = API.getUser();
-								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log('You do not have sufficent permissions.', 'error chat');
+								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
 
 								// Since username can have spaces, keep only the last args as duration
 								var duration;
@@ -729,9 +770,9 @@
 									user = API.getUser(user);
 								}
 
-								if (user === null) return pi._tool.log('Could not get user.', 'error chat');
-								if (user.id === self.id) return pi._tool.log('Cannot ban yourself.', 'error chat');
-								if (self.role <= user.role) return pi._tool.log('You can\'t ban user with greater or equal rank than you.', 'error chat');
+								if (user === null) return pi._tool.log(lang.error.userNotFound, 'error chat');
+								if (user.id === self.id) return pi._tool.log(lang.error.selfBan, 'error chat');
+								if (self.role <= user.role) return pi._tool.log(lang.error.staffBan, 'error chat');
 
 								duration = duration.toLowerCase();
 								if (duration === 'forever') duration = API.BAN.PERMA;
@@ -777,8 +818,8 @@
 										roleID: roleID
 									}),
 									error: function(err) {
-										pi._tool.log('Could not set user\'s rank.', 'error chat');
-										console.error('Could no set user\'s rank: ', err);
+										pi._tool.log(lang.error.cannotRank, 'error chat');
+										console.error(lang.error.cannotRank, err);
 									},
 									dataType: 'json',
 									contentType: 'application/json'
@@ -787,26 +828,26 @@
 
 							case 'grabed?':
 								if (API.getUser().id === API.getDJ().id) {
-									pi._tool.log('You\'re in the DJ booth !', 'info chat');
+									pi._tool.log(lang.info.youPlay, 'info chat');
 									break;
 								}
 
 								var thisSong = API.getMedia(), grabed = false;
 
-								var log = pi._tool.log('Checking your playlists..', 'info chat');
+								var log = pi._tool.log(lang.info.checkingPlaylists, 'info chat');
 								pi._tool.getPlaylists(function(playlists) {
 									playlists.forEach(function(e, i, a) {
 										setTimeout(function() {
 											pi._tool.getPlaylist(e.id, function(playlist) {
-												log.edit(`[Checking PL ${i+1}/${a.length}] "${e.name}"`);
+												if (!grabed) log.edit(pi._tool.replaceString(lang.info.checkingState, {current: i+1, total: a.length, name: e.name}));
 												playlist.forEach(function(ee, ii, aa) {
 													if (ee.cid === thisSong.cid) {
-														log.edit('Yes, in '+e.name+'.');
+														log.edit(pi._tool.replaceString(lang.info.isGrabed));
 														grabed = true;
 													}
 
 													if (i + 1 === a.length && ii + 1 === aa.length && !grabed) {
-														log.edit("You can grab this song because you don't have it yet !").changeType('success');
+														log.edit(lang.success.notGrabed).changeType('success');
 													}
 												});
 											});
@@ -823,7 +864,7 @@
 								let allSongs = [];
 								let allSongsPL = [];
 
-								var log = pi._tool.log('Checking duplicates..', 'info chat');
+								var log = pi._tool.log(lang.info.checkingDuplicates, 'info chat');
 								pi._tool.getPlaylists(function(playlists) {
 									playlists.forEach(function(e, i, a) {
 										skip = false;
@@ -835,15 +876,33 @@
 
 										if (!skip) {
 											setTimeout(function() {
-												log.edit(`[Checking PL ${i+1}/${a.length}] "${e.name}"`);
+												log.edit(pi._tool.replaceString(lang.info.checkingState, {current: i+1, total: a.length, name: e.name}));
 												pi._tool.getPlaylist(e.id, function(playlist) {
 													playlist.forEach(function(ee, ii, aa) {
 														for (var j = 0; j < allSongs.length; j++) {
 															if (ee.cid == allSongs[j].cid) {
-																pi._tool.log('We got a duplicate !\n'+ee.author+' - '+ee.title+'\n'+e.name + ' - ' + allSongsPL[j].name, 'warn chat');
+																pi._tool.log(
+																	pi._tool.replaceString(
+																		lang.warn.duplicates, {
+																			author: ee.author,
+																			title: ee.title,
+																			name1: e.name,
+																			name2: allSongsPL[j].name
+																		}
+																	), 'warn chat'
+																);
 																foundDuplicate = true;
 															} else if (ee.author === allSongs[j].author && ee.title === allSongs[j].title ) {
-																pi._tool.log('This could be a duplicate (based on author/name):\n'+ee.author+' - '+ee.title+'\n'+e.name + ' - ' + allSongsPL[j].name, 'warn chat');
+																pi._tool.log(
+																	pi._tool.replaceString(
+																		lang.warn.possibleDuplicate, {
+																			author: ee.author,
+																			title: ee.title,
+																			name1: e.name,
+																			name2: allSongsPL[j].name
+																		}
+																	), 'warn chat'
+																);
 																foundDuplicate = true;
 															}
 														}
@@ -852,9 +911,9 @@
 														allSongsPL.push(e);
 
 														if (i + 1 === a.length && ii + 1 === aa.length && !foundDuplicate) {
-															log.edit('Duplicate check finished: no results. Congrats !').changeType('success');
+															log.edit(lang.success.noDuplicates).changeType('success');
 														} else if (i + 1 === a.length && ii + 1 === aa.length) {
-															log.edit('Duplicate check finished.').changeType('success');
+															log.edit(lang.success.duplicateFinished).changeType('success');
 														}
 													});
 												});
@@ -866,9 +925,7 @@
 
 							case 'removeLabels':
 								if (sessionStorage.getItem('removeLabelWarn') === 'false') {
-									pi._tool.log(
-										'This command is not listed because it can break your playlists !\nPlease, backup all of them before attempting to do this command again. I decline all responsibility if you do not follow my instructions properly.\nThis can and will probably spam your chat !\nType the command again or click this message to confirm.',
-										'warn chat',
+									pi._tool.log(lang.warn.unlistedCommand, 'warn chat',
 										function() {
 											this.delete();
 											sessionStorage.setItem('removeLabelWarn', true);
@@ -879,14 +936,14 @@
 									return;
 								}
 
-								var log = pi._tool.log('Checking your playlists..', 'info chat');
+								var log = pi._tool.log(lang.info.checkingPlaylists, 'info chat');
 								pi._tool.getPlaylists(function(playlists) {
 									let worstRegexp = /(([*【\[\(])?(trap|(melbourne ?)bounce|(happy ?)hardcore|progressive|future bass|glitchhop|glitch hop|glitch hop (\/|or)? 110bpm|indie dance|indie dance \/ nu disco|nu disco|(melodic)? ?dubstep|drumstep|drum and bass|drum&bass|dnb|edm|hard dance|electronic|(bass ?)house|progressive house|electro( ?swing)?|electro[ -]house|tropical house|deep house|house music|big room|chill|chillout|chillstep(free ?|full)?download|((monstercat ?)?official ?)?((music|lyric)( )?)video|(hq ?)?free|(tasty|monstercat|ncs)( ?(ep|lp|vip|free ?(ep|dl|download)) ?)?( ?release|download)?)([\)\]】*]|( ?\|\| ?))( ?- ?)?)/gi;
 									let toRename = [];
 
 									playlists.forEach(function(pl, i, a) {
 										setTimeout(function() {
-											log.edit(`[Checking PL ${i+1}/${a.length}] "${pl.name}"<br>Found ${toRename.length} songs.`);
+											log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: toRename.length}));
 											pi._tool.getPlaylist(pl.id, function(playlist) {
 												playlist.forEach(function(song, j, aa) {
 													if (worstRegexp.test(song.author) || worstRegexp.test(song.title)) {
@@ -897,7 +954,7 @@
 													}
 
 													if (i + 1 === a.length && j + 1 === aa.length) {
-														log.edit('Check finished, starting remove process...').changeType('log');
+														log.edit(lang.log.checkingRemoving).changeType('log');
 
 														if (toRename.length > 0) {
 															toRename.forEach(function(item, index, array) {
@@ -921,21 +978,33 @@
 																		}),
 																		success: function() {
 																			pi._tool.log(
-																				'Modifed:\n'+
-																				item.song.author + ' - ' + item.song.title+
-																			  '\nResult:\n'+
-																			  cleanAuthor + ' - ' + cleanTitle
-																			, 'chat');
+																				pi._tool.replaceString(
+																					lang.log.labelChanged, {
+																						author: item.song.author,
+																						title: item.song.title,
+																						newAuthor:cleanAuthor,
+																						newTitle: cleanTitle
+																					}
+																				), 'chat'
+																			);
 
 																			// Placed inside the success so it appears after the last element
 																			// and not before due to connection time. Yes, if it fails on the
 																			// last element, it will not show up.
 																			if (index + 1 === array.length) {
-																				log.edit('Done renaming '+array.length+' song'+(array.length > 1 ? 's' : '')+' !').changeType('success');
+																				log.edit(
+																					pi._tool.replaceString(
+																						lang.success.doneRenaming, {
+																							total: array.length,
+																							song: (array.length > 1 ? lang.glossary.songs : lang.glossary.song)
+																						}
+																					)
+																				)
+																				.changeType('success');
 																			}
 																		},
 																		error: function(err) {
-																			pi._tool.log(['Error while renaming.', err], 'error');
+																			pi._tool.log([lang.error.renaming, err], 'error');
 																		},
 																		dataType: "json",
 																		contentType: "application/json"
@@ -943,7 +1012,7 @@
 																}, delay * index);
 															});
 														} else {
-															log.edit('No songs to rename, your playlists are clean !').changeType('success');
+															log.edit(lang.success.noRenaming).changeType('success');
 														}
 													}
 												});
@@ -964,48 +1033,51 @@
 									remove: false
 								};
 
-								if (confirm('Do you want to change the default settings ?\n\n'+
-								  'log in chat: true\n'+
-								  'log in file: false\n'+
-								  'move to top: true\n'+
-								  'move to bottom: false\n'+
-								  'delete unavailable songs: false')) {
+								if (confirm(lang.modal.BrokenSongsChangeSettings)) {
 									cmdSettings = {
-										logToConsole : confirm("Log in console ?"),
-										logToChat    : confirm("Log in chat ?"),
-										logToFile    : confirm("Log in file ?"),
-										moveToTop    : confirm("Move to top ?\n\n(If both move to top and bottom are true, will move to top)"),
-										moveToBottom : confirm("Move to bottom ?"),
-										remove       : confirm("Delete unavailable songs ?")
+										logToConsole : confirm(lang.modal.consoleLog),
+										logToChat    : confirm(lang.modal.chatLog),
+										logToFile    : confirm(lang.modal.fileLog),
+										moveToTop    : confirm(lang.modal.moveTop),
+										moveToBottom : confirm(lang.modal.moveBottom),
+										remove       : confirm(lang.modal.deleteSongs)
 									}
 								}
 								// Aliase for cmdSettings.logToChat
 								const chat = cmdSettings.logToChat;
 
-								if (chat) log = pi._tool.log('Unavailable song search started.', 'chat info');
+								if (chat) log = pi._tool.log(lang.info.checkingUnavailable, 'chat info');
 								pi._tool.getPlaylists(function(playlists) {
 									playlists.forEach(function(e, i, a) {
 										setTimeout(function() {
-											if (chat) log.edit(`[Checking PL ${i+1}/${a.length}] "${e.name}"`);
+											if (chat) log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: toRename.length}));
 											pi._tool.getPlaylist(e.id, function(songs) {
 												songs.forEach(function(ee, ii, aa) {
 													$.get('https://www.googleapis.com/youtube/v3/videos?id=' + ee.cid + '&key=' + APIkey + '&part=snippet,status', function(data) {
 														var passed = true;
 														if (ee.format == 1 && data.items.length === 0) {
 															if (chat) pi._tool.log(
-																`Broken song in "${e.name}":\n`+
-																`[YT] ${ee.author} - ${ee.title}\n`+
-																`(CID: ${ee.cid})`,
+																pi._tool.replaceString(lang.error.brokenSongYT, {
+																	name: e.name,
+																	source: 'YT',
+																	author: ee.author,
+																	title: ee.title,
+																	cid: ee.cid
+																}),
 																'chat error'
 															);
 															passed = false;
 														} else if (ee.format == 2) {
 															SC.get("/tracks/" + ee.cid, function(track) {
 																if (typeof track.title === "undefined") {
-																	if (chat) pi._tool.log(
-																		`Broken song in "${e.name}":\n`+
-																		`[SC] ${ee.author} - ${ee.title}\n`+
-																		`(CID: ${ee.cid})`,
+																	pi._tool.log(
+																		pi._tool.replaceString(lang.error.brokenSongSC, {
+																			name: e.name,
+																			source: 'SC',
+																			author: ee.author,
+																			title: ee.title,
+																			cid: ee.cid
+																		}),
 																		'chat error'
 																	);
 																	passed = false;
@@ -1013,10 +1085,14 @@
 															});
 														} else if (data.items.length == 1) {
 															if (data.items[0].status.uploadStatus != 'processed') {
-																if (chat) pi._tool.log(
-																	`Broken song in "${e.name}":\n`+
-																	`[YT] ${ee.author} - ${ee.title}\n`+
-																	`(CID: ${ee.cid})`,
+																pi._tool.log(
+																	pi._tool.replaceString(lang.error.brokenSongYT, {
+																		name: e.name,
+																		source: 'YT',
+																		author: ee.author,
+																		title: ee.title,
+																		cid: ee.cid
+																	}),
 																	'chat error'
 																);
 																passed = false;
@@ -1038,7 +1114,13 @@
 												Object.keys(unavailableMove).forEach(function(ee, ii, aa) {
 													setTimeout(function() {
 														if (cmdSettings.moveToTop || cmdSettings.moveToBottom) {
-															if (chat) log.edit(`Moving media ${ii+1}/${aa.length} to the ${cmdSettings.moveToTop ? "top" : "bottom"} of the playlist.`);
+															if (chat) log.edit(
+																pi._tool.replaceString(lang.info.moveMedia, {
+																	current: ii+1,
+																	total: aa.length,
+																	direction: (cmdSettings.moveToTop ? lang.glossary.top : lang.glossary.bottom)
+																})
+															);
 															$.ajax({
 																type: 'PUT',
 																url: '/_/playlists/'+ee+'/media/move',
@@ -1047,7 +1129,12 @@
 																contentType: 'application/json'
 															});
 														} else if (cmdSettings.remove) {
-															if (chat) log.edit(`Removing media ${ii+1}/${aa.length} from the playlist.`);
+															if (chat) log.edit(
+																pi._tool.replaceString(lang.info.removeMedia, {
+																	current: ii+1,
+																	total: aa.length
+																})
+															);
 															$.ajax({
 																type: 'POST',
 																url: '/_/playlists/'+ee+'/media/delete',
@@ -1057,7 +1144,7 @@
 															});
 														}
 														if (ii + 1 == aa.length) {
-															if (chat) log.edit('Unavailable song search finished !').changeType('success');
+															if (chat) log.edit(lang.success.unavailableFinished).changeType('success');
 															setTimeout(function() {
 																if (cmdSettings.logToFile) download(fileText, 'plug.dj unavailable songs.txt', 'text/plain');
 															}, aa.length * delay + 2000);
@@ -1065,7 +1152,7 @@
 													}, ii * delay);
 												});
 												if (Object.keys(unavailableMove).length === 0) {
-													if (chat) log.edit('Unavailable song search finished ! No broken songs found !').changeType('success');
+													if (chat) log.edit(lang.success.noUnavailable).changeType('success');
 												}
 											}, a.length * delay);
 										}
@@ -1075,75 +1162,88 @@
 
 							case 'whoami':
 								let me = API.getUser();
-								var piRole = pi._tool.getRank(me.id).length ? pi._tool.getRank(me.id)[0] : 'none';
+								var piRole = pi._tool.getRank(me.id).length ? pi._tool.getRank(me.id)[0] : lang.glossary.none;
 
-								pi._tool.log('Username: '+ me.username +
-									'\nRaw username: ' +me.rawun +
-									'\nID: ' +me.id +
-									'\nDescription: ' + me.blurb +
-									'\nlanguage: '+me.language +
-									(me.level >= 5 ? '\n<a target="_blank" href="/@/'+me.username.toLowerCase().replace(/([^A-z]\s)|(\s[^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '') +
-									'\nAvatar: ' + me.avatarID +
-									'\nBadge: ' + me.badge +
-									'\nLvl: ' + me.level +
-									'\nXP: ' + me.xp +
-									'\nPP: ' + me.pp +
-									'\nJoined: '+ new Date(me.joined).toUTCString() +
-									'\nVote: '+me.vote +
-									'\nGrab: '+me.grab +
-									'\nPlug role: '+me.gRole +
-									'\nPlug-It role: '+ piRole +
-									'\nRank: '+ me.role +
-									'\nGuest: '+ me.guest +
-									'\nSub: '+ me.sub +
-									'\nSilver: '+ me.silver
-								, 'info chat');
+								pi._tool.log(
+									pi._tool.replaceString(lang.info.whoami, {
+										username: me.username,
+										rawun: me.rawun,
+										id: me.id,
+										blurb: me.blurb,
+										language: me.language,
+										profile: (me.level >= 5 ? '\n<a target="_blank" href="/@/'+me.username.toLowerCase().replace(/([^A-z]\s)|(\s[^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : ''),
+										avatar: me.avatarID,
+										badge: me.badge,
+										lvl: me.level,
+										xp: me.xp,
+										pp: me.pp,
+										joined: new Date(me.joined).toUTCString(),
+										lastseen: new Date(me.last_seen).toUTCString(),
+										vote: me.vote,
+										grab: me.grab,
+										plugRole: me.gRole,
+										plugitRole: piRole,
+										rank: me.role,
+										guest: me.guest,
+										sub: me.sub,
+										silver: me.silver
+									})
+									, 'info chat'
+								);
 							break;
 
 							case 'whois':
 								var user;
 
-								if (typeof msg == 'undefined') {
+								if (typeof args[0] == 'undefined') {
 									return pi._tool.log(lang.info.helpUserOrId, 'info');
 								} else if (isNaN(msg)) {
-									user = API.getUserByName(msg.replace('@', '').trim());
+									msg = msg.replace('@', '');
+									if (msg.lastIndexOf(' ') === msg.length-1) msg = msg.slice(0, -1);
+									user = API.getUserByName(msg);
+									if (typeof API.getUserByName(msg) !== 'object') pi.tool.log(lang.error.userNotFound, 'error chat');
 								}	else {
 									user = API.getUser(msg);
 								}
 
-								var piRole = pi._tool.getRank(user.id).length ? pi._tool.getRank(user.id)[0] : 'none';
+								var piRole = pi._tool.getRank(user.id).length ? pi._tool.getRank(user.id)[0] : lang.glossary.none;
 
 								if (user !== null && Object.keys(user).length > 0) {
-									pi._tool.log('Username: '+ user.username +
-										'\nRaw username: ' +user.rawun +
-										'\nID: ' +user.id +
-										(typeof user.slug !== 'undefined' && user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.slug+'">Profile</a>' : (user.level >= 5 ? '\n<a target="_blank" href="/@/'+user.username.toLowerCase().replace(/([^A-z]\s)|(\s[^A-z])/g, "").replace(" ","-").replace(/[^A-z-0-9]|\[|\]/g, "")+'">Profile</a>' : '')) +
-										'\nlanguage: '+user.language +
-										'\nJoined: '+ new Date(user.joined).toUTCString() +
-										'\nAvatar: '+user.avatarID +
-										'\nBadge: '+user.badge +
-										'\nLvl: '+user.level +
-										'\nVote: '+user.vote +
-										'\nGrab: '+user.grab +
-										'\nPlug role: '+user.gRole +
-										'\nPlug-It role: '+ piRole +
-										'\nRank: '+ user.role +
-										'\nGuest: '+ user.guest +
-										'\nSub: '+ user.sub +
-										'\nSilver: '+ user.silver +
-										'\nFriend: '+user.friend
-									, 'info chat');
+									pi._tool.log(
+										pi._tool.replaceString(lang.info.whois, {
+											username: user.username,
+											rawun: user.rawun,
+											id: user.id,
+											language: user.language,
+											profile: (typeof user.slug !== "undefined" ? '\n<a target="_blank" href="/@/'+user.slug+'">Profile</a>' : ''),
+											avatar: user.avatarID,
+											badge: user.badge,
+											lvl: user.level,
+											joined: new Date(user.joined).toUTCString(),
+											lastseen: new Date(user.last_seen).toUTCString(),
+											vote: user.vote,
+											grab: user.grab,
+											plugRole: user.gRole,
+											plugitRole: piRole,
+											rank: user.role,
+											guest: user.guest,
+											sub: user.sub,
+											silver: user.silver,
+											friend: user.friend
+										})
+										, 'info chat'
+									);
 								} else {
-									pi._tool.log('Could not get user, please make sure the provided id/pseudo is correct.', 'error chat');
+									pi._tool.log(lang.error.userNotFound, 'error chat');
 								}
 							break;
 
 							case 'pi':
-								API.sendChat('Get Plug-It : https://github.com/Plug-It/pi/tree/pre-release');
+								API.sendChat('Get Plug-It : https://plug-it.github.io');
 							break;
 
 							case 'js':
-								execute(msg);
+								execute(msg, undefined, lang.warn.isTrusted);
 							break;
 
 							case 'list':
@@ -1172,7 +1272,9 @@
 									'\n/js [javaScript code]'+
 									'\n/reload'+
 									'\n/kill'+
-									'\n/list', 'chat');
+									'\n/list',
+									'chat'
+								);
 							break;
 
 							case 'reload':
@@ -1215,7 +1317,7 @@
 								totalPP + ' PP';
 							}
 
-							pi._tool.log('You earned ' + gain, 'chat');
+							pi._tool.log(pi._tool.replaceString(lang.log.earn, {gain: gain}), 'chat');
 						}
 					},
 					friendJoin: function(friend) {
@@ -1240,11 +1342,19 @@
 					},
 					guestJoin: function(totalGuest) {
 						// contains = 0;
-						pi._tool.log(lang.log.guestJoin+totalGuest, 'chat');
+						pi._tool.log(
+							pi._tool.replaceString(lang.log.guestJoin, {
+								guests: totalGuest
+							}), 'chat'
+						);
 					},
 					guestLeave: function(totalGuest) {
 						// contains = 0;
-						pi._tool.log(lang.log.guestLeave+totalGuest, 'chat');
+						pi._tool.log(
+							pi._tool.replaceString(lang.log.guestLeave, {
+								guests: totalGuest
+							}), 'chat'
+						);
 					},
 					historyUpdate: function(medias) {
 						/* contains = [
@@ -1282,11 +1392,11 @@
 							if (API.hasPermission(null, API.ROLE.BOUNCER)) {
 								callback = function(media, dj) {
 									if (media.cid === API.getMedia().cid) {
-										API.sendChat(`@${dj.username}, this song is in the DJ history !`);
+										API.sendChat(pi._tool.replaceString(lang.djSkip, {dj:dj.username}));
 										API.moderateForceSkip();
 										this.delete();
 									} else {
-										this.edit('The song you want to skip has finished playing !')
+										this.edit(lang.error.cannotSkipFinished)
 										.changeType('error').removeCallback();
 									}
 								};
@@ -1297,7 +1407,7 @@
 								if (media.format == medias[i].media.format && media.cid == medias[i].media.cid) {
 									var log = pi._tool.log(
 										pi._tool.replaceString(
-											 lang.warn.inHistory,
+											 lang.warn.djInHistory,
 											{
 												dj: dj.username,
 												author: medias[i].media.author,
@@ -1329,16 +1439,27 @@
 					},
 					userJoin: function(join) {
 						// contains: {userObject};
-
 						if (settings.userJoin) {
-							pi._tool.log(join.username + (settings.userInfo ? ' Lvl:'+join.level+'|'+'Id:'+join.id : '') + ' joined !', 'chat');
+							let userInfo = (settings.userInfo ? ' Lvl:'+join.level+'|'+'Id:'+join.id : '');
+							pi._tool.log(
+								pi._tool.replaceString(lang.log.userJoin, {
+									user: join.username,
+									userInfo: userInfo
+								}), 'chat'
+							);
 						}
 					},
 					userLeave: function(leave) {
 						// contains: {userObject};
 
 						if (settings.userLeave) {
-							pi._tool.log(leave.username + (settings.userInfo ? ' Lvl:'+leave.level+'|'+'Id:'+leave.id : '') + ' left !', 'chat');
+							let userInfo = (settings.userInfo ? ' Lvl:'+leave.level+'|'+'Id:'+leave.id : '');
+							pi._tool.log(
+								pi._tool.replaceString(lang.log.userLeave, {
+									user: leave.username,
+									userInfo: userInfo
+								}), 'chat'
+							);
 						}
 					},
 					userSkip: function(user) {
@@ -1461,7 +1582,7 @@
 													});
 												});
 											}
-										} else pi._tool.log(lang.info.FastBanHelp, 'info chat');
+										} else pi._tool.log(lang.info.fastBanHelp, 'info chat');
 									}
 								break;
 								case 'w':
@@ -1484,53 +1605,59 @@
 										  !$('.dialog').length &&
 										  API.getDJ().id !== API.getUser().id) {
 
-										// Silent grab (will not trigger grab notifications)
-										if (e.shiftKey) {
-											pi._tool.getPlaylists(function(playlists) {
-												$.ajax({
-													type: 'POST',
-													url: '/_/playlists/'+playlists.filter(x => x.active)[0].id+'/media/insert',
-													data: JSON.stringify({
-														media: [API.getMedia()],
-														append: true,
-													}),
-													error: function(err) {
-														if (err.responseJSON.status === "maxItems")
-															pi._tool.log('Current playlist full', 'error chat');
-														console.error(err);
-													},
-													dataType: "json",
-													contentType: "application/json"
-												});
-											});
-										} else {
-											$.ajax({
-												type: 'GET',
-												url: '/_/rooms/state',
-												success: function(data) {
-													pi._tool.getPlaylists(function(playlists) {
-														$.ajax({
-															type: 'POST',
-															url: "/_/grabs",
-															data: JSON.stringify({
-																playlistID: playlists.filter(x => x.active)[0].id,
-																historyID: data.data[0].playback.historyID
-															}),
-															error: function(err) {
-																pi._tool.log('Cannot grab in current playlist, is it full ?', 'error chat');
-																console.error(err);
-															},
-															dataType: "json",
-															contentType: "application/json"
-														});
+									$.ajax({
+											type: 'GET',
+											url: '/_/rooms/state',
+											success: function(data) {
+												pi._tool.getPlaylists(function(playlists) {
+													$.ajax({
+														type: 'POST',
+														url: "/_/grabs",
+														data: JSON.stringify({
+															playlistID: playlists.filter(x => x.active)[0].id,
+															historyID: data.data[0].playback.historyID
+														}),
+														error: function(err) {
+															if (err.responseJSON.status === "maxItems")
+																pi._tool.log(lang.error.playlistFull, 'error');
+															else
+																pi._tool.log([lang.error.cannotGrab, err.responseText], 'error');
+														},
+														dataType: "json",
+														contentType: "application/json"
 													});
-												},
+												});
+											},
+											error: function(err) {
+												pi._tool.log(lang.error.cannotGetMediaID, 'error chat');
+												console.error(err);
+											}
+										});
+									}
+								break;
+								case 'G':
+									if (!$('#chat-input').hasClass('focused') &&
+											!$('input:focus').length &&
+										  !$('.dialog').length &&
+										  API.getDJ().id !== API.getUser().id) {
+										pi._tool.getPlaylists(function(playlists) {
+											$.ajax({
+												type: 'POST',
+												url: '/_/playlists/'+playlists.filter(x => x.active)[0].id+'/media/insert',
+												data: JSON.stringify({
+													media: [API.getMedia()],
+													append: true,
+												}),
 												error: function(err) {
-													pi._tool.log('Could not get media ID, check console for more details.', 'error chat');
-													console.error(err);
-												}
+													if (err.responseJSON.status === "maxItems")
+														pi._tool.log(lang.error.playlistFull, 'error');
+													else
+														pi._tool.log([lang.error.cannotGrab, err.responseText], 'error');
+												},
+												dataType: "json",
+												contentType: "application/json"
 											});
-										}
+										});
 									}
 								break;
 								case 'ArrowRight':
@@ -1572,6 +1699,7 @@
 						let percentage = (xp1/xp2*100).toFixed(2);
 
 						$('#footer-user .bar .value')[0].innerText = numbers[0].replace(/,/g, '.') + ' ('+percentage+'%)';
+						$('#footer-user .info .meta .bar .value').one('DOMSubtreeModified', pi._DOMEvent.levelPercentage);
 					},
 					navWarn: function(e) {
 						var dialogText = lang.log.leaving;
@@ -1611,12 +1739,12 @@
 							.css('top', BAR_HEIGHT).width(availWidth).height(availHeight - BAR_HEIGHT * 2);
 						}
 					},
-					updateRoomSettings: function(e, request, settings, data) {
-						if (settings.url == '/_/rooms/update' &&
-						    settings.type === 'POST' &&
-						    settings.data &&
-							  settings.data.indexOf('description') !== -1) {
-							pi._tool.log(['ajax success for room description update\ne: ',e, 'request: ',request, 'settings: ',settings], 'console debug');
+					updateRoomSettings: function(e, request, obj, data) {
+						if (obj.url == '/_/rooms/update' &&
+						    obj.type === 'POST' &&
+						    obj.data &&
+							  obj.data.indexOf('description') !== -1) {
+							pi._tool.log(['ajax success for room description update\ne: ',e, 'request: ',request, 'obj: ',obj], 'console debug');
 							roomSettings = {};
 							pi._tool.getRoomSettings();
 						}
@@ -1659,18 +1787,20 @@
 					}
 				},
 				_load: function() {
-					updateStatus('Initalizating API & Events listener', 3);
+					updateStatus('Initalizating modules', 3);
+					modules.context = _.find(require.s.contexts._.defined, m => m && m._events && m._events["chat:receive"]);
+					modules.plugOptions = _.find(require.s.contexts._.defined, m => m && m.defaultSettings);
+					updateStatus('Initalizating API & Events listener', 4);
 					// Add custom events to the API
 					pi._extendAPI();
-					// Bind events to their handler
 					for (var event in pi._event) {
 						API.on(event, pi._event[event]);
 					}
+					// Bind events to their handler
 					window.onbeforeunload = pi._DOMEvent.navWarn;
 					$(window).on('keydown', pi._DOMEvent.keyboardShortcuts);
 					$(window).on('dblclick', pi._DOMEvent.translate);
 					$('#volume, #playback').on('mousewheel', pi._DOMEvent.volumeWheel);
-					$('#footer-user .info .meta .bar .value').on('DOMSubtreeModified', pi._DOMEvent.levelPercentage);
 					$('.button.staff').on('click', pi._DOMEvent.collideRanks);
 					$('#chat-popout-button').on('click', pi._DOMEvent.popout);
 					$("#chat-input-field").on('input', pi._DOMEvent.chatAutocompletion);
@@ -1679,7 +1809,7 @@
 					pi._DOMEvent.levelPercentage();
 
 					// Retrieve user settings if available
-					updateStatus('Loading user settings', 4);
+					updateStatus('Loading user settings', 5);
 					var ls = localStorage.getItem('pi-settings');
 
 					if (typeof ls === 'string') {
@@ -1735,7 +1865,13 @@
 											});
 
 											unfriends.forEach(function(friend) {
-												pi._tool.log(friend.username + " has unfriended you :'(", 'info chat');
+												pi._tool.log(
+													pi._tool.replaceString(lang.info.unfriended, {
+														friend: friend.username,
+														sad: emoji.replace_colons(':cry:')
+													}),
+													'info chat'
+												);
 											});
 										}
 									}
@@ -1768,17 +1904,34 @@
 													isInArray = true;
 													if (friendsOnline[i].room.id !== storage[j].room.id &&
 												 	    settings.friendRoomChange) {
-														if (friendsOnline[i].room.slug == 'dashboard') friendsOnline[i].room.name = 'dashboard';
-														pi._tool.log(pi._tool.replaceString(lang.log.friendRoomChange, {friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}), 'chat');
+														if (friendsOnline[i].room.slug == 'dashboard')
+															pi._tool.log(
+																pi._tool.replaceString(
+																	lang.log.friendRoomChangeDashboard,
+																	{friend: friendsOnline[i].username}
+																), 'chat'
+															);
 													}
 												}
 											}
 
 											if (!isInArray && settings.friendConnect) {
 												if (typeof friendsOnline[i].room.name === 'undefined') {
-													friendsOnline[i].room.name = 'dashboard';
+													// Went online in dashboard, message is slightly different
+													pi._tool.log(
+														pi._tool.replaceString(
+															lang.log.friendConnectDashboard,
+															{friend: friendsOnline[i].username}
+														), 'chat'
+													);
+												} else {
+													pi._tool.log(
+														pi._tool.replaceString(
+															lang.log.friendConnect,
+															{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
+														), 'chat'
+													);
 												}
-												pi._tool.log(pi._tool.replaceString(lang.log.friendConnect, {friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}), 'chat');
 											}
 										}
 										for (var i = 0; i < storage.length; i++) {
@@ -1789,7 +1942,12 @@
 											}
 
 											if (!isInArray && settings.friendDisconnect) {
-												pi._tool.log(pi._tool.replaceString(lang.log.friendDisconnect, {friend: storage[i].username}), 'chat');
+												pi._tool.log(
+													pi._tool.replaceString(
+														lang.log.friendDisconnect,
+														{friend: storage[i].username}
+													), 'chat'
+												);
 											}
 										}
 
@@ -1808,7 +1966,7 @@
 						}
 					}, 2*1000);
 					// Creating DOM elements
-					updateStatus('Creating script environement', 5);
+					updateStatus('Creating script environement', 6);
 					// Menu icon
 					$('#app').append($('<div id="pi-logo"><div id="icon"></div></div>'));
 					// SoundCloud visualizer's custom iframe
@@ -1837,71 +1995,88 @@
 					$('#app').append($(
 						'<div id="pi-menu" style="display: none;">'+
 							'<ul>'+
-							'<h2>'+lang.menu.titles.general+'</h2>'+
-							'<ul style="display: none;">'+
-								'<li id="pi-woot">'+lang.menu.aw+'</li>'+
-								'<li id="pi-join">'+lang.menu.aj+'</li>'+
-								'<li id="pi-keyShortcut">'+lang.menu.ks+'</li>'+
-								'<li id="pi-chatCommands">'+lang.menu.cc+'</li>'+
-								'<li id="pi-autoHideLogs">'+lang.menu.ah+'</li>'+
-								'<li id="pi-autoHideLogsAfter"><label for="autoHideLogsAfter">Hide logs after</label><input type="number" min="1" max="3600" step="1" value="'+settings.autoHideLogsAfter+'" name="autoHideLogsAfter"/></li>'+
-								'<li id="pi-mutemeh">'+lang.menu.mm+'</li>'+
-								'<li id="pi-afkResponder">'+lang.menu.ar+'</li>'+
-								'<li id="pi-afkMessage"><input type="text" placeholder="AFK responder message"/></li>'+
-								'<li id="pi-navWarn">'+lang.menu.nw+'</li>'+
-								'<li id="pi-showVotes">'+lang.menu.sv+'</li>'+
-								'<li id="pi-betterClearChatLimit"><label for="betterClearLimit">Clear chat limit</label><input type="number" min="0" max="512" step="1" value="'+settings.betterClearChatLimit+'" name="betterClearLimit"/></li>'+
-								'<li id="pi-chatLimit"><label for="chatLimit">Chat limit</label><input type="number" min="1" max="512" step="1" value="'+settings.chatLimit+'" name="chatLimit"/></li>'+
-								'<li id="pi-skipNextMediaInHistory">'+lang.menu.snh+'</li>'+
-							'</ul>'+
-							'<h2>'+lang.menu.titles.customisation+'</h2>'+
-							'<ul style="display: none;">'+
-								'<li id="pi-video">'+lang.menu.hv+'</li>'+
-								'<li id="pi-soundcloudVisu">'+lang.menu.scv+'</li>'+
-								'<li id="pi-css">'+lang.menu.cs+'</li>'+
-								'<li id="pi-customRanks">'+lang.menu.cr+'</li>'+
-								'<li id="pi-bg">'+lang.menu.cb+'</li>'+
-								'<li id="pi-old-chat">'+lang.menu.oc+'</li>'+
-								'<li id="pi-old-footer">'+lang.menu.of+'</li>'+
-								'<li id="pi-small-history">'+lang.menu.sm+'</li>'+
-							'</ul>'+
-							'<h2>'+lang.menu.titles.moderation+'</h2>'+
-							'<ul style="display: none;">'+
-								'<li id="pi-confirmDelete">'+lang.menu.cd+'</li>'+
-								'<li id="pi-userInfo">'+lang.menu.ui+'</li>'+
-								'<li id="pi-stuckSkip">'+lang.menu.ss+'</li>'+
-								'<li id="pi-lengthA">'+lang.menu.sl+'</li>'+
-								'<li id="pi-songLength"><input type="text" placeholder="Song limit in seconds"/></li>'+
-								'<li id="pi-historyA">'+lang.menu.ha+'</li>'+
-							'</ul>'+
-							'<h2>'+lang.menu.titles.notifications+'</h2>'+
-							'<ul style="display: none;">'+
-								'<li id="pi-systemNotifications">'+lang.menu.sn+'</li>'+
-								'<li id="pi-boothAlert">'+lang.menu.ba+'</li>'+
-								'<li id="pi-boothPosition"><label for="boothPosition">Booth position</label><input type="number" min="0" max="512" step="1" value="'+settings.boothPosition+'" name="boothPosition"/></li>'+
-								'<li id="pi-userJoin">'+lang.menu.uj+'</li>'+
-								'<li id="pi-userLeave">'+lang.menu.ul+'</li>'+
-								'<li id="pi-userWoot">'+lang.menu.uw+'</li>'+
-								'<li id="pi-userGrab">'+lang.menu.ug+'</li>'+
-								'<li id="pi-userMeh">'+lang.menu.um+'</li>'+
-								'<li id="pi-guestJoin">'+lang.menu.gj+'</li>'+
-								'<li id="pi-guestLeave">'+lang.menu.gl+'</li>'+
-								'<li id="pi-friendRoomChange">'+lang.menu.frc+'</li>'+
-								'<li id="pi-friendConnect">'+lang.menu.fc+'</li>'+
-								'<li id="pi-friendDisconnect">'+lang.menu.fd+'</li>'+
-								'<li id="pi-unfriended">'+lang.menu.uf+'</li>'+
-								'<li id="pi-gainNotification">'+lang.menu.gn+'</li>'+
-							'</ul>'+
-							'<h2>'+lang.menu.titles.about+'</h2>'+
+								'<h2>'+lang.menu.general.title+'</h2>'+
+								'<ul style="display: none;">'+
+									'<li id="pi-woot">'+lang.menu.general.autoWoot+'</li>'+
+									'<li id="pi-join">'+lang.menu.general.autoJoin+'</li>'+
+									'<li id="pi-keyShortcut">'+lang.menu.general.keyboardShortcuts+'</li>'+
+									'<li id="pi-chatCommands">'+lang.menu.general.chatCommands+'</li>'+
+									'<li id="pi-autoHideLogs">'+lang.menu.general.autoHideLogs+'</li>'+
+									'<li id="pi-autoHideLogsAfter">'+
+										'<label for="autoHideLogsAfter">'+lang.menu.general.autoHidelogsLabel+'</label>'+
+										'<input type="number" min="1" max="3600" step="1" value="'+settings.autoHideLogsAfter+'" name="autoHideLogsAfter"/>'+
+									'</li>'+
+									'<li id="pi-mutemeh">'+lang.menu.general.muteMeh+'</li>'+
+									'<li id="pi-afkResponder">'+lang.menu.general.afkResponder+'</li>'+
+									'<li id="pi-afkMessage">'+
+										'<input type="text" placeholder="'+lang.menu.general.afkResponderPlaceholder+'"/>'+
+									'</li>'+
+									'<li id="pi-navWarn">'+lang.menu.general.navigationWarn+'</li>'+
+									'<li id="pi-showVotes">'+lang.menu.general.showVotes+'</li>'+
+									'<li id="pi-betterClearChatLimit">'+
+										'<label for="betterClearLimit">'+lang.menu.general.clearChatLimitLabel+'</label>'+
+										'<input type="number" min="0" max="512" step="1" value="'+settings.betterClearChatLimit+'" name="betterClearLimit"/>'+
+									'</li>'+
+									'<li id="pi-chatLimit">'+
+										'<label for="chatLimit">'+lang.menu.general.chatLimitLabel+'</label>'+
+										'<input type="number" min="1" max="512" step="1" value="'+settings.chatLimit+'" name="chatLimit"/>'+
+									'</li>'+
+									'<li id="pi-skipNextMediaInHistory">'+lang.menu.general.skipNextMediaHistory+'</li>'+
+								'</ul>'+
+								'<h2>'+lang.menu.customisation.title+'</h2>'+
+								'<ul style="display: none;">'+
+									'<li id="pi-video">'+lang.menu.customisation.hideVideo+'</li>'+
+									'<li id="pi-soundcloudVisu">'+lang.menu.customisation.scVisu+'</li>'+
+									'<li id="pi-css">'+lang.menu.customisation.customStyle+'</li>'+
+									'<li id="pi-customRanks">'+lang.menu.customisation.customRanks+'</li>'+
+									'<li id="pi-bg">'+lang.menu.customisation.customBG+'</li>'+
+									'<li id="pi-old-chat">'+lang.menu.customisation.oldChat+'</li>'+
+									'<li id="pi-old-footer">'+lang.menu.customisation.oldFooter+'</li>'+
+									'<li id="pi-small-history">'+lang.menu.customisation.smallHistory+'</li>'+
+								'</ul>'+
+								'<h2>'+lang.menu.moderation.title+'</h2>'+
+								'<ul style="display: none;">'+
+									'<li id="pi-confirmDelete">'+lang.menu.moderation.confirmChatDeletion+'</li>'+
+									'<li id="pi-userInfo">'+lang.menu.moderation.userInformation+'</li>'+
+									'<li id="pi-stuckSkip">'+lang.menu.moderation.skipStuckSongs+'</li>'+
+									'<li id="pi-lengthA">'+lang.menu.moderation.songLimit+'</li>'+
+									'<li id="pi-songLength">'+
+										'<input type="text" placeholder="'+lang.menu.moderation.songLimitPlaceholder+'"/>'+
+									'</li>'+
+									'<li id="pi-historyA">'+lang.menu.moderation.historyAlert+'</li>'+
+								'</ul>'+
+								'<h2>'+lang.menu.notifications.title+'</h2>'+
+								'<ul style="display: none;">'+
+									'<li id="pi-systemNotifications">'+lang.menu.notifications.systemNotifications+'</li>'+
+									'<li id="pi-songStats">'+lang.menu.notifications.songStats+'</li>'+
+									'<li id="pi-boothAlert">'+lang.menu.notifications.boothAlert+'</li>'+
+									'<li id="pi-boothPosition">'+
+										'<label for="boothPosition">'+lang.menu.notifications.boothPositionLabel+'</label>'+
+										'<input type="number" min="1" max="50" step="1" value="'+settings.boothPosition+'" name="boothPosition"/>'+
+									'</li>'+
+									'<li id="pi-userJoin">'+lang.menu.notifications.userJoin+'</li>'+
+									'<li id="pi-userLeave">'+lang.menu.notifications.userLeave+'</li>'+
+									'<li id="pi-userWoot">'+lang.menu.notifications.userWoot+'</li>'+
+									'<li id="pi-userGrab">'+lang.menu.notifications.userGrab+'</li>'+
+									'<li id="pi-userMeh">'+lang.menu.notifications.userMeh+'</li>'+
+									'<li id="pi-guestJoin">'+lang.menu.notifications.guestJoin+'</li>'+
+									'<li id="pi-guestLeave">'+lang.menu.notifications.guestLeave+'</li>'+
+									'<li id="pi-friendRoomChange">'+lang.menu.notifications.friendRoomChange+'</li>'+
+									'<li id="pi-friendConnect">'+lang.menu.notifications.friendConnect+'</li>'+
+									'<li id="pi-friendDisconnect">'+lang.menu.notifications.friendDisconnect+'</li>'+
+									'<li id="pi-unfriended">'+lang.menu.notifications.unfriended+'</li>'+
+									'<li id="pi-gainNotification">'+lang.menu.notifications.gainNotification+'</li>'+
+								'</ul>'+
+								'<h2>'+lang.menu.about.title+'</h2>'+
 								'<p style="display: none;">'+
 									'Plug-It '+pi._tool.getReadableVersion()+'.<br>'+
-									'Developed by: <a target="_blank" href="https://plug.dj/WiBla" target="blank">WiBla</a><br>'+
-									'Follow us on twitter: <a target="_blank" href="https://twitter.com/plugit_dj" target="blank">@plugit_dj</a><br>'+
-									'Join our <a target="_blank" href="https://discord.gg/RKNZpph" target="blank">Discord</a><br>'+
-									'<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">'+lang.menu.rate+'</a><br>'+
-									'<a target="_blank" href="https://crowdin.com/project/plug-it">'+lang.menu.translate+'</a><br>'+
-									'<a target="_blank" href="https://github.com/Plug-It/pi/issues">'+lang.menu.bug+'</a><br>'+
-									'<span id="pi-off">'+lang.menu.s+'</span>'+
+									pi._tool.replaceString(lang.menu.about.developedBy, {"plug-profile": '<a target="_blank" href="https://plug.dj/WiBla" target="blank">WiBla</a><br>'})+
+									pi._tool.replaceString(lang.menu.about.followUs, {twitter: '<a target="_blank" href="https://twitter.com/plugit_dj" target="blank">Twitter</a><br>'})+
+									pi._tool.replaceString(lang.menu.about.joinDiscord, {discord: '<a target="_blank" href="https://discord.gg/RKNZpph" target="blank">Discord</a><br>'})+
+									'<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">'+lang.menu.about.rateExtension+'</a><br>'+
+									'<a target="_blank" href="https://crowdin.com/project/plug-it">'+lang.menu.about.translate+'</a><br>'+
+									'<a target="_blank" href="https://github.com/Plug-It/pi/issues">'+lang.menu.about.reportBug+'</a><br>'+
+									'<span id="pi-off">'+lang.menu.about.shutdown+'</span>'+
 								'</p>'+
 							'</ul>'+
 						'</div>'
@@ -1921,6 +2096,16 @@
 							'<i class="icon pi-afk off"></i>'+
 						'</div>'
 					);
+					// Toggle stream icon
+					$('#chat-popout-button').before(
+						'<div id="pi-toggleStream" class="chat-header-button">'+
+							// Notice we init the icon on off state
+							'<i class="icon pi-toggleStream off"></i>'+
+						'</div>'
+					);
+					// Init toggleStream with the correct class
+					if (!modules.plugOptions.settings.streamDisabled)
+						$('.pi-toggleStream').removeClass('off');
 					// Moderation toolbar
 					if (API.hasPermission(null, API.ROLE.BOUNCER)) {
 						// Moderation tools
@@ -1941,8 +2126,12 @@
 							pi.menu(e.target.id.replace('pi-', ''));
 						}
 					});
-					$('#pi-menu h2').on('click', function() {
-						$(this).next().slideToggle();
+					$('#pi-menu h2').on('click', function(e) {
+						var $openMenus = $('#pi-menu h2+*:not([style*="display: none"])');
+						if ($openMenus.length !== 0) {
+							$openMenus.not(e.target.nextSibling).slideToggle({duration: 400,easing: 'linear'});
+						}
+						$(this).next().slideToggle({duration: 400,easing: 'linear'});
 					});
 					$('#pi-autoHideLogsAfter input').on('change', function() {
 						settings.AutoHideLogsAfter = parseInt(this.value);
@@ -1978,6 +2167,17 @@
 						}
 						pi.menu('afkResponder');
 					});
+					$('#pi-toggleStream').on('click', function(e) {
+						var streamDisabled = modules.plugOptions.settings.streamDisabled;
+						var $icon = $('#pi-toggleStream .pi-toggleStream');
+
+						streamDisabled = !streamDisabled;
+						modules.plugOptions.settings.streamDisabled = streamDisabled;
+						$icon.toggleClass('off');
+
+						modules.context.trigger('change:streamDisabled');
+						modules.plugOptions.save();
+					});
 					// Tooltips
 					$('#now-playing-media').on('mouseenter', function() {
 						pi._tool.tooltip(true, 'left', $(this).offset().left,0, this.innerText);
@@ -2010,7 +2210,16 @@
 						// just apply a translate effect, much easier.
 						$('#tooltip').css({transform: 'translate(-100%, 0)'});
 					});
-					$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat, #pi-afk').on('mouseleave', function() {pi._tool.tooltip();});
+					$('#pi-toggleStream').on('mouseenter', function() {
+						let x = $(this).offset().left + ($(this).width()/2);
+						let y = $(this).offset().top - ($(this).height());
+						pi._tool.tooltip(true, 'right', x,y, lang.tooltips.toggleStream);
+						// Since tootlip is point on the right but x & y are from top left,
+						// instead of calculating the width of the tooltip (which depends on the translation),
+						// just apply a translate effect, much easier.
+						$('#tooltip').css({transform: 'translate(-100%, 0)'});
+					});
+					$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat, #pi-afk, #pi-toggleStream').on('mouseleave', function() {pi._tool.tooltip();});
 					// Show votes
 					$("#woot, #grab, #meh").on('mouseenter', function() {
 						if (settings.showVotes) {
@@ -2064,6 +2273,7 @@
 						historyAlert: $('#pi-historyA')[0],
 						// Notifications
 						systemNotifications: $('#pi-systemNotifications')[0],
+						songStats: $('#pi-songStats')[0],
 						boothAlert: $('#pi-boothAlert')[0],
 						boothPosition: $('#pi-boothPosition')[0],
 						userJoin: $('#pi-userJoin')[0],
@@ -2086,7 +2296,8 @@
 						// Other
 						DelChat: $('#pi-delchat')[0],
 						// Plug
-						stream: $('#playback-container')[0]
+						stream: $('#playback-container')[0],
+						playback: $('#playback')[0]
 					};
 
 					delete pi._load; // Init only once
@@ -2096,8 +2307,10 @@
 						pi._tool.log(lang.log.help, 'info chat');
 						pi._tool.log(lang.log.preRelease, 'warn chat');
 					}
-					// Initialise the menu
+					// Initialise the menu & setup script
 					pi.menu('init');
+					pi.hideStream();
+					pi.muteMeh();
 					// Delete load status
 					$('#pi-status').css({opacity:'0'});
 					setTimeout(function() {$('#pi-status').remove();}, 250);
@@ -2147,18 +2360,13 @@
 						this.remove();
 					});
 
-					$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat, #woot, #grab, #meh').off('mouseenter');
-					$('#now-playing-media, #pi-rmvDJ, #pi-skip, #pi-delchat, #woot, #grab, #meh').off('mouseleave');
+					$('#now-playing-media, #woot, #grab, #meh').off('mouseenter');
+					$('#now-playing-media, #woot, #grab, #meh').off('mouseleave');
 					// Preventing making the video definitly desapear
 					if (!settings.showVideo) {
 						pi.menu('showVideo');
 						settings.showVideo = false;
 					}
-					sessionStorage.removeItem('modQuitWarn');
-					sessionStorage.removeItem('modSkipWarn');
-					sessionStorage.removeItem('trustWarn');
-					sessionStorage.removeItem('fastBanWarn');
-					sessionStorage.removeItem('helpCommands');
 
 					pi._extendAPI('reverse');
 
@@ -2183,15 +2391,10 @@
 						};
 						API.getUserByName = function(name) {
 							if (typeof name == 'undefined') {
-								console.error('A name must be provided !');
-								return undefined;
+								throw new Error('A name must be provided.');
 							} else {
-								var users = API.getUsers();
-								name = name.toLowerCase();
-								for (var i = 0; i < users.length; i++) {
-									if (name == users[i].rawun.toLowerCase()) return users[i];
-								}
-								return null;
+								var user = API.getUsers().filter(u => u.username === name);
+								return (user.length > 0 ? user[0] : null);
 							}
 						};
 						API.getAnyUser = function(id, callback) {
@@ -2241,10 +2444,9 @@
 								contentType: 'application/json',
 								error: function(err) {
 									if (typeof err.responseJSON.data[0] !== 'undefined') {
-										pi._tool.log(err.responseJSON.data[0], 'error chat');
+										pi._tool.log(['Could not ban user: ', err.responseJSON.data[0]], 'error');
 									} else {
-										pi._tool.log('Could not ban user, check the console for more info.', 'error both');
-										console.error(err);
+										pi._tool.log(['Could not ban user: ', err], 'error');
 									}
 								},
 								success: function() {
@@ -2255,8 +2457,7 @@
 											type: 'DELETE',
 											url: '/_/bans/'+id,
 											error: function(err) {
-												pi._tool.log('Could not unban user, check the console for more info.', 'error both');
-												console.error(err);
+												pi._tool.log(['Could not unban user: ', err], 'error');
 											},
 											success: function() {
 												pi._tool.log('User was unbanned.', 'success chat');
@@ -2302,7 +2503,10 @@
 								id: id,
 								itemCount: count
 							}
-						}
+						};
+						API.getRoomName = function() {
+							return $("#room-name .bar-value").text();
+						};
 
 						totalGuest = totalGuest.length ? parseInt(totalGuest) : 0;
 						$('.guest-count').on('DOMSubtreeModified', function(e) {
@@ -2334,7 +2538,6 @@
 							PPThen = PPNow;
 							XPThen = XPNow;
 						});
-						$('#footer-user .bar .value').on('DOMSubtreeModified', pi._DOMEvent.levelPercentage);
 					}
 					else {
 						$('.guest-count').off('DOMSubtreeModified');
@@ -2348,6 +2551,7 @@
 						delete API.moderateKickUser;
 						delete API.gift;
 						delete API.getActivePlaylist;
+						delete API.getRoomName();
 						delete API.GUEST_JOIN;
 						delete API.GUEST_LEAVE;
 						delete API.EARN;
@@ -2407,7 +2611,16 @@
 									pi._tool.log(lang.log.forcingReload);
 									pi._reload();
 								}
-								else pi._tool.log('An update is available:\n'+data.commit.message+'\n\nClick here to reload.', 'info chat', function(){pi._reload();});
+								else {
+									pi._tool.log(
+										pi._tool.replaceString(
+											lang.log.updateAvailable,
+											{whatsnew: data.commit.message}
+										),
+										'info chat',
+										function(){pi._reload();}
+									);
+								}
 							}
 						});
 					},
@@ -2519,7 +2732,16 @@
 											roomSettingsLoaded();
 										},
 										error: function(e) {
-											pi._tool.log('Failed to load '+scriptName+' room settings:\n' + e, 'error console');
+											pi._tool.log(
+												pi._tool.replaceString(
+													lang.error.cannotLoadScriptRoomSettings,
+													{
+														script: scriptName,
+														error: e
+													}
+												),
+												'error console'
+											);
 										}
 									});
 								}
@@ -2603,18 +2825,39 @@
 							});
 						}
 					},
-					log: function(txt, settings, callback, ...cbArgs) {
-						let type, time;
-						if (typeof settings === 'undefined') settings = 'log';
-						if (settings.indexOf('log') > -1) type = 'log';
-						else if (settings.indexOf('info') > -1) type = 'info';
-						else if (settings.indexOf('warn') > -1) type = 'warn';
-						else if (settings.indexOf('error') > -1) type = 'error';
-						else if (settings.indexOf('debug') > -1) type = 'debug';
-						else if (settings.indexOf('success') > -1) type = 'success';
-						else type = 'log';
+					log: function(txt, placeType, callback, ...cbArgs) {
+						let type, emoticon, time;
+						if (typeof placeType === 'undefined') placeType = 'log';
+						if (placeType.indexOf('log') > -1) {
+							type = 'log';
+							emoticon = 'log';
+						}
+						else if (placeType.indexOf('info') > -1) {
+							type = 'info';
+							emoticon = ':information_source:';
+						}
+						else if (placeType.indexOf('warn') > -1) {
+							type = 'warn';
+							emoticon = ':warning:';
+						}
+						else if (placeType.indexOf('error') > -1) {
+							type = 'error';
+							emoticon = ':exclamation:';
+						}
+						else if (placeType.indexOf('debug') > -1) {
+							type = 'debug';
+							emoticon = ':octocat:';
+						}
+						else if (placeType.indexOf('success') > -1) {
+							type = 'success';
+							emoticon = ':white_check_mark:';
+						}
+						else {
+							type = 'log';
+							emoticon = 'log';
+						}
 
-						if (settings.indexOf('console') === -1) {
+						if (placeType.indexOf('console') === -1) {
 							const timestamp = pi._tool.getPlugSettings().chatTimestamps;
 							if (timestamp) {
 								time = new Date();
@@ -2641,13 +2884,13 @@
 
 							var $logBox = $(
 								'<div class="cm pi-'+type+' message deletable">'+
-									'<div class="delete-button" style="display: none;">Delete</div>'+
+									'<div class="delete-button" style="display: none;">'+lang.glossary.delete+'</div>'+
 										'<div class="badge-box">'+
 											'<i class="bdg bdg-piLogo"></i>'+
 										'</div>'+
 										'<div class="msg">'+
 											'<div class="from Plug-It">'+
-											'<i class="icon icon-pi"></i>'+
+											(emoticon === 'log' ? '<i class="icon icon-pi"></i>' : emoji.replace_colons(emoticon))+
 											'<span class="un">[Plug-It]</span>'+
 											'<span class="timestamp" style="display: '+ (timestamp ? 'inline-block' : 'none') +';">'+time+'</span>'+
 										'</div>'+
@@ -2702,23 +2945,55 @@
 								if ($('.cm.log:last', popout.document).length) $('.cm.log:last', popout.document)[0].remove();
 							}
 						}
-						if (settings.indexOf('chat') === -1) {
+						if (placeType.indexOf('chat') === -1) {
 							if (type === 'success') type = 'log'; // Success is not a console's method
 							console[type]('%c[%cPlug-It%c]%c','color: #EEE','color: #ABDA55','color: #EEE','',txt);
 						}
 
 						// This allow the log to be edited theoricaly at any time
 						// (unless autoHideLogs is enabled and/or the log has been deleted)
-						if (settings.indexOf('console') === -1) {
+						if (placeType.indexOf('console') === -1) {
 							let methods = {
 								div: $logBox,
-								text: txt,
+								text: $logBox.find('.text')[0].innerText,
 								edit: function(txt) {
 									$logBox.find('.text')[0].innerHTML = (Array.isArray(txt) ? txt.join('<br>') : txt.toString());
 									return this;
 								},
 								changeType: function(newType) {
+									if (newType === type) return methods;
 									$logBox.toggleClass('pi-'+type + ' pi-'+newType);
+									let newNode, icon;
+
+									switch(newType) {
+										case 'log':
+											newNode = document.createElement('i');
+											newNode.className = 'icon icon-pi';
+										break;
+
+										case 'info':
+											newNode = $.parseHTML(emoji.replace_colons(':information_source:'))[0];
+										break;
+
+										case 'warn':
+											newNode = $.parseHTML(emoji.replace_colons(':warning:'))[0];
+										break;
+
+										case 'error':
+											newNode = $.parseHTML(emoji.replace_colons(':exclamation:'))[0];
+										break;
+
+										case 'debug':
+											newNode = $.parseHTML(emoji.replace_colons(':octocat:'))[0];
+										break;
+
+										case 'success':
+											newNode = $.parseHTML(emoji.replace_colons(':white_check_mark:'))[0];
+										break;
+									}
+									icon = $logBox[0].children[2].children[0];
+									icon.replaceChild(newNode,icon.firstChild);
+
 									type = newType; // important for multiple changes
 									return this;
 								},
@@ -2884,7 +3159,7 @@
 					notify: function(title, content, events) {
 						var options = {
 							body: content,
-							icon: "https://raw.githubusercontent.com/Plug-It/extension/master/icon128.png"
+							icon: "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54-hover.png"
 						};
 						var n = new Notification(title,options);
 						for (var type in events) {
@@ -3005,7 +3280,7 @@
 
 					if (settings.afk) {
 						$("#chat-input-field")[0].disabled = true;
-						$("#chat-input-field")[0].placeholder = 'Turn off AFK responder to chat !';
+						$("#chat-input-field")[0].placeholder = lang.userchat.inputDisabled;
 						pi.dom.afkResponder.className = 'pi-on';
 						$('#pi-afk .pi-afk').removeClass('off');
 					} else {
@@ -3105,22 +3380,24 @@
 					let eta;
 
 					if (API.getUser().id == API.getDJ().id) {
-						eta = lang.info.youPlay;
+						if (log) pi._tool.log(lang.info.youPlay, 'info chat');
+						return null;
 					} else if (API.getWaitListPosition() == -1) {
-						eta = lang.info.notInWaitList;
+						if (log) pi._tool.log(lang.info.notInWaitList, 'info chat');
+						return null;
 					} else if (API.getWaitListPosition() == 0) {
 						eta = API.getTimeRemaining();
 						if (eta >= 3600) {
 							var etaH = Math.floor(eta/60);
 							var etaM = eta%60;
-							eta = etaH+'h'+etaM+'m '+lang.log.eta;
+							eta = etaH+'h'+etaM+'m';
 						} else if (eta >= 60) {
 							var etaM = Math.floor(eta/60);
 							var etaS = eta%60;
-							etaS < 10 ? etaS = '0'+etaS : '';
-							eta = etaM+'m'+etaS+'s '+lang.log.eta;
+							etasS = (etaS < 10 ? '0'+etaS : etaS);
+							eta = etaM+'m'+etaS+'s';
 						} else {
-							eta = eta+'s '+lang.log.eta;
+							eta = eta+'s';
 						}
 					} else {
 						eta = (API.getWaitListPosition())*4*60;
@@ -3128,15 +3405,22 @@
 						if (eta >= 3600) {
 							var etaH = Math.floor(eta/60/60);
 							var etaM = eta%60;
-							eta = etaH+'h'+etaM+'m '+lang.log.eta;
+							eta = etaH+'h'+etaM+'m';
 						} else {
 							var etaM = Math.floor(eta/60);
 							var etaS = eta%60;
-							eta = etaM+'m'+etaS+'s '+lang.log.eta;
+							eta = etaM+'m'+etaS+'s';
 						}
 					}
 
-					if (log) pi._tool.log(eta, 'info chat');
+					if (log) {
+						pi._tool.log(
+							pi._tool.replaceString(
+								lang.log.eta,
+								{time: eta}
+							), 'info chat'
+						);
+					}
 					return eta;
 				},
 				forceSkip: function() {
@@ -3151,8 +3435,10 @@
 				hideStream: function() {
 					if (settings.showVideo) {
 						if (pi._tool.getPlugSettings().videoOnly) {
+							pi.dom.playback.style.height = window.innerHeight - 185+'px';
 							$(pi.dom.stream).css({visibility:'visible', height:'100%'});
 						} else {
+							pi.dom.playback.style.height = '271px';
 							$(pi.dom.stream).css({visibility:'visible', height:'281px'});
 						}
 
@@ -3160,14 +3446,13 @@
 							$([pi.dom.rmvDJ, pi.dom.skip]).css('top', '281px');
 						}
 						$('#playback-controls, #no-dj').css('visibility', 'visible');
-						pi.dom.video.className = 'pi-off';
 					} else {
+						pi.dom.playback.style.height = '0px';
 						$(pi.dom.stream).css({visibility:'hidden', height:'0'});
 						if (API.hasPermission(null,API.ROLE.BOUNCER)) {
 							$([pi.dom.rmvDJ, pi.dom.skip]).css('top', '0');
 						}
 						$('#playback-controls, #no-dj').css('visibility', 'hidden');
-						pi.dom.video.className = 'pi-on';
 					}
 				},
 				menu: function(choice) {
@@ -3196,6 +3481,7 @@
 						break;
 						case 'mutemeh':
 							settings.betterMeh = !settings.betterMeh;
+							pi.dom.betterMeh.className =settings.betterMeh ? 'pi-on' : 'pi-off';
 							pi.muteMeh();
 						break;
 						case 'afkResponder':
@@ -3216,6 +3502,7 @@
 						break;
 						case 'video':
 							settings.showVideo = !settings.showVideo;
+							pi.dom.video.className = settings.showVideo ? 'pi-off' : 'pi-on';
 							pi.hideStream();
 						break;
 						case 'soundcloudVisu':
@@ -3285,6 +3572,10 @@
 								});
 							}
 						break;
+						case 'songStats':
+							settings.songStats = !settings.songStats;
+							pi.dom.songStats.className = settings.songStats ? 'pi-on' : 'pi-off';
+						break;
 						case 'boothAlert':
 							settings.boothAlert = !settings.boothAlert;
 							pi.dom.boothAlert.className = settings.boothAlert ? 'pi-on' : 'pi-off';
@@ -3348,7 +3639,7 @@
 							pi.dom.keyShortcut.className = settings.keyboardShortcuts ? 'pi-on' : 'pi-off';
 							pi.dom.chatCommands.className = settings.chatCommands ? 'pi-on' : 'pi-off';
 							pi.dom.autoHideLogs.className = settings.autoHideLogs ? 'pi-on' : 'pi-off';
-							pi.muteMeh();
+							pi.dom.betterMeh.className =settings.betterMeh ? 'pi-on' : 'pi-off';
 							pi.dom.afkResponder.className = settings.afk ? 'pi-on' : 'pi-off';
 							pi.dom.afkMessage.children[0].value = settings.afkMessage;
 							pi.afk();
@@ -3358,7 +3649,7 @@
 							pi.dom.chatLimit.children[0].value = settings.chatLimit;
 							pi.dom.skipNextMediaInHistory.className = settings.skipNextMediaInHistory ? 'pi-on' : 'pi-off';
 							// Customisation
-							pi.hideStream();
+							pi.dom.video.className = settings.showVideo ? 'pi-off' : 'pi-on';
 							pi.dom.soundcloudVisu.className = settings.scVisu ? 'pi-on' : 'pi-off';
 							pi.dom.css.className = settings.CSS ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('customStyle');
@@ -3380,6 +3671,7 @@
 							pi.dom.historyAlert.className = settings.historyAlert ? 'pi-on' : 'pi-off';
 							// Notifications
 							pi.dom.systemNotifications.className = settings.systemNotifications ? 'pi-on' : 'pi-off';
+							pi.dom.songStats.className = settings.songStats ? 'pi-on' : 'pi-off';
 							pi.dom.boothAlert.className = settings.boothAlert ? 'pi-on' : 'pi-off';
 							pi.dom.boothPosition.children[0].value = settings.boothPosition;
 							pi.dom.userJoin.className = settings.userJoin ? 'pi-on' : 'pi-off';
@@ -3405,27 +3697,31 @@
 					if (choice !== 'off') pi._tool.saveSettings();
 				},
 				muteMeh: function() {
-					var restoreVol = function() {
-						if (!$('#woot').hasClass('disabled')) {
-							API.setVolume(pi._tool.getPlugSettings().volume);
-							API.off(API.ADVANCE, restoreVol);
-							$('#woot').off('click', restoreVol);
-						}
+					var restoreVol = function(vol) {
+						API.setVolume(vol);
+
+						// Turning the event off for BOTH
+						// as we don't know which is called first
+						API.off(API.ADVANCE, restoreVol);
+						$('#woot').off('click', restoreVol);
+
+						// Listen for meh again
+						$('#meh').one('click', mute);
 					};
 					var mute = function() {
+						// Meh is disabled, do not change volume
 						if (!$('#meh').hasClass('disabled')) {
+							let vol = API.getVolume();
 							API.setVolume(0);
-							API.on(API.ADVANCE, restoreVol);
-							$('#woot').on('click', restoreVol);
+							API.once(API.ADVANCE, restoreVol(vol));
+							$('#woot').one('click', restoreVol(vol));
 						}
 					};
 
 					if (settings.betterMeh) {
-						$('#meh').on('click', mute);
-						pi.dom.betterMeh.className = 'pi-on';
+						$('#meh').one('click', mute);
 					} else {
 						$('#meh').off('click', mute);
-						pi.dom.betterMeh.className = 'pi-off';
 					}
 				},
 				removeDJ: function() {
@@ -3450,6 +3746,8 @@
 				soundcloudVisu: function(media) {
 					let $scFrame = $('#sc-frame');
 					let $myFrame = $('#pi-frame');
+
+					if (typeof media === "undefined") media = API.getMedia();
 
 					if (media.format === 1 && $('#pi-frame').is(':visible')) {
 						return $myFrame.hide();
@@ -3561,12 +3859,28 @@
 					}
 				},
 				voteAlert: function(data) {
+					let userInfo = (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '');
 					if (typeof data.vote == 'undefined' && data.user.grab && settings.userGrab) {
-						pi._tool.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.grabbed, 'chat');
+						pi._tool.log(
+							pi._tool.replaceString(lang.log.grabbed, {
+								user: data.user.username,
+								"userInfo": userInfo
+							}), 'chat'
+						);
 					} else if (data.vote == 1 && !data.user.grab && settings.userWoot) {
-						pi._tool.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.wooted, 'chat');
+						pi._tool.log(
+							pi._tool.replaceString(lang.log.wooted, {
+								user: data.user.username,
+								"userInfo": userInfo
+							}), 'chat'
+						);
 					} else if (data.vote == -1 && settings.userMeh && pi._tool.getRoomRules('allowShowingMehs')) {
-						pi._tool.log(data.user.username + (settings.userInfo ? ' Lvl:'+data.user.level+'|'+'Id:'+data.user.id : '') + lang.log.meh, 'chat');
+						pi._tool.log(
+							pi._tool.replaceString(lang.log.meh, {
+								user: data.user.username,
+								"userInfo": userInfo
+							}), 'chat'
+						);
 					}
 				}
 			};
@@ -3594,10 +3908,10 @@
 })();
 
 // Placed outside of closure to ensure eval can't access private vars
-function execute(code, log) {
+function execute(code, log, executeWarn) {
 	if (sessionStorage.getItem('trustWarn') == 'false') {
 		sessionStorage.setItem('trustWarn', 'true');
-		pi._tool.log(executeWarn, 'warn chat', function() { execute(code, this); });
+		pi._tool.log(executeWarn, 'warn chat', function() { execute(code, this); this.delete(); });
 	} else {
 		try {
 			eval(code);

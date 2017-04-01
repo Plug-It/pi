@@ -1,0 +1,96 @@
+@import url('https://rawgit.com/Plug-It/pi/pre-release/css/blue.css');
+@import url('https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css');
+
+.room-background {
+  background-image: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg) !important;
+}
+
+/* [RANKS] */
+#chat [data-cid^="4613422-"] .un::before,
+#chat [data-cid^="5285179-"] .un::before,
+#chat [data-cid^="20852061-"] .un::before {
+	content: "\0000a0";
+	width: 15px; height: 15px;
+	position: relative;
+	top: 1px; left: -2px;
+	float: left;
+}
+/* Bot */
+#chat [data-cid^="5285179-"] .bdg,
+#chat [data-cid^="5285179-"] .no-badge {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) !important;
+	background-position: 0 0 !important;
+}
+#chat [data-cid^="5285179-"] .no-badge i {
+	display: none !important;
+}
+#chat [data-cid^="5285179-"] .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bot.png) no-repeat 0 0 / 15px;
+}
+#chat [data-cid^="5285179-"] .un:after {
+	content: " #H2G2";
+	color: #80C3FF;
+	font-style: italic;
+}
+#chat [data-cid^="5285179-"] {
+	background: linear-gradient(hsla(219,100%,20%,.8), hsla(219,100%,10%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	text-align: left;
+	box-shadow: inset 0 0 0 1px hsla(220,100%,50%,.5) !important;
+	border: none !important;
+}
+#chat [data-cid^="5285179-"] .un,
+#chat [data-cid^="5285179-"] .timestamp {
+	color: hsl(210,100%,60%) !important;
+}
+#chat [data-cid^="5285179-"] i {
+	display: inline !important;
+}
+#chat .emote[data-cid^="5285179-"] .text {
+	font-style: normal;
+}
+/* Dev */
+#chat [data-cid^="4613422-"] .un::before {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat 0 0 / 15px;
+}
+/* VIP */
+#chat [data-cid^="4613422-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_wibla.png);
+	background-position: 0 0 !important;
+}
+#chat [data-cid^="4506088-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_zurbo.png);
+	background-position: 0 0 !important;
+}
+#chat [data-cid^="6604002-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_amy.png);
+	background-position: 0 0 !important;
+}
+/* Discord Bot */
+#chat [data-cid^="20852061-"] .bdg,
+#chat [data-cid^="20852061-"] .no-badge {
+	background: url(https://discordapp.com/assets/1c8a54f25d101bdc607cec7228247a9a.svg);
+	background-position: 0 0 !important;
+}
+#chat [data-cid^="20852061-"] .no-badge i {
+	display: none !important;
+}
+#chat [data-cid^="20852061-"] .un::before {
+	background: url(https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg) no-repeat 0 0 / 15px;
+}
+#chat [data-cid^="20852061-"] {
+	background: linear-gradient(#2C2F33, #23272A),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsla(0,0%,100%,.2) !important;
+}
+#chat [data-cid^="20852061-"] .un,
+#chat [data-cid^="20852061-"] .timestamp {
+	color: #7289DA !important;
+}
+#chat [data-cid^="20852061-"] .text {
+	color: #FFF !important;
+}
+#chat [data-cid^="20852061-"] .text .discord-username {
+	font-weight: 600;
+	color: #99AAB5;
+}

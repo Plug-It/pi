@@ -1,195 +1,333 @@
-/*--[MENTION]--*/
-#chat .cm.mention {
+/*
+ ┌————————————————————┐
+ │     Role: NONE     │
+ └————————————————————┘
+*/
+/* --[MENTION]-- */
+#chat .mention {
 	background: linear-gradient(hsla(77,100%,20%,.8), hsla(77,100%,11%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(77,100%,30%);
 	border: none !important;
 }
-#chat .cm.mention .name, #chat .cm.mention .timestamp {
+#chat .mention .name,
+#chat .mention .timestamp {
 	color: hsl(77,100%,40%);
 }
-#chat .cm.mention .msg .from .un {
+#chat .mention .un {
 	color: hsl(77,100%,50%);
 }
-/* Silver sub's mentions */
-#chat .cm.mention.is-silver-subscriber {
+/*
+ ┌————————————————————┐
+ │     Role: YOU      │
+ └————————————————————┘
+*/
+#chat .from.you .un {
+	color: hsl(200,100%,50%) !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-you {
+	background: linear-gradient(hsla(200,100%,20%,.8), hsla(200,100%,11%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,100%,30%);
+	border: none !important;
+}
+#chat .mention.is-you .name,
+#chat .mention.is-you .timestamp {
+	color: hsl(200,100%,40%) !important;
+}
+/*
+ ┌————————————————————┐
+ │   Role: FRIEND     │
+ └————————————————————┘
+*/
+#chat .is-friend .un {
+	color: hsl(80,60%,50%);
+}
+/* --[MENTION]-- */
+#chat .mention.is-friend {
+	background: linear-gradient(hsla(80,60%,20%,.8), hsla(80,50%,13%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(80,50%,30%);
+	border: none !important;
+}
+#chat .mention.is-friend .name,
+#chat .mention.is-friend .timestamp {
+	color: hsl(80,60%,60%) !important;
+}
+/*
+ ┌————————————————————┐
+ │  Role: SILVER SUB  │
+ └————————————————————┘
+*/
+.icon-chat-silver-subscriber,
+#user-rollover .meta.subscriber.silver .status i {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -120px !important;
+}
+.icon-chat-silver-subscriber + span,
+#chat .from.has-sub.silver-subscriber .un,
+#chat .is-subscriber.silver .msg .from .un,
+#chat .is-silver-subscriber .msg .from .un,
+#user-rollover .meta.subscriber.silver .status span {
+/* 	color: #8694b2 !important; */
+	color: hsl(220,25%,70%);
+}
+/* --[MENTION]-- */
+#chat .mention.is-silver-subscriber {
 	background: linear-gradient(hsla(0,0%,30%,.8), hsla(0,0%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(0,0%,50%);
 }
-#chat .cm.mention.is-silver-subscriber .name,
-#chat .cm.mention.is-silver-subscriber .timestamp,
-#user-rollover .meta.silver.subscriber .status span {
-	color: hsl(220,25%,70%);
+#chat .mention.is-subscriber.silver .name,
+#chat .mention.is-subscriber.silver .timestamp,
+#chat .mention.is-silver-subscriber .name,
+#chat .mention.is-silver-subscriber .timestamp {
+	color: hsl(220,20%,60%) !important;
 }
-#chat .cm.mention.is-silver-subscriber .msg .from .un {
-	color: hsl(220,10%,70%);
+/*
+ ┌————————————————————┐
+ │   Role: GOLD SUB   │
+ └————————————————————┘
+*/
+.icon-chat-subscriber,
+#user-rollover .meta.subscriber:not(.silver) .status i {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -105px !important;
 }
-/* Sub's mentions */
-#chat .cm.mention.is-subscriber {
+.icon-chat-subscriber + span,
+#chat .is-subscriber:not(.silver) .from.has-sub .un,
+#user-rollover .meta.subscriber:not(.silver) .status span {
+	color: #FB3;
+}
+/* --[MENTION]-- */
+#chat .mention.is-subscriber:not(.silver) {
 	background: linear-gradient(hsla(40,100%,30%,.8), hsla(40,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(30,50%,50%);
 }
-#chat .cm.mention.is-subscriber .name,
-#chat .cm.mention.is-subscriber .timestamp,
-#user-rollover .meta.subscriber .status span {
-	color: hsl(40,100%,60%);
+#chat .mention.is-subscriber:not(.silver) .name,
+#chat .mention.is-subscriber:not(.silver) .timestamp {
+	color: hsl(40,100%,60%) !important;
 }
-/* DJ's mentions */
-#chat .cm.mention.is-dj {
+/*
+ ┌————————————————————┐
+ │   Role: RES. DJ    │
+ └————————————————————┘
+*/
+.icon-chat-dj {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -90px !important;
+}
+.icon-chat-dj + span,
+#dialog-user-role .role-menu .menu ul .dj span {
+	color: #F95 !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-dj {
 	background: linear-gradient(hsla(20,100%,30%,.8), hsla(20,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(20,50%,50%);
 }
-#chat .cm.mention.is-dj .name,
-#chat .cm.mention.is-dj .timestamp {
-	color: hsl(20,100%,60%);
+#chat .mention.is-dj .name,
+#chat .mention.is-dj .timestamp {
+	color: hsl(20,100%,60%) !important;
 }
-/* Bouncer's mentions */
-#chat .cm.mention.is-bouncer {
+/*
+ ┌————————————————————┐
+ │   Role: BOUNCER    │
+ └————————————————————┘
+*/
+.icon-chat-bouncer {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -75px !important;
+}
+.icon-chat-bouncer + span,
+#dialog-user-role .role-menu .menu ul .bouncer span {
+	color: #F45 !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-bouncer {
 	background: linear-gradient(hsla(354,100%,20%,.8), hsla(354,100%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(354,50%,50%);
 }
-#chat .cm.mention.is-bouncer .name,
-#chat .cm.mention.is-bouncer .timestamp {
-	color: #F45;
+#chat .mention.is-bouncer .name,
+#chat .mention.is-bouncer .timestamp {
+	color: #F45 !important;
 }
-/* Manager's mentions */
-#chat .cm.mention.is-manager {
+/*
+ ┌————————————————————┐
+ │   Role: MANAGER    │
+ └————————————————————┘
+*/
+.icon-chat-manager {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -60px !important;
+}
+.icon-chat-manager + span,
+#dialog-user-role .role-menu .menu ul .manager span {
+	color: #E15 !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-manager {
 	background: linear-gradient(hsla(350,85%,20%,.8), hsla(350,85%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(350,50%,50%);
 }
-#chat .cm.mention.is-manager .name, #chat .cm.mention.is-manager .timestamp {
-	color: #E15;
+#chat .mention.is-manager .name,
+#chat .mention.is-manager .timestamp {
+	color: #E15 !important;
 }
-/* Co-host's mentions */
-#chat .cm.mention.is-cohost {
-	background: linear-gradient(hsla(210,100%,30%,.8), hsla(210,100%,20%,.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
-}
-#chat .cm.mention.is-cohost .name,
-#chat .cm.mention.is-cohost .timestamp {
-	color: hsl(210,100%,50%);
-}
-/* Host's mentions */
-#chat .cm.mention.is-host {
-	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
-}
-#chat .cm.mention.is-host .name,
-#chat .cm.mention.is-host .timestamp {
-	color: hsl(200,100%,50%);
-}
-/* BA's mentions */
-#chat .cm.mention.role-ambassador.from-ambassador {
-	background: linear-gradient(hsla(80,100%,30%,.8), hsla(80,100%,20%,.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(80,50%,50%);
-}
-#chat .cm.mention.role-ambassador.from-ambassador .name,
-#chat .cm.mention.role-ambassador.from-ambassador .timestamp {
-	color: hsl(80,50%,50%);
-}
-/* Admin's mentions */
-#chat .cm.mention.role-admin.from-admin {
-	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
-	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
-	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
-}
-#chat .cm.mention.role-admin.from-admin .name,
-#chat .cm.mention.role-admin.from-admin .timestamp {
-	color: hsl(200,50%,60%);
-}
-#chat .cm.mention .msg {
-	/*fix RCS*/
-	background: none !important;
-}
-/*#####[YOU]#####*/
-#chat .cm .msg .from.you .un {
-	color: #0bf;
-}
-/*#####[BA]#####*/
-.icon-chat-ambassador + span {
-	color: #9C0 !important;
-}
-/*#####[HOST]#####*/
-.icon-chat-host {
-	background: url(https://dl.dropboxusercontent.com/s/uupws63t6x527j5/rank_host.png) !important;
-	background-position: 2px 0 !important;
-}
-.icon-chat-host + span,
-#user-lists .group.host ~ .user span,
-#dialog-user-role .role-menu .menu ul .host span {
-	color: #5BF !important;
-}
-#user-lists .group.host {
-	color: #5BF;
-	background: linear-gradient(to right, hsla(210,100%,30%,.5), hsla(210,100%,40%,.5)) !important;
-	top: 1px;
-}
-/*#####[CO-HOSTS]#####*/
+/*
+ ┌————————————————————┐
+ │   Role: CO-HOST    │
+ └————————————————————┘
+*/
 .icon-chat-cohost {
-	background: url(https://dl.dropboxusercontent.com/s/wqebovkqs08loqu/rank_cohost.png) !important;
-	background-position: 2px 0 !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -45px !important;
 }
 .icon-chat-cohost + span,
 #dialog-user-role .dialog-body .role-menu .menu ul .cohost span {
 	color: #58f !important;
 }
-/*#####[MANAGER]#####*/
-.icon-chat-manager {
-	background: url(https://dl.dropboxusercontent.com/s/q9ncyzeofjjsar5/rank_manager.png) !important;
-	background-position: 2px 0 !important;
+/* --[MENTION]-- */
+#chat .mention.is-cohost {
+	background: linear-gradient(hsla(210,100%,30%,.8), hsla(210,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
 }
-.icon-chat-manager + span,
-#user-lists .group.manager ~ .user span,
-#dialog-user-role .role-menu .menu ul .manager span {
-	color: #E15 !important;
+#chat .mention.is-cohost .name,
+#chat .mention.is-cohost .timestamp {
+	color: hsl(210,100%,50%) !important;
 }
+/*
+ ┌————————————————————┐
+ │     Role: HOST     │
+ └————————————————————┘
+*/
+.icon-chat-host {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -30px !important;
+}
+.icon-chat-host + span,
+#dialog-user-role .role-menu .menu ul .host span {
+	color: #5BF !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-host {
+	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
+}
+#chat .mention.is-host .name,
+#chat .mention.is-host .timestamp {
+	color: hsl(200,100%,50%) !important;
+}
+/*
+ ┌————————————————————┐
+ │     Role: BA       │
+ └————————————————————┘
+*/
+.icon-chat-ambassador {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -15px !important;
+}
+:not(#chat) .icon-chat-ambassador + span,
+#chat .icon-chat-ambassador ~ .un {
+	color: #9C0 !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-ambassador,
+#chat .mention.is-ambassador.is-subscriber {
+	background: linear-gradient(hsla(80,100%,30%,.8), hsla(80,100%,20%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(80,50%,50%);
+}
+#chat .mention.is-ambassador .name
+#chat .mention.is-ambassador .timestamp,
+#chat .mention.is-ambassador.is-subscriber .name,
+#chat .mention.is-ambassador.is-subscriber .timestamp {
+	color: hsl(80,50%,50%) !important;
+}
+/*
+ ┌————————————————————┐
+ │    Role: ADMIN     │
+ └————————————————————┘
+*/
+.icon-chat-admin {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) 0 !important;
+}
+.icon-chat-admin ~ .un,
+.app-right .friends .is-admin span {
+	color: #42a5dc !important;
+}
+/* --[MENTION]-- */
+#chat .mention.is-admin {
+	background: linear-gradient(hsla(201,70%,40%,.8), hsla(201,70%,30%,.8)),
+	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
+	box-shadow: inset 0 0 0 1px hsl(201,70%,50%);
+}
+#chat .mention.is-admin .name,
+#chat .mention.is-admin .timestamp {
+	color: hsl(200,50%,60%) !important;
+}
+/*
+ ┌————————————————————┐
+ │    Users-list      │
+ └————————————————————┘
+*/
+/* Needs to be in this order &
+   separated from roles to
+   maintain correct priorities */
+#user-lists .group.host {
+	color: #5BF;
+	background: linear-gradient(to right, hsla(210,100%,30%,.5), hsla(210,100%,40%,.5)) !important;
+	top: 1px;
+}
+#user-lists .group.host ~ .user:nth-child(2) span {
+	color: #5Bf;
+	/* Making the host list being all co-host color &
+	   only the first having host color allows room to
+	   have as much co-hosts they want */
+}
+/* Co-hosts */
+#user-lists .group.host ~ .user span {
+	color: #58F;
+}
+/* Managers */
 #user-lists .group.manager {
 	color: #E15;
 	background: linear-gradient(to right, hsla(0,100%,20%,.5), hsla(0,100%,30%,.5)) !important;
-}/*#####[BOUNCER]#####*/
-.icon-chat-bouncer {
-	background: url(https://dl.dropboxusercontent.com/s/m54vbgt2vxu9ou4/rank_bouncer.png) !important;
-	background-position: 1px 0 !important;
 }
-.icon-chat-bouncer + span,
-#user-lists .group.bouncer ~ .user span,
-#dialog-user-role .role-menu .menu ul .bouncer span {
-	color: #F45 !important;
+#user-lists .group.manager ~ .user span {
+	color: #E15;
 }
+/* Bouncers */
 #user-lists .group.bouncer {
 	color: #F45;
 	background: linear-gradient(to right, hsla(10,100%,30%,.5), hsla(10,100%,40%,.5)) !important;
 }
-/*#####[DJ]#####*/
-.icon-chat-dj {
-	background: url(https://dl.dropboxusercontent.com/s/8bw986vlgxcc7l9/rank_dj.png) !important;
-	background-position: 0 0 !important;
+#user-lists .group.bouncer ~ .user span {
+	color: #F45;
 }
+/* DJs */
 #user-lists .group.dj {
 	color: #F95;
 	background: linear-gradient(to right, hsla(20,100%,30%,.5), hsla(30,100%,40%,.5)) !important;
 }
-.icon-chat-dj + span,
-#user-lists .group.dj ~ .user span,
-#dialog-user-role .role-menu .menu ul .dj span {
-	color: #F95 !important;
+#user-lists .group.dj ~ .user span {
+	color: #F95;
 }
-/*#####[SUBS]#####*/
-.icon-chat-subscriber,
-#user-rollover .meta.subscriber:not(.silver) .status i {
-	background: url(https://dl.dropboxusercontent.com/s/kiy0zlp4d9kuvak/crown.png) !important;
-	background-position: -1px 0 !important;
+/* Gold sub */
+#user-lists .icon-chat-subscriber + span {
+	color: #FB3;
 }
-.icon-chat-subscriber + span {
-	color: #FB3 !important;
+/* Silver sub */
+#user-lists .icon-chat-silver-subscriber + span {
+	color: hsl(220,25%,70%);
+}
+/*
+ ┌————————————————————┐
+ │   Miscellaneous    │
+ └————————————————————┘
+*/
+#chat .cm.mention .msg {
+	/*fix RCS*/
+	background: none !important;
 }
 #user-lists .group {
 	border: none !important;

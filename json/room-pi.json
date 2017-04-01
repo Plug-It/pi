@@ -14,7 +14,7 @@
 		"forceSmartVote":   false
 	},
 	"ccc": {
-		"admin":            null,
+		"admin":            "#42a5dc",
 		"ambassador":       "#9C0",
 		"host":             "#5BF",
 		"cohost":           "#58F",
@@ -27,7 +27,7 @@
 		"user":             null
 	},
 	"images": {
-		"background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/default/custom.jpg",
+		"background":       "https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/Plug-It-old.jpg",
 		"playback":         null,
 		"admin":            null,
 		"ambassador":       null,

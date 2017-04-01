@@ -6,13 +6,13 @@
 	z-index: 20;
 	cursor: pointer;
 	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
-	background:	url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png) no-repeat;
+	background:	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat;
 	transition: all ease-in-out .3s;
 }
 #icon {
 	top: 0px; left: 0;
 	background:
-		url(//dl.dropbox.com/s/rae2vv1ie4qsu5o/icon-54-hover.png) no-repeat,
+		url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54-hover.png) no-repeat,
 		radial-gradient(circle at top left, hsla(0,0%,100%,.5), transparent),
 		linear-gradient(135deg, hsl(190,70%,50%), hsl(220,70%,50%));
 	box-shadow:
@@ -101,10 +101,16 @@
 	top: 3px; left: 8px;
 }
 #pi-afk .pi-afk {
-	background: url(https://dl.dropboxusercontent.com/s/pkzohhv27q1h55h/afk.png) 30px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/afk.png) 30px;
 }
 #pi-afk .pi-afk.off {
 	background-position: 0 0;
+}
+#pi-toggleStream .pi-toggleStream {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/stream.png);
+}
+#pi-toggleStream .pi-toggleStream.off {
+	background-position: 30px;
 }
 
 /* Menu's placement */
@@ -141,6 +147,9 @@
 	position: relative;
 	left: calc(50% - 1px);
 	border-radius: 0 0 10px;
+}
+.video-only #pi-rmvDJ, .video-only #pi-skip {
+	display: none;
 }
 
 /* Votes list */
@@ -219,9 +228,6 @@
 	border-width: 0 1px 2px 1px;
 	border-radius: 3px;
 }
-#twitter-menu, #facebook-menu {
-	display: none !important;
-}
 .cm .from .un {
 	/* fix when message is too high */
 	vertical-align: top !important;
@@ -231,10 +237,15 @@
 #rcs-clearchat {
 	display: none;
 }
-.unread {
+/* Unread messages and chat-header */
+.unread,
+#chat .cm.unread {
 	background: linear-gradient(hsla(50,80%,20%,0.8), hsla(50,80%,10%,0.8)),
 	linear-gradient(to right, transparent, hsla(0,0%,100%,0.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(50,50%,30%);
+}
+#chat .cm.unread .un, #chat .cm.unread .timestamp {
+	color: hsl(50,80%,50%) !important;
 }
 .unread.selected {
 	box-shadow: none;
@@ -242,13 +253,17 @@
 
 /* [CUSTOM LOGS] */
 #chat .cm .badge-box .bdg-piLogo {
-	background: no-repeat url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png);
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png);
 	background-size: 30px;
 }
-#chat .cm .msg .from .icon-pi {
-	background: no-repeat url(//dl.dropbox.com/s/18p6e3gsger5ptr/icon-19.png);
+#chat .cm .from.Plug-It .icon-pi {
+	background: no-repeat url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-19.png);
 	background-size: 15px;
 	width: 15px; height: 15px;
+}
+#chat .cm .from.Plug-It .emoji-outer.emoji-sizer {
+	width: 15px; height: 15px;
+	margin-right: 4px;
 }
 /* Delete button */
 #chat .cm.pi-log .delete-button {
@@ -271,12 +286,6 @@
 	box-shadow: inset 0 0 0 1px hsl(210,50%,30%) !important;
 }
 /* Info */
-#chat .cm.pi-info .badge-box .bdg-piLogo,
-#chat .cm.pi-info .msg .from .icon-pi {
-	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
-	background-position: 0% 12.5%;
-	background-size: 4100%;
-}
 #chat .cm.pi-info .msg .from .un,
 #chat .cm.pi-info .msg .from .timestamp {color: #A5E;}
 #chat .cm.pi-info {
@@ -285,12 +294,6 @@
 	box-shadow: inset 0 0 0 1px hsl(260,50%,30%) !important;
 }
 /* Success */
-#chat .cm.pi-success .badge-box .bdg-piLogo,
-#chat .cm.pi-success .msg .from .icon-pi {
-	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
-	background-position: 7.5% 12.5%;
-	background-size: 4100%;
-}
 #chat .cm.pi-success .msg .from .un,
 #chat .cm.pi-success .msg .from .timestamp {color: #8D3;}
 #chat .cm.pi-success {
@@ -299,12 +302,6 @@
 	box-shadow: inset 0 0 0 1px hsl(100,70%,30%) !important;
 }
 /* Warn */
-#chat .cm.pi-warn .badge-box .bdg-piLogo,
-#chat .cm.pi-warn .msg .from .icon-pi {
-	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
-	background-position: 5% 27.5%;
-	background-size: 4100%;
-}
 #chat .cm.pi-warn .msg .from .un,
 #chat .cm.pi-warn .msg .from .timestamp {color: #ED5;}
 #chat .cm.pi-warn,
@@ -314,12 +311,6 @@
 	box-shadow: inset 0 0 0 1px hsl(50,50%,30%) !important;
 }
 /* Error */
-#chat .cm.pi-error .badge-box .bdg-piLogo,
-#chat .cm.pi-error .msg .from .icon-pi {
-	background: url('https://cdn.plug.dj/_/static/images/emoji/sheet_apple_64.9e49508d393f52b91cd713bf158f43edd8067ea0.png');
-	background-position: 10% 17.5%;
-	background-size: 4100%;
-}
 #chat .cm.pi-error .msg .from .un,
 #chat .cm.pi-error .msg .from .timestamp {color: #D33;}
 #chat .cm.pi-error {
@@ -328,11 +319,6 @@
 	box-shadow: inset 0 0 0 1px hsl(0,80%,30%) !important;
 }
 /* Debug */
-#chat .cm.pi-debug .badge-box .bdg-piLogo,
-#chat .cm.pi-debug .msg .from .icon-pi {
-	background: url(https://dl.dropboxusercontent.com/s/ya2j1utm9ijly48/rank_git70.png);
-	background-size: 100%;
-}
 #chat .cm.pi-debug .msg .from .un,
 #chat .cm.pi-debug .msg .from .timestamp {color: #FA5;}
 #chat .cm.pi-debug {
@@ -342,6 +328,16 @@
 }
 
 /* [RANKS] */
+#chat .pi-dev i,
+#chat .pi-helper i,
+#chat .pi-graphist i,
+#chat .pi-translator i,
+#chat .pi-community-manager i,
+#chat .pi-alpha i,
+#chat .pi-bot i,
+#chat .pi-discord-bot i {
+	margin-right: 0 !important;
+}
 #chat .pi-dev .un::before,
 #chat .pi-helper .un::before,
 #chat .pi-graphist .un::before,
@@ -352,23 +348,22 @@
 #chat .pi-discord-bot .un::before {
 	content: "\0000a0";
 	width: 15px; height: 15px;
-	position: relative;
-	top: 1px; left: -2px;
 	float: left;
+	margin-right: 4px;
 }
 /* Bot */
 #chat .pi-bot .bdg,
 #chat .pi-bot .no-badge {
-	background: url(https://dl.dropboxusercontent.com/s/goy2s0zwb4znd9h/badge_bot.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) !important;
 	background-position: 0 0 !important;
 }
 #chat .pi-bot .no-badge i {
 	display: none !important;
 }
 #chat .pi-bot .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/ln432fkdegx236w/rank_bot.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bot.png) no-repeat 0 0 / 15px;
 }
-#chat [data-cid*="5285179"] .un:after {
+#chat [data-cid^="5285179-"] .un:after {
 	content: " #H2G2";
 	color: #80C3FF;
 	font-style: italic;
@@ -392,39 +387,39 @@
 }
 /* Alpha tester */
 #chat .pi-alpha .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/3umq0404eq6wtsn/badge%20alpha.png) no-repeat 0 0 / 17px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
 }
 /* Community Manager */
 #chat .pi-community-manager .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/gq1fsgwsj864wom/rank_cm.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_cm.png) no-repeat 0 0 / 15px;
 }
 /* Translator */
 #chat .pi-translator .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/glwcrjm3cj0jwmx/rank_translator.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_translator.png) no-repeat 0 0 / 15px;
 }
 /* Graphist */
 #chat .pi-graphist .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/hqt3uvc261qojtr/rank_designer.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_designer.png) no-repeat 0 0 / 15px;
 }
 /* Helper */
 #chat .pi-helper .un::before {
-	background: url(https://dl.dropboxusercontent.com/s/o3hvjc1ta68syjc/rank_git.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_git.png) no-repeat 0 0 / 15px;
 }
 /* Dev */
 #chat .pi-dev .un::before {
-	background: url(//dl.dropbox.com/s/cwqmach13k8silq/icon-54.png) no-repeat 0 0 / 15px;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat 0 0 / 15px;
 }
 /* VIP */
-#chat [data-cid*="4613422"] .bdg {
-	background: url(https://dl.dropboxusercontent.com/s/k2yra4gy3lv91bh/badge_wibla.png);
+#chat [data-cid^="4613422-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="4506088"] .bdg {
-	background: url(https://dl.dropboxusercontent.com/s/ujc9japkbacrcud/badge_zurbo.png);
+#chat [data-cid^="4506088-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_zurbo.png);
 	background-position: 0 0 !important;
 }
-#chat [data-cid*="6604002"] .bdg {
-	background: url(https://dl.dropboxusercontent.com/s/0jovfcarwkc7mop/badge_amy.png);
+#chat [data-cid^="6604002-"] .bdg {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_amy.png);
 	background-position: 0 0 !important;
 }
 /* Discord Bot */

@@ -2,7 +2,7 @@
 	"room":   "enjoy-the-drop",
 	"author": "WiBla",
 	"icon":   "https://dl.dropboxusercontent.com/s/cf3sa54ilpnwrcf/room-icon_31.png",
-	"css":    "https://dl.dropboxusercontent.com/s/nzworpoonu5sa9x/blue.css",
+	"css":    "https://dl.dropbox.com/s/69kd43qo9kw0tl0/EH-theme.css",
 	"rules": {
 		"allowAutorespond": true,
 		"allowAutowoot":    true,
@@ -14,7 +14,7 @@
 		"forceSmartVote":   false
 	},
 	"ccc": {
-		"admin":            null,
+		"admin":            "#42a5dc",
 		"ambassador":       "#9C0",
 		"host":             "#5BF",
 		"cohost":           "#58F",
@@ -22,12 +22,12 @@
 		"bouncer":          "#F45",
 		"rdj":              "#F95",
 		"subscriber":       "#FB3",
-		"silversubscriber": null,
-		"friend":           null,
+		"silversubscriber": "#8695B2",
+		"friend":           "#668033",
 		"user":             null
 	},
 	"images": {
-		"background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/default/custom.jpg",
+		"background":       "https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/Plug-It-old.jpg",
 		"playback":         null,
 		"admin":            null,
 		"ambassador":       null,
@@ -43,6 +43,7 @@
 		"pls":              "https://image.noelshack.com/fichiers/2014/36/1409765752-pls.jpg",
 		"blc":              "https://i.makeagif.com/media/6-23-2015/JKchPr.gif",
 		"fml":              "https://i180.photobucket.com/albums/x290/BoricuaLea/FML.gif",
+		"hap":              "https://i.imgur.com/sUtLThv.png",
 		"deal":             "https://forgifs.com/gallery/d/228031-2/Cat-skateboarding-deal-with-it.gif",
 		"puke":             "https://r17.imgfast.net/users/1711/45/00/52/smiles/3371175543.png",
 		"wind":             "https://i.giphy.com/l0MYspMIcd100vmN2.gif",

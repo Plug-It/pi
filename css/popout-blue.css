@@ -302,26 +302,26 @@
 }
 .user-content .avatars .grid .cell .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(210,10%,80%,.2) 80%),
-	url(https://dl.dropboxusercontent.com/s/cn8udbvyeoer4ti/shop.png) !important;
+	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/shop.png) !important;
 	box-shadow: inset 0 0 40px #000;
 }
 .user-content .avatars .cell:hover .top, .user-content .avatars .cell.selected .top {
 	background: linear-gradient(rgba(0,0,0,0)70%, hsla(0,0%,100%,.2) 80%),
-	url(https://dl.dropboxusercontent.com/s/ntrp9b02jloqrmo/shop-hover.png) !important;
+	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/shop-hover.png) !important;
 }
 .user-content .badges .cell {
 	background: radial-gradient(hsl(210,10%,10%), hsl(210,10%,5%)) !important;
 	box-shadow: inset 0 0 30px #000;
 }
 .user-content .badges .cell:hover {
-	background: url("https://cdn.plug.dj/_/static/images/badgebghover.51d0ef82889130d4adaaaf067133dbb3fe025a1c.png") 0 -12px no-repeat !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/badgebghover.png) 0 -12px no-repeat !important;
 	box-shadow: 0 0 10px #000;
 }
 #user-store .badges .cell:hover {
 	background: radial-gradient(hsl(220,50%,40%), hsl(220,50%,20%)) !important;
 }
 .user-content .badges .cell.selected {
-	background: url(https://cdn.plug.dj/_/static/images/badgebg.11c3e716ad95c5345d292b113a4d223bb2b70e80.png) !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/badgebg.png) !important;
 	box-shadow: inset 0 0 20px 2px hsla(0,0%,100%,.2) !important;
 }
 .grid .cell .top .expires, .grid .cell .top .prices, #the-user-profile .badge-box, #media-panel  {
@@ -365,7 +365,7 @@
 	background: linear-gradient(hsl(210,10%,30%), hsl(210,10%,10%));
 }
 .experience .levels .level .icon-sunburst {
-	background: url(https://cdn.plug.dj/_/static/images/badgebghover.51d0ef82889130d4adaaaf067133dbb3fe025a1c.png) 50% 50% / 150% !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/badgebghover.png) 50% 50% / 150% !important;
 }
 .experience .levels .level .label i {
 	z-index: 0;
