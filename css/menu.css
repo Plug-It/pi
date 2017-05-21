@@ -233,6 +233,12 @@
 	vertical-align: top !important;
 }
 .cm.deleted {opacity: .5;}
+.deleted .pi-deleted {
+	display: inline-block;
+	width: 100%;
+	text-align: right;
+	color: hsl(0,70%,50%);
+}
 #rs-skip-button,
 #rcs-clearchat {
 	display: none;
@@ -354,8 +360,10 @@
 /* Bot */
 #chat .pi-bot .bdg,
 #chat .pi-bot .no-badge {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) !important;
-	background-position: 0 0 !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) 0 0 / 30px !important;
+}
+#user-rollover.id-5285179 .thumb .avi {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) center center / 90px no-repeat !important;
 }
 #chat .pi-bot .no-badge i {
 	display: none !important;

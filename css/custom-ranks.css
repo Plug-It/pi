@@ -187,13 +187,16 @@
 	color: #58f !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-cohost {
+#chat .mention.is-cohost,
+#chat .mention.is-cohost.is-subscriber {
 	background: linear-gradient(hsla(210,100%,30%,.8), hsla(210,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(210,50%,50%);
 }
 #chat .mention.is-cohost .name,
-#chat .mention.is-cohost .timestamp {
+#chat .mention.is-cohost .timestamp,
+#chat .mention.is-cohost.is-subscriber .name,
+#chat .mention.is-cohost.is-subscriber .timestamp {
 	color: hsl(210,100%,50%) !important;
 }
 /*
@@ -209,13 +212,16 @@
 	color: #5BF !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-host {
+#chat .mention.is-host,
+#chat .mention.is-host.is-subscriber  {
 	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(200,50%,50%);
 }
 #chat .mention.is-host .name,
-#chat .mention.is-host .timestamp {
+#chat .mention.is-host .timestamp,
+#chat .mention.is-host.is-subscriber .name,
+#chat .mention.is-host.is-subscriber .timestamp {
 	color: hsl(200,100%,50%) !important;
 }
 /*
@@ -252,7 +258,8 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) 0 !important;
 }
 .icon-chat-admin ~ .un,
-.app-right .friends .is-admin span {
+.app-right .friends .is-admin span,
+.from.admin > span {
 	color: #42a5dc !important;
 }
 /* --[MENTION]-- */

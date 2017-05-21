@@ -50,7 +50,7 @@ Want to contribute ? You can help translate to your language, it's easy !
   2. Choose your language and start translating ! It's that easy !
 
 ## Contact
-You can join our [Discord server](https://discord.gg/RKNZpph) for live support or tweet [@plugit_dj](https://twitter.com/plugit_dj), one of our Community Manager will reply asap !
+You can join our [Discord server](https://discord.gg/DptCswA) for live support or tweet [@plugit_dj](https://twitter.com/plugit_dj), one of our Community Manager will reply asap !
 
 ## Team
   - Founder/Dev
@@ -69,5 +69,5 @@ You can join our [Discord server](https://discord.gg/RKNZpph) for live support o
     - [Isebella](https://plug.dj/@/isebella)
 
 ## Thanks
-**Big thanks to all of the Alpha/Beta users, you've been so kind and patient.
+**Big thanks to all of the Alpha/Beta users, you've been so kind and patient.  
 I would have quit long time ago if you weren't here.**

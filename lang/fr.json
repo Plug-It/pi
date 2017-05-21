@@ -30,6 +30,7 @@
     },
     "moderation":{
       "title":"Modération",
+      "showDeletedMsg":"Afficher les messages supprimés",
       "confirmChatDeletion":"Confirmer la suppression d'un message",
       "userInformation":"Informations sur l'utilisateur",
       "skipStuckSongs":"Faire passer les musiques coincées",
@@ -54,7 +55,8 @@
       "friendConnect":"Amis se connecte",
       "friendDisconnect":"Amis se déconnecte",
       "unfriended":"Suppression d'amis",
-      "gainNotification":"Gains d'XP/PP"
+      "gainNotification":"Gains d'XP/PP",
+      "userLevelUp":"Utilisateur gagne un niveau"
     },
     "about":{
       "title":"À propos",
@@ -69,7 +71,7 @@
   },
   "tooltips":{
     "clearChat":"Effacer le chat",
-    "afk":"Se rendre AFK",
+    "afk":"Se rendre AFK, ctrl+click pour modifier le message",
     "rmvDJ":"Fait passer et enlève le DJ de la cabine",
     "skip":"Fait passer le DJ",
     "toggleStream":"Activer/désactiver l'audio/vidéo"

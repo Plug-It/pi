@@ -151,7 +151,10 @@
 #footer #facebook-menu,
 #footer #iosbadge-menu,
 #footer #androidbadge-menu {
-	display: none;
+	/* The important here is necessary because,
+	when you open and close your playlists, the div has:
+	display:block; as a style attribute */
+	display: none !important;
 }
 #footer #playlist-meta .bar-button {
 	width: calc(100% - 53px) !important;
@@ -464,6 +467,7 @@
 #dj-button.is-leave:hover .left, #dj-button.is-quit:hover .left {
 	background: linear-gradient(135deg, hsla(15,80%,60%,.9), hsla(15,80%,50%,.9));
 }
+#dj-button.is-locked {cursor: no-drop}
 #dj-button.is-locked .left, #dj-button.is-full .left {
 	background: linear-gradient(135deg, hsla(0,0%,10%,.6), hsla(0,0%,5%,.6));
 }
@@ -558,6 +562,19 @@
 }
 #user-rollover .info i + span {
 	text-shadow: 0 0 5px #000;
+}
+#user-rollover.expand.can-skip.chat .arrow-down,
+#user-rollover.expand.chat .arrow-down,
+#user-rollover.expand.self.can-skip.chat .arrow-down {
+	border-left-color: hsla(0,0%,10%,.6) !important;
+}
+#user-rollover .arrow-down,
+#user-rollover.self.can-skip .arrow-down {
+	border-top-color: hsla(220,100%,15%,.5) !important;
+}
+#user-rollover.expand .arrow-down,
+#user-rollover.expand.self.can-skip .arrow-down {
+	border-top-color: hsla(0,0%,10%,.6) !important;
 }
 .thumb {
 	background: hsla(210,10%,10%,.4);

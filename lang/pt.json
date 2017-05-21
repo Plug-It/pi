@@ -30,6 +30,7 @@
     },
     "moderation":{
       "title":"Moderação",
+      "showDeletedMsg":"Show deleted messages",
       "confirmChatDeletion":"Confirmar remoção de chat",
       "userInformation":"Informações de usuário",
       "skipStuckSongs":"Pular músicas travadas",
@@ -54,7 +55,8 @@
       "friendConnect":"Entrada de amigo",
       "friendDisconnect":"Saída de amigo",
       "unfriended":"Remoção de amigo",
-      "gainNotification":"Ganho de XP/PP"
+      "gainNotification":"Ganho de XP/PP",
+      "userLevelUp":"User Level up"
     },
     "about":{
       "title":"Sobre",
@@ -69,7 +71,7 @@
   },
   "tooltips":{
     "clearChat":"Limpar Chat",
-    "afk":"Marcar a si mesmo como ausente",
+    "afk":"Toggle yourself as AFK, ctrl+click to edit message",
     "rmvDJ":"Pular e remover DJ",
     "skip":"Pular o DJ",
     "toggleStream":"Alternar vídeo/áudio"
@@ -90,7 +92,7 @@
     "friendConnectDashboard":"%%FRIEND%% entrou online no <a href='/dashboard'>Painel</a>.",
     "friendDisconnect":"%%FRIEND%% ficou offline.",
     "reloading":"Recarregando Plug-It...",
-    "eta":"%%TIME%% until you play.",
+    "eta":"%%TIME%% até você tocar.",
     "forcingReload":"Uma atualização está disponível, forçando você a recarregar. Desculpe pela incoveniência.",
     "strobeOn":"%%USER%% ativou o modo strobe !",
     "strobeOff":"%%USER%% desativou o modo strobe !",
@@ -101,7 +103,7 @@
     "earn":"Você ganhou %%GAIN%%",
     "userJoin":"%%USER%%%%USERINFO%% entrou !",
     "userLeave":"%%USER%%%%USERINFO%% saiu !",
-    "updateAvailable":"An update is available:\n%%WHATSNEW%%\n\nClick here to reload."
+    "updateAvailable":"Uma atualização está disponível:\n%%WHATSNEW%%\n\nClique aqui para recarregar."
   },
   "info":{
     "roomChange":"Você mudou de comunidades, recarregando o Plug-It.",
@@ -123,7 +125,7 @@
     "removeMedia":"Removendo mídia %%CURRENT%%/%%TOTAL%% da playlist.",
     "whoami":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nMensagem do Perfil: %%BLURB%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nData de Registro: %%JOINED%%\nVisto por Último: %%LASTSEEN%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%",
     "whois":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nData de Registro: %%JOINED%%\nVisto por Último: %%LASTSEEN%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%\nAmigo: %%FRIEND%%",
-    "unfriended":"%%FRIEND%% has unfriended you %%SAD%%"
+    "unfriended":"%%FRIEND%% lhe removeu como amigo(a) %%SAD%%"
   },
   "warn":{
     "songLimit":"Mídia muito longa ! %%MAX%% máx. !",
@@ -159,7 +161,7 @@
     "playlistFull":"Lista de reprodução atual cheia",
     "cannotGrab":"Não foi possível adicionar à lista de reprodução atual, estaria ela cheia?",
     "cannotGetMediaID":"Não foi possível obter o ID da mídia, cheque o console para mais detalhes.",
-    "cannotLoadScriptRoomSettings":"Failed to load %%SCRIPT%% room settings:\n%%ERROR%%"
+    "cannotLoadScriptRoomSettings":"Não foi possível carregar as configurações de comunidade de %%SCRIPT%%:\n%%ERROR%%"
   },
   "success":{
     "removedBot":"%%BOT%% foi removido(a) como bot.",
@@ -179,7 +181,7 @@
     "afkResponder":"@%%MENTION%% eu estou ausente.",
     "kicking":"@%%USER%% você será expulso por %%TIME%% segundo(s).",
     "djSkip":"@%%DJ%%, esta mídia está no histórico de DJs !",
-    "inputDisabled":"Turn off AFK responder to chat !"
+    "inputDisabled":"Desative a resposta AFK automática para conversar !"
   },
   "notifications":{
     "mentioned":"Você foi mencionado(a) por %%USER%%:",

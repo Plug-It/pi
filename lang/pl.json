@@ -30,6 +30,7 @@
     },
     "moderation":{
       "title":"Moderacja",
+      "showDeletedMsg":"Pokaż usunięte wiadomości",
       "confirmChatDeletion":"Potwierdź usunięcie wiadomości",
       "userInformation":"Informacje o użytkowniku",
       "skipStuckSongs":"Pomijaj zablokowane utwory",
@@ -54,7 +55,8 @@
       "friendConnect":"Znajomy jest online",
       "friendDisconnect":"Znajomy jest offline",
       "unfriended":"Usunięto ze znajomych",
-      "gainNotification":"Zdobyte XP/PP"
+      "gainNotification":"Zdobyte XP/PP",
+      "userLevelUp":"Wyższy poziom użytkownika"
     },
     "about":{
       "title":"O nas",
@@ -69,7 +71,7 @@
   },
   "tooltips":{
     "clearChat":"Wyczyść czat",
-    "afk":"Ustaw siebie jako AFK",
+    "afk":"Oznacz siebie jako AFK, Ctrl+kliknij, aby ustawić wiadomość",
     "rmvDJ":"Pomiń oraz usuń DJ'a z listy oczekiwania",
     "skip":"Pomiń DJ'a",
     "toggleStream":"Przełącz wideo/audio"

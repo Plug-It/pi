@@ -4,8 +4,12 @@
 	top: 0;
 	background: transparent !important;
 }
-#footer-user .info .points {
-	top: -18px;
+#footer-user .info .name,
+#footer-user .info .meta {
+	left: 0px;
+}
+#footer-user .info .points .pp {
+	top: 0;
 }
 #footer-user .info .meta .bar {
 	width: 200px !important;

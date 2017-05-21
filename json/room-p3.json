@@ -38,7 +38,7 @@
     }
   },
   "images": {
-    "background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/default/custom.jpg",
+    "background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It.jpg",
     "booth":            "",
     "icons": {
       "admin":            "",

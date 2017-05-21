@@ -17,7 +17,7 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 	Special thanks to:
 		- All the alpha & beta testers !
@@ -25,7 +25,6 @@
 		- Zurbo, So much to say.. Thank you for supporting and helping me everyday.
 		- Sinful for being so kind and teaching me how to use CSS attribute selectors.
 		- TheDark1337 for always answering my silly questions about javascript and his script.
-		- CookieMichal for helping me starting the 'show delchat' functionality.
 		- Dano-em for making me love jQuery.
 		- The creators of this repository: https://github.com/plugcommunity/documentation
 		  for putting together such an amazing source of documentation.
@@ -120,21 +119,18 @@
 			var lang, ranks, roomSettings;
 			updateStatus('Loading language', 1);
 			switch (API.getUser().language) {
+				case 'cs': lang = 'cs'; break;
 				case 'de': lang = 'de'; break;
 				case 'fr': lang = 'fr'; break;
 				case 'pl': lang = 'pl'; break;
 				case 'pt': lang = 'pt'; break;
-				/* Dropbox links
-				case 'fr': lang = 'https://dl.dropbox.com/s/8peqyax976mmhke/fr-dev.json'; break;
-				case 'pl': lang = 'https://dl.dropbox.com/s/2bjwjyr29ysbj02/pl-dev.json'; break;
-				case 'pt': lang = 'https://dl.dropbox.com/s/cd1wkki39y9pd4q/pt-dev.json'; break;
-				default: lang = 'https://dl.dropbox.com/s/nm1xybmx6ecx15q/en-dev.json'; break;*/
+				case 'sl': lang = 'sl'; break;
+				case 'sv': lang = 'sv'; break;
 				default: lang = 'en'; break;
 			}
 			$.ajax({
 				dataType: 'json',
 				url: 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
-				// url: lang,
 				success: function(data) {
 					lang = data;
 				},
@@ -149,7 +145,6 @@
 			$.ajax({
 				dataType: 'json',
 				url: 'https://rawgit.com/Plug-It/pi/pre-release/json/ranks.json',
-				// url: 'https://dl.dropboxusercontent.com/s/hql8yxk4ne9h2p2/ranks.json',
 				success: function(data) {
 					ranks = data;
 					init();
@@ -173,25 +168,25 @@
 			const startTime = new Date().getTime();
 			const delay = (API.getUser().gRole >= 3 ? 100 : 3500);
 			const url = {
-				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js', //'https://dl.dropboxusercontent.com/s/zu2q7nk9nvu3own/pi-dev.js',
+				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
 				styles: {
-					blue_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css', //'https://dl.dropboxusercontent.com/s/nzworpoonu5sa9x/blue.css',
-					menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css', //'https://dl.dropboxusercontent.com/s/g4f26wa9qe9g5zz/menu-dev.css',
-					popout: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout.css', //'https://dl.dropboxusercontent.com/s/d4wslgg6h7tlzho/popout.css',
-					popout_blue: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout-blue.css', //'https://dl.dropboxusercontent.com/s/v57shpcm3z0z4op/popout-blue.css',
-					custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css', //'https://dl.dropboxusercontent.com/s/65tdpnvkzys1mv8/custom-ranks.css',
-					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css', //'https://dl.dropboxusercontent.com/s/tx6pa53nfhqphn2/old-chat.css',
-					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css', //'https://dl.dropboxusercontent.com/s/s869vblp5iblazu/old-footer.css',
-					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css' //'https://dl.dropboxusercontent.com/s/813108zvgo1syfw/small-history.css'
+					blue_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css',
+					menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css',
+					popout: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout.css',
+					popout_blue: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout-blue.css',
+					custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css',
+					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
+					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
+					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css'
 				},
 				images: {
-					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg' //'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg'
+					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It.jpg'
 				},
 				sounds: {
 					// https://www.freesound.org/people/TheGertz/sounds/235911/
-					notification:  'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/notification.wav', //'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
+					notification: 'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
 					// https://www.freesound.org/people/soneproject/sounds/255102/
-					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav' //'https://dl.dropboxusercontent.com/s/0zg1yrg4sq06vny/jingle.wav'
+					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav'
 				},
 				visu: [
 					'https://rawgit.com/WiBla/visu/master/hyperspace/index.html',
@@ -234,6 +229,7 @@
 				oldFooter: false,
 				smallHistory: false,
 				// Moderation
+				showDeletedMsg: false,
 				confirmDelete: false,
 				userInfo: false,
 				stuckSkip: false,
@@ -256,6 +252,7 @@
 				friendDisconnect: false,
 				unfriended: false,
 				gainNotification: false,
+				userLevelUp: false,
 				// Custom Roles
 				bot: [5285179],
 				discordbot: [20852061]
@@ -276,14 +273,24 @@
 			Number.prototype.spaceOut = function() {
 				if (isNaN(this) || this < 999) return this;
 				return (this).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-			}
+			};
+			Function.prototype.clone = function() {
+				var that = this;
+				var temp = function temporary() { return that.apply(this, arguments); };
+				for(var key in this) {
+					if (this.hasOwnProperty(key)) {
+						temp[key] = this[key];
+					}
+				}
+				return temp;
+			};
 
 			window.pi = {
 				version: {
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 23
+					pre: 24
 				},
 				_event: {
 					advance: function(song) {
@@ -310,6 +317,9 @@
 						}; */
 
 						pi.autojoin();
+						// Playback gets reset on advance, if showvideo is off, hide it again
+						// to prevent accidental scroll wheel volume changes
+						if (!settings.showVideo) pi.dom.playback.style.height = '0';
 
 						// Checking if a media is playing
 						if (!song.dj || !song.media) return;
@@ -322,17 +332,6 @@
 
 						pi.songLimit();
 						pi.soundcloudVisu(song.media);
-
-						if (settings.boothAlert &&
-						    API.getWaitListPosition()+1 === settings.boothPosition) {
-							pi._tool.log(
-								pi._tool.replaceString(lang.warn.boothAlert, {pos: settings.boothPosition})
-								, 'warn chat'
-							);
-							if (!document.hasFocus() && pi._tool.getPlugSettings().chatSound) {
-								new Audio(url.sounds.notification).play();
-							}
-						}
 
 						if (settings.songStats) {
 							pi._tool.log(
@@ -404,33 +403,6 @@
 
 						// Second message from the same user, things that only are set once
 						if ($(selector).length) {
-							// Script ranks
-							pi._tool.getRank(sender.id).forEach(rank => {
-								switch(rank) {
-									case "Dev":               $(selector)[0].className += ' pi-dev'; break;
-									case "Helper":            $(selector)[0].className += ' pi-helper'; break;
-									case 'Graphist':          $(selector)[0].className += ' pi-graphist'; break;
-									case 'Translator':        $(selector)[0].className += ' pi-translator'; break;
-									case 'Community Manager': $(selector)[0].className += ' pi-community-manager'; break;
-									case 'Donator':           $(selector)[0].className += ' pi-donator'; break;
-									case 'Alpha':             $(selector)[0].className += ' pi-alpha'; break;
-									case 'Bot':               $(selector)[0].className += ' pi-bot'; break;
-									case 'Discord Bot':       $(selector)[0].className += ' pi-discord-bot'; break;
-								}
-							});
-							// Plug ranks
-							switch(sender.role) {
-								case API.ROLE.HOST:    $(selector)[0].className += ' is-host';    break;
-								case API.ROLE.COHOST:  $(selector)[0].className += ' is-cohost';  break;
-								case API.ROLE.MANAGER: $(selector)[0].className += ' is-manager'; break;
-								case API.ROLE.BOUNCER: $(selector)[0].className += ' is-bouncer'; break;
-								case API.ROLE.DJ:      $(selector)[0].className += ' is-dj';      break;
-								case API.ROLE.NONE:    $(selector)[0].className += ' is-user';    break;
-							}
-							// Additional ranks
-							if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
-							if (sender.silver) $(selector)[0].className += ' is-silver-subscriber';
-							if (sender.friend) $(selector)[0].className += ' is-friend';
 							// Self Deletion Magic
 							if (msg.uid == API.getUser().id && API.hasPermission(null, API.ROLE.BOUNCER)) {
 								$(selector)[0].className += ' deletable';
@@ -452,15 +424,13 @@
 							// Deletion confirmation
 							if (settings.confirmDelete) {
 								$(selector + ' .delete-button').off('click');
-								$(selector + ' .delete-button').on('click', function() {
+								$(selector + ' .delete-button').on('click', function(e) {
+									if (e.shiftKey) return API.moderateDeleteChat(msg.cid);
 									pi._tool.modal(true, 'confirmDelete', function() {
 										API.moderateDeleteChat(msg.cid);
 									}, msg);
 								});
 							}
-
-							// Chat limit
-							pi.betterClearChat(settings.chatLimit);
 						}
 
 						/* Chat images
@@ -477,41 +447,6 @@
 							}
 							$(selector).find(".text")[0].innerHTML = msg.message;
 						*/
-
-						let emojiRE = new RegExp(':([a-z0-9-_]+):', 'ig');
-						if (pi._tool.getPlugSettings().emoji && emojiRE.test(msg.message)) {
-							let match = emojiRE.exec(msg.message);
-							// Doing it twice because the first time it returns null
-							match = emojiRE.exec(msg.message);
-
-							while (match !== null) {
-								for (var emote in roomSettings.emotes) {
-									if (match[1] == emote) {
-										msg.message = msg.message.replace(':'+emote+':', '<img style="max-width:100%;" src="'+roomSettings.emotes[emote]+'" alt="'+emote+'"/>');
-									}
-								}
-
-								for (var emote in emotes) {
-									if (match[1] == emote) {
-										msg.message = msg.message.replace(':'+emote+':', '<img style="max-width:100%;" src="'+roomSettings.emotes[emote]+'" alt="'+emote+'"/>');
-									}
-								}
-
-								match = emojiRE.exec(msg.message);
-							}
-
-							if ($(selector).length) {
-								$(selector).find(".text")[0].innerHTML = msg.message;
-							} else {
-								// If same person send another emoji, replace only last emoji
-								let $lastMsg = $("#chat .cm:last");
-								let lastMsgTexts = $lastMsg.find(".text")[0].innerHTML.split('<br>');
-
-								$lastMsg.find(".text")[0].innerHTML =
-									lastMsgTexts.slice(0, lastMsgTexts.length-1).join('<br>') +
-									msg.message;
-							}
-						}
 
 						// Server chat commands
 						if (pi._tool.getRank(sender.id).indexOf('Dev') !== -1 || pi._tool.getRank(sender.id).indexOf('Community Manager') !== -1) {
@@ -571,7 +506,7 @@
 						}
 						// System notifications on mention and window blured
 						else if (((msg.sound && msg.sound === "mention") || msg.type == 'mention') &&
-							!document.hasFocus() && !settings.afk) {
+							settings.systemNotifications && !document.hasFocus() && !settings.afk) {
 							pi._tool.notify(
 								pi._tool.replaceString(lang.notifications.mentioned, {user: sender.username}),
 								// removing all unwanted html tags (like emoji)
@@ -688,10 +623,10 @@
 								// Getting the user, either by username or ID
 								var newBot;
 								if (isNaN(args[0])) {
-									newBot = API.getUserByName(args[0].replace('@', ''));
-									if (typeof newBot === 'Object') newBot = newBot.id;
+									newBot = API.getUserByName(msg.replace(/@| $/g, ''));
+									if (typeof newBot === 'object') newBot = newBot.id;
 									else {
-										return pi.tool.log(lang.error.userNotFound, 'error chat');
+										return pi._tool.log(lang.error.userNotFound, 'error chat');
 									}
 								}
 
@@ -710,10 +645,10 @@
 								// Getting the user, either by username or ID
 								var newBot;
 								if (isNaN(args[0])) {
-									newBot = API.getUserByName(args[0].replace('@', ''));
-									if (typeof newBot === 'Object') newBot = newBot.id;
+									newBot = API.getUserByName(msg.replace(/@| $/g, ''));
+									if (typeof newBot === 'object') newBot = newBot.id;
 									else {
-										return pi.tool.log(lang.error.userNotFound, 'error chat');
+										return pi._tool.log(lang.error.userNotFound, 'error chat');
 									}
 								}
 
@@ -735,7 +670,7 @@
 								var user = args.join(' ');
 
 								if (isNaN(user)) {
-									user = API.getUserByName(user.replace('@', ''));
+									user = API.getUserByName(user.replace(/@| $/g, ''));
 									if (typeof user === 'Object') user = user.id;
 									else {
 										return pi.tool.log(lang.error.userNotFound, 'error chat');
@@ -765,7 +700,7 @@
 								var user = args.join(' ');
 
 								if (isNaN(user)) {
-									user = API.getUserByName(user.replace('@', '').trim());
+									user = API.getUserByName(user.replace(/@| $/g, ''));
 								}	else {
 									user = API.getUser(user);
 								}
@@ -794,7 +729,7 @@
 								if (typeof msg == 'undefined') {
 									return pi._tool.log(lang.info.helpUserOrId, 'info');
 								} else if (isNaN(msg)) {
-									userID = API.getUserByName(msg.replace('@', '').trim()).id;
+									userID = API.getUserByName(msg.replace(/@| $/g, '')).id;
 								} else {
 									userID = args[0];
 								}
@@ -842,7 +777,11 @@
 												if (!grabed) log.edit(pi._tool.replaceString(lang.info.checkingState, {current: i+1, total: a.length, name: e.name}));
 												playlist.forEach(function(ee, ii, aa) {
 													if (ee.cid === thisSong.cid) {
-														log.edit(pi._tool.replaceString(lang.info.isGrabed));
+														log.edit(
+															pi._tool.replaceString(
+																lang.info.isGrabed, {name: e.name}
+															)
+														);
 														grabed = true;
 													}
 
@@ -943,7 +882,7 @@
 
 									playlists.forEach(function(pl, i, a) {
 										setTimeout(function() {
-											log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: toRename.length}));
+											log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: pl.name, found: toRename.length}));
 											pi._tool.getPlaylist(pl.id, function(playlist) {
 												playlist.forEach(function(song, j, aa) {
 													if (worstRegexp.test(song.author) || worstRegexp.test(song.title)) {
@@ -1043,21 +982,19 @@
 										remove       : confirm(lang.modal.deleteSongs)
 									}
 								}
-								// Aliase for cmdSettings.logToChat
-								const chat = cmdSettings.logToChat;
 
-								if (chat) log = pi._tool.log(lang.info.checkingUnavailable, 'chat info');
+								if (cmdSettings.logToChat) log = pi._tool.log(lang.info.checkingUnavailable, 'chat info');
 								pi._tool.getPlaylists(function(playlists) {
 									playlists.forEach(function(e, i, a) {
 										setTimeout(function() {
-											if (chat) log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: toRename.length}));
+											if (cmdSettings.logToChat) log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: unavailableMove.length}));
 											pi._tool.getPlaylist(e.id, function(songs) {
 												songs.forEach(function(ee, ii, aa) {
 													$.get('https://www.googleapis.com/youtube/v3/videos?id=' + ee.cid + '&key=' + APIkey + '&part=snippet,status', function(data) {
 														var passed = true;
 														if (ee.format == 1 && data.items.length === 0) {
-															if (chat) pi._tool.log(
-																pi._tool.replaceString(lang.error.brokenSongYT, {
+															if (cmdSettings.logToChat) pi._tool.log(
+																pi._tool.replaceString(lang.error.brokenSong, {
 																	name: e.name,
 																	source: 'YT',
 																	author: ee.author,
@@ -1071,7 +1008,7 @@
 															SC.get("/tracks/" + ee.cid, function(track) {
 																if (typeof track.title === "undefined") {
 																	pi._tool.log(
-																		pi._tool.replaceString(lang.error.brokenSongSC, {
+																		pi._tool.replaceString(lang.error.brokenSong, {
 																			name: e.name,
 																			source: 'SC',
 																			author: ee.author,
@@ -1086,7 +1023,7 @@
 														} else if (data.items.length == 1) {
 															if (data.items[0].status.uploadStatus != 'processed') {
 																pi._tool.log(
-																	pi._tool.replaceString(lang.error.brokenSongYT, {
+																	pi._tool.replaceString(lang.error.brokenSong, {
 																		name: e.name,
 																		source: 'YT',
 																		author: ee.author,
@@ -1114,7 +1051,7 @@
 												Object.keys(unavailableMove).forEach(function(ee, ii, aa) {
 													setTimeout(function() {
 														if (cmdSettings.moveToTop || cmdSettings.moveToBottom) {
-															if (chat) log.edit(
+															if (cmdSettings.logToChat) log.edit(
 																pi._tool.replaceString(lang.info.moveMedia, {
 																	current: ii+1,
 																	total: aa.length,
@@ -1129,7 +1066,7 @@
 																contentType: 'application/json'
 															});
 														} else if (cmdSettings.remove) {
-															if (chat) log.edit(
+															if (cmdSettings.logToChat) log.edit(
 																pi._tool.replaceString(lang.info.removeMedia, {
 																	current: ii+1,
 																	total: aa.length
@@ -1144,7 +1081,7 @@
 															});
 														}
 														if (ii + 1 == aa.length) {
-															if (chat) log.edit(lang.success.unavailableFinished).changeType('success');
+															if (cmdSettings.logToChat) log.edit(lang.success.unavailableFinished).changeType('success');
 															setTimeout(function() {
 																if (cmdSettings.logToFile) download(fileText, 'plug.dj unavailable songs.txt', 'text/plain');
 															}, aa.length * delay + 2000);
@@ -1152,7 +1089,7 @@
 													}, ii * delay);
 												});
 												if (Object.keys(unavailableMove).length === 0) {
-													if (chat) log.edit(lang.success.noUnavailable).changeType('success');
+													if (cmdSettings.logToChat) log.edit(lang.success.noUnavailable).changeType('success');
 												}
 											}, a.length * delay);
 										}
@@ -1477,6 +1414,87 @@
 						/* contains = [
 							{userObject}
 						]; */
+
+						if (settings.boothAlert &&
+						    API.getWaitListPosition()+1 === settings.boothPosition) {
+							pi._tool.log(
+								pi._tool.replaceString(lang.warn.boothAlert, {pos: settings.boothPosition})
+								, 'warn chat'
+							);
+							if (!document.hasFocus() && pi._tool.getPlugSettings().chatSound) {
+								new Audio(url.sounds.notification).play();
+							}
+						}
+					}
+				},
+				_modulesEvent: {
+					chatReceive: function(msg) {
+						if (msg.type === 'log') return;
+						// This message node
+						let selector = '#chat [data-cid="'+msg.cid+'"]';
+						let sender = API.getUser(msg.uid);
+
+						// Second message from the same user, things that only are set once
+						if ($(selector).length) {
+							// Script ranks
+							pi._tool.getRank(sender.id).forEach(rank => {
+								switch(rank) {
+									case "Dev":               $(selector)[0].className += ' pi-dev'; break;
+									case "Helper":            $(selector)[0].className += ' pi-helper'; break;
+									case 'Graphist':          $(selector)[0].className += ' pi-graphist'; break;
+									case 'Translator':        $(selector)[0].className += ' pi-translator'; break;
+									case 'Community Manager': $(selector)[0].className += ' pi-community-manager'; break;
+									case 'Donator':           $(selector)[0].className += ' pi-donator'; break;
+									case 'Alpha':             $(selector)[0].className += ' pi-alpha'; break;
+									case 'Bot':               $(selector)[0].className += ' pi-bot'; break;
+									case 'Discord Bot':       $(selector)[0].className += ' pi-discord-bot'; break;
+								}
+							});
+							// Plug ranks
+							switch(sender.role) {
+								case API.ROLE.HOST:    $(selector)[0].className += ' is-host';    break;
+								case API.ROLE.COHOST:  $(selector)[0].className += ' is-cohost'; $(selector+' .icon-chat-host')[0].className = "icon icon-chat-cohost"; break;
+								case API.ROLE.MANAGER: $(selector)[0].className += ' is-manager'; break;
+								case API.ROLE.BOUNCER: $(selector)[0].className += ' is-bouncer'; break;
+								case API.ROLE.DJ:      $(selector)[0].className += ' is-dj';      break;
+								case API.ROLE.NONE:    $(selector)[0].className += ' is-user';    break;
+							}
+							// Additional ranks
+							if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
+							if (sender.silver) $(selector)[0].className += ' is-silver-subscriber';
+							if (sender.friend) $(selector)[0].className += ' is-friend';
+
+							// Chat limit
+							pi.betterClearChat(settings.chatLimit);
+						}
+
+						// Emojis
+						let emojiRE = new RegExp(':([a-z0-9-_]+):', 'ig');
+						if (pi._tool.getPlugSettings().emoji && emojiRE.test(msg.message)) {
+							let match = emojiRE.exec(msg.message);
+							// Doing it twice because the first time it returns null
+							match = emojiRE.exec(msg.message);
+
+							while (match !== null) {
+								for (var emote in roomSettings.emotes) {
+									if (match[1] == emote) {
+										msg.message = msg.message.replace(':'+emote+':', '<img style="max-width:100%;" src="'+roomSettings.emotes[emote]+'" alt="'+emote+'"/>');
+									}
+								}
+
+								for (var emote in emotes) {
+									if (match[1] == emote) {
+										msg.message = msg.message.replace(':'+emote+':', '<img style="max-width:100%;" src="'+roomSettings.emotes[emote]+'" alt="'+emote+'"/>');
+									}
+								}
+
+								match = emojiRE.exec(msg.message);
+							}
+
+							texts = $('.text.cid-'+msg.cid)[0].innerHTML.split('<br>');
+							texts[texts.length-1] = msg.message;
+							$(".text.cid-"+msg.cid)[0].innerHTML = texts.join('<br>');
+						}
 					}
 				},
 				_DOMEvent: {
@@ -1515,7 +1533,7 @@
 							switch (e.key) {
 								case '+':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length) {
 										API.setVolume(API.getVolume()+5);
 										pi._tool.setPlugSettings('volume', API.getVolume());
@@ -1523,7 +1541,7 @@
 								break;
 								case '-':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length) {
 										API.setVolume(API.getVolume()-5);
 										pi._tool.setPlugSettings('volume', API.getVolume());
@@ -1531,7 +1549,7 @@
 								break;
 								case 'h':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length) {
 										pi.menu('video');
 									}
@@ -1588,11 +1606,11 @@
 								case 'w':
 								case 'm':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length) {
 										let now = new Date().getTime();
 										// Avoid spamming woot/meh
-										if (now - cooldown.voteShortcut >= 5000 && $("input:focus").length === 0) {
+										if (now - cooldown.voteShortcut >= 5000 && $(":focus").length === 0) {
 											cooldown.voteShortcut = now;
 											if (e.key === 'w') $('#woot').click();
 											else $('#meh').click();
@@ -1601,7 +1619,7 @@
 								break;
 								case 'g':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length &&
 										  API.getDJ().id !== API.getUser().id) {
 
@@ -1637,7 +1655,7 @@
 								break;
 								case 'G':
 									if (!$('#chat-input').hasClass('focused') &&
-											!$('input:focus').length &&
+											!$(':focus').length &&
 										  !$('.dialog').length &&
 										  API.getDJ().id !== API.getUser().id) {
 										pi._tool.getPlaylists(function(playlists) {
@@ -1664,7 +1682,7 @@
 									if (e.ctrlKey &&
 										API.getDJ().id === API.getUser().id &&
 										!$('#chat-input').hasClass('focused') &&
-										!$('input:focus').length &&
+										!$(':focus').length &&
 										!$('.dialog').length) {
 										$.post("/_/booth/skip/me");
 									}
@@ -1675,11 +1693,15 @@
 										$('#chat-input-field').focus();
 									}
 								break;
+								case 'Enter':
+									if ($('.dialog-frame .button.submit').length) $('.dialog-frame .button.submit').click();
+								break;
 								case 'Escape':
 									let backDivSelector = '#footer-user.showing .back,'+
 										'.app-header #history-button.selected,'+
 										'#app-menu.open .button,'+
-										'#playlist-button .icon-arrow-down';
+										'#playlist-button .icon-arrow-down,'+
+										'.dialog .icon-dialog-close';
 
 									if ($(backDivSelector).length) $(backDivSelector).click();
 									else if ($('#chat-input-field').is(':focus')) $('#chat-input-field').blur();
@@ -1690,16 +1712,18 @@
 					levelPercentage: function() {
 						// Quick and dirty fix for rcs also changing the xp %
 						if (typeof window.rcs !== "undefined") return;
-						// [rawText, xpNow, xpMax]
-						let numbers = $('#footer-user .bar .value')[0].innerText.match(/(\d*[,.]?\d*)(?: \/ )(\d*[,.]?\d*)/);
-						if (numbers === null) return;
+						setTimeout(()=>{
+							// [rawText, xpNow, xpMax]
+							let numbers = $('#footer-user .bar .value')[0].innerText.match(/(\d*[,.]?\d*)(?: \/ )(\d*[,.]?\d*)/);
+							if (numbers === null) return;
 
-						let xp1 = parseFloat(numbers[1].replace(/[,.]/g,''));
-						let xp2 = parseFloat(numbers[2].replace(/[,.]/g,''));
-						let percentage = (xp1/xp2*100).toFixed(2);
+							let xp1 = parseFloat(numbers[1].replace(/[,.]/g,''));
+							let xp2 = parseFloat(numbers[2].replace(/[,.]/g,''));
+							let percentage = (xp1/xp2*100).toFixed(2);
 
-						$('#footer-user .bar .value')[0].innerText = numbers[0].replace(/,/g, '.') + ' ('+percentage+'%)';
-						$('#footer-user .info .meta .bar .value').one('DOMSubtreeModified', pi._DOMEvent.levelPercentage);
+							$('#footer-user .bar .value')[0].innerText = numbers[0].replace(/,/g, '.') + ' ('+percentage+'%)';
+							$('#footer-user .info .meta .bar .value').one('DOMSubtreeModified', pi._DOMEvent.levelPercentage);
+						}, 100);
 					},
 					navWarn: function(e) {
 						var dialogText = lang.log.leaving;
@@ -1781,6 +1805,14 @@
 									e.target.setAttribute('data-originalText', e.target.innerHTML);
 									e.target.innerHTML = translatedText;
 									e.target.classList.add('translated');
+								},
+								success: function (data) {
+									var sourceText = data[0][0][1];
+									var translatedText = data[0][0][0];
+
+									e.target.setAttribute('data-originalText', e.target.innerHTML);
+									e.target.innerHTML = translatedText;
+									e.target.classList.add('translated');
 								}
 							});
 						}
@@ -1788,14 +1820,25 @@
 				},
 				_load: function() {
 					updateStatus('Initalizating modules', 3);
-					modules.context = _.find(require.s.contexts._.defined, m => m && m._events && m._events["chat:receive"]);
-					modules.plugOptions = _.find(require.s.contexts._.defined, m => m && m.defaultSettings);
+					$.each(require.s.contexts._.defined, (n, obj) => {
+						if (!obj) return;
+						obj._moduleID = n;
+
+						if (obj._events && obj._events["chat:receive"])
+							modules.context = obj;
+						if (obj.defaultSettings)
+							modules.plugOptions = obj;
+						if (obj.hasOwnProperty("isorx"))
+							modules.utils = obj;
+					});
 					updateStatus('Initalizating API & Events listener', 4);
 					// Add custom events to the API
 					pi._extendAPI();
 					for (var event in pi._event) {
 						API.on(event, pi._event[event]);
 					}
+					pi._tool.plugSocketHook.init();
+					modules.context.on("chat:receive", pi._modulesEvent.chatReceive);
 					// Bind events to their handler
 					window.onbeforeunload = pi._DOMEvent.navWarn;
 					$(window).on('keydown', pi._DOMEvent.keyboardShortcuts);
@@ -1811,7 +1854,6 @@
 					// Retrieve user settings if available
 					updateStatus('Loading user settings', 5);
 					var ls = localStorage.getItem('pi-settings');
-
 					if (typeof ls === 'string') {
 						var userSettings = JSON.parse(ls);
 
@@ -1834,13 +1876,14 @@
 					}
 
 					// Those settings are available even after reload
-					sessionStorage.setItem('modSkipWarn', false);
-					sessionStorage.setItem('modQuitWarn', false);
-					sessionStorage.setItem('trustWarn', false);
-					sessionStorage.setItem('fastBanWarn', false);
-					sessionStorage.setItem('helpCommands', false);
-					sessionStorage.setItem('removeLabelWarn', false);
-
+					if (sessionStorage.getItem('modSkipWarn') === null) {
+						sessionStorage.setItem('modSkipWarn', false);
+						sessionStorage.setItem('modQuitWarn', false);
+						sessionStorage.setItem('trustWarn', false);
+						sessionStorage.setItem('fastBanWarn', false);
+						sessionStorage.setItem('helpCommands', false);
+						sessionStorage.setItem('removeLabelWarn', false);
+					}
 					// setInterval
 					window.friendsOnline = setInterval(function() {
 						pi._tool.getFriends(
@@ -2036,6 +2079,7 @@
 								'</ul>'+
 								'<h2>'+lang.menu.moderation.title+'</h2>'+
 								'<ul style="display: none;">'+
+									'<li id="pi-showDeletedMsg">'+lang.menu.moderation.showDeletedMsg+'</li>'+
 									'<li id="pi-confirmDelete">'+lang.menu.moderation.confirmChatDeletion+'</li>'+
 									'<li id="pi-userInfo">'+lang.menu.moderation.userInformation+'</li>'+
 									'<li id="pi-stuckSkip">'+lang.menu.moderation.skipStuckSongs+'</li>'+
@@ -2066,11 +2110,12 @@
 									'<li id="pi-friendDisconnect">'+lang.menu.notifications.friendDisconnect+'</li>'+
 									'<li id="pi-unfriended">'+lang.menu.notifications.unfriended+'</li>'+
 									'<li id="pi-gainNotification">'+lang.menu.notifications.gainNotification+'</li>'+
+									'<li id="pi-userLevelUp">'+lang.menu.notifications.userLevelUp+'</li>'+
 								'</ul>'+
 								'<h2>'+lang.menu.about.title+'</h2>'+
 								'<p style="display: none;">'+
 									'Plug-It '+pi._tool.getReadableVersion()+'.<br>'+
-									pi._tool.replaceString(lang.menu.about.developedBy, {"plug-profile": '<a target="_blank" href="https://plug.dj/WiBla" target="blank">WiBla</a><br>'})+
+									pi._tool.replaceString(lang.menu.about.developedBy, {"plug-profile": '<a target="_blank" href="https://plug.dj/@/wibla" target="blank">WiBla</a><br>'})+
 									pi._tool.replaceString(lang.menu.about.followUs, {twitter: '<a target="_blank" href="https://twitter.com/plugit_dj" target="blank">Twitter</a><br>'})+
 									pi._tool.replaceString(lang.menu.about.joinDiscord, {discord: '<a target="_blank" href="https://discord.gg/RKNZpph" target="blank">Discord</a><br>'})+
 									'<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">'+lang.menu.about.rateExtension+'</a><br>'+
@@ -2107,22 +2152,41 @@
 					if (!modules.plugOptions.settings.streamDisabled)
 						$('.pi-toggleStream').removeClass('off');
 					// Moderation toolbar
-					if (API.hasPermission(null, API.ROLE.BOUNCER)) {
-						// Moderation tools
-						$('#playback-container').append($(
-							'<div id="pi-rmvDJ">'+
-								'<i class="icon icon-leave-waitlist"></i>'+
-							'</div>'+
-							'<div id="pi-skip">'+
-								'<i class="icon icon-skip"></i>'+
-							'</div>'
-						));
-					}
+					window.modToolbar = {
+						init: function(forced) {
+							// Forced is used when user has its role changes and hasPerm will return a false result
+							if (API.hasPermission(null, API.ROLE.BOUNCER) || forced) {
+								if ($('#pi-rmvDJ, #pi-skip').length > 0) this.kill();
+								// Moderation tools
+								$('#playback-container').append($(
+									'<div id="pi-rmvDJ">'+
+										'<i class="icon icon-leave-waitlist"></i>'+
+									'</div>'+
+									'<div id="pi-skip">'+
+										'<i class="icon icon-skip"></i>'+
+									'</div>'
+								).css({top: settings.showVideo ? '281px' : '0px'}));
+								if (typeof pi.dom !== 'undefined') {
+									pi.dom.skip = $('#pi-rmvDJ')[0];
+									pi.dom.rmvDJ = $('#pi-skip')[0];
+								}
+
+								$('#pi-rmvDJ').on('click', function() {pi.removeDJ();});
+								$('#pi-skip').on('click', function() {pi.forceSkip();});
+							}
+						},
+						kill: function() {
+							$('#pi-rmvDJ, #pi-skip').remove();
+							delete pi.dom.rmvDJ;
+							delete pi.dom.skip;
+						}
+					};
+					modToolbar.init();
 					// Click Event Binding
 					$('#pi-logo, #pi-menu').on('click', function(e) {
 						if (e.target.id === 'pi-logo' || e.target.id === 'icon') {
 							$('#pi-menu').toggle(250);
-						} else {
+						} else if (e.target.tagName !== 'H2') {
 							pi.menu(e.target.id.replace('pi-', ''));
 						}
 					});
@@ -2153,17 +2217,14 @@
 					});
 					$(window).on('resize', pi._DOMEvent.resize);
 					$('#pi-menu input').on('blur', function() {pi._tool.saveSettings});
-					$('#pi-rmvDJ').on('click', function() {pi.removeDJ();});
-					$('#pi-skip').on('click', function() {pi.forceSkip();});
 					$('#pi-delchat').on('click', function() {
 						pi.betterClearChat(settings.betterClearChatLimit);
 					});
 					$('#pi-afk').on('click', function(e) {
 						if (e.ctrlKey) {
 							let afkMsg = prompt("AFK message:", settings.afkMessage);
-							if (afkMsg !== null && afkMsg.length > 0) {
-								settings.afkMessage = $('#pi-afkMessage input')[0].value = afkMsg;
-							}
+							if (afkMsg === null || afkMsg.length === 0) return;
+							settings.afkMessage = $('#pi-afkMessage input')[0].value = afkMsg;
 						}
 						pi.menu('afkResponder');
 					});
@@ -2265,6 +2326,7 @@
 						oldFooter: $('#pi-old-footer')[0],
 						smallHistory: $('#pi-small-history')[0],
 						// Moderation
+						showDeletedMsg: $('#pi-showDeletedMsg')[0],
 						confirmDelete: $('#pi-confirmDelete')[0],
 						userInfo: $('#pi-userInfo')[0],
 						stuckSkip: $('#pi-stuckSkip')[0],
@@ -2288,6 +2350,7 @@
 						friendDisconnect: $('#pi-friendDisconnect')[0],
 						unfriended: $('#pi-unfriended')[0],
 						gainNotification: $('#pi-gainNotification')[0],
+						userLevelUp: $('#pi-userLevelUp')[0],
 						// About
 						off: $('#pi-off')[0],
 						// Mod Bar
@@ -2309,7 +2372,6 @@
 					}
 					// Initialise the menu & setup script
 					pi.menu('init');
-					pi.hideStream();
 					pi.muteMeh();
 					// Delete load status
 					$('#pi-status').css({opacity:'0'});
@@ -2332,6 +2394,9 @@
 					for (var event in pi._event) {
 						API.off(event, pi._event[event]);
 					}
+					pi._tool.plugSocketHook.kill();
+					modules.context.off("chat:receive", pi._modulesEvent.chatReceive);
+					delete modules;
 
 					// Allow to reload
 					window.scriptURL = url.script;
@@ -2364,7 +2429,7 @@
 					$('#now-playing-media, #woot, #grab, #meh').off('mouseleave');
 					// Preventing making the video definitly desapear
 					if (!settings.showVideo) {
-						pi.menu('showVideo');
+						pi.menu('video');
 						settings.showVideo = false;
 					}
 
@@ -2894,7 +2959,7 @@
 											'<span class="un">[Plug-It]</span>'+
 											'<span class="timestamp" style="display: '+ (timestamp ? 'inline-block' : 'none') +';">'+time+'</span>'+
 										'</div>'+
-										'<div class="text cid-undefined">'+(Array.isArray(txt) ? pi._tool.parseHTML(txt.join('\n')) : pi._tool.parseHTML(txt))+'</div>'+
+										'<div class="text cid-undefined">'+(Array.isArray(txt) ? txt.join('<br />') : txt.replace(/\\n|\n/g, '<br />'))+'</div>'+
 									'</div>'+
 								'</div>'
 							);
@@ -3166,16 +3231,109 @@
 							n[type] = events[type];
 						}
 					},
-					parseHTML: function(txt) {
-						if (typeof txt !== 'string') return;
+					plugSocketHook: {
+						init: function () {
+							let that = this;
+							this.send = WebSocket.prototype.send;
+							WebSocket.prototype.send = function(data) {
+								if (this.url.includes('plug.dj')) {
+									if (typeof this.oldOnMessage === 'function') return that.send.call(this, data);
+									this.oldOnMessage = this.onmessage.clone();
+									that.socket = this;
+									this.onmessage = function(data) {
+										if (data.data === 'h') return;
+										// pi._tool.log(data, 'console debug');
+										try {
+											let _data = JSON.parse(data.data)[0];
 
-						txt = txt.split('\n');
-						for (var i = 0; i < txt.length; i++) {
-							if (i !== txt.length-1) {
-								txt[i] += '<br>';
+											switch (_data.a) {
+												case 'chat':
+												break;
+
+												case 'chatDelete':
+													if (settings.showDeletedMsg) {
+														// using raw cid and then traversing to the .msg allows
+														// to find the div even when chat has been merged
+														let $chat = $('.cid-'+_data.p.c).closest('.cm');
+														let time = modules.utils.getSimpleTimestamp();
+														let mod = API.getUser(_data.p.mi).username;
+														let $prevDelete = $chat.find('.pi-deleted[data-id="4613422"]');
+
+														$chat.addClass('deleted').find('.delete-button').remove();
+														if ($prevDelete.length > 0) {
+															let newCount = parseInt($prevDelete.attr('data-count'))+1;
+															// Increment count by one
+															$prevDelete.attr("data-count", newCount);
+															$prevDelete.html(`Deleted by ${mod}(x${newCount}) at ${time}`);
+														} else {
+															$chat.find('.msg').after($(`<span class="pi-deleted" data-id="${_data.p.mi}" data-count="1">Deleted by ${mod} at ${time}</span>`));
+														}
+
+														// chat split with API.chatLog then delete it
+														pi._tool.log('This is to fix deleted messages', 'chat').delete();
+														return;
+													}
+												break;
+
+												case 'userUpdate':
+													if (settings.userLevelUp && _data.p.level) {
+														pi._tool.log(`User leveled up: ${API.getUser(_data.p.i).username} to level ${_data.p.level} !`, 'info');
+													} else {
+														console.log(_data);
+													}
+												break;
+
+												case 'modStaff':
+													_data.p.u.forEach((e,i,a) => {
+														let self = API.getUser(); // Unefficient, should cache user somewhere...
+
+														if (e.i === self.id) {
+															// From anything to rDJ or Grey
+															if (e.p <= 1 && self.role > e.p) modToolbar.kill();
+															// From Grey or rDJ to anything above
+															else if (e.p >= 2 && self.role < e.p) modToolbar.init(true);
+															// Fix for custom ranks & plug not removing the staff icon:
+															// Plug only hides the icon but the css still shows the username color
+															if (e.p === 0) $('#footer-user .info .name i')[0].className = 'icon';
+														}
+													});
+												break;
+
+												// Unused events
+												case 'advance':
+												case 'djListCycle':
+												case 'djListUpdate':
+												case 'earn':
+												case 'grab':
+												case 'playlistCycle':
+												case 'plugMessage':
+												case 'userJoin':
+												case 'userLeave':
+												case 'vote':
+												break;
+
+												default:
+													pi._tool.log(_data, 'console info');
+												break;
+											}
+										} catch (e) {
+											pi._tool.log(e, 'console error');
+										}
+
+										if (data.data.indexOf('The wait is over!') !== -1) return;
+										this.oldOnMessage(data);
+									};
+								}
+								that.send.call(this, data);
+							};
+						},
+						kill: function () {
+							if (this.socket) {
+								this.socket.onmessage = this.socket.oldOnMessage;
+								delete this.socket.oldOnMessage;
 							}
+							WebSocket.prototype.send = this.send;
 						}
-						return txt.join('');
 					},
 					// Thanks Burkes for this (slightly modified)
 					replaceString: function(string, object) {
@@ -3543,6 +3701,12 @@
 							pi.dom.smallHistory.className = settings.smallHistory ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallHistory');
 						break;
+						case 'showDeletedMsg':
+							settings.showDeletedMsg = !settings.showDeletedMsg;
+							pi.dom.showDeletedMsg.className = settings.showDeletedMsg ? 'pi-on' : 'pi-off';
+							if (settings.showDeletedMsg) $('.cm.deleted').show();
+							else $('.cm.deleted').hide();
+						break;
 						case 'confirmDelete':
 							settings.confirmDelete = !settings.confirmDelete;
 							pi.dom.confirmDelete.className = settings.confirmDelete ? 'pi-on' : 'pi-off';
@@ -3628,6 +3792,10 @@
 							settings.gainNotification = !settings.gainNotification;
 							pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
 						break;
+						case 'userLevelUp':
+							settings.userLevelUp = !settings.userLevelUp;
+							pi.dom.userLevelUp.className = settings.userLevelUp ? 'pi-on' : 'pi-off';
+						break;
 
 						case 'init':
 							// Init menu item's class
@@ -3650,6 +3818,7 @@
 							pi.dom.skipNextMediaInHistory.className = settings.skipNextMediaInHistory ? 'pi-on' : 'pi-off';
 							// Customisation
 							pi.dom.video.className = settings.showVideo ? 'pi-off' : 'pi-on';
+							pi.hideStream();
 							pi.dom.soundcloudVisu.className = settings.scVisu ? 'pi-on' : 'pi-off';
 							pi.dom.css.className = settings.CSS ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('customStyle');
@@ -3663,6 +3832,7 @@
 							pi.dom.smallHistory.className = settings.smallHistory ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallHistory');
 							// Moderation
+							pi.dom.showDeletedMsg.className = settings.showDeletedMsg ? 'pi-on' : 'pi-off';
 							pi.dom.confirmDelete.className = settings.confirmDelete ? 'pi-on' : 'pi-off';
 							pi.dom.userInfo.className = settings.userInfo ? 'pi-on' : 'pi-off';
 							pi.dom.stuckSkip.className = settings.stuckSkip ? 'pi-on' : 'pi-off';
@@ -3686,18 +3856,25 @@
 							pi.dom.friendDisconnect.className = settings.friendDisconnect ? 'pi-on' : 'pi-off';
 							pi.dom.unfriended.className = settings.unfriended ? 'pi-on' : 'pi-off';
 							pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
+							pi.dom.userLevelUp.className = settings.userLevelUp ? 'pi-on' : 'pi-off';
 						break;
 
 						case 'off':
 							pi._tool.saveSettings();
 							pi._close();
 						break;
+
+						default:
+							pi._tool.log('Unrecognized menu string: '+choice, 'console error');
+						break;
 					}
 
 					if (choice !== 'off') pi._tool.saveSettings();
 				},
 				muteMeh: function() {
-					var restoreVol = function(vol) {
+					let vol = API.getVolume();
+
+					function restoreVol() {
 						API.setVolume(vol);
 
 						// Turning the event off for BOTH
@@ -3707,22 +3884,19 @@
 
 						// Listen for meh again
 						$('#meh').one('click', mute);
-					};
-					var mute = function() {
+					}
+					function mute() {
 						// Meh is disabled, do not change volume
 						if (!$('#meh').hasClass('disabled')) {
-							let vol = API.getVolume();
+							vol = API.getVolume();
 							API.setVolume(0);
-							API.once(API.ADVANCE, restoreVol(vol));
-							$('#woot').one('click', restoreVol(vol));
+							API.once(API.ADVANCE, restoreVol);
+							$('#woot').one('click', restoreVol);
 						}
-					};
-
-					if (settings.betterMeh) {
-						$('#meh').one('click', mute);
-					} else {
-						$('#meh').off('click', mute);
 					}
+
+					if (settings.betterMeh) $('#meh').one('click', mute);
+					else $('#meh').off('click', mute);
 				},
 				removeDJ: function() {
 					if (sessionStorage.getItem('modQuitWarn') == 'false') {

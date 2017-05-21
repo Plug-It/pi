@@ -1,8 +1,8 @@
 {
 	"room":   "enjoy-the-drop",
 	"author": "WiBla",
-	"icon":   "https://dl.dropboxusercontent.com/s/cf3sa54ilpnwrcf/room-icon_31.png",
-	"css":    "https://dl.dropbox.com/s/69kd43qo9kw0tl0/EH-theme.css",
+	"icon":   "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/room-icon_31.png",
+	"css":    "https://rawgit.com/Plug-It/pi/pre-release/css/blue.css",
 	"rules": {
 		"allowAutorespond": true,
 		"allowAutowoot":    true,
@@ -27,7 +27,7 @@
 		"user":             null
 	},
 	"images": {
-		"background":       "https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/Plug-It-old.jpg",
+		"background":       "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It.jpg",
 		"playback":         null,
 		"admin":            null,
 		"ambassador":       null,

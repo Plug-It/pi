@@ -30,6 +30,7 @@
 		},
 		"moderation": {
 			"title": "Moderation",
+			"showDeletedMsg": "Show deleted messages",
 			"confirmChatDeletion": "Confirm chat deletion",
 			"userInformation": "User informations",
 			"skipStuckSongs": "Skip stuck songs",
@@ -54,7 +55,8 @@
 			"friendConnect": "Friend connect",
 			"friendDisconnect": "Friend disconnect",
 			"unfriended": "Unfriended",
-			"gainNotification": "XP/PP earn"
+			"gainNotification": "XP/PP earn",
+			"userLevelUp": "User Level up"
 		},
 		"about": {
 			"title": "About",
@@ -69,7 +71,7 @@
 	},
 	"tooltips": {
 		"clearChat": "Clear chat",
-		"afk": "Toggle yourself as AFK",
+		"afk": "Toggle yourself as AFK, ctrl+click to edit message",
 		"rmvDJ": "Skip and remove the DJ from booth",
 		"skip": "Skip the DJ",
 		"toggleStream": "Toggle video/audio"
