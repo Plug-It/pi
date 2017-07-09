@@ -16,7 +16,7 @@
     }
   },
   "css": {
-    "import": ["https://rawgit.com/Plug-It/pi/pre-release/css/blue.css"],
+    "import": ["https://dl.dropboxusercontent.com/s/exym4yg3sjcgg0m/EH-theme.css"],
     "rule": {
       ".cm.extplug-user-join":         { "": "" },
       ".cm.extplug-friend-join":       { "": "" },

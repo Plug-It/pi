@@ -23,10 +23,12 @@
       "scVisu":"Wizualizacje SoundCloud",
       "customStyle":"Styl alternatywny",
       "customRanks":"Niestandardowe rangi",
+      "languageFlags":"Flagi językowe",
       "customBG":"Niestandardowe tło",
       "oldChat":"Czat starszego typu",
       "oldFooter":"Stopka starszego typu",
-      "smallHistory":"Mniejsza historia"
+      "smallHistory":"Mniejsza historia",
+      "smallFriends":"Kompaktowa lista znajomych"
     },
     "moderation":{
       "title":"Moderacja",
@@ -56,7 +58,9 @@
       "friendDisconnect":"Znajomy jest offline",
       "unfriended":"Usunięto ze znajomych",
       "gainNotification":"Zdobyte XP/PP",
-      "userLevelUp":"Wyższy poziom użytkownika"
+      "gainNotificationMinXPLabel":"Minimalna ilość XP do powiadomienia",
+      "gainNotificationMinPPLabel":"Minimalna ilość PP do powiadomienia",
+      "userLevelUp":"Użytkownik osiągnął nowy poziom"
     },
     "about":{
       "title":"O nas",
@@ -70,16 +74,16 @@
     }
   },
   "tooltips":{
-    "clearChat":"Wyczyść czat",
+    "clearChat":"Czyszczenie czatu, [ctrl+kliknięcie] = wyczyść czat, [shift+kliknięcie] = wyczyszczenie czatu z logów PI",
     "afk":"Oznacz siebie jako AFK, Ctrl+kliknij, aby ustawić wiadomość",
-    "rmvDJ":"Pomiń oraz usuń DJ'a z listy oczekiwania",
-    "skip":"Pomiń DJ'a",
+    "rmvDJ":"Pomiń oraz usuń DJ-a z listy oczekiwania",
+    "skip":"Pomiń DJ-a",
     "toggleStream":"Przełącz wideo/audio"
   },
   "log":{
-    "loaded":"Załadowano Plug-It w wersji %%VERSION%%!",
+    "loaded":"Plug-It wersja %%VERSION%%!",
     "help":"Wpisz /list aby uzyskać listę komend.",
-    "preRelease":"Jest to wersja beta, może zawierać błędy!!!",
+    "preRelease":"Wersja beta może zawierać błędy!!!",
     "bgPrompt":"Adres URL:\nWpisz:\n\"reset\" domyślne tło rozszerzenia\n\"default\" domyślne tło plug.dj",
     "wooted":"%%USER%%%%USERINFO%% zwootował ten utwór!",
     "grabbed":"%%USER%%%%USERINFO%% złapał ten utwór!",
@@ -87,12 +91,12 @@
     "guestJoin":"Gość dołączył! Wszystkich gości: %%GUESTS%%",
     "guestLeave":"Gość wyszedł! Wszystkich gości: %%GUESTS%%",
     "friendRoomChange":"%%FRIEND%% jest teraz online w <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendRoomChangeDashboard":"%%FRIEND%% jest teraz w <a href='/dashboard'>panelu</a>.",
+    "friendRoomChangeDashboard":"%%FRIEND%% jest teraz w Panelu.",
     "friendConnect":"%%FRIEND%% jest teraz online w <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendConnectDashboard":"%%FRIEND%% jest online w <a href='/dashboard'>panelu</a>.",
+    "friendConnectDashboard":"%%FRIEND%% jest teraz online w Panelu.",
     "friendDisconnect":"%%FRIEND%% jest offline.",
     "reloading":"Trwa ponowne wczytywanie Plug-It...",
-    "eta":"Zostaniesz DJ'em za %%TIME%%.",
+    "eta":"Zostaniesz DJ-em za %%TIME%%.",
     "forcingReload":"Aktualizacja jest dostępna, wymuszanie odświeżenia. Przepraszamy za niedogodności.",
     "strobeOn":"%%USER%% aktywował tryb stroboskopu!",
     "strobeOff":"%%USER%% dezaktywował tryb stroboskopu!",
@@ -108,7 +112,7 @@
   "info":{
     "roomChange":"Zmieniono społeczność, ponowne wczytywanie Plug-It.",
     "nobodyPlaying":"Nikt nie gra.",
-    "youPlay":"Jesteś DJ'em!",
+    "youPlay":"Jesteś DJ-em!",
     "notInWaitList":"Nie jesteś na liście oczekiwania.",
     "helpVol":"Użycie: /vol [0-100]",
     "helpUserOrId":"Brak nazwy użytkownika lub ID",
@@ -123,19 +127,19 @@
     "checkingUnavailable":"Szukam niedostępnych utworów...",
     "moveMedia":"Przenoszę %%CURRENT%%/%%TOTAL%% na %%DIRECTION%% miejsce listy odtwarzania.",
     "removeMedia":"Usuwam %%CURRENT%%/%%TOTAL%% z listy odtwarzania.",
-    "whoami":"Nazwa użytkownika: %%USERNAME%%\nZdekodowana nazwa użytkownika: %%RAWUN%%\nID: %%ID%%\nOpis: %%BLURB%%\nJęzyk: %%LANGUAGE%%%%PROFILE%%\nAwatar: %%AVATAR%%\nPlakietka: %%BADGE%%\nPoziom: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nDołączono: %%JOINED%%\nOstatnio widziano: %%LASTSEEN%%\nGłos: %%VOTE%%\nGrab: %%GRAB%%\nRanga plugdj: %%PLUGROLE%%\nRanga Plug-It: %%PLUGITROLE%%\nRanga: %%RANK%%\nGość: %%GUEST%%\nSubskrypcja: %%SUB%%\nSrebrna subskrypcja: %%SILVER%%",
-    "whois":"Nazwa użytkownika: %%USERNAME%%\nZdekodowana nazwa użytkownika: %%RAWUN%%\nID: %%ID%%\nJęzyk: %%LANGUAGE%%%%PROFILE%%\nAwatar: %%AVATAR%%\nPlakietka: %%BADGE%%\nPoziom: %%LVL%%\nDołączono: %%JOINED%%\nOstatnio widziano: %%LASTSEEN%%\nGłos: %%VOTE%%\nGrab: %%GRAB%%\nRanga plugdj: %%PLUGROLE%%\nRanga Plug-It: %%PLUGITROLE%%\nRanga: %%RANK%%\nGość: %%GUEST%%\nSubskrypcja: %%SUB%%\nSrebrna subskrypcja: %%SILVER%%\nZnajomy: %%FRIEND%%",
+    "whoami":"Nazwa użytkownika: %%USERNAME%%\nZdekodowana nazwa użytkownika: %%RAWUN%%\nID: %%ID%%\nOpis: %%BLURB%%\nJęzyk: %%LANGUAGE%%%%PROFILE%%\nAwatar: %%AVATAR%%\nPlakietka: %%BADGE%%\nPoziom: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nDołączono: %%JOINED%%\nGłos: %%VOTE%%\nGrab: %%GRAB%%\nRanga plugdj: %%PLUGROLE%%\nRanga Plug-It: %%PLUGITROLE%%\nRanga: %%RANK%%\nGość: %%GUEST%%\nSubskrypcja: %%SUB%%\nSrebrna subskrypcja: %%SILVER%%",
+    "whois":"Nazwa użytkownika: %%USERNAME%%\nZdekodowana nazwa użytkownika: %%RAWUN%%\nID: %%ID%%\nJęzyk: %%LANGUAGE%%%%PROFILE%%\nAwatar: %%AVATAR%%\nPlakietka: %%BADGE%%\nPoziom: %%LVL%%\nDołączono: %%JOINED%%\nGłos: %%VOTE%%\nGrab: %%GRAB%%\nRanga plugdj: %%PLUGROLE%%\nRanga Plug-It: %%PLUGITROLE%%\nRanga: %%RANK%%\nGość: %%GUEST%%\nSubskrypcja: %%SUB%%\nSrebrna subskrypcja: %%SILVER%%\nZnajomy: %%FRIEND%%",
     "unfriended":"%%FRIEND%% usunął Cię ze znajomych %%SAD%%"
   },
   "warn":{
     "songLimit":"Utwór jest za długi! Maksymalna długość: %%MAX%%!",
-    "confirmSkip":"Kliknij, aby potwierdzić pominięcie aktualnego DJ'a.",
+    "confirmSkip":"Kliknij, aby potwierdzić pominięcie aktualnego DJ-a.",
     "confirmEject":"Kliknij, aby potwierdzić usunięcie użytkownika z listy oczekiwania.",
     "isTrusted":"Nigdy nie uruchamiaj kodu, który otrzymałeś od nieznanej osoby! Kliknij, aby potwierdzić uruchomienie.",
     "djInHistory":"%%DJ%% gra utwór znajdujący się w historii: \\nWykonawca: %%AUTHOR%%\\nTytuł: %%TITLE%%\\nGrany przez: %%HISTORYDJ%%, %%TURNS%% utworów temu. %%SKIP%%",
     "fastBan":"To zbanuje użytkownika permanentnie, kliknij aby potwierdzić.",
     "leaving":"[Plug-It] Ostrzeżenie o nawigacji: Czy na pewno chcesz wyjść?",
-    "boothAlert":"Alarm konsoli: Będziesz DJ'em za %%POS%% utworów, wybierz właściwą piosenkę!",
+    "boothAlert":"Alarm konsoli: Będziesz DJ-em za %%POS%% utworów, wybierz właściwą piosenkę!",
     "nextMediaInHistory":"Twój kolejny utwór znajduje się w historii!",
     "duplicates":"Znaleziono duplikat!\n%%AUTHOR%% - %%TITLE%%\n%%NAME1%% - %%NAME2%%",
     "possibleDuplicate":"To może być duplikat (na podstawie wykonawcy/tytułu):\n%%AUTHOR%% - %%TITLE%%\n%%NAME1%% - %%NAME2%%",
@@ -154,6 +158,8 @@
     "staffKick":"Nie możesz wyrzucić użytkownika, który ma wyższą lub taką samą rangę co Ty.",
     "selfBan":"Nie możesz zbanować samego siebie.",
     "staffBan":"Nie możesz zbanować użytkownika, który ma wyższą lub taką samą rangę co Ty.",
+    "selfBMute":"Nie możesz wyciszyć samego siebie.",
+    "staffMute":"Ten użytkownik nie może zostać wyciszony.",
     "cannotRank":"Nie można ustawić rangi użytkownikowi.",
     "renaming":"Wystąpił błąd podczas zmieniania nazwy.",
     "brokenSong":"Niedziałający utwór w liście \"%%NAME%%\":\n[%%SOURCE%%] %%AUTHOR%% - %%TITLE%%\n(CID: %%CID%%)",
@@ -161,7 +167,9 @@
     "playlistFull":"Bieżąca lista odtwarzania jest pełna",
     "cannotGrab":"Nie udało się zgrabować do aktywnej listy odtwarzania, może jest pełna?",
     "cannotGetMediaID":"Nie można ustalić ID utworu, sprawdź konsolę po więcej informacji.",
-    "cannotLoadScriptRoomSettings":"Nie udało się załadować ustawień pokoju %%SCRIPT%%:\n%%ERROR%%"
+    "cannotLoadScriptRoomSettings":"Nie udało się załadować ustawień pokoju %%SCRIPT%%:\n%%ERROR%%",
+    "APIFloodDetected":"Wysyłasz zbyt dużo zapytań do serwera! Możliwość wysyłania zapytań została zablokowana na 10s.",
+    "APIFLoodInEffect":"Nie można wykonać. Wysyłanie zapytań do serwera jest zablokowane."
   },
   "success":{
     "removedBot":"%%BOT%% nie jest dłużej ustawiony jako bot.",
@@ -181,7 +189,8 @@
     "afkResponder":"@%%MENTION%% jestem AFK.",
     "kicking":"@%%USER%% zostaniesz wyrzucony na %%TIME%% sekund.",
     "djSkip":"@%%DJ%%, ten utwór znajduje się w historii!",
-    "inputDisabled":"Wyłącz automatyczne odpowiedzi AFK, aby móc pisać na czacie!"
+    "inputDisabled":"Wyłącz automatyczne odpowiedzi AFK, aby móc pisać na czacie!",
+    "chatDelete":"Usunięte przez %%MOD%%%%NEWCOUNT%% o %%TIME%%"
   },
   "notifications":{
     "mentioned":"Zostałeś oznaczony przez %%USER%%:",

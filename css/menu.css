@@ -30,7 +30,6 @@
 	top: 54px;
 	width: 150px;
 	z-index: 7 !important; /* otherwise #avatars-container gets in the way */
-	font-family: Roboto;
 	background: linear-gradient(to left, #0a0a0a, #111);
 }
 #pi-menu *::selection {
@@ -55,14 +54,15 @@
 #pi-menu h2 {
 	cursor: pointer;
 	font-weight: normal;
-	font-size: 18px;
-	margin: 2px 0;
+	font-size: 1em;
+	margin: 2px 0px;
+	padding: 2px 4px;
 	background: #222;
 }
 #pi-menu ul {list-style-type: none;}
 #pi-menu li {
 	cursor: pointer;
-	font-size: 17px;
+	font-size: 1em;
 	color: #808691;
 }
 #pi-menu a {color: #888;}
@@ -157,7 +157,7 @@
 	position: absolute;
 	bottom: 61px;
 	width: 254px;
-	background: rgba(10,10,10,0.8);
+	background: rgba(10,10,10,.8);
 	box-shadow: 0 0 10px #000;
 	border-radius: 10px 10px 0 0; /* Otherwise, background appears behind header */
 	z-index: -1; /* Make the menu appear behind votes */
@@ -168,9 +168,13 @@
 	border-radius: 10px 10px 0 0;
 }
 #pi-votes ul {
-	height: 170px;
+	height: 170px; /*170*/
 	list-style-type: none;
 	overflow-y: auto;
+}
+#pi-votes ul::-webkit-scrollbar {
+	width: 7px;
+	background: rgba(15,15,15,.8);
 }
 #pi-votes li {
 	padding: 0px 5px;
@@ -179,21 +183,36 @@
 	background: linear-gradient(135deg, hsla(90,80%,50%,.8), hsla(90,80%,30%,.8));
 	box-shadow: inset 0 0 10px hsl(70,100%,40%);
 }
+#pi-votes.woot ul::-webkit-scrollbar-thumb {
+	background: linear-gradient(hsl(90,80%,40%), hsl(90,80%,30%));
+	box-shadow: inset 1px 1px 0 1px hsla(0,0%,100%,.2);
+}
 #pi-votes.grab #header {
 	background: linear-gradient(hsla(270,70%,50%,.8), hsla(265,70%,30%,.8));
 	box-shadow: inset 0 0 10px hsl(280,100%,40%);
 }
+#pi-votes.grab ul::-webkit-scrollbar-thumb {
+	background: linear-gradient(hsl(270,70%,50%), hsl(265,70%,30%));
+	box-shadow: inset 1px 1px 0 1px hsla(0,0%,100%,.2);
+}
 #pi-votes.meh #header {
 	background: linear-gradient(225deg, hsla(5,80%,50%,.8), hsla(0,80%,40%,.8)) !important;
-	box-shadow: inset 0 0 10px hsl(15,100%,50%) !important;
+	box-shadow: inset 0 0 10px hsl(15,100%,50%);
+}
+#pi-votes.meh ul::-webkit-scrollbar-thumb {
+	background: linear-gradient(hsl(5,80%,45%), hsl(5,80%,40%)) !important;
+	box-shadow: inset 1px 1px 0 1px hsla(0,0%,100%,.2);
 }
 
 /* Custom-BG Dialog */
-.dialog-body figure img {
-	width: 150px;
+.dialog-body figure .thumbnail {
+	display: inline-block;
+	width: 150px; height: 84px;
 	margin: 1px 3px;
+
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/thumbnails.png);
 }
-.dialog-body figure img:hover {
+.dialog-body figure .thumbnail:hover {
 	cursor: pointer;
 	box-shadow: 0 0 0 1px #EEE;
 }
@@ -232,11 +251,25 @@
 	/* fix when message is too high */
 	vertical-align: top !important;
 }
-.cm.deleted {opacity: .5;}
-.deleted .pi-deleted {
+.cm .userInfo {
 	display: inline-block;
-	width: 100%;
+	margin-left: 3px;
+
+	font-size: 9px;
+	color: #555 !important;
+}
+.cm .userInfo b {
+	color: #999 !important;
+	font-size: 11px;
+}
+.cm.deleted {opacity: .5;}
+.pi-deleted {
+	display: block;
+	position: relative;
+	right: 3px;
+
 	text-align: right;
+	font-size: 10px;
 	color: hsl(0,70%,50%);
 }
 #rs-skip-button,
@@ -334,28 +367,12 @@
 }
 
 /* [RANKS] */
-#chat .pi-dev i,
-#chat .pi-helper i,
-#chat .pi-graphist i,
-#chat .pi-translator i,
-#chat .pi-community-manager i,
-#chat .pi-alpha i,
-#chat .pi-bot i,
-#chat .pi-discord-bot i {
-	margin-right: 0 !important;
-}
-#chat .pi-dev .un::before,
-#chat .pi-helper .un::before,
-#chat .pi-graphist .un::before,
-#chat .pi-translator .un::before,
-#chat .pi-community-manager .un::before,
-#chat .pi-alpha .un::before,
-#chat .pi-bot .un::before,
-#chat .pi-discord-bot .un::before {
-	content: "\0000a0";
+#chat [class*="pi-"] .icon {
+	margin: 0 !important;
 	width: 15px; height: 15px;
-	float: left;
-	margin-right: 4px;
+}
+#chat [class*="pi-"] .un {
+	margin-left: 4px !important;
 }
 /* Bot */
 #chat .pi-bot .bdg,
@@ -368,7 +385,7 @@
 #chat .pi-bot .no-badge i {
 	display: none !important;
 }
-#chat .pi-bot .un::before {
+#chat .pi-bot .icon-pi-bot {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_bot.png) no-repeat 0 0 / 15px;
 }
 #chat [data-cid^="5285179-"] .un:after {
@@ -394,27 +411,27 @@
 	font-style: normal;
 }
 /* Alpha tester */
-#chat .pi-alpha .un::before {
+#chat .pi-alpha .icon-pi-alpha {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge%20alpha.png) no-repeat 0 0 / 17px;
 }
 /* Community Manager */
-#chat .pi-community-manager .un::before {
+#chat .pi-community-manager .icon-pi-community-manager {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_cm.png) no-repeat 0 0 / 15px;
 }
 /* Translator */
-#chat .pi-translator .un::before {
+#chat .pi-translator .icon-pi-translator {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_translator.png) no-repeat 0 0 / 15px;
 }
 /* Graphist */
-#chat .pi-graphist .un::before {
+#chat .pi-graphist .icon-pi-graphist {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_designer.png) no-repeat 0 0 / 15px;
 }
 /* Helper */
-#chat .pi-helper .un::before {
+#chat .pi-helper .icon-pi-helper {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/rank_git.png) no-repeat 0 0 / 15px;
 }
 /* Dev */
-#chat .pi-dev .un::before {
+#chat .pi-dev .icon-pi-dev {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat 0 0 / 15px;
 }
 /* VIP */
@@ -439,7 +456,7 @@
 #chat .pi-discord-bot .no-badge i {
 	display: none !important;
 }
-#chat .pi-discord-bot .un::before {
+#chat .pi-discord-bot .icon-pi-discord-bot {
 	background: url(https://discordapp.com/assets/f8389ca1a741a115313bede9ac02e2c0.svg) no-repeat 0 0 / 15px;
 }
 #chat .pi-discord-bot {

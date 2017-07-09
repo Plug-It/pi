@@ -23,14 +23,16 @@
       "scVisu":"Visualizador do SoundCloud",
       "customStyle":"Estilo Personalizado",
       "customRanks":"Cargos personalizados",
+      "languageFlags":"Bandeiras de Idioma",
       "customBG":"Fungo personalizado",
       "oldChat":"Chat antigo",
       "oldFooter":"Rodapé antigo",
-      "smallHistory":"Histórico compacto"
+      "smallHistory":"Histórico compacto",
+      "smallFriends":"Lista de Amigos Compacta"
     },
     "moderation":{
       "title":"Moderação",
-      "showDeletedMsg":"Show deleted messages",
+      "showDeletedMsg":"Mostrar Mensagens Apagadas",
       "confirmChatDeletion":"Confirmar remoção de chat",
       "userInformation":"Informações de usuário",
       "skipStuckSongs":"Pular músicas travadas",
@@ -56,7 +58,9 @@
       "friendDisconnect":"Saída de amigo",
       "unfriended":"Remoção de amigo",
       "gainNotification":"Ganho de XP/PP",
-      "userLevelUp":"User Level up"
+      "gainNotificationMinXPLabel":"XP Mínimo para Notificação",
+      "gainNotificationMinPPLabel":"PP Mínimo para Notificação",
+      "userLevelUp":"Notif. ao Subir de Nível"
     },
     "about":{
       "title":"Sobre",
@@ -70,8 +74,8 @@
     }
   },
   "tooltips":{
-    "clearChat":"Limpar Chat",
-    "afk":"Toggle yourself as AFK, ctrl+click to edit message",
+    "clearChat":"Limpar o Chat, [Ctrl + Click] = Limpa tudo, [Shift + Click] = Limpa Mensagens do PI",
+    "afk":"Marcar à si mesmo como Ausente, Ctrl + Click para editar a mensagem",
     "rmvDJ":"Pular e remover DJ",
     "skip":"Pular o DJ",
     "toggleStream":"Alternar vídeo/áudio"
@@ -87,9 +91,9 @@
     "guestJoin":"Um visitante entrou ! Total de visitante(s) : %%GUESTS%%",
     "guestLeave":"Um guest saiu ! Total de visitante(s) : %%GUESTS%%",
     "friendRoomChange":"%%FRIEND%% está agora em <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendRoomChangeDashboard":"%%FRIEND%% está agora no <a href='/dashboard'>Painel</a>.",
+    "friendRoomChangeDashboard":"%%FRIEND%% está agora no Painel.",
     "friendConnect":"%%FRIEND%% entro online em <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendConnectDashboard":"%%FRIEND%% entrou online no <a href='/dashboard'>Painel</a>.",
+    "friendConnectDashboard":"%%FRIEND%% está online agora no Painel.",
     "friendDisconnect":"%%FRIEND%% ficou offline.",
     "reloading":"Recarregando Plug-It...",
     "eta":"%%TIME%% até você tocar.",
@@ -123,8 +127,8 @@
     "checkingUnavailable":"Busca de mídia indisponível iniciada.",
     "moveMedia":"Movendo mídia %%CURRENT%%/%%TOTAL%% para o %%DIRECTION%% da playlist.",
     "removeMedia":"Removendo mídia %%CURRENT%%/%%TOTAL%% da playlist.",
-    "whoami":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nMensagem do Perfil: %%BLURB%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nData de Registro: %%JOINED%%\nVisto por Último: %%LASTSEEN%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%",
-    "whois":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nData de Registro: %%JOINED%%\nVisto por Último: %%LASTSEEN%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%\nAmigo: %%FRIEND%%",
+    "whoami":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nMensagem do Perfil: %%BLURB%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nData de Registro: %%JOINED%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%",
+    "whois":"Nome de Usuário: %%USERNAME%%\nNome de Usuário bruto: %%RAWUN%%\nID: %%ID%%\nIdioma: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblema: %%BADGE%%\nNível: %%LVL%%\nData de Registro: %%JOINED%%\nVoto: %%VOTE%%\nAdd: %%GRAB%%\nCargo do Plug: %%PLUGROLE%%\nCargo do Plug-It: %%PLUGITROLE%%\nCargo: %%RANK%%\nVisitante: %%GUEST%%\nAssinante Ouro: %%SUB%%\nAssinante Prata: %%SILVER%%\nAmigo: %%FRIEND%%",
     "unfriended":"%%FRIEND%% lhe removeu como amigo(a) %%SAD%%"
   },
   "warn":{
@@ -154,6 +158,8 @@
     "staffKick":"Você não pode expulsar um usuário de cargo igual ou maior que o seu.",
     "selfBan":"Você não pode banir a si mesmo.",
     "staffBan":"Você não pode banir um usuário de cargo igual ou maior que o seu.",
+    "selfBMute":"Você não pode mutar a si mesmo.",
+    "staffMute":"Este usuário não pode ser mutado.",
     "cannotRank":"Não foi possível definir o cargo do usuário.",
     "renaming":"Erro ao renomear.",
     "brokenSong":"Mídia inválida em \"%%NAME%%\": [%%SOURCE%%] %%AUTHOR%% - %%TITLE%% (CID: %%CID%%)",
@@ -161,7 +167,9 @@
     "playlistFull":"Lista de reprodução atual cheia",
     "cannotGrab":"Não foi possível adicionar à lista de reprodução atual, estaria ela cheia?",
     "cannotGetMediaID":"Não foi possível obter o ID da mídia, cheque o console para mais detalhes.",
-    "cannotLoadScriptRoomSettings":"Não foi possível carregar as configurações de comunidade de %%SCRIPT%%:\n%%ERROR%%"
+    "cannotLoadScriptRoomSettings":"Não foi possível carregar as configurações de comunidade de %%SCRIPT%%:\n%%ERROR%%",
+    "APIFloodDetected":"Uso Excessivo da API detectado. Desativando a API e pedidos internos por 10 segundos.",
+    "APIFLoodInEffect":"Esta ação está indisponível devido ao uso excessivo da API."
   },
   "success":{
     "removedBot":"%%BOT%% foi removido(a) como bot.",
@@ -181,7 +189,8 @@
     "afkResponder":"@%%MENTION%% eu estou ausente.",
     "kicking":"@%%USER%% você será expulso por %%TIME%% segundo(s).",
     "djSkip":"@%%DJ%%, esta mídia está no histórico de DJs !",
-    "inputDisabled":"Desative a resposta AFK automática para conversar !"
+    "inputDisabled":"Desative a resposta AFK automática para conversar !",
+    "chatDelete":"Apagado por %%MOD%%%%NEWCOUNT%% em %%TIME%%"
   },
   "notifications":{
     "mentioned":"Você foi mencionado(a) por %%USER%%:",

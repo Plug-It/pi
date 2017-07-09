@@ -1,0 +1,14 @@
+{
+	"globals": {
+		"API": true,
+		"location": true,
+		"pi": true,
+		"$": true
+	},
+	"env": {
+		"browser": true
+	},
+	"rules": {
+
+	}
+}

@@ -1,0 +1,86 @@
+.app-right .friends .header {
+	height: 25px;
+}
+.app-right .friends .header i {
+	top: 11px;
+}
+.app-right .friends .header span {
+	top: 4px;
+}
+.app-right .friends.has-requests .list {
+	top: 56px;
+}
+.app-right .friends.has-requests .list-header {
+	top: 25px;
+}
+.app-right .friends .list-header {
+	height: 30px;
+}
+.app-right .friends .list-header .icon {
+	top: 1px;
+	margin-left: 0px;
+}
+.app-right .friends .list-header .count {
+	top: 3px;
+	margin-left: 0px
+}
+.app-right .friends .list-header .title {
+	top: 3px;
+	margin-left: 7px
+}
+.app-right .friends .list-header .input-background {
+	position: absolute;
+	top: 3px; right: 3px;
+	width: 150px; height: 24px;
+}
+.app-right .friends .list-header input {
+	top: 3px;
+	width: 118px;
+}
+.app-right .friends .list-header .clear-filter {
+	top: 3px; right: 0px;
+	overflow: visible;
+}
+.app-right .friends .list .row {
+	height: 20px; width: 331px;
+}
+.app-right .friends .list .row .image {
+	position: absolute;
+	display: none;
+	width: 0; height: 0;
+}
+.app-right .friends .list .row .meta {
+	margin-left: 3px;
+	top: 0;
+	width: 340px; height: 20px;
+}
+.app-right .friends .list .row .room {
+	right: 12px;
+	width: 180px;
+}
+.app-right .friends .list .row:hover {
+	height: 30px;
+}
+.app-right .friends .list .row:hover .room {
+	width: 175px;
+	height: 30px;
+	font-size: 20px;
+}
+.app-right .friends .list .row:hover .image,
+.app-right .friends .list .row:hover .thumb {
+	position: absolute;
+	top: 0; left: 0px;
+	display: block;
+}
+.app-right .friends .list .row:hover .name {
+	position: absolute;
+	left: 40px; top: 5px;
+	width: 100px;
+}
+.app-right .friends .list .row:hover .name span {
+	position: absolute;
+	width: 90px;
+}
+.app-right .friends .list .row.is-admin:hover .name span {left: 17px;}
+.app-right .friends .list .row.is-ambassador:hover .name span {left: 15px;}
+.app-right .friends .list .row:hover .name span {left: 2px;}

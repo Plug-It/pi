@@ -4,6 +4,9 @@
 .room-background {
   background-image: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg) !important;
 }
+.description.panel .value a[href*=".json"] {
+	display: none;
+}
 
 /* [RANKS] */
 #chat [data-cid^="4613422-"] .un::before,
@@ -11,15 +14,16 @@
 #chat [data-cid^="20852061-"] .un::before {
 	content: "\0000a0";
 	width: 15px; height: 15px;
-	position: relative;
-	top: 1px; left: -2px;
 	float: left;
+	margin-right: 4px;
 }
 /* Bot */
 #chat [data-cid^="5285179-"] .bdg,
 #chat [data-cid^="5285179-"] .no-badge {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) !important;
-	background-position: 0 0 !important;
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) 0 0 / 30px !important;
+}
+#user-rollover.id-5285179 .thumb .avi {
+	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_bot.png) center center / 90px no-repeat !important;
 }
 #chat [data-cid^="5285179-"] .no-badge i {
 	display: none !important;

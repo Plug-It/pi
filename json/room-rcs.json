@@ -2,7 +2,7 @@
 	"room":   "enjoy-the-drop",
 	"author": "WiBla",
 	"icon":   "https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/room-icon_31.png",
-	"css":    "https://rawgit.com/Plug-It/pi/pre-release/css/blue.css",
+	"css":    "https://dl.dropboxusercontent.com/s/exym4yg3sjcgg0m/EH-theme.css",
 	"rules": {
 		"allowAutorespond": true,
 		"allowAutowoot":    true,

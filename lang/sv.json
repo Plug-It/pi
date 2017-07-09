@@ -23,14 +23,16 @@
       "scVisu":"SoundCloud visualiser",
       "customStyle":"Anpassad stil",
       "customRanks":"Anpassade Roller",
+      "languageFlags":"Language flags",
       "customBG":"Anpassad bakgrund",
       "oldChat":"Gammal chatt",
       "oldFooter":"Gammal sidofot",
-      "smallHistory":"Kompakt historik"
+      "smallHistory":"Kompakt historik",
+      "smallFriends":"Small friends list"
     },
     "moderation":{
       "title":"Moderation",
-      "showDeletedMsg":"Show deleted messages",
+      "showDeletedMsg":"Visa borttagna meddelanden",
       "confirmChatDeletion":"Bekräfta radering av chatten",
       "userInformation":"Användarinformation",
       "skipStuckSongs":"Hoppa över låtar som har fastnat",
@@ -56,7 +58,9 @@
       "friendDisconnect":"Kompis lämnade",
       "unfriended":"Blivit borttagen som vän",
       "gainNotification":"Intjänade XP/PP",
-      "userLevelUp":"User Level up"
+      "gainNotificationMinXPLabel":"Minimum XP for notification",
+      "gainNotificationMinPPLabel":"Minimum PP for notification",
+      "userLevelUp":"Notis när någon levlar upp"
     },
     "about":{
       "title":"Om",
@@ -70,8 +74,8 @@
     }
   },
   "tooltips":{
-    "clearChat":"Rensa Chatten",
-    "afk":"Toggle yourself as AFK, ctrl+click to edit message",
+    "clearChat":"Clear chat, [ctrl+clik] = clear all, [shift+click] = clear PI logs",
+    "afk":"Sätt dig själv som AFK, ctr + klicka för att ändra meddelandet",
     "rmvDJ":"Hoppa över och ta bort DJ:n från båset",
     "skip":"Hoppa över DJ:n",
     "toggleStream":"Sätt på/av video/audio"
@@ -87,9 +91,9 @@
     "guestJoin":"En gäst gick med ! Antal gäster : %%GUESTS%%",
     "guestLeave":"En gäst lämnade ! Antal gäster : %%GUESTS%%",
     "friendRoomChange":"%%FRIEND%% är nu i <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendRoomChangeDashboard":"%%FRIEND%% är nu i <a href='/dashboard'>menyn</a>.",
+    "friendRoomChangeDashboard":"%%FRIEND%% is now in the dashboard.",
     "friendConnect":"%%FRIEND%% är nu online <a href='/%%LINK%%'>%%NAME%%</a>.",
-    "friendConnectDashboard":"%%FRIEND%% är nu online i <a href='/dashboard'>menyn</a>.",
+    "friendConnectDashboard":"%%FRIEND%% went online in the dashboard.",
     "friendDisconnect":"%%FRIEND%% är nu offline.",
     "reloading":"Startar om Plug-It...",
     "eta":"%%TIME%% tills du kommer att spela.",
@@ -123,8 +127,8 @@
     "checkingUnavailable":"Sökning för borttagna låtar har börjat.",
     "moveMedia":"Flyttar media %%CURRENT%%/%%TOTAL%% till %%DIRECTION%% av spellistan.",
     "removeMedia":"Tar bort media %%CURRENT%%/%%TOTAL%% från spellistan.",
-    "whoami":"Namn: %%USERNAME%%\nAnvändarnamn: %%RAWUN%%\nID: %%ID%%\nBeskrivning: %%BLURB%%\nSpråk: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblem: %%BADGE%%\nLvl: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nGick med: %%JOINED%%\nSågs senast: %%LASTSEEN%%\nRöst: %%VOTE%%\nSparat: %%GRAB%%\nPlug-roll: %%PLUGROLE%%\nPlug-it-roll: %%PLUGITROLE%%\nRank: %%RANK%%\nGäst: %%GUEST%%\nPrenumerant: %%SUB%%\nSilver: %%SILVER%%",
-    "whois":"Namn: %%USERNAME%%\nAnvändarnamn: %%RAWUN%%\nID: %%ID%%\nSpråk: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nEmblem: %%BADGE%%\nLvl: %%LVL%%\nGick med: %%JOINED%%\nSågs senast: %%LASTSEEN%%\nRöst: %%VOTE%%\nSparat: %%GRAB%%\nPlug-roll: %%PLUGROLE%%\nPlug-it-roll: %%PLUGITROLE%%\nRank: %%RANK%%\nGäst: %%GUEST%%\nPrenumerant: %%SUB%%\nSilver: %%SILVER%%\nVän: %%FRIEND%%",
+    "whoami":"Username: %%USERNAME%%\nRaw username: %%RAWUN%%\nID: %%ID%%\nDescription: %%BLURB%%\nLanguage: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nBadge: %%BADGE%%\nLvl: %%LVL%%\nXP: %%XP%%\nPP: %%PP%%\nJoined: %%JOINED%%\nVote: %%VOTE%%\nGrab: %%GRAB%%\nPlug role: %%PLUGROLE%%\nPlug-It role: %%PLUGITROLE%%\nRank: %%RANK%%\nGuest: %%GUEST%%\nSub: %%SUB%%\nSilver: %%SILVER%%",
+    "whois":"Username: %%USERNAME%%\nRaw username: %%RAWUN%%\nID: %%ID%%\nLanguage: %%LANGUAGE%%%%PROFILE%%\nAvatar: %%AVATAR%%\nBadge: %%BADGE%%\nLvl: %%LVL%%\nJoined: %%JOINED%%\nVote: %%VOTE%%\nGrab: %%GRAB%%\nPlug role: %%PLUGROLE%%\nPlug-It role: %%PLUGITROLE%%\nRank: %%RANK%%\nGuest: %%GUEST%%\nSub: %%SUB%%\nSilver: %%SILVER%%\nFriend: %%FRIEND%%",
     "unfriended":"%%FRIEND%% har tagit bort dig som vän %%SAD%%"
   },
   "warn":{
@@ -154,6 +158,8 @@
     "staffKick":"Du kan inte sparka användare som är samma eller högre rang än dig.",
     "selfBan":"Duh! Du kan inte bannlysa dig själv.",
     "staffBan":"Du kan inte bannlysa användare som är samma eller högre rang än dig.",
+    "selfBMute":"Cannot mute yourself.",
+    "staffMute":"This user cannot be muted.",
     "cannotRank":"Kunde sätta användarens rang.",
     "renaming":"Fel vid namngivning.",
     "brokenSong":"En trasig låt i \"%%NAME%%\":\n[%%SOURCE%%] %%AUTHOR%% - %%TITLE%%\n(CID: %%CID%%)",
@@ -161,7 +167,9 @@
     "playlistFull":"Aktuell spellista är redan full",
     "cannotGrab":"Kunde inte spara låten till den aktuella spellistan, är den full?",
     "cannotGetMediaID":"Kunde inte hämta låtens ID, kolla konsolen för mer detaljer.",
-    "cannotLoadScriptRoomSettings":"Lyckades inte ladda %%SCRIPT%%s rumsinställningar:\n%%ERROR%%"
+    "cannotLoadScriptRoomSettings":"Lyckades inte ladda %%SCRIPT%%s rumsinställningar:\n%%ERROR%%",
+    "APIFloodDetected":"API flood detected! Deactivated the API and internal calls to it for 10s.",
+    "APIFLoodInEffect":"This action is unavailable due to an API flood."
   },
   "success":{
     "removedBot":"Tog bort %%BOT%% som bot.",
@@ -172,37 +180,38 @@
     "noDuplicates":"Sökning efter dubbletter har avslutats: Inga resultat. Grattis!",
     "duplicateFinished":"Sökning efter dubbletter har avslutats.",
     "doneRenaming":"Klar med att döpa om %%TOTAL%% %%SONG%%!",
-    "noRenaming":"No songs to rename, your playlists are clean !",
-    "unavailableFinished":"Unavailable song search finished !",
-    "noUnavailable":"Unavailable song search finished ! No broken songs found !"
+    "noRenaming":"Det finns inga låtar att döpa om, dina spellistor är rena!",
+    "unavailableFinished":"Sökning för borttagna låtar har blivit klar!",
+    "noUnavailable":"Sökning för borttagna låtar har blivit klar! Inga korrupta låtar hittades!"
   },
   "userchat":{
-    "songStuck":"Song is stuck, force skipping...",
-    "afkResponder":"@%%MENTION%% I am afk.",
-    "kicking":"@%%USER%% you will be kicked for %%TIME%% seconds.",
-    "djSkip":"@%%DJ%%, this song is in the DJ history !",
-    "inputDisabled":"Turn off AFK responder to chat !"
+    "songStuck":"Låten har fastnat, hoppar över...",
+    "afkResponder":"@%%MENTION%% Jag är AFK.",
+    "kicking":"@%%USER%% du kommer att kickas i %%TIME%% sekunder.",
+    "djSkip":"@%%DJ%% denna låt är i DJ-historiken!",
+    "inputDisabled":"Stäng av AFK-meddelande för att chatta!",
+    "chatDelete":"Deleted by %%MOD%%%%NEWCOUNT%% at %%TIME%%"
   },
   "notifications":{
-    "mentioned":"You have been mentioned by %%USER%%:",
-    "reply":"Click here to reply."
+    "mentioned":"Du blev omnämnd av %%USER%%:",
+    "reply":"Klicka här för att svara."
   },
   "modal":{
-    "BrokenSongsChangeSettings":"Do you want to change the default settings ?\n\nlog in chat: true\nlog in file: false\nmove to top: true\nmove to bottom: false\ndelete unavailable songs: false",
-    "consoleLog":"Log in console ?",
-    "chatLog":"Log in chat ?",
-    "fileLog":"Log in file ?",
-    "moveTop":"Move to top ?\n\n(If both move to top and bottom are true, will move to top)",
-    "moveBottom":"Move to bottom ?",
-    "deleteSongs":"Delete unavailable songs ?"
+    "BrokenSongsChangeSettings":"Vill du ändra standardinställningarna?\n\nlogg i chatten: ja\nlogg som en fil: nej\nflytta till toppen: ja\nflytta till botten: nej\nta bort korrupta låtar: nej",
+    "consoleLog":"Logg i konsolen?",
+    "chatLog":"Logg i chatten?",
+    "fileLog":"Logg som en fil?",
+    "moveTop":"Flytta till toppen?\n\n(Om båda flytta till toppen och flytta till botten är \"ja\" kommer låtarna flyttas till toppen)",
+    "moveBottom":"Flytta till botten?",
+    "deleteSongs":"Ta bort korrupta låtar?"
   },
   "glossary":{
-    "song":"song",
-    "songs":"songs",
-    "top":"top",
-    "bottom":"bottom",
-    "none":"none",
-    "delete":"delete",
-    "dashboard":"dashboard"
+    "song":"låt",
+    "songs":"låtar",
+    "top":"toppen",
+    "bottom":"botten",
+    "none":"ingen",
+    "delete":"ta bort",
+    "dashboard":"meny"
   }
 }

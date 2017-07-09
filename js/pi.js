@@ -26,7 +26,7 @@
 		- Sinful for being so kind and teaching me how to use CSS attribute selectors.
 		- TheDark1337 for always answering my silly questions about javascript and his script.
 		- Dano-em for making me love jQuery.
-		- The creators of this repository: https://github.com/plugcommunity/documentation
+		- The creators & maintainers of this repository: https://github.com/plugcommunity/documentation
 		  for putting together such an amazing source of documentation.
 
 	Library Used:
@@ -36,6 +36,8 @@
 		  -> https://jquery.com
 		RequireJS
 		  -> http://requirejs.org
+		ExtPlug Socket Intercept
+			-> https://github.com/extplug/ExtPlug/blob/master/src/plugins/SocketEventsPlugin.js
 
 	Inspired by:
 		plug³ https://plugcubed.net/
@@ -73,7 +75,7 @@
 */
 
 ;(function load() {
-	var isPlugRoom = /(http(?:s)?:\/\/(?:[a-z]+\.)*plug\.dj\/)(?!about$|ba$|forgot-password$|giftsub\/\d|jobs$|legal$|partners$|plot$|privacy$|purchase$|subscribe$|team$|terms$|press$|_\/|@\/|!\/)(.+)/i;
+	var isPlugRoom = /(http(?:s)?:\/\/(?:[a-z]+\.)*plug\.dj\/)(?!about$|ba$|forgot-password$|founders$|giftsub\/\d|jobs$|legal$|merch$|partners$|plot$|privacy$|purchase$|subscribe$|team$|terms$|press$|_\/|@\/|!\/)(.+)/i;
 	if (isPlugRoom.test(location.href)) {
 		if (typeof pi !== 'undefined') pi._reload();
 		else if (plugReady()) {
@@ -166,7 +168,8 @@
 			if (typeof lang !== 'object' || typeof ranks !== 'object') return setTimeout(init, 10);
 
 			const startTime = new Date().getTime();
-			const delay = (API.getUser().gRole >= 3 ? 100 : 3500);
+			const delay = (API.getUser().gRole >= 3 ? 200 : 3500);
+			const CHAT_INTERCEPT_STRING = `Plug-It Socket Intercept: ${Math.random()}`;
 			const url = {
 				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
 				styles: {
@@ -177,16 +180,17 @@
 					custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css',
 					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
 					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
-					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css'
+					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css',
+					small_friends: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css'
 				},
 				images: {
-					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It.jpg'
+					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg' //'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg'
 				},
 				sounds: {
 					// https://www.freesound.org/people/TheGertz/sounds/235911/
-					notification: 'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
+					notification:  'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/notification.wav', //'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
 					// https://www.freesound.org/people/soneproject/sounds/255102/
-					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav'
+					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav' //'https://dl.dropboxusercontent.com/s/0zg1yrg4sq06vny/jingle.wav'
 				},
 				visu: [
 					'https://rawgit.com/WiBla/visu/master/hyperspace/index.html',
@@ -224,13 +228,17 @@
 				roomStyle: true,
 				CSS: false,
 				customRanks: false,
-				bg: "",
+				languageFlags: true,
+				customBG: false,
+				customBGURL: null,
 				oldChat: false,
 				oldFooter: false,
 				smallHistory: false,
+				smallFriends: false,
 				// Moderation
 				showDeletedMsg: false,
 				confirmDelete: false,
+				gRoleCmdSelfDel: true,
 				userInfo: false,
 				stuckSkip: false,
 				songLimit: false,
@@ -251,7 +259,27 @@
 				friendConnect: false,
 				friendDisconnect: false,
 				unfriended: false,
+				friendEventsList: {
+					whiteList: {
+						active: false
+					},
+					blacklist: {
+						active: true,
+						users: {
+							"3537523": {
+								roomChange: false,
+								connect: false,
+								disconnect: false,
+								unfriended: true,
+							}
+						}
+					}
+				},
 				gainNotification: false,
+				minimumGain: {
+					xp: 1,
+					pp: 2,
+				},
 				userLevelUp: false,
 				// Custom Roles
 				bot: [5285179],
@@ -264,33 +292,97 @@
 			};
 			var emotes = {};
 			var modules = {};
-			var unread = false; // used to notify on unread messages + window blurred
-			var woots = API.getUsers().filter(x => x.vote == 1);
-			var grabs = API.getUsers().filter(x => x.grab);
-			var mehs  = API.getUsers().filter(x => x.vote == -1);
+			var session = {
+				unread: false, // used to notify on unread messages + window blurred
+				floodAPI: false,
+				woots: API.getUsers().filter(x => x.vote == 1),
+				grabs: API.getUsers().filter(x => x.grab),
+				mehs:  API.getUsers().filter(x => x.vote == -1),
+				chat: []
+			};
 
 			// Prototypes
 			Number.prototype.spaceOut = function() {
 				if (isNaN(this) || this < 999) return this;
 				return (this).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 			};
-			Function.prototype.clone = function() {
-				var that = this;
-				var temp = function temporary() { return that.apply(this, arguments); };
-				for(var key in this) {
-					if (this.hasOwnProperty(key)) {
-						temp[key] = this[key];
-					}
+			function meldBefore(object, property, cb) {
+				const originalFunction = object[property];
+
+				object[property] = function wrapped() {
+					cb(arguments[0]);
+					originalFunction.call(object, arguments[0]);
 				}
-				return temp;
+
+				return {
+					remove: function() {
+						object[property] = originalFunction;
+					}
+				};
 			};
+			// gives the user all permissions client-side temporarily, to make sure that
+			// a chat message will actually be passed to the socket.
+			function sudo(cb) {
+				const originalUser = modules.user.toJSON();
+				modules.user.set({
+					id: 1,
+					guest: false,
+					level: 50,
+					role: 5,
+					gRole: 5,
+				}, { silent: true });
+
+				const originalRoom = _.pick(modules.room.toJSON(), 'joined', 'minChatLevel');
+				modules.room.set({
+					joined: true,
+					minChatLevel: 0,
+				}, { silent: true });
+
+				// this forces the chat slowmode cooldown timer to always return 0, thus
+				// working around slowmode
+				const originalMax = Math.max;
+				Math.max = () => 0;
+
+				cb();
+
+				Math.max = originalMax;
+				modules.room.set(originalRoom, { silent: true });
+				modules.user.set(originalUser, { silent: true });
+			}
+			function getSocket() {
+				// If RCS is loaded and already has a reference to the WebSocket, just use
+				// that.
+				if (window.rcs && window.rcs.plugSock &&
+					window.rcs.plugSock.sock instanceof WebSocket) {
+					return window.rcs.plugSock.sock;
+				}
+
+				const send = WebSocket.prototype.send;
+				let socket;
+				WebSocket.prototype.send = function sendIntercept(data) {
+					if (this.url.indexOf('plug.dj') !== -1 && data.indexOf(CHAT_INTERCEPT_STRING) !== -1) {
+						socket = this;
+						WebSocket.prototype.send = send;
+					} else {
+						send.call(this, data);
+					}
+				};
+				sudo(() => {
+					modules.chatFacade.sendChat(CHAT_INTERCEPT_STRING);
+				});
+
+				// restore even if it didn't work
+				WebSocket.prototype.send = send;
+
+				return socket;
+			}
 
 			window.pi = {
 				version: {
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 24
+					pre: 25
 				},
 				_event: {
 					advance: function(song) {
@@ -317,9 +409,6 @@
 						}; */
 
 						pi.autojoin();
-						// Playback gets reset on advance, if showvideo is off, hide it again
-						// to prevent accidental scroll wheel volume changes
-						if (!settings.showVideo) pi.dom.playback.style.height = '0';
 
 						// Checking if a media is playing
 						if (!song.dj || !song.media) return;
@@ -362,7 +451,7 @@
 						// your own play due to playlist refreshing,
 						// thanks ReAnna fot this info BTW !)
 						setTimeout(function() {
-							if (settings.skipNextMediaInHistory && API.getWaitListPosition() === 0 && API.getNextMedia().inHistory) {
+							if (settings.skipNextMediaInHistory && API.getWaitListPosition() === 0 && API.getNextMedia().inHistory &&!floodAPI) {
 								$.ajax({
 									url: '/_/playlists/'+API.getActivePlaylist().id+'/media/move',
 									type: 'PUT',
@@ -425,6 +514,7 @@
 							if (settings.confirmDelete) {
 								$(selector + ' .delete-button').off('click');
 								$(selector + ' .delete-button').on('click', function(e) {
+									e.preventDefault();
 									if (e.shiftKey) return API.moderateDeleteChat(msg.cid);
 									pi._tool.modal(true, 'confirmDelete', function() {
 										API.moderateDeleteChat(msg.cid);
@@ -479,21 +569,6 @@
 								break;
 							}
 						}
-						// Adding a span on discordbot's messages to indicate a user
-						// [user] text → <span class="discord-username">user:</span> text
-						if (pi._tool.getRank(sender.id).indexOf('Discord Bot') !== -1) {
-							msg.message = msg.message.replace(/^(\[[^\]]*\])/, '<span class="discord-username">$1</span>');
-							if ($(selector).length) {
-								$(selector).find('.text')[0].innerHTML = msg.message;
-							} else {
-								// split by line return, replace last item in array by msg.message formated, simple as that
-								// Excepts when user doesn't send
-								let previousMsgs = $('#chat .cm.pi-discord-bot:last .text')[0].innerHTML.split('<br>');
-								previousMsgs.pop();
-								previousMsgs.push(msg.message);
-								$('#chat .cm.pi-discord-bot:last .text')[0].innerHTML = previousMsgs.join('<br>');
-							}
-						}
 						// Auto AFK responder with 60s cooldown (prevents spam)
 						if (((msg.sound && msg.sound === "mention") || msg.type == 'mention') &&
 						    msg.uid !== API.getUser().id &&
@@ -538,15 +613,17 @@
 							});
 						}
 						// If WINDOW blurred, prepend page title with asterics to indicate new messages
-						if (msg.type !== 'log' && !document.hasFocus() && !unread) {
-							unread = true;
+						if (msg.type !== 'log' && !document.hasFocus() && !session.unread) {
+							session.unread = true;
 							document.title = "* " + API.getRoomName();
 							window.onfocus = function() {
 								document.title = API.getRoomName();
-								unread = false;
+								session.unread = false;
 								window.onfocus = undefined;
 							}
 						}
+
+						session.chat.push(msg);
 					},
 					chatCommand: function(cmd) {
 						// contains = "/command and arguments";
@@ -593,13 +670,79 @@
 								API.sendChat('🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥');
 							break;
 
+							case 'kong':
+								API.sendChat(':kong::kong::kong::kong::kong::kong::kong:');
+							break;
+
 							case 'shrug':
 								if (!msg.length) API.sendChat('¯\\_(ツ)_/¯');
 								else API.sendChat(msg + ' ¯\\_(ツ)_/¯');
 							break;
 
+							case 'gift':
+								if (!args[0]) {
+									API.gift(4613422, 1337, 'a misterious person');
+								} else {
+									args[1] = isNaN(args[1]) ? 25: args[1];
+									// Getting the user, either by username or ID
+									if (isNaN(args[0])) {
+										args[0] = API.getUserByName(args[0].replace(/@| $/g, '')).id;
+										API.gift(args[0], args[1]);
+									} else {
+										API.gift(args[0], args[1]);
+									}
+								}
+							break;
+
+							case 'pm':
+								if (!args[0]) return pi._tool.log(lang.info.helpUserOrId, 'info chat');
+
+								// Getting the user, either by username or ID
+								var user;
+								if (isNaN(args[0])) {
+									user = API.getUserByName(args[0].replace(/@| $/g, ''));
+									if (typeof user === 'object') user = user.id;
+									else {
+										return pi._tool.log(lang.error.userNotFound, 'error chat');
+									}
+								}
+
+								var encoded = '';
+								msg.slice(args[0].length+1).split('').forEach((e,i,a) => {
+									encoded += (e.charCodeAt(0) <= 99 ? '0'+e.charCodeAt(0):e.charCodeAt(0));
+								});
+
+								API.moderateDeleteChat(user+'-'+encoded);
+							break;
+
 							case 'eta':
 								pi.eta(true); // true means log out in chat
+							break;
+
+							case 'exportchat':
+								var file = '';
+								session.chat.forEach((e,i,a) => {
+									file += `[${e.type}] [${e.uid}] [${e.un}]\n${e.message} [${e.timestamp}]\n`;
+								});
+
+								$('<a></a>')
+									.attr('id', 'pi-exportchat')
+									.attr('href', 'data:text;charset=utf8,' + encodeURIComponent(file))
+									.attr('download', API.getRoomName() + '-logs.txt')
+									[0].click();
+							break;
+
+							case 'exportchat csv':
+								var file = '';
+								session.chat.forEach((e,i,a) => {
+									file += `${e.type},${e.uid},${e.un},${e.message},${e.timestamp}`;
+								});
+
+								$('<a></a>')
+									.attr('id', 'pi-exportchat')
+									.attr('href', 'data:text/csv;charset=utf8,' + encodeURIComponent(file))
+									.attr('download', API.getRoomName() + '-logs.csv')
+									[0].click();
 							break;
 
 							case 'vol':
@@ -717,6 +860,49 @@
 								API.moderateBanUser(user.id, 1, duration);
 							break;
 
+							case 'mute':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
+								var self = API.getUser();
+								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
+
+								// Since username can have spaces, keep only the last args as duration
+								var duration;
+								if (args.length > 1) {
+									let lastArg = args[args.length-1].toLowerCase();
+									if (lastArg === 'long' || lastArg === 'medium' || lastArg === 'short')
+										duration = args.pop();
+									else duration = API.MUTE.LONG;
+								}
+								var user = args.join(' ');
+
+								if (isNaN(user)) {
+									user = API.getUserByName(user.replace(/@| $/g, ''));
+								}	else {
+									user = API.getUser(user);
+								}
+
+								if (user === null) return pi._tool.log(lang.error.userNotFound, 'error chat');
+								if (user.id === self.id) return pi._tool.log(lang.error.selfMute, 'error chat');
+								if (self.role <= user.role) return pi._tool.log(lang.error.staffMute, 'error chat');
+
+								duration = duration.toLowerCase();
+								if (duration === 'long') duration = API.MUTE.LONG;
+								else if (duration === 'medium') duration = API.MUTE.MEDIUM;
+								else if (duration === 'short') duration = API.MUTE.SHORT;
+
+								$.ajax({
+									url: '/_/mutes',
+									method: 'POST',
+									data: JSON.stringify({
+										userID: user.id,
+										reason: 1,
+										duration: duration
+									}),
+									dataType: 'json',
+									contentType: 'application/json'
+								});
+							break;
+
 							case 'host':
 							case 'cohost':
 							case 'manager':
@@ -724,6 +910,7 @@
 							case 'residentdj':
 							case 'rdj':
 							case 'unrank':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								var userID;
 
 								if (typeof msg == 'undefined') {
@@ -762,6 +949,7 @@
 							break;
 
 							case 'grabed?':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								if (API.getUser().id === API.getDJ().id) {
 									pi._tool.log(lang.info.youPlay, 'info chat');
 									break;
@@ -785,7 +973,7 @@
 														grabed = true;
 													}
 
-													if (i + 1 === a.length && ii + 1 === aa.length && !grabed) {
+													if (i + 1 >= a.length && ii + 1 >= aa.length && !grabed) {
 														log.edit(lang.success.notGrabed).changeType('success');
 													}
 												});
@@ -796,6 +984,7 @@
 							break;
 
 							case 'duplicates':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								// Everything that is not a coma (can be escaped with "\")
 								let excludedPL = msg.match(/(\s?(\\,)?[^,])+/g);
 								let skip = false;
@@ -863,6 +1052,7 @@
 							break;
 
 							case 'removeLabels':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								if (sessionStorage.getItem('removeLabelWarn') === 'false') {
 									pi._tool.log(lang.warn.unlistedCommand, 'warn chat',
 										function() {
@@ -892,7 +1082,7 @@
 														});
 													}
 
-													if (i + 1 === a.length && j + 1 === aa.length) {
+													if (i + 1 >= a.length && j + 1 >= aa.length) {
 														log.edit(lang.log.checkingRemoving).changeType('log');
 
 														if (toRename.length > 0) {
@@ -930,7 +1120,7 @@
 																			// Placed inside the success so it appears after the last element
 																			// and not before due to connection time. Yes, if it fails on the
 																			// last element, it will not show up.
-																			if (index + 1 === array.length) {
+																			if (index + 1 >= array.length) {
 																				log.edit(
 																					pi._tool.replaceString(
 																						lang.success.doneRenaming, {
@@ -962,6 +1152,7 @@
 							break;
 
 							case 'findBrokenSongs':
+								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								const APIkey = 'AIzaSyC8pk0f57a_UcAIbHdrvRhsmHSG1KZk2SM';
 								var unavailableMove = [], fileText = '', log,
 								cmdSettings = {
@@ -1046,7 +1237,7 @@
 											});
 										}, delay * i);
 
-										if (i + 1 === a.length) {
+										if (i + 1 >= a.length) {
 											setTimeout(function() {
 												Object.keys(unavailableMove).forEach(function(ee, ii, aa) {
 													setTimeout(function() {
@@ -1080,7 +1271,7 @@
 																contentType: 'application/json'
 															});
 														}
-														if (ii + 1 == aa.length) {
+														if (ii + 1 >= aa.length) {
 															if (cmdSettings.logToChat) log.edit(lang.success.unavailableFinished).changeType('success');
 															setTimeout(function() {
 																if (cmdSettings.logToFile) download(fileText, 'plug.dj unavailable songs.txt', 'text/plain');
@@ -1115,7 +1306,6 @@
 										xp: me.xp,
 										pp: me.pp,
 										joined: new Date(me.joined).toUTCString(),
-										lastseen: new Date(me.last_seen).toUTCString(),
 										vote: me.vote,
 										grab: me.grab,
 										plugRole: me.gRole,
@@ -1157,7 +1347,6 @@
 											badge: user.badge,
 											lvl: user.level,
 											joined: new Date(user.joined).toUTCString(),
-											lastseen: new Date(user.last_seen).toUTCString(),
 											vote: user.vote,
 											grab: user.grab,
 											plugRole: user.gRole,
@@ -1191,8 +1380,11 @@
 									'\n/door (@user/message)'+
 									'\n/doorrun (@user/message)'+
 									'\n/fire'+
+									'\n/kong'+
 									'\n/shrug (message)'+
+									'\n/gift [@user/id] [amount]'+
 									'\n/eta'+
+									'\n/exportchat (csv)'+
 									'\n/vol [0-100]'+
 									'\n/afk [message]'+
 									'\n/setbot [@user/id]'+
@@ -1234,27 +1426,37 @@
 						// contains = {pp:0, xp:0};
 						if (settings.gainNotification) {
 							let gain;
-							let totalXP = API.getUser().xp;
-							let totalPP = API.getUser().pp;
+							let totalXP = API.getUser().xp + amount.xp;
+							let totalPP = API.getUser().pp + amount.pp;
+							let minXP = amount.xp >= settings.minimumGain.xp;
+							let minPP = amount.pp >= settings.minimumGain.pp;
 							// Parsing numbers to be more readable
 							totalXP   = totalXP   > 999 ? totalXP.spaceOut()   : totalXP;
 							totalPP   = totalPP   > 999 ? totalPP.spaceOut()   : totalPP;
 							amount.pp = amount.pp > 999 ? amount.pp.spaceOut() : amount.pp;
 							amount.xp = amount.xp > 999 ? amount.xp.spaceOut() : amount.xp;
 
-							if (amount.pp === 0) {
+							if (amount.pp === 0 && minXP) {
 								gain = amount.xp + ' xp.\n'+
 								'Total: ' + totalXP + ' xp';
-							} else if (amount.xp === 0) {
+							} else if (amount.xp === 0 && minPP) {
 								gain = amount.pp + ' PP.\n'+
 								'Total: ' + totalPP + ' PP';
 							} else {
-								gain = amount.xp+' xp and '+amount.pp+' PP.\n'+
-								'Total: ' + totalXP + ' xp\n' +
-								totalPP + ' PP';
+								if (minXP && minPP) {
+									gain = amount.xp+' xp and '+amount.pp+' PP.\n'+
+									'Total: ' + totalXP + ' xp\n' +
+									totalPP + ' PP';
+								} else if (minXP) {
+									gain = amount.xp + ' xp.\n'+
+									'Total: ' + totalXP + ' xp';
+								} else if (minPP) {
+									gain = amount.pp + ' PP.\n'+
+									'Total: ' + totalPP + ' PP';
+								}
 							}
 
-							pi._tool.log(pi._tool.replaceString(lang.log.earn, {gain: gain}), 'chat');
+							if (typeof gain !== "undefined") pi._tool.log(pi._tool.replaceString(lang.log.earn, {gain: gain}), 'chat');
 						}
 					},
 					friendJoin: function(friend) {
@@ -1370,9 +1572,9 @@
 							grabs: 0
 						}; */
 
-						woots = API.getUsers().filter(x => x.vote == 1);
-						grabs = API.getUsers().filter(x => x.grab);
-						mehs  = API.getUsers().filter(x => x.vote == -1);
+						session.woots = API.getUsers().filter(x => x.vote == 1);
+						session.grabs = API.getUsers().filter(x => x.grab);
+						session.mehs  = API.getUsers().filter(x => x.vote == -1);
 					},
 					userJoin: function(join) {
 						// contains: {userObject};
@@ -1429,7 +1631,8 @@
 				},
 				_modulesEvent: {
 					chatReceive: function(msg) {
-						if (msg.type === 'log') return;
+						if (['moderation', 'system', 'promo', 'user-action', 'log', 'welcome'].indexOf(msg.type) !== -1
+						    || msg.cid.indexOf('rcs') !== -1) return;
 						// This message node
 						let selector = '#chat [data-cid="'+msg.cid+'"]';
 						let sender = API.getUser(msg.uid);
@@ -1439,18 +1642,46 @@
 							// Script ranks
 							pi._tool.getRank(sender.id).forEach(rank => {
 								switch(rank) {
-									case "Dev":               $(selector)[0].className += ' pi-dev'; break;
-									case "Helper":            $(selector)[0].className += ' pi-helper'; break;
-									case 'Graphist':          $(selector)[0].className += ' pi-graphist'; break;
-									case 'Translator':        $(selector)[0].className += ' pi-translator'; break;
-									case 'Community Manager': $(selector)[0].className += ' pi-community-manager'; break;
-									case 'Donator':           $(selector)[0].className += ' pi-donator'; break;
-									case 'Alpha':             $(selector)[0].className += ' pi-alpha'; break;
-									case 'Bot':               $(selector)[0].className += ' pi-bot'; break;
-									case 'Discord Bot':       $(selector)[0].className += ' pi-discord-bot'; break;
+									case "Dev":
+										$(selector)[0].className += ' pi-dev';
+										$(selector+' .un').before($('<i class="icon icon-pi-dev"></i>'));
+									break;
+									case "Helper":
+										$(selector)[0].className += ' pi-helper';
+										$(selector+' .un').before($('<i class="icon icon-pi-helper"></i>'));
+									break;
+									case 'Graphist':
+										$(selector)[0].className += ' pi-graphist';
+										$(selector+' .un').before($('<i class="icon icon-pi-graphist"></i>'));
+									break;
+									case 'Translator':
+										$(selector)[0].className += ' pi-translator';
+										$(selector+' .un').before($('<i class="icon icon-pi-translator"></i>'));
+									break;
+									case 'Community Manager':
+										$(selector)[0].className += ' pi-community-manager';
+										$(selector+' .un').before($('<i class="icon icon-pi-community-manager"></i>'));
+									break;
+									case 'Donator':
+										$(selector)[0].className += ' pi-donator';
+									break;
+									case 'Alpha':
+										$(selector)[0].className += ' pi-alpha';
+										$(selector+' .un').before($('<i class="icon icon-pi-alpha"></i>'));
+									break;
+									case 'Bot':
+										$(selector)[0].className += ' pi-bot';
+										$(selector+' .un').before($('<i class="icon icon-pi-bot"></i>'));
+									break;
+									case 'Discord Bot':
+										$(selector)[0].className += ' pi-discord-bot';
+										$(selector+' .un').before($('<i class="icon icon-pi-discord-bot"></i>'));
+									break;
 								}
 							});
 							// Plug ranks
+							if (sender.gRole === 5) $(selector)[0].className += ' is-admin';
+							if (sender.gRole === 3) $(selector)[0].className += ' is-brand-ambassador';
 							switch(sender.role) {
 								case API.ROLE.HOST:    $(selector)[0].className += ' is-host';    break;
 								case API.ROLE.COHOST:  $(selector)[0].className += ' is-cohost'; $(selector+' .icon-chat-host')[0].className = "icon icon-chat-cohost"; break;
@@ -1463,9 +1694,50 @@
 							if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
 							if (sender.silver) $(selector)[0].className += ' is-silver-subscriber';
 							if (sender.friend) $(selector)[0].className += ' is-friend';
+							if (settings.languageFlags) {
+								var flag;
+
+								switch(sender.language) {
+									case 'cs': flag = ':flag-cz:'; break;
+									case 'da': flag = ':flag-dk:'; break;
+									case 'en': flag = ':flag-gb:'; break;
+									case 'ja': flag = ':flag-jp:'; break;
+									case 'ko': flag = ':flag-kr:'; break;
+									case 'pi': flag = ':skull_and_crossbones:'; break;
+									case 'uk': flag = ':flag-ua:'; break;
+									case 'zh': flag = ':flag-cn:'; break;
+									case null: flag = ':heavy_multiplication_x:'; break;
+									default: flag = ':flag-'+sender.language+':'; break;
+								}
+
+								flag = $(emoji.replace_colons(flag)).attr({
+									style: 'margin-left: 2px;',
+									title: modules.Lang.languages[(sender.language !== null ? sender.language : 'no language set')]
+								});
+								$(selector+' .timestamp').before(flag);
+							}
+							if (settings.userInfo) {
+								$(selector+' .timestamp').before('<span class="userInfo">'+`LVL: <b>${sender.level}</b> | ID: <b>${sender.id}<b>`+'</span>');
+							}
 
 							// Chat limit
 							pi.betterClearChat(settings.chatLimit);
+						}
+
+						// Adding a span on discordbot's messages to indicate a user
+						// [user] text → <span class="discord-username">user:</span> text
+						if (pi._tool.getRank(sender.id).indexOf('Discord Bot') !== -1) {
+							msg.message = msg.message.replace(/^(\[[^\]]*\])/, '<span class="discord-username">$1</span>');
+							if ($(selector).length) {
+								$(selector).find('.text')[0].innerHTML = msg.message;
+							} else {
+								// split by line return, replace last item in array by msg.message formated, simple as that
+								// Excepts when user doesn't send
+								let previousMsgs = $('#chat .cm.pi-discord-bot:last .text')[0].innerHTML.split('<br>');
+								previousMsgs.pop();
+								previousMsgs.push(msg.message);
+								$('#chat .cm.pi-discord-bot:last .text')[0].innerHTML = previousMsgs.join('<br>');
+							}
 						}
 
 						// Emojis
@@ -1494,6 +1766,53 @@
 							texts = $('.text.cid-'+msg.cid)[0].innerHTML.split('<br>');
 							texts[texts.length-1] = msg.message;
 							$(".text.cid-"+msg.cid)[0].innerHTML = texts.join('<br>');
+						}
+
+						// gRole command self deletion
+						if (settings.gRoleCmdSelfDel && API.getUser().gRole > 0 && API.getUser().id === msg.uid && msg.message.indexOf('!') === 0) {
+							API.moderateDeleteChat(msg.cid);
+						}
+					},
+					chatDelete: function(message) {
+						if ($('.cid-'+ message.p.c).length === 0) {
+							var secret = message.p.c.split('-');
+							if (secret[0] == API.getUser().id) {
+								var text = '';
+								secret[1].match(/.{1,3}/g).forEach((e,i,a) => {
+									text += String.fromCharCode(parseInt(e));
+								});
+								pi._tool.log(`New PM from [${API.getUser(message.p.mi).username}]\n${text}`);
+							}
+						}
+
+						if (settings.showDeletedMsg) {
+							// using raw cid and then traversing to the .msg allows
+							// to find the div even when chat has been merged
+							let $chat = $('.cid-'+message.p.c).closest('.cm');
+							let time = modules.utils.getSimpleTimestamp();
+							let user = API.getUser(message.p.c.split('-')[0]);
+							let mod = API.getUser(message.p.mi);
+							let $prevDelete = $chat.find('.pi-deleted[data-id="'+message.p.mi+'"]');
+
+							if (mod.gRole === 5 ||
+								(user.gRole > 0 && user.id === mod.id) ||
+								user.gRole !== 5 || user.gRole !== 3) {
+								$chat.addClass('deleted');
+							}
+
+							$chat.find('.delete-button').remove();
+							if ($prevDelete.length > 0) {
+								let newCount = parseInt($prevDelete.attr('data-count'))+1;
+								// Increment count by one
+								$prevDelete.attr("data-count", newCount);
+								$prevDelete.html(pi._tool.replaceString(lang.userchat.chatDelete, {mod: mod.username, newCount: '(x'+newCount+')', time: time}));
+							} else {
+								$chat.find('.msg').after($(`<span class="pi-deleted" data-id="${message.p.mi}" data-count="1">${pi._tool.replaceString(lang.userchat.chatDelete, {mod: mod.username, newCount: '', time: time})}</span>`));
+							}
+
+							// chat split with API.chatLog then delete it
+							pi._tool.log('This is to fix deleted messages', 'chat').delete();
+							return;
 						}
 					}
 				},
@@ -1561,6 +1880,7 @@
 									}
 								break;
 								case 'b':
+									if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 									if (e.ctrlKey) {
 										e.preventDefault();
 										var targetUser = API.getUserByName($('#user-rollover .username')[0].innerText);
@@ -1618,6 +1938,7 @@
 									}
 								break;
 								case 'g':
+									if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 									if (!$('#chat-input').hasClass('focused') &&
 											!$(':focus').length &&
 										  !$('.dialog').length &&
@@ -1654,6 +1975,7 @@
 									}
 								break;
 								case 'G':
+									if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 									if (!$('#chat-input').hasClass('focused') &&
 											!$(':focus').length &&
 										  !$('.dialog').length &&
@@ -1679,6 +2001,7 @@
 									}
 								break;
 								case 'ArrowRight':
+									if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 									if (e.ctrlKey &&
 										API.getDJ().id === API.getUser().id &&
 										!$('#chat-input').hasClass('focused') &&
@@ -1710,9 +2033,12 @@
 						}
 					},
 					levelPercentage: function() {
-						// Quick and dirty fix for rcs also changing the xp %
-						if (typeof window.rcs !== "undefined") return;
-						setTimeout(()=>{
+						setTimeout(() => {
+							// Quick and dirty fix for rcs also changing the xp %
+							if (typeof rcs !== "undefined" ||
+								$('#footer-user .bar .value').text().indexOf('%') > -1)
+								return;
+
 							// [rawText, xpNow, xpMax]
 							let numbers = $('#footer-user .bar .value')[0].innerText.match(/(\d*[,.]?\d*)(?: \/ )(\d*[,.]?\d*)/);
 							if (numbers === null) return;
@@ -1824,26 +2150,46 @@
 						if (!obj) return;
 						obj._moduleID = n;
 
+						if (obj._moduleID && obj._moduleID === 'lang/Lang')
+							modules.Lang = obj;
 						if (obj._events && obj._events["chat:receive"])
 							modules.context = obj;
+						if (obj.STATE)
+							modules.RoomEvent = obj;
+						if (obj.attributes && obj.attributes.hostID)
+							modules.room = obj;
+						if (obj._l)
+							modules.user = obj;
+						if (obj.log)
+							modules.chatFacade = obj;
 						if (obj.defaultSettings)
 							modules.plugOptions = obj;
 						if (obj.hasOwnProperty("isorx"))
 							modules.utils = obj;
+						if (obj.SHOW && obj.SHOW === "ShowDialogEvent:show")
+							modules.ShowDialogEvent = obj;
+						if (obj.prototype && obj.prototype.id && obj.prototype.id === "dialog-gift-send")
+							modules.GiftSendDialog = obj;
+						if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
+							modules.User = obj;
 					});
+					modules.lang = require("lang/Lang");
 					updateStatus('Initalizating API & Events listener', 4);
 					// Add custom events to the API
-					pi._extendAPI();
+					pi._extendAPI.init();
 					for (var event in pi._event) {
 						API.on(event, pi._event[event]);
 					}
 					pi._tool.plugSocketHook.init();
 					modules.context.on("chat:receive", pi._modulesEvent.chatReceive);
+					modules.events = {
+						chatDelete: modules.context._events['chat:delete'].shift()
+					};
 					// Bind events to their handler
 					window.onbeforeunload = pi._DOMEvent.navWarn;
 					$(window).on('keydown', pi._DOMEvent.keyboardShortcuts);
 					$(window).on('dblclick', pi._DOMEvent.translate);
-					$('#volume, #playback').on('mousewheel', pi._DOMEvent.volumeWheel);
+					$('#volume, #playback-controls').on('mousewheel', pi._DOMEvent.volumeWheel);
 					$('.button.staff').on('click', pi._DOMEvent.collideRanks);
 					$('#chat-popout-button').on('click', pi._DOMEvent.popout);
 					$("#chat-input-field").on('input', pi._DOMEvent.chatAutocompletion);
@@ -1932,8 +2278,8 @@
 								count = friendsOnline.length + '/' + count;
 								$('#friends-button > span')[0].innerText = count;
 
-								// Notification for friend connect/disconnected
-								if (settings.friendConnect || settings.friendDisconnect) {
+								// Notification for friend connect/disconnected/room change
+								if (settings.friendConnect || settings.friendDisconnect || settings.friendRoomChange) {
 									var storage = sessionStorage.getItem('friendsOnline');
 									if (storage === null) sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
 									else {
@@ -1954,6 +2300,19 @@
 																	{friend: friendsOnline[i].username}
 																), 'chat'
 															);
+														else {
+															pi._tool.log(
+																pi._tool.replaceString(
+																	lang.log.friendRoomChange,
+																	{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
+																), 'chat'
+															).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
+																e.preventDefault();
+																let slug = e.data.friend.room.slug,
+																    name = e.data.friend.room.name;
+																modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
+															});
+														}
 													}
 												}
 											}
@@ -1973,7 +2332,12 @@
 															lang.log.friendConnect,
 															{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
 														), 'chat'
-													);
+													).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
+														e.preventDefault();
+														let slug = e.data.friend.room.slug,
+														    name = e.data.friend.room.name;
+														modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
+													});
 												}
 											}
 										}
@@ -2032,7 +2396,7 @@
 						"left": (Math.max(1150, window.innerWidth) - 345 - 1600) / 2,
 						"width": "1600px",
 						"height": "900px",
-						"background": "url("+settings.bg+") no-repeat"
+						"background": "url("+settings.customBGURL+") no-repeat"
 					}));
 					// Menu itself
 					$('#app').append($(
@@ -2072,10 +2436,12 @@
 									'<li id="pi-soundcloudVisu">'+lang.menu.customisation.scVisu+'</li>'+
 									'<li id="pi-css">'+lang.menu.customisation.customStyle+'</li>'+
 									'<li id="pi-customRanks">'+lang.menu.customisation.customRanks+'</li>'+
+									'<li id="pi-languageFlags">'+lang.menu.customisation.languageFlags+'</li>'+
 									'<li id="pi-bg">'+lang.menu.customisation.customBG+'</li>'+
 									'<li id="pi-old-chat">'+lang.menu.customisation.oldChat+'</li>'+
 									'<li id="pi-old-footer">'+lang.menu.customisation.oldFooter+'</li>'+
 									'<li id="pi-small-history">'+lang.menu.customisation.smallHistory+'</li>'+
+									'<li id="pi-small-friends">'+lang.menu.customisation.smallFriends+'</li>'+
 								'</ul>'+
 								'<h2>'+lang.menu.moderation.title+'</h2>'+
 								'<ul style="display: none;">'+
@@ -2110,6 +2476,14 @@
 									'<li id="pi-friendDisconnect">'+lang.menu.notifications.friendDisconnect+'</li>'+
 									'<li id="pi-unfriended">'+lang.menu.notifications.unfriended+'</li>'+
 									'<li id="pi-gainNotification">'+lang.menu.notifications.gainNotification+'</li>'+
+									'<li id="pi-gainNotificationMinXP">'+
+										'<label for="gainNotificationMinXP">'+lang.menu.notifications.gainNotificationMinXPLabel+'</label>'+
+										'<input type="number" min="1" max="1000" step="1" value="'+settings.minimumGain.xp+'" name="gainNotificationMinXP"/>'+
+									'</li>'+
+									'<li id="pi-gainNotificationMinPP">'+
+										'<label for="gainNotificationMinPP">'+lang.menu.notifications.gainNotificationMinPPLabel+'</label>'+
+										'<input type="number" min="1" step="1" value="'+settings.minimumGain.pp+'" name="gainNotificationMinPP"/>'+
+									'</li>'+
 									'<li id="pi-userLevelUp">'+lang.menu.notifications.userLevelUp+'</li>'+
 								'</ul>'+
 								'<h2>'+lang.menu.about.title+'</h2>'+
@@ -2173,6 +2547,7 @@
 
 								$('#pi-rmvDJ').on('click', function() {pi.removeDJ();});
 								$('#pi-skip').on('click', function() {pi.forceSkip();});
+								$('#pi-rmvDJ, #pi-skip').on('mousewheel', pi._DOMEvent.volumeWheel);
 							}
 						},
 						kill: function() {
@@ -2215,10 +2590,23 @@
 					$('#pi-boothPosition input').on('change', function() {
 						settings.boothPosition = parseInt(this.value);
 					});
+					$('#pi-gainNotificationMinXP input').on('change', function() {
+						settings.minimumGain.xp = parseInt(this.value);
+					});
+					$('#pi-gainNotificationMinPP input').on('change', function() {
+						settings.minimumGain.pp = parseInt(this.value);
+					});
 					$(window).on('resize', pi._DOMEvent.resize);
 					$('#pi-menu input').on('blur', function() {pi._tool.saveSettings});
-					$('#pi-delchat').on('click', function() {
-						pi.betterClearChat(settings.betterClearChatLimit);
+					$('#pi-delchat').on('click', function(e) {
+						if (e.ctrlKey) {
+							API.sendChat('/clear');
+						} else if (e.shiftKey) {
+							document.getSelection().removeAllRanges();
+							$('#chat .from.Plug-It').closest('.cm').remove();
+						} else {
+							pi.betterClearChat(settings.betterClearChatLimit);
+						}
 					});
 					$('#pi-afk').on('click', function(e) {
 						if (e.ctrlKey) {
@@ -2286,9 +2674,9 @@
 						if (settings.showVotes) {
 							let votes;
 							switch (this.id) {
-								case 'woot': votes = woots; break;
-								case 'grab': votes = grabs; break;
-								case 'meh':  votes = mehs;  break;
+								case 'woot': votes = session.woots; break;
+								case 'grab': votes = session.grabs; break;
+								case 'meh':  votes = session.mehs;  break;
 								default: votes = []; break;
 							}
 							pi._tool.showVotes(true, this.id, votes);
@@ -2321,10 +2709,12 @@
 						soundcloudVisu: $('#pi-soundcloudVisu')[0],
 						css: $('#pi-css')[0],
 						customRanks: $('#pi-customRanks')[0],
+						languageFlags: $('#pi-languageFlags')[0],
 						bg: $('#pi-bg')[0],
 						oldChat: $('#pi-old-chat')[0],
 						oldFooter: $('#pi-old-footer')[0],
 						smallHistory: $('#pi-small-history')[0],
+						smallFriends: $('#pi-small-friends')[0],
 						// Moderation
 						showDeletedMsg: $('#pi-showDeletedMsg')[0],
 						confirmDelete: $('#pi-confirmDelete')[0],
@@ -2350,6 +2740,8 @@
 						friendDisconnect: $('#pi-friendDisconnect')[0],
 						unfriended: $('#pi-unfriended')[0],
 						gainNotification: $('#pi-gainNotification')[0],
+						gainNotificationMinXP: $('#pi-gainNotificationMinXP')[0],
+						gainNotificationMinPP: $('#pi-gainNotificationMinPP')[0],
 						userLevelUp: $('#pi-userLevelUp')[0],
 						// About
 						off: $('#pi-off')[0],
@@ -2376,7 +2768,6 @@
 					// Delete load status
 					$('#pi-status').css({opacity:'0'});
 					setTimeout(function() {$('#pi-status').remove();}, 250);
-
 					pi._tool.getRoomSettings();
 				},
 				_reload: function(reason) {
@@ -2396,6 +2787,7 @@
 					}
 					pi._tool.plugSocketHook.kill();
 					modules.context.off("chat:receive", pi._modulesEvent.chatReceive);
+					modules.context._events['chat:delete'].push(modules.events.chatDelete);
 					delete modules;
 
 					// Allow to reload
@@ -2413,7 +2805,7 @@
 					$(window).off('keydown', pi._DOMEvent.keydown);
 					$(window).off('dblclick', pi._DOMEvent.translate);
 					$(window).off('resize', pi._DOMEvent.resize);
-					$('#volume, #playback').off('mousewheel', pi._DOMEvent.mousewheel);
+					$('#volume, #playback-controls').off('mousewheel', pi._DOMEvent.mousewheel);
 					$('.button.staff').off('click', pi._DOMEvent.collideRanks);
 					$('#chat-popout-button').off('click', pi._DOMEvent.popout);
 					$("#chat-input-field").off('input', pi._DOMEvent.chatAutocompletion);
@@ -2421,33 +2813,36 @@
 					$('.group').css('cursor', '');
 
 					$(".room-background").show();
-					$('*[id*="pi-"]').each(function() {
+					$('[id*="pi-"], .icon[class*="pi-"]').each(function() {
 						this.remove();
 					});
 
 					$('#now-playing-media, #woot, #grab, #meh').off('mouseenter');
 					$('#now-playing-media, #woot, #grab, #meh').off('mouseleave');
-					// Preventing making the video definitly desapear
+					// Preventing making the video definitly disapear
 					if (!settings.showVideo) {
-						pi.menu('video');
-						settings.showVideo = false;
+						if (pi._tool.getPlugSettings().videoOnly) {
+							pi.dom.playback.style.height = window.innerHeight - 185+'px';
+							$(pi.dom.stream).css({visibility:'visible', height:'100%'});
+						} else {
+							pi.dom.playback.style.height = '271px';
+							$(pi.dom.stream).css({visibility:'visible', height:'281px'});
+						}
+						$('#playback-controls, #no-dj').css('visibility', 'visible');
 					}
 
-					pi._extendAPI('reverse');
+					pi._extendAPI.kill();
 
 					delete pi;
 				},
-				_extendAPI: function(reverse) {
-					if (!reverse) {
+				_extendAPI: {
+					init: function() {
 						API.GUEST_JOIN = 'guestJoin';
 						API.GUEST_LEAVE = 'guestLeave';
 						API.EARN = 'earn';
-						var totalGuest = $('.guest-count')[0].innerText;
-						var PPThen = API.getUser().pp;
-						var XPThen = API.getUser().xp;
 
 						API.moderateForceQuit = function() {
-							if (API.hasPermission(null, API.ROLE.BOUNCER)) {
+							if (API.hasPermission(null, API.ROLE.BOUNCER) && API.enabled) {
 								$.ajax({
 									url: '/_/booth/remove/'+API.getDJ().id,
 									method: 'DELETE'
@@ -2455,6 +2850,7 @@
 							}
 						};
 						API.getUserByName = function(name) {
+							if (!API.enabled) return;
 							if (typeof name == 'undefined') {
 								throw new Error('A name must be provided.');
 							} else {
@@ -2462,8 +2858,8 @@
 								return (user.length > 0 ? user[0] : null);
 							}
 						};
-						API.getAnyUser = function(id, callback) {
-							if (isNaN(id) || typeof callback !== 'function') return;
+						API.getUserByID = function(id, callback) {
+							if (!API.enabled || isNaN(id) || typeof callback !== 'function') return;
 							$.ajax({
 								url: '/_/users/'+id,
 								success: function(data) {
@@ -2475,22 +2871,27 @@
 							});
 						};
 						API.addFriendByID = function(id) {
-							if (isNaN(id)) return;
+							if (isNaN(id) || !API.enabled) return;
 							$.ajax({
 								type: 'POST',
-								url: "/_/friends",
+								url: '/_/friends',
 								data: JSON.stringify({
-									"id": id
+									'id': id
 								}),
+								success: function() {
+									API.getUserByID(id, (user) => {
+										modules.context.trigger('notify', 'icon-add-friend', modules.lang.messages.friendRequest.split('%NAME%').join(user.username));
+									});
+								},
 								error: function(e) {
 									console.error(e);
 								},
-								dataType: "json",
-								contentType: "application/json"
+								dataType: 'json',
+								contentType: 'application/json'
 							});
 						};
 						API.moderateKickUser = function(id, time) {
-							if (arguments.length < 2) return;
+							if (arguments.length < 2 || !API.enabled) return;
 
 							var duration;
 							if (time>=24*60*60) duration = 'f';
@@ -2532,25 +2933,24 @@
 								}
 							});
 						};
-						API.gift = function(id, amount) {
-							if (isNaN(id) || isNaN(amount)) return;
-							else if ($('#g-recaptcha-response').val() === 0) return console.error('You must fill in the captcha.');
-							$.ajax({
-								type: 'POST',
-								url: "/_/gift",
-								data: JSON.stringify({
-									"id": id,
-									"amount": amount,
-									"response": $('textarea[name="g-recaptcha-response"]').val()
-								}),
-								error: function(e) {
-									console.error(e);
-								},
-								dataType: "json",
-								contentType: "application/json"
-							});
+						API.gift = function(id, amount, customName) {
+							if (isNaN(id) || isNaN(amount) || !API.enabled || API.getUser().sub < 1) return;
+
+							var user = API.getUser(id);
+							if (!user.username) {
+								API.getUserByID(id, (user) => {
+									customName = typeof customName === 'string' ? customName : user.username;
+									amount = typeof amount == 'undefined' ? 25 : amount;
+									pi._tool.showGiftDialog(id, customName, amount);
+								});
+							} else {
+								customName = typeof customName === 'string' ? customName : user.username;
+								amount = typeof amount == 'undefined' ? 25 : amount;
+								pi._tool.showGiftDialog(id, customName, amount);
+							}
 						};
 						API.getActivePlaylist = function() {
+							if (!API.enabled) return;
 							let currentPL, name, id, count, allPL;
 							currentPL = $('#playlist-menu .row.selected');
 							name = currentPL.children()[1].innerText;
@@ -2570,48 +2970,23 @@
 							}
 						};
 						API.getRoomName = function() {
-							return $("#room-name .bar-value").text();
+							if (!API.enabled) return;
+							try {
+								return modules.room.get('name');
+							} catch(e) {
+								return $('#room-name span').text();
+							}
 						};
-
-						totalGuest = totalGuest.length ? parseInt(totalGuest) : 0;
-						$('.guest-count').on('DOMSubtreeModified', function(e) {
-							var thisCount = e.currentTarget.innerText.length ? parseInt(e.currentTarget.innerText) : 0;
-
-							// Stupid plug sets .guest-count to '' whenever someone join/leave
-							// After 50ms, if count changed, false positive.
-							// /!\ Very slim possibility for two guests to join/leave
-							setTimeout(function() {
-								var countCheck = e.currentTarget.innerText.length ? parseInt(e.currentTarget.innerText) : 0;
-								if (thisCount !== countCheck) return;
-
-								if (thisCount > totalGuest && settings.guestJoin) API.trigger(API.GUEST_JOIN, thisCount);
-								else if (thisCount < totalGuest && settings.guestLeave) API.trigger(API.GUEST_LEAVE, thisCount);
-
-								totalGuest = thisCount;
-							}, 50);
-						});
-						$('#footer-user .info').on('DOMSubtreeModified', function(e) {
-							var PPNow = API.getUser().pp;
-							var XPNow = API.getUser().xp;
-							var PPEarned = 0;
-							var XPEarned = 0;
-
-							if (PPNow > PPThen) PPEarned = PPNow - PPThen;
-							if (XPNow > XPThen) XPEarned = XPNow - XPThen;
-							if (PPEarned || XPEarned) API.trigger(API.EARN, {pp:PPEarned,xp:XPEarned});
-
-							PPThen = PPNow;
-							XPThen = XPNow;
-						});
-					}
-					else {
-						$('.guest-count').off('DOMSubtreeModified');
-						$('#footer-user .info').off('DOMSubtreeModified');
-						$('#footer-user .bar .value').off('DOMSubtreeModified');
-
+						API.moderateDeleteChat = function(cid) {
+							if (API.enabled && cid) {
+								$.ajax({url: '/_/chat/'+cid, method: 'DELETE'});
+							}
+						};
+					},
+					kill: function() {
 						delete API.moderateForceQuit;
 						delete API.getUserByName;
-						delete API.getAnyUser;
+						delete API.getUserByID;
 						delete API.addFriendByID;
 						delete API.moderateKickUser;
 						delete API.gift;
@@ -2695,15 +3070,19 @@
 						 * have to make a call every x sec/min.
 						 * You can thank plug.
 						 */
-						$.ajax({
-							url: '/_/friends',
-							success: function(data) {
-								callback(data.data);
-							}
-						});
+
+						if (!session.floodAPI) {
+							$.ajax({
+								url: '/_/friends',
+								success: function(data) {
+									callback(data.data);
+								}
+							});
+						}
+
 					},
 					getPlaylist: function(id, callback) {
-						if (isNaN(id) || typeof callback !== 'function') return;
+						if (isNaN(id) || typeof callback !== 'function' || session.floodAPI) return;
 						let cache = _.find(require.s.contexts._.defined,function(m){return m&&m._read})._read();
 						cache = JSON.parse(cache);
 						let thisPL = cache[1]['p'][id]['items'];
@@ -2724,7 +3103,7 @@
 						}
 					},
 					getPlaylists: function(callback) {
-						if (typeof callback !== 'function') return;
+						if (typeof callback !== 'function' || session.floodAPI) return;
 
 						$.ajax({
 							url: '/_/playlists',
@@ -2767,8 +3146,6 @@
 
 						if (pi.version.pre) {
 							subVersion = ' Pre ' + pi.version.pre;
-						} else if (pi.version.isAlpha) {
-							subVersion = ' Alpha ' + pi.version.isAlpha;
 						}
 
 						return pi.version.major+'.'+pi.version.minor+'.'+pi.version.patch+subVersion;
@@ -2779,6 +3156,7 @@
 						else return roomSettings.rules[which];
 					},
 					getRoomSettings: function() {
+						if (session.floodAPI) return;
 						$.getJSON('/_/rooms/state', function(data) {
 							data = data.data[0];
 							let url = data.meta.description;
@@ -2793,7 +3171,8 @@
 									$.ajax({
 										url: match[i].replace(/@(pi|p3|rcs)=/ig, ''),
 										success: function(data) {
-											roomSettings[scriptName] = JSON.parse(data);
+											if (typeof data !== 'object') data = JSON.parse(data);
+											roomSettings[scriptName] = data;
 											roomSettingsLoaded();
 										},
 										error: function(e) {
@@ -2991,11 +3370,13 @@
 								if (!document.hasFocus()) {
 									// This acts like a $(window).one('focus');
 									window.onfocus = function() {
-										setTimeout(autoHideLogs, settings.autoHideLogsAfter*1000);
+										setTimeout(function() {
+											$($logBox).fadeOut(1000, 'linear', () => $($logBox).remove());
+										}, settings.autoHideLogsAfter*1000);
 										window.onfocus = undefined;
 									}
 								} else {
-									$($logBox).fadeOut(1000, 'linear', function() {$($logBox).remove()});
+									$($logBox).fadeOut(1000, 'linear', () => $($logBox).remove());
 								}
 							}
 							if (settings.autoHideLogs) {
@@ -3089,8 +3470,9 @@
 
 							switch(type) {
 								case 'custom-bg':
+									const defaultURL = $('.room-background').css('background-image').split('"')[1];
 									$dialog = $(
-										'<div id="dialog-media-update" class="dialog">'+
+										'<div id="dialog-media-update" class="dialog" style="height: auto;">'+
 											'<div class="dialog-frame">'+
 												'<span class="title">Set background\'s image</span>'+
 												'<i class="icon icon-dialog-close"></i>'+
@@ -3100,58 +3482,41 @@
 												'<div class="dialog-input-container" style="position:relative;top:10px;">'+
 													'<span class="dialog-input-label">URL</span>'+
 													'<div class="dialog-input-background">'+
-														'<input name="url" type="text" placeholder=".jpg .png .gif.." value="'+settings.bg+'">'+
+														'<input name="url" type="text" placeholder=".jpg .png .gif.." value="'+(settings.customBGURL !== null ? settings.customBGURL : 'Custom background URL')+'">'+
 													'</div>'+
-													'<p style="position:relative;top:55px;">Or choose one of these : [Work In Progress]</p>'+
+													'<p style="position:relative;top:55px;">Or choose one of these :</p>'+
 													'<figure style="position:relative;top:65px;">'+
 														'<figcaption>Plug\'s original backgrounds</figcaption>'+
-														'<img src="'+$('.room-background').css('background-image').split('"')[1]+'" alt="Plug\'s background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg" alt="Plug-It background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/05rwe83ax27byof/2k14hw.jpg" alt="Plug\'s 2014 halloween background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/0drzj18kaojh51d/2k13winter.jpg" alt="Plug\'s 2013 winter background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/gdjdn3e8bcwj2gp/2k14winter.jpg" alt="Plug\'s 2014 winter background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/s9ov3f4o0ibna9j/2k14minecraft.jpg" alt="Plug\'s 2014 Minecraft background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/xl29mtw49nfz298/2k14tc.jpg" alt="Plug\'s 2014 TastyCat background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/dqumfu8gmwlaffi/2k14tiki.jpg" alt="Plug\'s 2014 Tiki background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/xx169heuxsa3pa9/2k15beach.jpg" alt="Plug\'s 2015 Beach background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/iey62uawserns2f/2k15diner.jpg" alt="Plug\'s 2015 Diner background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/izmbhstfdoni36y/2k15island.jpg" alt="Plug\'s 2015 Island background">'+
-														'<img src="https://dl.dropboxusercontent.com/s/2gej64lphne493d/2k15ocean.jpg" alt="Plug\'s 2015 Ocean background">'+
+														'<div class="thumbnail" style="background: url('+defaultURL+') 0 0 / 150px 84px" data-src="default" alt="Plug\'s background"></div>'+
+														'<div class="thumbnail" style="background-position: -150px -84px" data-src="https://dl.dropboxusercontent.com/s/x2m4e4go92ecwn5/2k13winter.jpg" alt="Plug\'s 2013 winter background"></div>'+
+														'<div class="thumbnail" style="background-position: -300px -84px" data-src="https://dl.dropboxusercontent.com/s/06aezou89twexfi/2k14hw.jpg" alt="Plug\'s 2014 halloween background"></div>'+
+														'<div class="thumbnail" style="background-position: -450px -84px" data-src="https://dl.dropboxusercontent.com/s/pru886rp6sfhguo/2k14minecraft.jpg" alt="Plug\'s 2014 Minecraft background"></div>'+
+														'<div class="thumbnail" style="background-position: -600px -84px" data-src="https://dl.dropboxusercontent.com/s/yzwlvq9uk4vgyps/2k14tc.jpg" alt="Plug\'s 2014 TastyCat background"></div>'+
+														'<div class="thumbnail" style="background-position: -750px -84px" data-src="https://dl.dropboxusercontent.com/s/dw1g3g87clubjor/2k14tiki.jpg" alt="Plug\'s 2014 Tiki background"></div>'+
+														'<div class="thumbnail" style="background-position: 0 -168px" data-src="https://dl.dropboxusercontent.com/s/n0vdz30m4edpvnm/2k14winter.jpg" alt="Plug\'s 2014 winter background"></div>'+
+														'<div class="thumbnail" style="background-position: -150px -168px" data-src="https://dl.dropboxusercontent.com/s/tt8385hnd61vu7t/2k15beach.jpg" alt="Plug\'s 2015 Beach background"></div>'+
+														'<div class="thumbnail" style="background-position: -300px -168px" data-src="https://dl.dropboxusercontent.com/s/tdiyz39fpepdamt/2k15diner.jpg" alt="Plug\'s 2015 Diner background"></div>'+
+														'<div class="thumbnail" style="background-position: -450px -168px" data-src="https://dl.dropboxusercontent.com/s/gdw01htqn3kb5ul/2k15island.jpg" alt="Plug\'s 2015 Island background"></div>'+
+														'<div class="thumbnail" style="background-position: -600px -168px" data-src="https://dl.dropboxusercontent.com/s/f05ranw1gjmrekj/2k15nyc.jpg" alt="Plug\'s 2015 New York City background"></div>'+
+														'<div class="thumbnail" style="background-position: -750px -168px" data-src="https://dl.dropboxusercontent.com/s/1e7isnah6dz8mks/2k15sea.jpg" alt="Plug\'s 2015 Sea background"></div>'+
+														'<div class="thumbnail" style="background-position: 0 -252px" data-src="https://dl.dropboxusercontent.com/s/godmbmvf7iso1hp/2k15tasty.jpg" alt="Plug\'s 2015 Tasty background"></div>'+
 													'</figure>'+
 
 													'<figure style="position:relative;top:65px;">'+
 														'<figcaption>Other backgrounds</figcaption>'+
-														'<img src="http://i.imgur.com/nptZvUk.png" alt="Chillout Mixer Theme">'+
-														'<img src="http://i.imgur.com/mL0fuwb.png" alt="Chillout Mixer Theme II">'+
-														'<img src="http://i.imgur.com/WTylHRy.png" alt="Digital Dungeon Theme">'+
-														'<img src="http://i.imgur.com/zSMRtE6.png" alt="Digital Dungeon (Lite)">'+
-														'<img src="http://i.imgur.com/u36VR4n.png" alt="TT.fm Red Theme">'+
-														'<img src="http://i.imgur.com/GZKgCpk.png" alt="TT.fm After Party Theme">'+
-														'<img src="http://i.imgur.com/lK4GttQ.png" alt="Red Rocks Theme">'+
-														'<img src="http://i.imgur.com/XZNVZmj.png" alt="Fairy Tale Land">'+
-														'<img src="http://i.imgur.com/9DVTnnW.png" alt="Mordor">'+
-														'<img src="http://i.imgur.com/8hfUntO.png" alt="Architect Chamber">'+
-														'<img src="http://i.imgur.com/6N7svVu.png" alt="End of Line Club">'+
-														'<img src="http://i.imgur.com/JZjGLPH.png" alt="Off The Grid v1">'+
-														'<img src="http://i.imgur.com/M4Z45oA.png" alt="Off The Grid v2">'+
-														'<img src="http://i.imgur.com/tOEACrk.png" alt="Digital Desert">'+
-														'<img src="http://i.imgur.com/HG8mqaM.png" alt="Ancient Ruins">'+
-														'<img src="http://i.imgur.com/1aw3xcd.png" alt="Abandoned Ballroom">'+
-														'<img src="http://i.imgur.com/8G44P7F.png" alt="No Theme: Black">'+
-														'<img src="http://i.imgur.com/zuRZwYR.png" alt="No Theme: Plug">'+
-														'<img src="http://i.imgur.com/md2nlVM.png" alt="No Theme: Mixer">'+
-														'<img src="http://i.imgur.com/EFXFnql.png" alt="Orbital Lounge">'+
-														'<img src="http://i.imgur.com/k9zVa92.png" alt="Skygazer Theme (lite)">'+
-														'<img src="http://i.imgur.com/N82wzhY.png" alt="Skygazer Theme">'+
-														'<img src="http://i.imgur.com/jNRQXKZ.png" alt="Castleland (by Dionysu5)">'+
-														'<img src="http://i.imgur.com/ILrUcVK.png" alt="Chillout Mixer Christmas">'+
-														'<img src="http://i.imgur.com/nb4ibg4.png" alt="Chillout Mixer Christmas Lite">'+
-														'<img src="http://i.imgur.com/2Q89Rn2.png" alt="Christmas Classic">'+
-														'<img src="http://i.imgur.com/P4GVhF4.png" alt="plug.dj Christmas Classic">'+
-														'<img src="http://i.imgur.com/M0CeHah.png" alt="plug.dj Christmas Ice">'+
-														'<img src="https://giant.gfycat.com/GleamingSeriousAlbino.gif" alt="Rainbow">'+
-														'<img src="http://i.imgur.com/RHVeAWv.jpg" alt="/r/trees">'+
+														'<div class="thumbnail" style="background-position: 0 0" data-src="https://dl.dropboxusercontent.com/s/guglxeg29z8xdyc/Plug-It.jpg" alt="Plug-It background"></div>'+
+														'<div class="thumbnail" style="background-position: -150px 0" data-src="https://dl.dropboxusercontent.com/s/okazf75swvx5n3r/Plug-It-old.jpg" alt="Plug-It Old background"></div>'+
+														'<div class="thumbnail" style="background-position: 0 -336px" data-src="https://dl.dropboxusercontent.com/s/rs4yhqsmp557q46/2k14lounge.jpg" alt="lounge background"></div>'+
+														'<div class="thumbnail" style="background-position: -150px -336px" data-src="https://dl.dropboxusercontent.com/s/rayu1kdzve55ynd/2k14worldonfire.jpg" alt="WorldOnFire background"></div>'+
+														'<div class="thumbnail" style="background-position: -300px -336px" data-src="https://dl.dropboxusercontent.com/s/hwh25f5o39a4rft/2k15rtreesmusic.jpg" alt="/r/trees background"></div>'+
+														'<div class="thumbnail" style="background-position: -450px -336px" data-src="https://dl.dropboxusercontent.com/s/rg7egwly5m41z5a/2k15thenation.jpg" alt="The Nation background"></div>'+
+														'<div class="thumbnail" style="background-position: -600px -336px" data-src="https://dl.dropboxusercontent.com/s/3kg8riyabo08y9a/JGI5G7x.jpg" alt="Unknown"></div>'+
+														'<div class="thumbnail" style="background-position: -750px -336px" data-src="https://dl.dropboxusercontent.com/s/gb3ogpqpg5mi15v/minecraft.jpg" alt="Minecraft"></div>'+
+														'<div class="thumbnail" style="background-position: 0 -420px" data-src="https://dl.dropboxusercontent.com/s/nvc6xtx17oqlzlv/NYC-Custom.jpg" alt="NYC - Custom"></div>'+
+														'<div class="thumbnail" style="background-position: -150px -420px" data-src="https://dl.dropboxusercontent.com/s/30zbmkdi31jtxtl/plugalpha.jpg" alt="Plug Alpha"></div>'+
+														'<div class="thumbnail" style="background-position: -300px -420px" data-src="https://dl.dropboxusercontent.com/s/idchvsywitwvns5/plugalphaLounge.jpg" alt="Plug Alpha Lounge"></div>'+
 													'</figure>'+
+													'<p style="position:relative;top:70px;">More to come! If you are the owner of one of these image, please let me know.</p>'+
 												'</div>'+
 											'</div>'+
 
@@ -3162,15 +3527,19 @@
 										'</div>'
 									);
 
-									$('.dialog img').on('mouseover', function(e) {
+									$dialog.on('mouseover', '.thumbnail', function(e) {
 										let x = $(this).offset().left + ($(this).width()/2);
 										let y = $(this).offset().top;
-										pi._tool.tooltip(true, 'right', x,y, this.alt);
+										pi._tool.tooltip(true, 'right', x,y, this.attributes.alt.value);
 										$('#tooltip').css({transform: 'translate(-100%, -175%)'});
 									});
-									$('.dialog img').on('mouseleave', function(e) {pi._tool.tooltip();});
-									$('.dialog img').on('click', function(e) {
-										pi.changeBg(this.src);
+									$dialog.on('mouseleave', '.thumbnail', function(e) {pi._tool.tooltip();});
+									$dialog.on('click', '.thumbnail', function(e) {
+										if (e.target.dataset.src === 'default') pi.changeBG(true);
+										else pi.changeBG(false, e.target.dataset.src);
+
+										pi._tool.tooltip(false);
+										pi._tool.modal(false);
 									});
 								break;
 
@@ -3197,28 +3566,38 @@
 								break;
 
 								default:
-									return pi._tool.log('Invalid dialog type.');
+									return pi._tool.log('Invalid dialog type.', 'console error');
 								break;
 							}
 
 							function submit() {
-								if (type === 'custom-bg') {
-									callback($dialog.find('input[name="url"]')[0].value);
-								} else {
+								if (type === 'custom-bg')
+									pi.changeBG(false, $dialog.find('input[name="url"]')[0].value);
+
+								if (typeof callback === 'function')
 									callback();
-								}
+
+								pi._tool.tooltip(false);
+								pi._tool.modal(false);
+							}
+							function cancel() {
+								pi._tool.tooltip(false);
 								pi._tool.modal(false);
 							}
 
-							$dialog.find('.dialog-frame i, .button.cancel').on('click', function() {pi._tool.modal(false)});
-							$dialog.find('.button.submit').on('click', submit);
-							$dialog.find('input[name="url"]').on('submit', submit);
+							$dialog.on('click', '.dialog-frame i, .button.cancel', () => {cancel();});
+							$('#dialog-container').on('click', (e) => {
+								if (e.target.id !== "dialog-container") return;
+								cancel();
+							});
+							$dialog.on('click', '.button.submit', () => {submit();});
+							$dialog.on('submit', 'input[name="url"]', () => {submit();});
 
 							$('#dialog-container').append($dialog);
-							$('#dialog-container')[0].style.display = "block";
+							$('#dialog-container').show();
 						} else if (!set) {
-							$('#dialog-container')[0].style.display = "none";
-							$('#dialog-container *').each(function() {this.remove();});
+							$('#dialog-container').hide();
+							$('#dialog-container').html('');
 						}
 					},
 					notify: function(title, content, events) {
@@ -3231,60 +3610,94 @@
 							n[type] = events[type];
 						}
 					},
+					// Courtesy of ReAnna https://github.com/extplug/ExtPlug/blob/master/src/plugins/SocketEventsPlugin.js
 					plugSocketHook: {
-						init: function () {
+						init: function() {
 							let that = this;
-							this.send = WebSocket.prototype.send;
-							WebSocket.prototype.send = function(data) {
-								if (this.url.includes('plug.dj')) {
-									if (typeof this.oldOnMessage === 'function') return that.send.call(this, data);
-									this.oldOnMessage = this.onmessage.clone();
-									that.socket = this;
-									this.onmessage = function(data) {
-										if (data.data === 'h') return;
-										// pi._tool.log(data, 'console debug');
-										try {
-											let _data = JSON.parse(data.data)[0];
+							this.socket = getSocket();
 
-											switch (_data.a) {
+							if (this.socket) {
+								this.onConnect();
+							}
+
+							// make sure we still get an instance if the server reconnects, or
+							// if ExtPlug loads before plug.dj connects, by overriding the WebSocket
+							// constructor
+							const WS = WebSocket;
+							window.WebSocket = function WebSocketIntercept(arg) {
+								const ws = new WS(arg);
+								// wait for plug.dj to add handlers
+								_.defer(() => {
+									// find the socket object again, this new connection might be
+									// instantiated by a plugin or another extension, and that should not
+									// be intercepted
+									that.socket = getSocket();
+									that.onConnect();
+								});
+								return ws;
+							};
+							WebSocket.prototype = WS.prototype;
+
+							this.WS = WS;
+						},
+						kill: function() {
+							if (this.WS) window.WebSocket = this.WS;
+							if (this.advice) this.advice.remove();
+
+							this.WS = null;
+							this.advice = null;
+							this.socket = null;
+						},
+						onConnect: function() {
+							if (this.advice) this.advice.remove();
+
+							this.advice = meldBefore(this.socket, 'onmessage', (e) => {
+
+								if (e.data !== 'h') {
+									JSON.parse(e.data).forEach((message) => {
+										// pi._tool.log(message, 'console info');
+
+										try {
+											switch (message.a) {
 												case 'chat':
 												break;
 
 												case 'chatDelete':
-													if (settings.showDeletedMsg) {
-														// using raw cid and then traversing to the .msg allows
-														// to find the div even when chat has been merged
-														let $chat = $('.cid-'+_data.p.c).closest('.cm');
-														let time = modules.utils.getSimpleTimestamp();
-														let mod = API.getUser(_data.p.mi).username;
-														let $prevDelete = $chat.find('.pi-deleted[data-id="4613422"]');
+													pi._modulesEvent.chatDelete(message);
+												break;
 
-														$chat.addClass('deleted').find('.delete-button').remove();
-														if ($prevDelete.length > 0) {
-															let newCount = parseInt($prevDelete.attr('data-count'))+1;
-															// Increment count by one
-															$prevDelete.attr("data-count", newCount);
-															$prevDelete.html(`Deleted by ${mod}(x${newCount}) at ${time}`);
-														} else {
-															$chat.find('.msg').after($(`<span class="pi-deleted" data-id="${_data.p.mi}" data-count="1">Deleted by ${mod} at ${time}</span>`));
-														}
+												case 'earn':
+													if (settings.gainNotification) {
+														let PPEarned = message.p.pp - API.getUser().pp;
+														let XPEarned = message.p.xp - API.getUser().xp;
 
-														// chat split with API.chatLog then delete it
-														pi._tool.log('This is to fix deleted messages', 'chat').delete();
-														return;
+														API.trigger(API.EARN, {pp:PPEarned, xp:XPEarned});
 													}
 												break;
 
-												case 'userUpdate':
-													if (settings.userLevelUp && _data.p.level) {
-														pi._tool.log(`User leveled up: ${API.getUser(_data.p.i).username} to level ${_data.p.level} !`, 'info');
-													} else {
-														console.log(_data);
+												case 'floodAPI':
+													API.enabled = false;
+													session.floodAPI = true;
+
+													// Not really an error but I want it to show a red message
+													var log = pi._tool.log(lang.error.APIFloodDetected, 'error');
+
+													setTimeout(() => {
+														API.enabled = true;
+														session.floodAPI = false;
+
+														log.edit('API reactivated').changeType('info');
+													}, 10*1000);
+												break;
+
+												case 'modMute':
+													if (message.p.d === 'o' && API.hasPermission(null, API.ROLE.BOUNCER)) {
+														pi._tool.log(`${message.p.t} has been unmuted by ${message.p.m}.`, 'chat info');
 													}
 												break;
 
 												case 'modStaff':
-													_data.p.u.forEach((e,i,a) => {
+													message.p.u.forEach((e,i,a) => {
 														let self = API.getUser(); // Unefficient, should cache user somewhere...
 
 														if (e.i === self.id) {
@@ -3299,40 +3712,57 @@
 													});
 												break;
 
+												case 'userJoin':
+												case 'userLeave':
+													if ((message.p.guest || message.p === 0) && (settings.guestJoin || settings.guestLeave)) {
+														if (message.a === 'userJoin' && settings.guestJoin)
+															API.trigger(API.GUEST_JOIN, modules.room.get('guests')+1);
+														else if (message.a === 'userLeave' && settings.guestLeave)
+															API.trigger(API.GUEST_LEAVE, modules.room.get('guests')-1);
+													}
+												break;
+
+												case 'userUpdate':
+													if (settings.userLevelUp && message.p.level) {
+														pi._tool.log(`User leveled up: ${API.getUser(message.p.i).username} to level ${message.p.level} !`, 'info');
+													} else if (message.p.badge || message.p.avatarID) {
+														// do not log it
+													} else {
+														console.log(message);
+													}
+												break;
+
+												case 'roomWelcomeUpdate':
+													pi._tool.log(`${API.getUser(message.p.u).username} edited the room's welcome message to:\n${message.p.w}`, 'console info');
+												break;
+
+												case 'roomDescriptionUpdate':
+													pi._tool.log(`${API.getUser(message.p.u).username} edited the room's description to:\n${message.p.d}`, 'console info');
+												break;
+
 												// Unused events
 												case 'advance':
 												case 'djListCycle':
 												case 'djListUpdate':
-												case 'earn':
 												case 'grab':
 												case 'playlistCycle':
 												case 'plugMessage':
-												case 'userJoin':
-												case 'userLeave':
 												case 'vote':
 												break;
 
 												default:
-													pi._tool.log(_data, 'console info');
+													pi._tool.log(message, 'console info');
 												break;
 											}
 										} catch (e) {
-											pi._tool.log(e, 'console error');
+											pi._tool.log(['error while parsing socket message',e], 'console error');
 										}
 
-										if (data.data.indexOf('The wait is over!') !== -1) return;
-										this.oldOnMessage(data);
-									};
+										if (message.a !== 'chatDelete')
+											modules.context.trigger(`socket:${message.a}`, message.p);
+									});
 								}
-								that.send.call(this, data);
-							};
-						},
-						kill: function () {
-							if (this.socket) {
-								this.socket.onmessage = this.socket.oldOnMessage;
-								delete this.socket.oldOnMessage;
-							}
-							WebSocket.prototype.send = this.send;
+							});
 						}
 					},
 					// Thanks Burkes for this (slightly modified)
@@ -3352,7 +3782,7 @@
 						// Only make ajax call if option is whitelisted
 						var whiteList = ['videoOnly','chatTimestamps','emoji','tooltips','chatImages','notifyDJ','notifyScore','notifyFriendJoin','nsfw','friendAvatarsOnly'];
 						for (var i = 0; i < whiteList.length; i++) {
-							if (option == whiteList[i]) {
+							if (option == whiteList[i] && !session.floodAPI) {
 								var data = {};
 								data[option] = value;
 								$.ajax({
@@ -3380,6 +3810,12 @@
 							}
 						}
 						localStorage.setItem('settings', JSON.stringify(json));
+					},
+					showGiftDialog(id, username, amount) {
+						modules.context.dispatch(new modules.ShowDialogEvent(modules.ShowDialogEvent.SHOW, new modules.GiftSendDialog({
+							model: new modules.User({id: id, username: username})
+						})));
+						$('#dialog-gift-send .amount input')[0].value = amount;
 					},
 					showVotes: function(set, type, votes) {
 						if (set) {
@@ -3422,14 +3858,8 @@
 						}
 						else {
 							// Trickery in case they could be multiple #tooltip to remove all of them
-							var $next = $('#tooltip').next();
-							if ($next.length) {
-								while ($next[0].id == 'tooltip') {
-									$('#tooltip').next().remove();
-									$next = $('#tooltip').next();
-								}
-							}
-							$('#tooltip').remove();
+							// Jquery only getting one per ID, select with attribute..
+							$('[id="tooltip"]').remove();
 						}
 					}
 				},
@@ -3447,18 +3877,6 @@
 						pi.dom.afkResponder.className = 'pi-off';
 						$('#pi-afk .pi-afk').addClass('off');
 					}
-				},
-				askBG: function() {
-					pi._tool.modal(true, 'custom-bg', function(answer) {
-						if (answer === "reset") {
-							pi.changeBG(false, url.images.background);
-						} else if (answer === "default") {
-							pi.changeBG(true);
-						} else if (answer.length > 0) {
-							settings.bg = answer;
-							pi.changeBG(false);
-						}
-					});
 				},
 				autojoin: function() {
 					var dj = API.getDJ();
@@ -3510,14 +3928,13 @@
 							$('i.torch.right').show();
 						}
 
+						settings.customBG = false;
 						pi.dom.bg.className = 'pi-off';
 					} else {
-						if (typeof src === 'undefined' && !settings.bg.length) {
+						if (typeof src === 'undefined' && !settings.customBGURL.length) {
 							src = url.images.background;
-						} else if (typeof src === undefined && settings.bg.length) {
-							src = settings.bg;
 						} else {
-							src = (typeof src === "string" ? src : url.images.background);
+							src = (typeof src === 'string' ? src : url.images.background);
 						}
 
 						$('.room-background').hide();
@@ -3529,6 +3946,8 @@
 							$('i.torch.right').hide();
 						}
 
+						settings.customBG = true;
+						settings.customBGURL = src;
 						pi.dom.bg.className = 'pi-on';
 					}
 
@@ -3683,8 +4102,13 @@
 							pi.dom.customRanks.className = settings.customRanks ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('customRanks');
 						break;
+						case 'languageFlags':
+							settings.languageFlags = !settings.languageFlags;
+							pi.dom.languageFlags.className = settings.languageFlags ? 'pi-on' : 'pi-off';
+							settings.languageFlags ? $('.un ~ .emoji-outer').show() : $('.un ~ .emoji-outer').hide();
+						break;
 						case 'bg':
-							pi.askBG();
+							pi._tool.modal(true, 'custom-bg');
 						break;
 						case 'old-chat':
 							settings.oldChat = !settings.oldChat;
@@ -3701,6 +4125,11 @@
 							pi.dom.smallHistory.className = settings.smallHistory ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallHistory');
 						break;
+						case 'small-friends':
+							settings.smallFriends = !settings.smallFriends;
+							pi.dom.smallFriends.className = settings.smallFriends ? 'pi-on' : 'pi-off';
+							pi.toggleStyle('smallFriends');
+						break;
 						case 'showDeletedMsg':
 							settings.showDeletedMsg = !settings.showDeletedMsg;
 							pi.dom.showDeletedMsg.className = settings.showDeletedMsg ? 'pi-on' : 'pi-off';
@@ -3714,6 +4143,7 @@
 						case 'userInfo':
 							settings.userInfo = !settings.userInfo;
 							pi.dom.userInfo.className = settings.userInfo ? 'pi-on' : 'pi-off';
+							settings.userInfo ? $('.un ~ .userInfo').show() : $('.un ~ .userInfo').hide();
 						break;
 						case 'stuckSkip':
 							settings.stuckSkip = !settings.stuckSkip;
@@ -3824,13 +4254,16 @@
 							pi.toggleStyle('customStyle');
 							pi.dom.customRanks.className = settings.customRanks ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('customRanks');
-							settings.bg.length ? pi.changeBG(false, settings.bg) : void 0;
+							pi.dom.languageFlags.className = settings.languageFlags ? 'pi-on' : 'pi-off';
+							settings.customBGURL !== null ? pi.changeBG(false, settings.customBGURL) : void 0;
 							pi.dom.oldChat.className = settings.oldChat ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('oldChat');
 							pi.dom.oldFooter.className = settings.oldFooter ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('oldFooter');
 							pi.dom.smallHistory.className = settings.smallHistory ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallHistory');
+							pi.dom.smallFriends.className = settings.smallFriends ? 'pi-on' : 'pi-off';
+							pi.toggleStyle('smallFriends');
 							// Moderation
 							pi.dom.showDeletedMsg.className = settings.showDeletedMsg ? 'pi-on' : 'pi-off';
 							pi.dom.confirmDelete.className = settings.confirmDelete ? 'pi-on' : 'pi-off';
@@ -3856,6 +4289,8 @@
 							pi.dom.friendDisconnect.className = settings.friendDisconnect ? 'pi-on' : 'pi-off';
 							pi.dom.unfriended.className = settings.unfriended ? 'pi-on' : 'pi-off';
 							pi.dom.gainNotification.className = settings.gainNotification ? 'pi-on' : 'pi-off';
+							pi.dom.gainNotificationMinXP.children[1].value = settings.minimumGain.xp;
+							pi.dom.gainNotificationMinPP.children[1].value = settings.minimumGain.pp;
 							pi.dom.userLevelUp.className = settings.userLevelUp ? 'pi-on' : 'pi-off';
 						break;
 
@@ -3953,7 +4388,7 @@
 						case 'customStyle':
 							if (settings.CSS) {
 								$('head').append($('<link id="pi-CSS" rel="stylesheet" type="text/css" href="'+url.styles.blue_css+'">'));
-								pi.changeBG(false);
+								pi.changeBG(false, url.images.background);
 							} else {
 								$('#pi-CSS').remove();
 								pi.changeBG(true);
@@ -4028,6 +4463,14 @@
 								$('head').append($('<link id="pi-smallHistory-CSS" rel="stylesheet" type="text/css" href="'+url.styles.small_history+'">'));
 							} else {
 								$('#pi-smallHistory-CSS').remove();
+							}
+						break;
+
+						case 'smallFriends':
+							if (settings.smallFriends) {
+								$('head').append($('<link id="pi-smallFriends-CSS" rel="stylesheet" type="text/css" href="'+url.styles.small_friends+'">'));
+							} else {
+								$('#pi-smallFriends-CSS').remove();
 							}
 						break;
 					}
