@@ -24,11 +24,13 @@
       "customStyle":"Sloge po želji",
       "customRanks":"Čin po želji",
       "languageFlags":"Language flags",
+      "friendsIcons":"Friends icons",
       "customBG":"Custom Bg",
       "oldChat":"Old chat",
       "oldFooter":"Old footer",
       "smallHistory":"Small history",
-      "smallFriends":"Small friends list"
+      "smallFriends":"Small friends list",
+      "smallPlaylists":"Small Playlists"
     },
     "moderation":{
       "title":"Moderiranje",
@@ -203,7 +205,12 @@
     "fileLog":"Prijavi se v datoteko ?",
     "moveTop":"Premakni na vrh ? \n\n(Če sta premakni na vrh in dno obe omogočene, bo premaknilo na vrh)",
     "moveBottom":"Premakni na dno?",
-    "deleteSongs":"Odstrani pesem ki ni na voljo ?"
+    "deleteSongs":"Odstrani pesem ki ni na voljo ?",
+    "customBGTitle":"Set background's image",
+    "additionalBackgrounds":"Or choose one of these :",
+    "otherChoices":"Other backgrounds",
+    "customBGDisclaimer":"More to come! If you are the owner of one of these image, please let me know.",
+    "confirmDeleteTitle":"Delete this message ?"
   },
   "glossary":{
     "song":"pesem",
@@ -212,6 +219,8 @@
     "bottom":"spodaj",
     "none":"brez",
     "delete":"izbriši",
-    "dashboard":"nadzorna plošča"
+    "dashboard":"nadzorna plošča",
+    "cancel":"Cancel",
+    "save":"Save"
   }
 }

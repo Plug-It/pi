@@ -24,11 +24,13 @@
       "customStyle":"Styl alternatywny",
       "customRanks":"Niestandardowe rangi",
       "languageFlags":"Flagi językowe",
+      "friendsIcons":"Ikony znajomych",
       "customBG":"Niestandardowe tło",
       "oldChat":"Czat starszego typu",
       "oldFooter":"Stopka starszego typu",
-      "smallHistory":"Mniejsza historia",
-      "smallFriends":"Kompaktowa lista znajomych"
+      "smallHistory":"Kompaktowa historia",
+      "smallFriends":"Kompaktowa lista znajomych",
+      "smallPlaylists":"Kompaktowe listy odtwarzania"
     },
     "moderation":{
       "title":"Moderacja",
@@ -203,7 +205,12 @@
     "fileLog":"Zapisywać do pliku?",
     "moveTop":"Przenieść na początek?\n\n(jeżeli jednocześnie wybrano przenoszenie na początek i koniec, utwory będą przesuwane na początek)",
     "moveBottom":"Przenieść na koniec?",
-    "deleteSongs":"Usunąć niedostępne utwory?"
+    "deleteSongs":"Usunąć niedostępne utwory?",
+    "customBGTitle":"Ustaw obraz tła",
+    "additionalBackgrounds":"Lub wybierz jeden z nich:",
+    "otherChoices":"Inne tła",
+    "customBGDisclaimer":"Więcej nadejdzie wkrótce! Jeśli jedno z nich należy do Ciebie, daj mi znać.",
+    "confirmDeleteTitle":"Usunąć tę wiadomość?"
   },
   "glossary":{
     "song":"utwór",
@@ -212,6 +219,8 @@
     "bottom":"dół",
     "none":"brak",
     "delete":"usuń",
-    "dashboard":"panel"
+    "dashboard":"panel",
+    "cancel":"Anuluj",
+    "save":"Zapisz"
   }
 }

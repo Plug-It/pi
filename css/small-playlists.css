@@ -1,0 +1,37 @@
+#playlist-menu .menu .row,
+.pop-menu li {
+	font-size: 13px;
+	line-height: 13px;
+	height: 15px;
+}
+#playlist-menu .menu .row:hover {
+	background: #32234c;
+}
+#playlist-menu .menu .row .activate-button {
+	top: 0; left: 0;
+	width: 30px; height: 15px;
+}
+#playlist-menu .menu .row .activate-button .icon,
+.pop-menu li .icon {
+	top: -8px;
+}
+#playlist-menu .menu .row .spinner {
+	width: 30px !important; height: 30px !important;
+	top: 0 !important; left: 0 !important;
+}
+#playlist-menu .menu .row .spinner > div {
+	top: -2px !important; left: 5px !important;
+}
+#playlist-menu .menu .row .name,
+#playlist-menu .menu .row .count,
+.pop-menu li span {
+	top: 1px;
+	height: 15px;
+}
+#playlist-menu .menu .row .name {
+	left: 30px;
+	width: 200px;
+}
+#playlist-menu .menu .row .count {
+	right: 1px;
+}

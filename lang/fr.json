@@ -24,11 +24,13 @@
       "customStyle":"Thème personalisé",
       "customRanks":"Rangs personalisés",
       "languageFlags":"Drapeau de language",
+      "friendsIcons":"Icône d'amis",
       "customBG":"Fond personalisé",
       "oldChat":"Ancien chat",
       "oldFooter":"Ancien pied de page",
       "smallHistory":"Petit historique",
-      "smallFriends":"Petite liste d'amis"
+      "smallFriends":"Petite liste d'amis",
+      "smallPlaylists":"Petites playlists"
     },
     "moderation":{
       "title":"Modération",
@@ -203,7 +205,12 @@
     "fileLog":"Enregistrer dans un fichier ?",
     "moveTop":"Placer en premier ?\n\n(Si placer en premier et dernier sont tout deux vrais, placera en premier)",
     "moveBottom":"Placer en dernier ?",
-    "deleteSongs":"Supprimer les musiques indisponibles ?"
+    "deleteSongs":"Supprimer les musiques indisponibles ?",
+    "customBGTitle":"Changer l'image de fond",
+    "additionalBackgrounds":"Ou choisissez-en un parmi cette liste :",
+    "otherChoices":"Autre fonds",
+    "customBGDisclaimer":"Encore plus à venir ! Si vous êtes l'auteur de l'une de ces images, veuillez me contacter.",
+    "confirmDeleteTitle":"Supprimer ce message ?"
   },
   "glossary":{
     "song":"musique",
@@ -212,6 +219,8 @@
     "bottom":"bas",
     "none":"aucun",
     "delete":"supprimer",
-    "dashboard":"tableau de bord"
+    "dashboard":"tableau de bord",
+    "cancel":"Annuler",
+    "save":"Sauvegarder"
   }
 }

@@ -39,7 +39,7 @@
 .cell .meta .friends .thumb, {
 	width: 20px !important;
 }
-.cell .meta div {
+.cell .meta div:not('.thumb') {
 	width: 150px !important;
 }
 .cell .meta .now-playing {

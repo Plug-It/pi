@@ -24,11 +24,13 @@
 			"customStyle": "Custom Style",
 			"customRanks": "Custom Ranks",
 			"languageFlags": "Language flags",
+			"friendsIcons": "Friends icons",
 			"customBG": "Custom Bg",
 			"oldChat": "Old chat",
 			"oldFooter": "Old footer",
 			"smallHistory": "Small history",
-			"smallFriends": "Small friends list"
+			"smallFriends": "Small friends list",
+			"smallPlaylists": "Small Playlists"
 		},
 		"moderation": {
 			"title": "Moderation",
@@ -203,7 +205,12 @@
 		"fileLog": "Log in file ?",
 		"moveTop": "Move to top ?\n\n(If both move to top and bottom are true, will move to top)",
 		"moveBottom": "Move to bottom ?",
-		"deleteSongs": "Delete unavailable songs ?"
+		"deleteSongs": "Delete unavailable songs ?",
+		"customBGTitle" :"Set background's image",
+		"additionalBackgrounds": "Or choose one of these :",
+		"otherChoices": "Other backgrounds",
+		"customBGDisclaimer": "More to come! If you are the owner of one of these image, please let me know.",
+		"confirmDeleteTitle": "Delete this message ?"
 	},
 	"glossary": {
 		"song": "song",
@@ -212,6 +219,8 @@
 		"bottom": "bottom",
 		"none": "none",
 		"delete": "delete",
-		"dashboard": "dashboard"
+		"dashboard": "dashboard",
+		"cancel": "Cancel",
+		"save": "Save"
 	}
 }

@@ -24,11 +24,13 @@
       "customStyle":"Vlastní styly",
       "customRanks":"Vlastní hodnosti",
       "languageFlags":"Jazykové vlajky",
+      "friendsIcons":"Ikony přátel",
       "customBG":"Vlastní pozadí",
       "oldChat":"Starší vzhled chatu",
       "oldFooter":"Starší zápatí profilu",
       "smallHistory":"Menší historie",
-      "smallFriends":"Malý seznam přátel"
+      "smallFriends":"Malý seznam přátel",
+      "smallPlaylists":"Menší seznamy skladeb"
     },
     "moderation":{
       "title":"Moderace",
@@ -203,7 +205,12 @@
     "fileLog":"Log do souboru?",
     "moveTop":"Přesunout nahoru?\n\n(pokud bude obojí čili přesunutí nahoru a do středu bude povolené, přesune se nahoru)",
     "moveBottom":"Přesunout na konec?",
-    "deleteSongs":"Smazat nedostupné skladby?"
+    "deleteSongs":"Smazat nedostupné skladby?",
+    "customBGTitle":"Nastavte si pozadí místnosti",
+    "additionalBackgrounds":"Nebo si vyberte z těchto:",
+    "otherChoices":"Ostatní pozadí",
+    "customBGDisclaimer":"Další přibudou! Pokud jste autorem jednoho z těchto uvedených obrázků, dejte mi vědět!",
+    "confirmDeleteTitle":"Smazat tuto zprávu?"
   },
   "glossary":{
     "song":"skladba",
@@ -212,6 +219,8 @@
     "bottom":"dolů",
     "none":"žádný",
     "delete":"smazat",
-    "dashboard":"přehled"
+    "dashboard":"přehled",
+    "cancel":"Zrušit",
+    "save":"Uložit"
   }
 }

@@ -3,6 +3,11 @@
  │     Role: NONE     │
  └————————————————————┘
 */
+#chat .cm.mention .un,
+#chat .cm.mention .userInfo,
+#chat .cm.mention .timestamp {
+	color: hsl(77,100%,50%);
+}
 /* --[MENTION]-- */
 #chat .mention {
 	background: linear-gradient(hsla(77,100%,20%,.8), hsla(77,100%,11%,.8)),
@@ -14,16 +19,15 @@
 #chat .mention .timestamp {
 	color: hsl(77,100%,40%);
 }
-#chat .mention .un {
-	color: hsl(77,100%,50%);
-}
 /*
  ┌————————————————————┐
  │     Role: YOU      │
  └————————————————————┘
 */
-#chat .from.you .un {
-	color: hsl(200,100%,50%) !important;
+#chat .cm.from.you .un,
+#chat .cm.from.you .userInfo,
+#chat .cm.from.you .timestamp {
+	color: hsl(200,100%,50%);
 }
 /* --[MENTION]-- */
 #chat .mention.is-you {
@@ -33,7 +37,8 @@
 	border: none !important;
 }
 #chat .mention.is-you .name,
-#chat .mention.is-you .timestamp {
+#chat .mention.is-you .timestamp,
+.is-you .name {
 	color: hsl(200,100%,40%) !important;
 }
 /*
@@ -41,7 +46,9 @@
  │   Role: FRIEND     │
  └————————————————————┘
 */
-#chat .is-friend .un {
+#chat .cm.is-friend .un,
+#chat .cm.is-friend .userInfo,
+#chat .cm.is-friend .timestamp {
 	color: hsl(80,60%,50%);
 }
 /* --[MENTION]-- */
@@ -96,7 +103,9 @@
 }
 .icon-chat-subscriber + span,
 #chat .is-subscriber:not(.silver) .from.has-sub .un,
-#user-rollover .meta.subscriber:not(.silver) .status span {
+#user-rollover .meta.subscriber:not(.silver) .status span,
+#chat .is-subscriber:not(.silver) .userInfo,
+#chat .is-subscriber:not(.silver) .timestamp {
 	color: #FB3;
 }
 /* --[MENTION]-- */
@@ -154,7 +163,7 @@
 	box-shadow: inset 0 0 0 1px hsl(354,50%,50%) !important;
 }
 #chat .mention.is-bouncer .name,
-#chat .mention.is-bouncer .timestamp
+#chat .mention.is-bouncer .timestamp,
 #chat .mention.is-bouncer.is-subscriber .name,
 #chat .mention.is-bouncer.is-subscriber .timestamp {
 	color: #F45 !important;
@@ -173,7 +182,7 @@
 }
 /* --[MENTION]-- */
 #chat .mention.is-manager,
-#chat .mention.is-manager {
+#chat .mention.is-manager.is-manager {
 	background: linear-gradient(hsla(350,85%,20%,.8), hsla(350,85%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(350,50%,50%) !important;

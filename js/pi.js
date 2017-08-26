@@ -123,6 +123,7 @@
 			switch (API.getUser().language) {
 				case 'cs': lang = 'cs'; break;
 				case 'de': lang = 'de'; break;
+				case 'et': lang = 'et'; break;
 				case 'fr': lang = 'fr'; break;
 				case 'pl': lang = 'pl'; break;
 				case 'pt': lang = 'pt'; break;
@@ -181,7 +182,8 @@
 					old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
 					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
 					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css',
-					small_friends: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css'
+					small_friends: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css',
+					small_playlists: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-playlists.css',
 				},
 				images: {
 					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg' //'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg'
@@ -228,13 +230,15 @@
 				roomStyle: true,
 				CSS: false,
 				customRanks: false,
-				languageFlags: true,
+				languageFlags: false,
+				friendsIcons: false,
 				customBG: false,
 				customBGURL: null,
 				oldChat: false,
 				oldFooter: false,
 				smallHistory: false,
 				smallFriends: false,
+				smallPlaylists: false,
 				// Moderation
 				showDeletedMsg: false,
 				confirmDelete: false,
@@ -382,7 +386,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 25
+					pre: 26
 				},
 				_event: {
 					advance: function(song) {
@@ -543,7 +547,7 @@
 							switch(msg.message) {
 								case '!strobe on':
 								if (!$('#pi-strobe').length) {
-									var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter:brightness(200%);filter:brightness(200%)}10%{-webkit-filter:brightness(10%);filter:brightness(10%)}}@keyframes strobe2{0%{box-shadow:0 20px 200px #fff}10%{box-shadow:none}}#avatars-container,#dj-button,#vote,.room-background{-webkit-filter:brightness(10%);filter:brightness(10%)}#avatars-container{animation:strobe .45s linear infinite}#playback-container{box-shadow:none!important;animation:strobe2 .45s linear infinite}</style>');
+									var $strobe = $('<style id="pi-strobe">@keyframes strobe{0%{-webkit-filter:brightness(200%);filter:brightness(200%)}10%{-webkit-filter:brightness(10%);filter:brightness(10%)}}@keyframes strobe2{0%{box-shadow:0 20px 200px #fff}10%{box-shadow:none}}#avatars-container,#dj-button,#vote,.room-background,#pi-background{-webkit-filter:brightness(10%);filter:brightness(10%)}#avatars-container{animation:strobe .45s linear infinite}#playback-container{box-shadow:none!important;animation:strobe2 .45s linear infinite}</style>');
 									$('head').append($strobe);
 									pi._tool.log(pi._tool.replaceString(lang.log.strobeOn, {user: sender.username}), 'chat');
 								}
@@ -1694,6 +1698,14 @@
 							if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
 							if (sender.silver) $(selector)[0].className += ' is-silver-subscriber';
 							if (sender.friend) $(selector)[0].className += ' is-friend';
+							if (settings.friendsIcons && sender.friend) {
+								$(selector+' .timestamp').before($(emoji.replace_colons(':busts_in_silhouette:')).attr({
+									class: 'emoji-outer emoji-sizer pi-friendsIcons',
+									style: '',
+									style: 'margin-left: 2px;',
+									title: 'You are friends with this user'
+								}));
+							}
 							if (settings.languageFlags) {
 								var flag;
 
@@ -1711,13 +1723,15 @@
 								}
 
 								flag = $(emoji.replace_colons(flag)).attr({
-									style: 'margin-left: 2px;',
+									class: 'emoji-outer emoji-sizer pi-languageFlags',
+									style: '',
 									title: modules.Lang.languages[(sender.language !== null ? sender.language : 'no language set')]
 								});
 								$(selector+' .timestamp').before(flag);
 							}
+
 							if (settings.userInfo) {
-								$(selector+' .timestamp').before('<span class="userInfo">'+`LVL: <b>${sender.level}</b> | ID: <b>${sender.id}<b>`+'</span>');
+								$(selector+' .timestamp').before('<span class="userInfo">'+`<strong>LVL: </strong>${sender.level}<strong> | ID: </strong>${sender.id}`+'</span>');
 							}
 
 							// Chat limit
@@ -1774,9 +1788,11 @@
 						}
 					},
 					chatDelete: function(message) {
+						if (typeof message !== 'object') return;
+
 						if ($('.cid-'+ message.p.c).length === 0) {
 							var secret = message.p.c.split('-');
-							if (secret[0] == API.getUser().id) {
+							if (secret[0] == API.getUser().id && secret[1].length !== 13) {
 								var text = '';
 								secret[1].match(/.{1,3}/g).forEach((e,i,a) => {
 									text += String.fromCharCode(parseInt(e));
@@ -1814,6 +1830,12 @@
 							pi._tool.log('This is to fix deleted messages', 'chat').delete();
 							return;
 						}
+					},
+					streamDisabled: function() {
+						var streamDisabled = modules.plugOptions.settings.streamDisabled;
+						var icon = $('#pi-toggleStream .pi-toggleStream')[0];
+
+						icon.className = streamDisabled ? 'icon pi-toggleStream off' : 'icon pi-toggleStream';
 					}
 				},
 				_DOMEvent: {
@@ -2173,7 +2195,7 @@
 						if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
 							modules.User = obj;
 					});
-					modules.lang = require("lang/Lang");
+					modules.lang = require('lang/Lang');
 					updateStatus('Initalizating API & Events listener', 4);
 					// Add custom events to the API
 					pi._extendAPI.init();
@@ -2181,10 +2203,11 @@
 						API.on(event, pi._event[event]);
 					}
 					pi._tool.plugSocketHook.init();
-					modules.context.on("chat:receive", pi._modulesEvent.chatReceive);
-					modules.events = {
-						chatDelete: modules.context._events['chat:delete'].shift()
-					};
+					modules.context.on('chat:receive', pi._modulesEvent.chatReceive);
+					modules.originalChatDelete = modules.context._events['chat:delete'][0].callback;
+					modules.context._events['chat:delete'][0].callback = pi._modulesEvent.chatDelete;
+					modules.context.on('change:streamDisabled', pi._modulesEvent.streamDisabled);
+
 					// Bind events to their handler
 					window.onbeforeunload = pi._DOMEvent.navWarn;
 					$(window).on('keydown', pi._DOMEvent.keyboardShortcuts);
@@ -2437,11 +2460,13 @@
 									'<li id="pi-css">'+lang.menu.customisation.customStyle+'</li>'+
 									'<li id="pi-customRanks">'+lang.menu.customisation.customRanks+'</li>'+
 									'<li id="pi-languageFlags">'+lang.menu.customisation.languageFlags+'</li>'+
+									'<li id="pi-friendsIcons">'+lang.menu.customisation.friendsIcons+'</li>'+
 									'<li id="pi-bg">'+lang.menu.customisation.customBG+'</li>'+
 									'<li id="pi-old-chat">'+lang.menu.customisation.oldChat+'</li>'+
 									'<li id="pi-old-footer">'+lang.menu.customisation.oldFooter+'</li>'+
 									'<li id="pi-small-history">'+lang.menu.customisation.smallHistory+'</li>'+
 									'<li id="pi-small-friends">'+lang.menu.customisation.smallFriends+'</li>'+
+									'<li id="pi-small-playlists">'+lang.menu.customisation.smallPlaylists+'</li>'+
 								'</ul>'+
 								'<h2>'+lang.menu.moderation.title+'</h2>'+
 								'<ul style="display: none;">'+
@@ -2491,7 +2516,7 @@
 									'Plug-It '+pi._tool.getReadableVersion()+'.<br>'+
 									pi._tool.replaceString(lang.menu.about.developedBy, {"plug-profile": '<a target="_blank" href="https://plug.dj/@/wibla" target="blank">WiBla</a><br>'})+
 									pi._tool.replaceString(lang.menu.about.followUs, {twitter: '<a target="_blank" href="https://twitter.com/plugit_dj" target="blank">Twitter</a><br>'})+
-									pi._tool.replaceString(lang.menu.about.joinDiscord, {discord: '<a target="_blank" href="https://discord.gg/RKNZpph" target="blank">Discord</a><br>'})+
+									pi._tool.replaceString(lang.menu.about.joinDiscord, {discord: '<a target="_blank" href="https://discord.gg/DptCswA" target="blank">Discord</a><br>'})+
 									'<a target="_blank" href="https://chrome.google.com/webstore/detail/plug-it-extension/bikeoipagmbnkipclndbmfkjdcljocej">'+lang.menu.about.rateExtension+'</a><br>'+
 									'<a target="_blank" href="https://crowdin.com/project/plug-it">'+lang.menu.about.translate+'</a><br>'+
 									'<a target="_blank" href="https://github.com/Plug-It/pi/issues">'+lang.menu.about.reportBug+'</a><br>'+
@@ -2618,11 +2643,9 @@
 					});
 					$('#pi-toggleStream').on('click', function(e) {
 						var streamDisabled = modules.plugOptions.settings.streamDisabled;
-						var $icon = $('#pi-toggleStream .pi-toggleStream');
 
 						streamDisabled = !streamDisabled;
 						modules.plugOptions.settings.streamDisabled = streamDisabled;
-						$icon.toggleClass('off');
 
 						modules.context.trigger('change:streamDisabled');
 						modules.plugOptions.save();
@@ -2710,11 +2733,13 @@
 						css: $('#pi-css')[0],
 						customRanks: $('#pi-customRanks')[0],
 						languageFlags: $('#pi-languageFlags')[0],
+						friendsIcons: $('#pi-friendsIcons')[0],
 						bg: $('#pi-bg')[0],
 						oldChat: $('#pi-old-chat')[0],
 						oldFooter: $('#pi-old-footer')[0],
 						smallHistory: $('#pi-small-history')[0],
 						smallFriends: $('#pi-small-friends')[0],
+						smallPlaylists: $('#pi-small-playlists')[0],
 						// Moderation
 						showDeletedMsg: $('#pi-showDeletedMsg')[0],
 						confirmDelete: $('#pi-confirmDelete')[0],
@@ -2786,8 +2811,10 @@
 						API.off(event, pi._event[event]);
 					}
 					pi._tool.plugSocketHook.kill();
-					modules.context.off("chat:receive", pi._modulesEvent.chatReceive);
-					modules.context._events['chat:delete'].push(modules.events.chatDelete);
+					modules.context.off('chat:receive', pi._modulesEvent.chatReceive);
+					modules.context._events['chat:delete'][0].callback = modules.originalChatDelete;
+					modules.context.off('change:streamDisabled', pi._modulesEvent.streamDisabled);
+					// modules.context._events['chat:delete'].push(modules.events.chatDelete);
 					delete modules;
 
 					// Allow to reload
@@ -3474,7 +3501,7 @@
 									$dialog = $(
 										'<div id="dialog-media-update" class="dialog" style="height: auto;">'+
 											'<div class="dialog-frame">'+
-												'<span class="title">Set background\'s image</span>'+
+												'<span class="title">'+lang.modal.customBGTitle+'</span>'+
 												'<i class="icon icon-dialog-close"></i>'+
 											'</div>'+
 
@@ -3484,7 +3511,7 @@
 													'<div class="dialog-input-background">'+
 														'<input name="url" type="text" placeholder=".jpg .png .gif.." value="'+(settings.customBGURL !== null ? settings.customBGURL : 'Custom background URL')+'">'+
 													'</div>'+
-													'<p style="position:relative;top:55px;">Or choose one of these :</p>'+
+													'<p style="position:relative;top:55px;">'+lang.modal.additionalBackgrounds+'</p>'+
 													'<figure style="position:relative;top:65px;">'+
 														'<figcaption>Plug\'s original backgrounds</figcaption>'+
 														'<div class="thumbnail" style="background: url('+defaultURL+') 0 0 / 150px 84px" data-src="default" alt="Plug\'s background"></div>'+
@@ -3503,7 +3530,7 @@
 													'</figure>'+
 
 													'<figure style="position:relative;top:65px;">'+
-														'<figcaption>Other backgrounds</figcaption>'+
+														'<figcaption>'+lang.modal.otherChoices+'</figcaption>'+
 														'<div class="thumbnail" style="background-position: 0 0" data-src="https://dl.dropboxusercontent.com/s/guglxeg29z8xdyc/Plug-It.jpg" alt="Plug-It background"></div>'+
 														'<div class="thumbnail" style="background-position: -150px 0" data-src="https://dl.dropboxusercontent.com/s/okazf75swvx5n3r/Plug-It-old.jpg" alt="Plug-It Old background"></div>'+
 														'<div class="thumbnail" style="background-position: 0 -336px" data-src="https://dl.dropboxusercontent.com/s/rs4yhqsmp557q46/2k14lounge.jpg" alt="lounge background"></div>'+
@@ -3516,13 +3543,13 @@
 														'<div class="thumbnail" style="background-position: -150px -420px" data-src="https://dl.dropboxusercontent.com/s/30zbmkdi31jtxtl/plugalpha.jpg" alt="Plug Alpha"></div>'+
 														'<div class="thumbnail" style="background-position: -300px -420px" data-src="https://dl.dropboxusercontent.com/s/idchvsywitwvns5/plugalphaLounge.jpg" alt="Plug Alpha Lounge"></div>'+
 													'</figure>'+
-													'<p style="position:relative;top:70px;">More to come! If you are the owner of one of these image, please let me know.</p>'+
+													'<p style="position:relative;top:70px;">'+lang.modal.customBGDisclaimer+'</p>'+
 												'</div>'+
 											'</div>'+
 
 											'<div class="dialog-frame">'+
-												'<div class="button cancel"><span>Cancel</span></div>'+
-												'<div class="button submit"><span>Save</span></div>'+
+												'<div class="button cancel"><span>'+lang.glossary.cancel+'</span></div>'+
+												'<div class="button submit"><span>'+lang.glossary.save+'</span></div>'+
 											'</div>'+
 										'</div>'
 									);
@@ -3547,7 +3574,7 @@
 									$dialog = $(
 										'<div id="dialog-media" class="dialog">'+
 											'<div class="dialog-frame">'+
-												'<span class="title">Delete this message ?</span>'+
+												'<span class="title">'+lang.modal.confirmDeleteTitle+'</span>'+
 												'<i class="icon icon-dialog-close"></i>'+
 											'</div>'+
 
@@ -3558,8 +3585,8 @@
 											'</div>'+
 
 											'<div class="dialog-frame">'+
-												'<div class="button cancel"><span>Cancel</span></div>'+
-												'<div class="button submit"><span>Delete</span></div>'+
+												'<div class="button cancel"><span>'+lang.glossary.cancel+'</span></div>'+
+												'<div class="button submit"><span>'+lang.glossary.delete+'</span></div>'+
 											'</div>'+
 										'</div>'
 									);
@@ -4105,7 +4132,12 @@
 						case 'languageFlags':
 							settings.languageFlags = !settings.languageFlags;
 							pi.dom.languageFlags.className = settings.languageFlags ? 'pi-on' : 'pi-off';
-							settings.languageFlags ? $('.un ~ .emoji-outer').show() : $('.un ~ .emoji-outer').hide();
+							settings.languageFlags ? $('.un ~ .pi-languageFlags').show() : $('.un ~ .pi-languageFlags').hide();
+						break;
+						case 'friendsIcons':
+							settings.friendsIcons = !settings.friendsIcons;
+							pi.dom.friendsIcons.className = settings.friendsIcons ? 'pi-on' : 'pi-off';
+							settings.friendsIcons ? $('.un ~ .pi-friendsIcons').show() : $('.un ~ .pi-friendsIcons').hide();
 						break;
 						case 'bg':
 							pi._tool.modal(true, 'custom-bg');
@@ -4129,6 +4161,11 @@
 							settings.smallFriends = !settings.smallFriends;
 							pi.dom.smallFriends.className = settings.smallFriends ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallFriends');
+						break;
+						case 'small-playlists':
+							settings.smallPlaylists = !settings.smallPlaylists;
+							pi.dom.smallPlaylists.className = settings.smallPlaylists ? 'pi-on' : 'pi-off';
+							pi.toggleStyle('smallPlaylists');
 						break;
 						case 'showDeletedMsg':
 							settings.showDeletedMsg = !settings.showDeletedMsg;
@@ -4255,6 +4292,7 @@
 							pi.dom.customRanks.className = settings.customRanks ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('customRanks');
 							pi.dom.languageFlags.className = settings.languageFlags ? 'pi-on' : 'pi-off';
+							pi.dom.friendsIcons.className = settings.friendsIcons ? 'pi-on' : 'pi-off';
 							settings.customBGURL !== null ? pi.changeBG(false, settings.customBGURL) : void 0;
 							pi.dom.oldChat.className = settings.oldChat ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('oldChat');
@@ -4264,6 +4302,8 @@
 							pi.toggleStyle('smallHistory');
 							pi.dom.smallFriends.className = settings.smallFriends ? 'pi-on' : 'pi-off';
 							pi.toggleStyle('smallFriends');
+							pi.dom.smallPlaylists.className = settings.smallPlaylists ? 'pi-on' : 'pi-off';
+							pi.toggleStyle('smallPlaylists');
 							// Moderation
 							pi.dom.showDeletedMsg.className = settings.showDeletedMsg ? 'pi-on' : 'pi-off';
 							pi.dom.confirmDelete.className = settings.confirmDelete ? 'pi-on' : 'pi-off';
@@ -4388,7 +4428,7 @@
 						case 'customStyle':
 							if (settings.CSS) {
 								$('head').append($('<link id="pi-CSS" rel="stylesheet" type="text/css" href="'+url.styles.blue_css+'">'));
-								pi.changeBG(false, url.images.background);
+								pi.changeBG(false, settings.customBGURL !== null ? settings.customBGURL : url.images.background);
 							} else {
 								$('#pi-CSS').remove();
 								pi.changeBG(true);
@@ -4471,6 +4511,14 @@
 								$('head').append($('<link id="pi-smallFriends-CSS" rel="stylesheet" type="text/css" href="'+url.styles.small_friends+'">'));
 							} else {
 								$('#pi-smallFriends-CSS').remove();
+							}
+						break;
+
+						case 'smallPlaylists':
+							if (settings.smallPlaylists) {
+								$('head').append($('<link id="pi-smallPlaylists-CSS" rel="stylesheet" type="text/css" href="'+url.styles.small_playlists+'">'));
+							} else {
+								$('#pi-smallPlaylists-CSS').remove();
 							}
 						break;
 					}

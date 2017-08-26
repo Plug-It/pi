@@ -24,11 +24,13 @@
       "customStyle":"Anpassad stil",
       "customRanks":"Anpassade Roller",
       "languageFlags":"Language flags",
+      "friendsIcons":"Friends icons",
       "customBG":"Anpassad bakgrund",
       "oldChat":"Gammal chatt",
       "oldFooter":"Gammal sidofot",
       "smallHistory":"Kompakt historik",
-      "smallFriends":"Small friends list"
+      "smallFriends":"Small friends list",
+      "smallPlaylists":"Small Playlists"
     },
     "moderation":{
       "title":"Moderation",
@@ -203,7 +205,12 @@
     "fileLog":"Logg som en fil?",
     "moveTop":"Flytta till toppen?\n\n(Om båda flytta till toppen och flytta till botten är \"ja\" kommer låtarna flyttas till toppen)",
     "moveBottom":"Flytta till botten?",
-    "deleteSongs":"Ta bort korrupta låtar?"
+    "deleteSongs":"Ta bort korrupta låtar?",
+    "customBGTitle":"Set background's image",
+    "additionalBackgrounds":"Or choose one of these :",
+    "otherChoices":"Other backgrounds",
+    "customBGDisclaimer":"More to come! If you are the owner of one of these image, please let me know.",
+    "confirmDeleteTitle":"Delete this message ?"
   },
   "glossary":{
     "song":"låt",
@@ -212,6 +219,8 @@
     "bottom":"botten",
     "none":"ingen",
     "delete":"ta bort",
-    "dashboard":"meny"
+    "dashboard":"meny",
+    "cancel":"Cancel",
+    "save":"Save"
   }
 }
