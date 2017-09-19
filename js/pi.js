@@ -169,7 +169,7 @@
 			if (typeof lang !== 'object' || typeof ranks !== 'object') return setTimeout(init, 10);
 
 			const startTime = new Date().getTime();
-			const delay = (API.getUser().gRole >= 3 ? 200 : 3500);
+			const delay = (API.getUser().gRole >= API.ROLE.MANAGER ? 200 : 3500);
 			const CHAT_INTERCEPT_STRING = `Plug-It Socket Intercept: ${Math.random()}`;
 			const url = {
 				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
@@ -183,16 +183,16 @@
 					old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
 					small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css',
 					small_friends: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css',
-					small_playlists: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-playlists.css',
+					small_playlists: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-playlists.css'
 				},
 				images: {
-					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg' //'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg'
+					background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg'
 				},
 				sounds: {
 					// https://www.freesound.org/people/TheGertz/sounds/235911/
-					notification:  'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/notification.wav', //'https://dl.dropboxusercontent.com/s/upihgstzpjmsinu/notification.wav',
+					notification:  'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/notification.wav',
 					// https://www.freesound.org/people/soneproject/sounds/255102/
-					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav' //'https://dl.dropboxusercontent.com/s/0zg1yrg4sq06vny/jingle.wav'
+					jingle:        'https://raw.githubusercontent.com/Plug-It/pi/pre-release/sounds/jingle.wav'
 				},
 				visu: [
 					'https://rawgit.com/WiBla/visu/master/hyperspace/index.html',
@@ -332,8 +332,8 @@
 					id: 1,
 					guest: false,
 					level: 50,
-					role: 5,
-					gRole: 5,
+					role: API.ROLE.HOST,
+					gRole: API.ROLE.HOST,
 				}, { silent: true });
 
 				const originalRoom = _.pick(modules.room.toJSON(), 'joined', 'minChatLevel');
@@ -386,7 +386,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 26
+					pre: 27
 				},
 				_event: {
 					advance: function(song) {
@@ -543,7 +543,7 @@
 						*/
 
 						// Server chat commands
-						if (pi._tool.getRank(sender.id).indexOf('Dev') !== -1 || pi._tool.getRank(sender.id).indexOf('Community Manager') !== -1) {
+						if (['Dev', 'Community Manager'].indexOf(pi._tool.getRank(sender.id)) !== -1) {
 							switch(msg.message) {
 								case '!strobe on':
 								if (!$('#pi-strobe').length) {
@@ -571,6 +571,19 @@
 									pi._tool.log(pi._tool.replaceString(lang.log.rainbowOff, {user: sender.username}), 'chat');
 								}
 								break;
+							}
+						}
+						// !joindisable & !afkdisable
+						// Different codeStyle because direcrly inspired by p3
+						let a = msg.type === 'mention' && API.hasPermission(msg.uid, API.ROLE.BOUNCER);
+						let b = msg.message.indexOf('@') < 0 && (API.hasPermission(msg.uid, API.ROLE.MANAGER) || ['Dev', 'Community Manager'].indexOf(pi._tool.getRank(sender.id)) !== -1)
+						if (a || b) {
+							if (msg.message.indexOf('!joindisable') > -1 && settings.autoDJ) {
+								pi.menu('join');
+								API.sendChat(`@${msg.un} Auto-join disabled!`);
+							} else if (msg.message.indexOf('!afkdisable') > -1 && settings.afk) {
+								pi.menu('afkResponder');
+								API.sendChat(`@${msg.un} AFK responder disabled!`);
 							}
 						}
 						// Auto AFK responder with 60s cooldown (prevents spam)
@@ -660,6 +673,20 @@
 								else API.sendChat(msg + ' 😍💗😍💗😍💗😍💗😍💗');
 							break;
 
+							case 'lovespam':
+								let i = 1;
+
+								let uInt = setInterval(() => {
+									if (i > 5) clearInterval(uInt);
+									else {
+										if (i%2 == 0) API.sendChat('😍💗😍💗😍');
+										else API.sendChat('💗😍💗😍💗');
+									}
+
+									i++;
+								}, 500);
+							break;
+
 							case 'door':
 								if (!msg.length) API.sendChat('🚪');
 								else API.sendChat(msg + ' 🚪');
@@ -681,6 +708,14 @@
 							case 'shrug':
 								if (!msg.length) API.sendChat('¯\\_(ツ)_/¯');
 								else API.sendChat(msg + ' ¯\\_(ツ)_/¯');
+							break;
+
+							case 'friend':
+								if (!args[0]) return pi._tool.log(lang.info.helpUserOrId, 'info chat');
+								else if (isNaN(args[0])) {
+									args[0] = API.getUserByName(args[0].replace(/@| $/g, '')).id;
+								}
+								API.addFriendByID(Number(args[0]));
 							break;
 
 							case 'gift':
@@ -724,28 +759,20 @@
 							break;
 
 							case 'exportchat':
-								var file = '';
+								let file = '';
+								let csv = args[0] === 'csv';
+
 								session.chat.forEach((e,i,a) => {
-									file += `[${e.type}] [${e.uid}] [${e.un}]\n${e.message} [${e.timestamp}]\n`;
+									file += (csv ?
+										`${e.type},${e.uid},${e.un},${e.message},${e.timestamp}` :
+										`[${e.type}] [${e.uid}] [${e.un}]\n${e.message} [${e.timestamp}]\n`
+									);
 								});
 
 								$('<a></a>')
 									.attr('id', 'pi-exportchat')
-									.attr('href', 'data:text;charset=utf8,' + encodeURIComponent(file))
-									.attr('download', API.getRoomName() + '-logs.txt')
-									[0].click();
-							break;
-
-							case 'exportchat csv':
-								var file = '';
-								session.chat.forEach((e,i,a) => {
-									file += `${e.type},${e.uid},${e.un},${e.message},${e.timestamp}`;
-								});
-
-								$('<a></a>')
-									.attr('id', 'pi-exportchat')
-									.attr('href', 'data:text/csv;charset=utf8,' + encodeURIComponent(file))
-									.attr('download', API.getRoomName() + '-logs.csv')
+									.attr('href', `data:text/${(csv?'csv':'text')};charset=utf8,` + encodeURIComponent(file))
+									.attr('download', API.getRoomName() + `-logs.${csv?'csv':'txt'}`)
 									[0].click();
 							break;
 
@@ -764,7 +791,7 @@
 								});
 							break;
 
-							case 'setbot':
+							case 'bot':
 								if (!args[0]) return pi._tool.log(lang.info.helpUserOrId, 'info chat');
 
 								// Getting the user, either by username or ID
@@ -810,7 +837,7 @@
 
 							case 'kick':
 								var self = API.getUser();
-								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
+								if (self.role < API.ROLE.BOUNCER || (self.role < API.ROLE.BOUNCER && self.gRole === API.ROLE.NONE)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
 
 								// Since username can have spaces, keep only the last args as time
 								var time = args.length > 1 && !isNaN(args[args.length-1]) ? args.pop() : 5;
@@ -834,7 +861,7 @@
 
 							case 'ban':
 								var self = API.getUser();
-								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
+								if (self.role < API.ROLE.BOUNCER || (self.role < API.ROLE.BOUCNER && self.gRole === API.ROLE.NONE)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
 
 								// Since username can have spaces, keep only the last args as duration
 								var duration;
@@ -867,7 +894,7 @@
 							case 'mute':
 								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
 								var self = API.getUser();
-								if (self.role < 2 || (self.role < 2 && self.gRole === 0)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
+								if (self.role < API.ROLE.BOUNCER || (self.role < API.ROLE.BOUNCER && self.gRole === API.ROLE.NONE)) return pi._tool.log(lang.error.noSufficentPermissions, 'error chat');
 
 								// Since username can have spaces, keep only the last args as duration
 								var duration;
@@ -927,22 +954,22 @@
 
 								let roleID = -1; // invalid on purpose
 								switch (cmd) {
-									case 'host':       roleID = 5; break;
-									case 'cohost':     roleID = 4; break;
-									case 'manager':    roleID = 3; break;
-									case 'bouncer':    roleID = 2; break;
-									case 'residentdj': roleID = 1; break;
-									case 'rdj':        roleID = 1; break;
-									case 'unrank':     roleID = 0; break;
+									case 'host':       roleID = API.ROLE.HOST; break;
+									case 'cohost':     roleID = API.ROLE.COHOST; break;
+									case 'manager':    roleID = API.ROLE.MANAGER; break;
+									case 'bouncer':    roleID = API.ROLE.BOUNCER; break;
+									case 'residentdj': roleID = API.ROLE.DJ; break;
+									case 'rdj':        roleID = API.ROLE.DJ; break;
+									case 'unrank':     roleID = API.ROLE.NONE; break;
 								}
 
 								$.ajax({
 									url: (cmd === 'unrank' ? '/_/staff/'+userID : '/_/staff/update'),
 									type: (cmd === 'unrank' ? 'DELETE' : 'POST'),
-									data: JSON.stringify({
+									data: (cmd === 'unrank' ? '' : JSON.stringify({
 										userID: userID,
 										roleID: roleID
-									}),
+									})),
 									error: function(err) {
 										pi._tool.log(lang.error.cannotRank, 'error chat');
 										console.error(lang.error.cannotRank, err);
@@ -1381,17 +1408,19 @@
 									'/r (message)'+
 									'\n/like (@user/message)'+
 									'\n/love (@user/message)'+
+									'\n/lovespam'+
 									'\n/door (@user/message)'+
 									'\n/doorrun (@user/message)'+
 									'\n/fire'+
 									'\n/kong'+
 									'\n/shrug (message)'+
+									'\n/friend [@user/id]'+
 									'\n/gift [@user/id] [amount]'+
 									'\n/eta'+
 									'\n/exportchat (csv)'+
 									'\n/vol [0-100]'+
 									'\n/afk [message]'+
-									'\n/setbot [@user/id]'+
+									'\n/bot [@user/id]'+
 									'\n/discordbot [@user/id]'+
 									'\n/kick [@user/id] (seconds)'+
 									'\n/ban [@user/id] [forever/day/hour]'+
@@ -1684,24 +1713,23 @@
 								}
 							});
 							// Plug ranks
-							if (sender.gRole === 5) $(selector)[0].className += ' is-admin';
-							if (sender.gRole === 3) $(selector)[0].className += ' is-brand-ambassador';
+							if (sender.gRole === API.ROLE.HOST) $(selector)[0].className += ' role-admin';
+							if (sender.gRole === API.ROLE.MANAGER) $(selector)[0].className += ' role-ambassador';
 							switch(sender.role) {
-								case API.ROLE.HOST:    $(selector)[0].className += ' is-host';    break;
-								case API.ROLE.COHOST:  $(selector)[0].className += ' is-cohost'; $(selector+' .icon-chat-host')[0].className = "icon icon-chat-cohost"; break;
-								case API.ROLE.MANAGER: $(selector)[0].className += ' is-manager'; break;
-								case API.ROLE.BOUNCER: $(selector)[0].className += ' is-bouncer'; break;
-								case API.ROLE.DJ:      $(selector)[0].className += ' is-dj';      break;
-								case API.ROLE.NONE:    $(selector)[0].className += ' is-user';    break;
+								case API.ROLE.HOST:    $(selector)[0].className += ' role-host';    break;
+								case API.ROLE.COHOST:  $(selector)[0].className += ' role-cohost'; $(selector+' .icon-chat-host')[0].className = "icon icon-chat-cohost"; break;
+								case API.ROLE.MANAGER: $(selector)[0].className += ' role-manager'; break;
+								case API.ROLE.BOUNCER: $(selector)[0].className += ' role-bouncer'; break;
+								case API.ROLE.DJ:      $(selector)[0].className += ' role-dj';      break;
+								// case API.ROLE.NONE:    $(selector)[0].className += ' role-user';    break;
 							}
 							// Additional ranks
-							if (sender.sub == 1) $(selector)[0].className += ' is-subscriber';
-							if (sender.silver) $(selector)[0].className += ' is-silver-subscriber';
-							if (sender.friend) $(selector)[0].className += ' is-friend';
+							if (sender.sub == 1) $(selector)[0].className += ' role-subscriber';
+							if (sender.silver) $(selector)[0].className += ' role-silver-subscriber';
+							if (sender.friend) $(selector)[0].className += ' role-friend';
 							if (settings.friendsIcons && sender.friend) {
 								$(selector+' .timestamp').before($(emoji.replace_colons(':busts_in_silhouette:')).attr({
 									class: 'emoji-outer emoji-sizer pi-friendsIcons',
-									style: '',
 									style: 'margin-left: 2px;',
 									title: 'You are friends with this user'
 								}));
@@ -1783,7 +1811,7 @@
 						}
 
 						// gRole command self deletion
-						if (settings.gRoleCmdSelfDel && API.getUser().gRole > 0 && API.getUser().id === msg.uid && msg.message.indexOf('!') === 0) {
+						if (settings.gRoleCmdSelfDel && API.getUser().gRole > API.ROLE.NONE && API.getUser().id === msg.uid && msg.message.indexOf('!') === 0) {
 							API.moderateDeleteChat(msg.cid);
 						}
 					},
@@ -1810,9 +1838,9 @@
 							let mod = API.getUser(message.p.mi);
 							let $prevDelete = $chat.find('.pi-deleted[data-id="'+message.p.mi+'"]');
 
-							if (mod.gRole === 5 ||
-								(user.gRole > 0 && user.id === mod.id) ||
-								user.gRole !== 5 || user.gRole !== 3) {
+							if (mod.gRole === API.ROLE.HOST ||
+								(user.gRole > API.ROLE.NONE && user.id === mod.id) ||
+								user.gRole !== API.ROLE.HOST || user.gRole !== API.ROLE.MANAGER) {
 								$chat.addClass('deleted');
 							}
 
@@ -2084,11 +2112,30 @@
 					popout: function() {
 						setTimeout(function() {
 							window.popout = window.open('','plugdjpopout');
-							$('head', popout.document).append(
-								$('<link id="pi-popout-menu" rel="stylesheet" type="text/css" href="'+url.styles.popout+'">'),
-								$('<link id="pi-popout-blue" rel="stylesheet" type="text/css" href="'+url.styles.popout_blue+'">')
-							);
+							var $tyles = [
+								$('<link id="pi-popout-menu" rel="stylesheet" type="text/css" href="'+url.styles.popout+'">')
+							];
+
+							if (settings.roomStyle) {
+								$tyles.push($('<link id="pi-custom-room-style" rel="stylesheet" type="text/css" href="'+roomSettings.css+'">'));
+							}
+							if (settings.CSS) {
+								$tyles.push($('<link id="pi-popout-blue" rel="stylesheet" type="text/css" href="'+url.styles.popout_blue+'">'));
+							}
+							if (settings.customRanks) {
+								$tyles.push($('<link id="pi-custom_ranks" rel="stylesheet" type="text/css" href="'+url.styles.custom_ranks+'">'));
+							}
+							if (settings.oldChat) {
+								$tyles.push($('<link id="pi-oldchat-CSS" rel="stylesheet" type="text/css" href="'+url.styles.old_chat+'">'));
+							}
+
+							$('head', popout.document).append($tyles);
 							$('#volume', popout.document).on('mousewheel', pi._DOMEvent.volumeWheel);
+							// Add another onbeforeunload event listener to the page since plug handles it too and popout.close
+							// doesn't work for some reason..
+							meldBefore(popout, 'onbeforeunload', () => {
+								delete popout;
+							});
 						}, 2000);
 					},
 					resize: function() {
@@ -2109,16 +2156,6 @@
 						} else {
 							$('#pi-background').css('left', 0)
 							.css('top', BAR_HEIGHT).width(availWidth).height(availHeight - BAR_HEIGHT * 2);
-						}
-					},
-					updateRoomSettings: function(e, request, obj, data) {
-						if (obj.url == '/_/rooms/update' &&
-						    obj.type === 'POST' &&
-						    obj.data &&
-							  obj.data.indexOf('description') !== -1) {
-							pi._tool.log(['ajax success for room description update\ne: ',e, 'request: ',request, 'obj: ',obj], 'console debug');
-							roomSettings = {};
-							pi._tool.getRoomSettings();
 						}
 					},
 					volumeWheel: function(e) {
@@ -3765,6 +3802,8 @@
 
 												case 'roomDescriptionUpdate':
 													pi._tool.log(`${API.getUser(message.p.u).username} edited the room's description to:\n${message.p.d}`, 'console info');
+													roomSettings = {};
+													pi._tool.getRoomSettings();
 												break;
 
 												// Unused events

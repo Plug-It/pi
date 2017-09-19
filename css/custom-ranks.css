@@ -4,7 +4,6 @@
  └————————————————————┘
 */
 #chat .cm.mention .un,
-#chat .cm.mention .userInfo,
 #chat .cm.mention .timestamp {
 	color: hsl(77,100%,50%);
 }
@@ -24,21 +23,19 @@
  │     Role: YOU      │
  └————————————————————┘
 */
-#chat .cm.from.you .un,
-#chat .cm.from.you .userInfo,
-#chat .cm.from.you .timestamp {
+.is-you .name,
+#chat .cm.role-you .un {
 	color: hsl(200,100%,50%);
 }
 /* --[MENTION]-- */
-#chat .mention.is-you {
+#chat .mention.role-you {
 	background: linear-gradient(hsla(200,100%,20%,.8), hsla(200,100%,11%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(200,100%,30%) !important;
 	border: none !important;
 }
 #chat .mention.is-you .name,
-#chat .mention.is-you .timestamp,
-.is-you .name {
+#chat .mention.is-you .timestamp {
 	color: hsl(200,100%,40%) !important;
 }
 /*
@@ -46,20 +43,18 @@
  │   Role: FRIEND     │
  └————————————————————┘
 */
-#chat .cm.is-friend .un,
-#chat .cm.is-friend .userInfo,
-#chat .cm.is-friend .timestamp {
+#chat .cm.role-friend .un {
 	color: hsl(80,60%,50%);
 }
 /* --[MENTION]-- */
-#chat .mention.is-friend {
+#chat .mention.role-friend {
 	background: linear-gradient(hsla(80,60%,20%,.8), hsla(80,50%,13%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(80,50%,30%) !important;
 	border: none !important;
 }
-#chat .mention.is-friend .name,
-#chat .mention.is-friend .timestamp {
+#chat .mention.role-friend .name,
+#chat .mention.role-friend .timestamp {
 	color: hsl(80,60%,60%) !important;
 }
 /*
@@ -67,29 +62,20 @@
  │  Role: SILVER SUB  │
  └————————————————————┘
 */
-.icon-chat-silver-subscriber,
-#user-rollover .meta.subscriber.silver .status i {
+.icon-chat-silver-subscriber {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -120px !important;
 }
-.icon-chat-silver-subscriber + span,
-#chat .from.has-sub.silver-subscriber .un,
-#chat .is-subscriber.silver .msg .from .un,
-#chat .is-silver-subscriber .msg .from .un,
-#user-rollover .meta.subscriber.silver .status span {
-/* 	color: #8694b2 !important; */
-	color: hsl(220,25%,70%);
+.icon-chat-silver-subscriber ~ span {
+	color: #8694b2 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-silver-subscriber,
-#chat .mention.is-subscriber.silver {
+#chat .mention.role-silver-subscriber {
 	background: linear-gradient(hsla(0,0%,30%,.8), hsla(0,0%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(0,0%,50%) !important;
 }
-#chat .mention.is-subscriber.silver .name,
-#chat .mention.is-subscriber.silver .timestamp,
-#chat .mention.is-silver-subscriber .name,
-#chat .mention.is-silver-subscriber .timestamp {
+#chat .mention.role-silver-subscriber .name,
+#chat .mention.role-silver-subscriber .timestamp {
 	color: hsl(220,20%,60%) !important;
 }
 /*
@@ -97,25 +83,20 @@
  │   Role: GOLD SUB   │
  └————————————————————┘
 */
-.icon-chat-subscriber,
-#user-rollover .meta.subscriber:not(.silver) .status i {
+.icon-chat-subscriber {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -105px !important;
 }
-.icon-chat-subscriber + span,
-#chat .is-subscriber:not(.silver) .from.has-sub .un,
-#user-rollover .meta.subscriber:not(.silver) .status span,
-#chat .is-subscriber:not(.silver) .userInfo,
-#chat .is-subscriber:not(.silver) .timestamp {
-	color: #FB3;
+.icon-chat-subscriber ~ span {
+	color: #FB3 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-subscriber:not(.silver) {
+#chat .mention.role-subscriber {
 	background: linear-gradient(hsla(40,100%,30%,.8), hsla(40,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(30,50%,50%) !important;
 }
-#chat .mention.is-subscriber:not(.silver) .name,
-#chat .mention.is-subscriber:not(.silver) .timestamp {
+#chat .mention.role-subscriber .name,
+#chat .mention.role-subscriber .timestamp {
 	color: hsl(40,100%,60%) !important;
 }
 /*
@@ -131,16 +112,13 @@
 	color: #F95 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-dj,
-#chat .mention.is-dj.is-subscriber {
+#chat .mention.role-dj {
 	background: linear-gradient(hsla(20,100%,30%,.8), hsla(20,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(20,50%,50%) !important;
 }
-#chat .mention.is-dj .name,
-#chat .mention.is-dj .timestamp,
-#chat .mention.is-dj.is-subscriber .name,
-#chat .mention.is-dj.is-subscriber .timestamp {
+#chat .mention.role-dj .name,
+#chat .mention.role-dj .timestamp {
 	color: hsl(20,100%,60%) !important;
 }
 /*
@@ -156,19 +134,15 @@
 	color: #F45 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-bouncer,
-#chat .mention.is-bouncer.is-subscriber {
+#chat .mention.role-bouncer {
 	background: linear-gradient(hsla(354,100%,20%,.8), hsla(354,100%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(354,50%,50%) !important;
 }
-#chat .mention.is-bouncer .name,
-#chat .mention.is-bouncer .timestamp,
-#chat .mention.is-bouncer.is-subscriber .name,
-#chat .mention.is-bouncer.is-subscriber .timestamp {
+#chat .mention.role-bouncer .name,
+#chat .mention.role-bouncer .timestamp {
 	color: #F45 !important;
-}
-/*
+}/*
  ┌————————————————————┐
  │   Role: MANAGER    │
  └————————————————————┘
@@ -181,16 +155,13 @@
 	color: #E15 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-manager,
-#chat .mention.is-manager.is-manager {
+#chat .mention.role-manager {
 	background: linear-gradient(hsla(350,85%,20%,.8), hsla(350,85%,10%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(350,50%,50%) !important;
 }
-#chat .mention.is-manager .name,
-#chat .mention.is-manager .timestamp,
-#chat .mention.is-manager.is-subscriber .name,
-#chat .mention.is-manager.is-subscriber .timestamp {
+#chat .mention.role-manager .name,
+#chat .mention.role-manager .timestamp {
 	color: #E15 !important;
 }
 /*
@@ -202,20 +173,18 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -45px !important;
 }
 .icon-chat-cohost ~ span,
-#dialog-user-role .dialog-body .role-menu .menu ul .cohost span {
-	color: #58f !important;
+#dialog-user-role .dialog-body .role-menu .menu ul .cohost span,
+.role-cohost .un {
+	color: #58F !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-cohost,
-#chat .mention.is-cohost.is-subscriber {
+#chat .mention.role-cohost {
 	background: linear-gradient(hsla(210,100%,30%,.8), hsla(210,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(210,50%,50%) !important;
 }
-#chat .mention.is-cohost .name,
-#chat .mention.is-cohost .timestamp,
-#chat .mention.is-cohost.is-subscriber .name,
-#chat .mention.is-cohost.is-subscriber .timestamp {
+#chat .mention.role-cohost .name,
+#chat .mention.role-cohost .timestamp {
 	color: hsl(210,100%,50%) !important;
 }
 /*
@@ -231,16 +200,13 @@
 	color: #5BF !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-host,
-#chat .mention.is-host.is-subscriber  {
+#chat .mention.role-host {
 	background: linear-gradient(hsla(200,100%,30%,.8), hsla(200,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(200,50%,50%) !important;
 }
-#chat .mention.is-host .name,
-#chat .mention.is-host .timestamp,
-#chat .mention.is-host.is-subscriber .name,
-#chat .mention.is-host.is-subscriber .timestamp {
+#chat .mention.role-host .name,
+#chat .mention.role-host .timestamp {
 	color: hsl(200,100%,50%) !important;
 }
 /*
@@ -252,26 +218,17 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) -15px !important;
 }
 .icon-chat-ambassador ~ span,
-.from.ambassador .un,
-.from.ambassador .timestamp,
-#chat .msg .text .name.ambassador,
-#chat .msg .text .name.ambassador .name {
+#chat .role-ambassador .un {
 	color: #9C0 !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-ambassador,
-#chat .mention.is-ambassador.is-subscriber,
-#chat .mention.role-ambassador.is-subscriber {
+#chat .mention.role-ambassador {
 	background: linear-gradient(hsla(80,100%,30%,.8), hsla(80,100%,20%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(80,50%,50%) !important;
 }
-#chat .mention.is-ambassador .name,
-#chat .mention.is-ambassador .timestamp,
-#chat .mention.is-ambassador.is-subscriber .name,
-#chat .mention.is-ambassador.is-subscriber .timestamp,
-#chat .mention.role-ambassador.is-subscriber .name,
-#chat .mention.role-ambassador.is-subscriber .timestamp {
+#chat .mention.role-ambassador .name,
+#chat .mention.role-ambassador .timestamp {
 	color: hsl(80,50%,50%) !important;
 }
 /*
@@ -282,23 +239,18 @@
 .icon-chat-admin {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/plug_ranks.png) 0 !important;
 }
-.icon-chat-admin ~ span {
-	color: #42a5dc !important;
+.icon-chat-admin ~ span,
+#chat .role-admin .un {
+	color: #42A5DC !important;
 }
 /* --[MENTION]-- */
-#chat .mention.is-admin,
-#chat .mention.is-admin.is-subscriber,
-#chat .mention.role-admin.is-subscriber {
+#chat .mention.role-admin {
 	background: linear-gradient(hsla(201,70%,40%,.8), hsla(201,70%,30%,.8)),
 	linear-gradient(to right, hsla(0,0%,0%,0), hsla(0,0%,100%,.2)) !important;
 	box-shadow: inset 0 0 0 1px hsl(201,70%,50%) !important;
 }
-#chat .mention.is-admin .name,
-#chat .mention.is-admin .timestamp,
-#chat .mention.is-admin.is-subscriber .name,
-#chat .mention.is-admin.is-subscriber .timestamp,
-#chat .mention.role-admin.is-subscriber .name,
-#chat .mention.role-admin.is-subscriber .timestamp {
+#chat .mention.role-admin .name,
+#chat .mention.role-admin .timestamp {
 	color: hsl(200,50%,60%) !important;
 }
 /*

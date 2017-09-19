@@ -438,14 +438,6 @@
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_wibla.png);
 	background-position: 0 0 !important;
 }
-#chat [data-cid^="4506088-"] .bdg {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_zurbo.png);
-	background-position: 0 0 !important;
-}
-#chat [data-cid^="6604002-"] .bdg {
-	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/chat/badge_amy.png);
-	background-position: 0 0 !important;
-}
 /* Discord Bot */
 #chat .pi-discord-bot .bdg,
 #chat .pi-discord-bot .no-badge {
