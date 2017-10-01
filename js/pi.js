@@ -125,6 +125,7 @@
 				case 'de': lang = 'de'; break;
 				case 'et': lang = 'et'; break;
 				case 'fr': lang = 'fr'; break;
+				case 'nl': lang = 'nl'; break;
 				case 'pl': lang = 'pl'; break;
 				case 'pt': lang = 'pt'; break;
 				case 'sl': lang = 'sl'; break;
@@ -171,6 +172,7 @@
 			const startTime = new Date().getTime();
 			const delay = (API.getUser().gRole >= API.ROLE.MANAGER ? 200 : 3500);
 			const CHAT_INTERCEPT_STRING = `Plug-It Socket Intercept: ${Math.random()}`;
+			const YTAPIkey = 'AIzaSyC8pk0f57a_UcAIbHdrvRhsmHSG1KZk2SM';
 			const url = {
 				script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
 				styles: {
@@ -386,7 +388,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 27
+					pre: 28
 				},
 				_event: {
 					advance: function(song) {
@@ -1184,7 +1186,6 @@
 
 							case 'findBrokenSongs':
 								if (session.floodAPI) return pi._tool.log(lang.error.APIFloodInEffect, 'chat error');
-								const APIkey = 'AIzaSyC8pk0f57a_UcAIbHdrvRhsmHSG1KZk2SM';
 								var unavailableMove = [], fileText = '', log,
 								cmdSettings = {
 									logToChat: true,
@@ -1212,7 +1213,7 @@
 											if (cmdSettings.logToChat) log.edit(pi._tool.replaceString(lang.info.checkingStateRename, {current: i+1, total: a.length, name: e.name, found: unavailableMove.length}));
 											pi._tool.getPlaylist(e.id, function(songs) {
 												songs.forEach(function(ee, ii, aa) {
-													$.get('https://www.googleapis.com/youtube/v3/videos?id=' + ee.cid + '&key=' + APIkey + '&part=snippet,status', function(data) {
+													$.get('https://www.googleapis.com/youtube/v3/videos?id=' + ee.cid + '&key=' + YTAPIkey + '&part=snippet,status', function(data) {
 														var passed = true;
 														if (ee.format == 1 && data.items.length === 0) {
 															if (cmdSettings.logToChat) pi._tool.log(
@@ -1677,51 +1678,56 @@
 								switch(rank) {
 									case "Dev":
 										$(selector)[0].className += ' pi-dev';
-										$(selector+' .un').before($('<i class="icon icon-pi-dev"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-dev" title="Plug-It Developer"></i>'));
 									break;
 									case "Helper":
 										$(selector)[0].className += ' pi-helper';
-										$(selector+' .un').before($('<i class="icon icon-pi-helper"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-helper" title="Plug-It Helper"></i>'));
 									break;
 									case 'Graphist':
 										$(selector)[0].className += ' pi-graphist';
-										$(selector+' .un').before($('<i class="icon icon-pi-graphist"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-graphist" title="Plug-It Graphist"></i>'));
 									break;
 									case 'Translator':
 										$(selector)[0].className += ' pi-translator';
-										$(selector+' .un').before($('<i class="icon icon-pi-translator"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-translator" title="Plug-It Translator"></i>'));
 									break;
 									case 'Community Manager':
 										$(selector)[0].className += ' pi-community-manager';
-										$(selector+' .un').before($('<i class="icon icon-pi-community-manager"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-community-manager" title="Plug-It Community Manager"></i>'));
 									break;
 									case 'Donator':
 										$(selector)[0].className += ' pi-donator';
 									break;
 									case 'Alpha':
 										$(selector)[0].className += ' pi-alpha';
-										$(selector+' .un').before($('<i class="icon icon-pi-alpha"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-alpha" title="Plug-It Alpha tester"></i>'));
 									break;
 									case 'Bot':
 										$(selector)[0].className += ' pi-bot';
-										$(selector+' .un').before($('<i class="icon icon-pi-bot"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-bot" title="Plug-It Bot"></i>'));
 									break;
 									case 'Discord Bot':
 										$(selector)[0].className += ' pi-discord-bot';
-										$(selector+' .un').before($('<i class="icon icon-pi-discord-bot"></i>'));
+										$(selector+' .un').before($('<i class="icon icon-pi-discord-bot" title="Plug-It Discord Bot"></i>'));
 									break;
 								}
 							});
 							// Plug ranks
-							if (sender.gRole === API.ROLE.HOST) $(selector)[0].className += ' role-admin';
-							if (sender.gRole === API.ROLE.MANAGER) $(selector)[0].className += ' role-ambassador';
-							switch(sender.role) {
-								case API.ROLE.HOST:    $(selector)[0].className += ' role-host';    break;
+							switch(sender.gRole) {
+								case API.GLOBAL_ROLE.ADMIN:      $(selector)[0].className += ' role-admin'; break;
+								case API.GLOBAL_ROLE.AMBASSADOR: $(selector)[0].className += ' role-ambassador'; break;
+								case API.GLOBAL_ROLE.MODERATOR:  $(selector)[0].className += ' role-sitemod'; break;
+								case API.GLOBAL_ROLE.PLOT:       $(selector)[0].className += ' role-plot'; break;
+								case API.GLOBAL_ROLE.PROMOTER:   $(selector)[0].className += ' role-promoter'; break;
+							}
+							switch (sender.role) {
+								case API.ROLE.HOST:    $(selector)[0].className += ' role-host'; break;
 								case API.ROLE.COHOST:  $(selector)[0].className += ' role-cohost'; $(selector+' .icon-chat-host')[0].className = "icon icon-chat-cohost"; break;
 								case API.ROLE.MANAGER: $(selector)[0].className += ' role-manager'; break;
 								case API.ROLE.BOUNCER: $(selector)[0].className += ' role-bouncer'; break;
-								case API.ROLE.DJ:      $(selector)[0].className += ' role-dj';      break;
-								// case API.ROLE.NONE:    $(selector)[0].className += ' role-user';    break;
+								case API.ROLE.DJ:      $(selector)[0].className += ' role-dj'; break;
+								// case API.ROLE.NONE:    $(selector)[0].className += ' role-user'; break;
 							}
 							// Additional ranks
 							if (sender.sub == 1) $(selector)[0].className += ' role-subscriber';
@@ -1752,7 +1758,7 @@
 
 								flag = $(emoji.replace_colons(flag)).attr({
 									class: 'emoji-outer emoji-sizer pi-languageFlags',
-									style: '',
+									style: settings.friendsIcons && sender.friend ? '' : 'margin-left: 2px;',
 									title: modules.Lang.languages[(sender.language !== null ? sender.language : 'no language set')]
 								});
 								$(selector+' .timestamp').before(flag);
@@ -2901,6 +2907,13 @@
 				},
 				_extendAPI: {
 					init: function() {
+						API.GLOBAL_ROLE = {
+							ADMIN: 5000,
+							AMBASSADOR: 3000,
+							MODERATOR: 2500,
+							PLOT: 750,
+							PROMOTER: 500
+						};
 						API.GUEST_JOIN = 'guestJoin';
 						API.GUEST_LEAVE = 'guestLeave';
 						API.EARN = 'earn';
@@ -3048,6 +3061,11 @@
 						};
 					},
 					kill: function() {
+						delete API.GLOBAL_ROLE;
+						delete API.GUEST_JOIN;
+						delete API.GUEST_LEAVE;
+						delete API.EARN;
+
 						delete API.moderateForceQuit;
 						delete API.getUserByName;
 						delete API.getUserByID;
@@ -3056,9 +3074,6 @@
 						delete API.gift;
 						delete API.getActivePlaylist;
 						delete API.getRoomName();
-						delete API.GUEST_JOIN;
-						delete API.GUEST_LEAVE;
-						delete API.EARN;
 					}
 				},
 				_tool: {

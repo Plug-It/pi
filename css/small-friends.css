@@ -83,4 +83,7 @@
 }
 .app-right .friends .list .row.is-admin:hover .name span {left: 17px;}
 .app-right .friends .list .row.is-ambassador:hover .name span {left: 15px;}
+.app-right .friends .list .row.is-sitemod:hover .name span {left: 15px;}
+.app-right .friends .list .row.is-plot:hover .name span {left: 17px;}
+.app-right .friends .list .row.is-promoter:hover .name span {left: 15px;}
 .app-right .friends .list .row:hover .name span {left: 2px;}

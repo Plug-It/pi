@@ -14,15 +14,18 @@
 		"forceSmartVote":   false
 	},
 	"ccc": {
-		"admin":            "#42a5dc",
-		"ambassador":       "#9C0",
+		"admin":            "#42A5DC",
+		"ambassador":       "#9BCC0A",
+		"sitemod":          "#E74C3C",
+		"plot":             "E67E22",
+		"promoter":         "#1ABC9C",
 		"host":             "#5BF",
 		"cohost":           "#58F",
 		"manager":          "#E15",
 		"bouncer":          "#F45",
 		"rdj":              "#F95",
-		"subscriber":       "#FB3",
-		"silversubscriber": "#8695B2",
+		"subscriber":       "#F0B642",
+		"silversubscriber": "#8F96A3",
 		"friend":           "#668033",
 		"user":             null
 	},
