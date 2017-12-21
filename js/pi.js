@@ -388,7 +388,7 @@
 					major: 1,
 					minor: 0,
 					patch: 0,
-					pre: 28
+					pre: 29
 				},
 				_event: {
 					advance: function(song) {
@@ -2225,7 +2225,7 @@
 							modules.room = obj;
 						if (obj._l)
 							modules.user = obj;
-						if (obj.log)
+						if (obj.sendChat)
 							modules.chatFacade = obj;
 						if (obj.defaultSettings)
 							modules.plugOptions = obj;
