@@ -269,7 +269,7 @@
 
 	text-align: right;
 	font-size: 10px;
-	color: hsl(0,70%,50%);
+	color: hsl(0,70%,50%) !important;
 }
 #rs-skip-button,
 #rcs-clearchat {

@@ -20,8 +20,7 @@
 	top: 0 !important; left: 0 !important;
 }
 #playlist-menu .menu .row .spinner > div {
-	top: -3px !important; left: 5px !important;
-	transform: scale(.8);
+	top: -2px !important; left: 5px !important;
 }
 #playlist-menu .menu .row .name,
 #playlist-menu .menu .row .count,

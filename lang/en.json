@@ -36,6 +36,8 @@
 			"title": "Moderation",
 			"showDeletedMsg": "Show deleted messages",
 			"confirmChatDeletion": "Confirm chat deletion",
+			"gRoleCmdDeletion": "GRole command self delete",
+			"unmuteNotification": "User unmuted notifications",
 			"userInformation": "User informations",
 			"skipStuckSongs": "Skip stuck songs",
 			"songLimit": "Song limit",
@@ -50,6 +52,8 @@
 			"boothPositionLabel": "Booth position",
 			"userJoin": "User join",
 			"userLeave": "User leave",
+			"lowLevelJoin": "Low level join",
+			"lowLevelLeave": "Low level leave",
 			"userWoot": "User woot",
 			"userGrab": "User grab",
 			"userMeh": "User meh",
@@ -62,7 +66,8 @@
 			"gainNotification": "XP/PP earn",
 			"gainNotificationMinXPLabel": "Minimum XP for notification",
 			"gainNotificationMinPPLabel": "Minimum PP for notification",
-			"userLevelUp": "User Level up"
+			"userLevelUp": "User Level up",
+			"userUnmuted": "%%USER%% has been unmuted by %%MOD%%."
 		},
 		"about": {
 			"title": "About",
@@ -76,7 +81,7 @@
 		}
 	},
 	"tooltips": {
-		"clearChat": "Clear chat, [ctrl+clik] = clear all, [shift+click] = clear PI logs",
+		"clearChat": "Clear chat, [ctrl+click] = clear all, [shift+click] = clear PI logs",
 		"afk": "Toggle yourself as AFK, ctrl+click to edit message",
 		"rmvDJ": "Skip and remove the DJ from booth",
 		"skip": "Skip the DJ",
@@ -134,7 +139,7 @@
 		"unfriended": "%%FRIEND%% has unfriended you %%SAD%%"
 	},
 	"warn": {
-		"songLimit": "Music is too long! %%MAX%% max!",
+		"songLimit": "This track lasts too long! %%MAX%% seconds max!",
 		"confirmSkip": "This will skip the DJ, click again to confirm.",
 		"confirmEject": "This will remove the DJ from the wait-list, click again to confirm.",
 		"isTrusted": "Never execute code from someone you don't fully trust! Click here to confirm and execute code.",
@@ -195,7 +200,7 @@
 		"chatDelete": "Deleted by %%MOD%%%%NEWCOUNT%% at %%TIME%%"
 	},
 	"notifications": {
-		"mentioned": "You have been mentioned by %%USER%%:",
+		"mentioned": "New mention by %%USER%%:",
 		"reply": "Click here to reply."
 	},
 	"modal": {
@@ -217,10 +222,6 @@
 		"songs": "songs",
 		"top": "top",
 		"bottom": "bottom",
-		"none": "none",
-		"delete": "delete",
-		"dashboard": "dashboard",
-		"cancel": "Cancel",
-		"save": "Save"
+		"none": "none"
 	}
 }
