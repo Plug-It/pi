@@ -104,21 +104,21 @@
 		const CHAT_INTERCEPT_STRING = `Plug-It Socket Intercept: ${Math.random()}`;
 		const YTAPIkey = 'AIzaSyC8pk0f57a_UcAIbHdrvRhsmHSG1KZk2SM';
 		const url = {
-			script: 'https://dl.dropboxusercontent.com/s/m27xzjx3usw8rtn/pi.js', // 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
+			script: 'https://rawgit.com/Plug-It/pi/pre-release/js/pi.js',
 			styles: {
-				blue_css: 'https://dl.dropboxusercontent.com/s/apb5he0qiy5u4yx/blue.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css',
-				menu_css: 'https://dl.dropboxusercontent.com/s/0pkgtuke6w766qi/menu.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css',
-				popout: 'https://dl.dropboxusercontent.com/s/3oee2hldzp2vp9e/popout.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/popout.css',
-				popout_blue: 'https://dl.dropboxusercontent.com/s/qdvrowpg36qckym/popout-blue.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/popout-blue.css',
-				custom_ranks: 'https://dl.dropboxusercontent.com/s/ohiodvd0l1b0ybm/custom-ranks.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css',
-				old_chat: 'https://dl.dropboxusercontent.com/s/dzkbie0r4viey8e/old-chat.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
-				old_footer: 'https://dl.dropboxusercontent.com/s/sfdkd0fkd3gqe7l/old-footer.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
-				small_history: 'https://dl.dropboxusercontent.com/s/82qwtg7hdyr1xxw/small-history.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css',
-				small_friends: 'https://dl.dropboxusercontent.com/s/48gqpz2usy0ls2y/small-friends.css', // 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css',
-				small_playlists: 'https://dl.dropboxusercontent.com/s/su88xcqfp3j9nrt/small-playlists.css' // 'https://rawgit.com/Plug-It/pi/pre-release/css/small-playlists.css'
+				blue_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/blue.css',
+				menu_css: 'https://rawgit.com/Plug-It/pi/pre-release/css/menu.css',
+				popout: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout.css',
+				popout_blue: 'https://rawgit.com/Plug-It/pi/pre-release/css/popout-blue.css',
+				custom_ranks: 'https://rawgit.com/Plug-It/pi/pre-release/css/custom-ranks.css',
+				old_chat: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-chat.css',
+				old_footer: 'https://rawgit.com/Plug-It/pi/pre-release/css/old-footer.css',
+				small_history: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-history.css',
+				small_friends: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-friends.css',
+				small_playlists: 'https://rawgit.com/Plug-It/pi/pre-release/css/small-playlists.css'
 			},
 			images: {
-				background: 'https://dl.dropboxusercontent.com/s/m4ub94an2klogtz/custom.jpg' // 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg'
+				background: 'https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/background/non-official/Plug-It-old.jpg'
 			},
 			sounds: {
 				// https://www.freesound.org/people/TheGertz/sounds/235911/
@@ -240,6 +240,40 @@
 			chat: []
 		};
 
+		updateStatus('Initalizating modules', 1);
+		$.each(require.s.contexts._.defined, (n, obj) => {
+			if (!obj) return;
+			obj._moduleID = n;
+
+			if (obj._moduleID && obj._moduleID === 'lang/Lang')
+				modules.Lang = obj;
+			if (obj._events && obj._events["chat:receive"])
+				modules.context = obj;
+			if (obj.ack)
+				modules.socketEvents = obj;
+			if (obj.STATE)
+				modules.RoomEvent = obj;
+			if (obj.attributes && obj.attributes.hostID)
+				modules.room = obj;
+			if (obj._l)
+				modules.user = obj;
+			if (obj.imgRegex)
+				modules.chatFacade = obj;
+			if (obj.prototype && obj.prototype.onReceived)
+				modules.Chat = obj;
+			if (obj.defaultSettings)
+				modules.plugOptions = obj;
+			if (obj.hasOwnProperty("isorx"))
+				modules.utils = obj;
+			if (obj.SHOW && obj.SHOW === "ShowDialogEvent:show")
+				modules.ShowDialogEvent = obj;
+			if (obj.prototype && obj.prototype.id && obj.prototype.id === "dialog-gift-send")
+				modules.GiftSendDialog = obj;
+			if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
+				modules.User = obj;
+		});
+		modules.lang = require('lang/Lang');
+
 		// Prototypes
 		Number.prototype.spaceOut = function() {
 			if (isNaN(this) || this < 999) return this;
@@ -321,7 +355,7 @@
 				major: 1,
 				minor: 0,
 				patch: 0,
-				dev: 30
+				pre: 31
 			},
 			_event: {
 				advance: function(song) {
@@ -2165,50 +2199,7 @@
 				}
 			},
 			_load: function() {
-				if (pi._tool.getRank().length === 0 &&
-					// WiBlα, Leopard 10.5.2, TrillianBot, Mynty
-					[10161179,3835923,20177493, 4537934].indexOf(API.getUser().id) === -1) {
-					pi._tool.log('Sorry, but this version of Plug-It is private, try launching the pre-release '+emoji.replace_colons(':smiley:'), 'chat info');
-
-					$('#pi-status').css({opacity:'0'});
-					setTimeout(function() {$('#pi-status').remove();}, 250);
-					pi = undefined;
-					return;
-				}
-				updateStatus('Initalizating modules', 3);
-				$.each(require.s.contexts._.defined, (n, obj) => {
-					if (!obj) return;
-					obj._moduleID = n;
-
-					if (obj._moduleID && obj._moduleID === 'lang/Lang')
-						modules.Lang = obj;
-					if (obj._events && obj._events["chat:receive"])
-						modules.context = obj;
-					if (obj.ack)
-						modules.socketEvents = obj;
-					if (obj.STATE)
-						modules.RoomEvent = obj;
-					if (obj.attributes && obj.attributes.hostID)
-						modules.room = obj;
-					if (obj._l)
-						modules.user = obj;
-					if (obj.imgRegex)
-						modules.chatFacade = obj;
-					if (obj.prototype && obj.prototype.onReceived)
-						modules.Chat = obj;
-					if (obj.defaultSettings)
-						modules.plugOptions = obj;
-					if (obj.hasOwnProperty("isorx"))
-						modules.utils = obj;
-					if (obj.SHOW && obj.SHOW === "ShowDialogEvent:show")
-						modules.ShowDialogEvent = obj;
-					if (obj.prototype && obj.prototype.id && obj.prototype.id === "dialog-gift-send")
-						modules.GiftSendDialog = obj;
-					if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
-						modules.User = obj;
-				});
-				modules.lang = require('lang/Lang');
-				updateStatus('Initalizating API & Events listener', 4);
+				updateStatus('Initalizating API & Events listener', 3);
 				// Add custom events to the API
 				pi._extendAPI.init();
 				for (var event in pi._event) {
@@ -2233,7 +2224,7 @@
 				pi._DOMEvent.levelPercentage();
 
 				// Retrieve user settings if available
-				updateStatus('Loading user settings', 5);
+				updateStatus('Loading user settings', 4);
 				var ls = localStorage.getItem('pi-settings');
 				if (typeof ls === 'string') {
 					var userSettings = JSON.parse(ls);
@@ -2408,7 +2399,7 @@
 					}
 				}, 2*1000);
 				// Creating DOM elements
-				updateStatus('Creating script environement', 6);
+				updateStatus('Creating script environement', 5);
 				// Menu icon
 				$('#app').append($('<div id="pi-logo"><div id="icon"></div></div>'));
 				// SoundCloud visualizer's custom iframe
@@ -4654,9 +4645,8 @@
 
 			// Load user language
 			var lang, ranks, roomSettings;
-			updateStatus('Loading language', 1);
+			updateStatus('Loading language', 2);
 			switch (API.getUser().language) {
-				/*
 				case 'cs': lang = 'cs'; break;
 				case 'de': lang = 'de'; break;
 				case 'et': lang = 'et'; break;
@@ -4667,23 +4657,11 @@
 				case 'pi': lang = 'pi'; break;
 				case 'sl': lang = 'sl'; break;
 				case 'sv': lang = 'sv'; break;
-				dropbox links */
-				case 'cs': lang = '//dl.dropbox.com/s/ab93vs4lzf0kqkm/cs.json'; break;
-				case 'de': lang = '//dl.dropbox.com/s/l6b6rc5vuo5ap2b/de.json'; break;
-				case 'fr': lang = '//dl.dropbox.com/s/gcuo6ipbdjnvgnh/fr.json'; break;
-				case 'nl': lang = '//dl.dropbox.com/s/tyfrcg4edza3lny/nl.json'; break;
-				case 'pl': lang = '//dl.dropbox.com/s/2bjwjyr29ysbj02/pl.json'; break;
-				case 'pt': lang = '//dl.dropbox.com/s/00t48sv5z0bksvg/pt.json'; break;
-				case 'pi': lang = '//dl.dropbox.com/s/syuqfnmevlgqebc/pi.json'; break;
-				case 'sl': lang = '//dl.dropbox.com/s/wedtb8xlnabvu5n/sl.json'; break;
-				case 'sv': lang = '//dl.dropbox.com/s/twfbujs58hnnmry/sv.json'; break;
-				default: lang = '//dl.dropbox.com/s/6p2z91avwxtz2ky/en.json'; break;
-				// default: lang = 'en'; break;
+				default: lang = 'en'; break;
 			}
 			$.ajax({
 				dataType: 'json',
-				// url: 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
-				url: lang,
+				url: 'https://rawgit.com/Plug-It/pi/pre-release/lang/'+lang+'.json',
 				success: function(data) {
 					lang = data;
 				},
@@ -4694,11 +4672,10 @@
 			});
 
 			// Load script ranks
-			updateStatus('Loading script ranks', 2);
+			updateStatus('Loading script ranks', 3);
 			$.ajax({
 				dataType: 'json',
-				// url: 'https://rawgit.com/Plug-It/pi/pre-release/json/ranks.json',
-				url: '//dl.dropboxusercontent.com/s/w8n7ddo5ult6ne7/ranks.json',
+				url: 'https://rawgit.com/Plug-It/pi/pre-release/json/ranks.json',
 				success: function(data) {
 					ranks = data;
 					init();
