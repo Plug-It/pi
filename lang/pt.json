@@ -24,20 +24,20 @@
 			"customStyle": "Estilo Personalizado",
 			"customRanks": "Cargos personalizados",
 			"languageFlags": "Bandeiras de Idioma",
-			"friendsIcons": "Friends icons",
+			"friendsIcons": "Ícones de amigos",
 			"customBG": "Fungo personalizado",
 			"oldChat": "Chat antigo",
 			"oldFooter": "Rodapé antigo",
 			"smallHistory": "Histórico compacto",
 			"smallFriends": "Lista de Amigos Compacta",
-			"smallPlaylists": "Small Playlists"
+			"smallPlaylists": "Playlists compactas"
 		},
 		"moderation": {
 			"title": "Moderação",
 			"showDeletedMsg": "Mostrar Mensagens Apagadas",
 			"confirmChatDeletion": "Confirmar remoção de chat",
-			"gRoleCmdDeletion": "GRole command self delete",
-			"unmuteNotification": "User unmuted notifications",
+			"gRoleCmdDeletion": "Auto-apagar comandos de gRole",
+			"unmuteNotification": "Notificações de usuários descalados",
 			"userInformation": "Informações de usuário",
 			"skipStuckSongs": "Pular músicas travadas",
 			"songLimit": "Limite de duração",
@@ -52,13 +52,13 @@
 			"boothPositionLabel": "Posição na fila",
 			"userJoin": "Entrada de usuário",
 			"userLeave": "Saída de usuário",
-			"lowLevelJoin": "Low level join",
-			"lowLevelLeave": "Low level leave",
+			"lowLevelJoin": "Entrada de nível baixo",
+			"lowLevelLeave": "Saida de nível baixo",
 			"userWoot": "Legal! de usuário",
 			"userGrab": "Add de usuário",
 			"userMeh": "Chato! de usuário",
-			"guestJoin": "Saída de visitante",
-			"guestLeave": "Entrada de visitante",
+			"guestJoin": "Entrada de visitante",
+			"guestLeave": "Saída de visitante",
 			"friendRoomChange": "Mudança de sala de amigo",
 			"friendConnect": "Entrada de amigo",
 			"friendDisconnect": "Saída de amigo",
@@ -67,7 +67,7 @@
 			"gainNotificationMinXPLabel": "XP Mínimo para Notificação",
 			"gainNotificationMinPPLabel": "PP Mínimo para Notificação",
 			"userLevelUp": "Notif. ao Subir de Nível",
-			"userUnmuted": "%%USER%% has been unmuted by %%MOD%%."
+			"userUnmuted": "%%USER%% foi descalado por %%MOD%%."
 		},
 		"about": {
 			"title": "Sobre",
@@ -139,7 +139,7 @@
 		"unfriended": "%%FRIEND%% lhe removeu como amigo(a) %%SAD%%"
 	},
 	"warn": {
-		"songLimit": "This track lasts too long! %%MAX%% seconds max!",
+		"songLimit": "Esta mídia é muito longa! %%MAX%% segundos no máximo!",
 		"confirmSkip": "Isto irá pular o DJ, clique novamente para confirmar.",
 		"confirmEject": "Isto removerá o DJ da lista de espera, clique novamente para confirmar.",
 		"isTrusted": "Nunca execute código de quem você não confia ! Clique aqui para confirmar e executar o código.",
@@ -200,7 +200,7 @@
 		"chatDelete": "Apagado por %%MOD%%%%NEWCOUNT%% em %%TIME%%"
 	},
 	"notifications": {
-		"mentioned": "New mention by %%USER%%:",
+		"mentioned": "Nova menção de %%USER%%:",
 		"reply": "Clique aqui para responder."
 	},
 	"modal": {
@@ -211,17 +211,18 @@
 		"moveTop": "Mover para o topo ?\n\n(Se tanto mover para o topo quanto para o fim forem true, serão movidas para o topo)",
 		"moveBottom": "Mover para o fim ?",
 		"deleteSongs": "Remover mídias indisponíveis ?",
-		"customBGTitle": "Set background's image",
-		"additionalBackgrounds": "Or choose one of these :",
-		"otherChoices": "Other backgrounds",
-		"customBGDisclaimer": "More to come! If you are the owner of one of these images, please let me know.",
-		"confirmDeleteTitle": "Delete this message?"
+		"customBGTitle": "Definir imagem de fundo",
+		"additionalBackgrounds": "Ou escolha um destes:",
+		"otherChoices": "Outros fundos",
+		"customBGDisclaimer": "Mais estão para vir! Se você for o dono de uma destas imagens, por favor, entre em contato.",
+		"confirmDeleteTitle": "Apagar esta mensagem?"
 	},
 	"glossary": {
 		"song": "música",
 		"songs": "músicas",
 		"top": "topo",
 		"bottom": "fim",
-		"none": "nenhum"
+		"none": "nenhum",
+		"and": "and"
 	}
 }

@@ -222,6 +222,7 @@
 		"songs": "pesmi",
 		"top": "zgoraj",
 		"bottom": "spodaj",
-		"none": "brez"
+		"none": "brez",
+		"and": "and"
 	}
 }

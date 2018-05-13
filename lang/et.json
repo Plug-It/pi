@@ -36,8 +36,8 @@
 			"title": "Mõõdukas",
 			"showDeletedMsg": "Kuva kustutatud sõnumid",
 			"confirmChatDeletion": "Kinnita vestlus kustutamine",
-			"gRoleCmdDeletion": "GRole command self delete",
-			"unmuteNotification": "User unmuted notifications",
+			"gRoleCmdDeletion": "GRolli käsu ise kustutada",
+			"unmuteNotification": "Kasutaja tühistatud märguanded",
 			"userInformation": "Kasutaja Info",
 			"skipStuckSongs": "Vahelejätmine kinni laulud",
 			"songLimit": "Lugu piir",
@@ -52,8 +52,8 @@
 			"boothPositionLabel": "Pult seisukoht",
 			"userJoin": "Kasutaja liitus",
 			"userLeave": "Kasutaja Lahkus",
-			"lowLevelJoin": "Low level join",
-			"lowLevelLeave": "Low level leave",
+			"lowLevelJoin": "Madala taseme liitus",
+			"lowLevelLeave": "Madala taseme lahkus",
 			"userWoot": "Kasutaja meeldib",
 			"userGrab": "Kasutaja haarata",
 			"userMeh": "Kasutaja ei meeldi",
@@ -67,7 +67,7 @@
 			"gainNotificationMinXPLabel": "Minimaalne XP Teate saamiseks",
 			"gainNotificationMinPPLabel": "minimaalne PP Teate saamiseks",
 			"userLevelUp": "Kasutaja Tase üles",
-			"userUnmuted": "%%USER%% has been unmuted by %%MOD%%."
+			"userUnmuted": "%%USER%% on tühistatud poolt %%MOD%%."
 		},
 		"about": {
 			"title": "Teave",
@@ -139,7 +139,7 @@
 		"unfriended": "%%FRIEND%% on sõpradeta te %%SAD%%"
 	},
 	"warn": {
-		"songLimit": "This track lasts too long! %%MAX%% seconds max!",
+		"songLimit": "See lugu kestab liiga kaua! %%MAX%% sekundit max!",
 		"confirmSkip": "See vahelejätmine DJ, klõpsake uuesti kinnitada.",
 		"confirmEject": "See eemaldab DJ alates ootejärjekord, klõpsake uuesti kinnitada.",
 		"isTrusted": "Kunagi koodi, keegi teid ei usalda täielikult! Vajuta siia, et kinnitada ja käivitada koodi.",
@@ -200,7 +200,7 @@
 		"chatDelete": "Kustutatud poolt %%MOD%%%%NEWCOUNT%%TIME%%"
 	},
 	"notifications": {
-		"mentioned": "New mention by %%USER%%:",
+		"mentioned": "Uus mainimine poolt %%USER%%:",
 		"reply": "Vajuta siia et vastata."
 	},
 	"modal": {
@@ -222,6 +222,7 @@
 		"songs": "Laulud",
 		"top": "topp",
 		"bottom": "allosa",
-		"none": "mitte ükski"
+		"none": "mitte ükski",
+		"and": "and"
 	}
 }

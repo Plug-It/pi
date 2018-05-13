@@ -378,6 +378,6 @@
 #waitlist .list .user .name i {
 	display: block; /* sub is display:none wtf plug ? */
 }
-.app-right .friends .list .row.is-offline {
+.community__right-bar .friends .list .row.is-offline {
 	filter: saturate(.5);
 }

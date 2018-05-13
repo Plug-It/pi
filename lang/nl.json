@@ -36,8 +36,8 @@
 			"title": "Moderatie",
 			"showDeletedMsg": "Toon verwijderde berichten",
 			"confirmChatDeletion": "Bevestig chat verwijdering",
-			"gRoleCmdDeletion": "GRole command self delete",
-			"unmuteNotification": "User unmuted notifications",
+			"gRoleCmdDeletion": "GRole commando zelfdestructie",
+			"unmuteNotification": "Niet gedempte gebruiker notificaties",
 			"userInformation": "Gebuikersinformatie",
 			"skipStuckSongs": "Skip vaste nummers",
 			"songLimit": "Nummer limiet",
@@ -51,14 +51,14 @@
 			"boothAlert": "Booth alert",
 			"boothPositionLabel": "Booth positite",
 			"userJoin": "Gebruiker is toegetreden",
-			"userLeave": "Gebruiker verlaat",
-			"lowLevelJoin": "Low level join",
-			"lowLevelLeave": "Low level leave",
+			"userLeave": "Gebruiker is weggegaan",
+			"lowLevelJoin": "Laag level is toegetreden",
+			"lowLevelLeave": "Laag level is weggegaan",
 			"userWoot": "Gebruiker woot",
 			"userGrab": "Gebruiker grab",
 			"userMeh": "Gebruiker meh",
 			"guestJoin": "Gast is toegetreden",
-			"guestLeave": "Gast verlaat",
+			"guestLeave": "Gast is weggegaan",
 			"friendRoomChange": "Vriends community veranderd",
 			"friendConnect": "Vriend connect",
 			"friendDisconnect": "Vriend disconnect",
@@ -67,7 +67,7 @@
 			"gainNotificationMinXPLabel": "Minimaal XP voor notificatie",
 			"gainNotificationMinPPLabel": "Minimaal PP voor notificatie",
 			"userLevelUp": "Gebruikersniveau gaat omhoog",
-			"userUnmuted": "%%USER%% has been unmuted by %%MOD%%."
+			"userUnmuted": "%%USER%% is ge on-dempt door %%MOD%%."
 		},
 		"about": {
 			"title": "Over",
@@ -139,7 +139,7 @@
 		"unfriended": "%%FRIEND%% heeft je ontvriend %%SAD%%"
 	},
 	"warn": {
-		"songLimit": "This track lasts too long! %%MAX%% seconds max!",
+		"songLimit": "Dit lied duurt te lang! %%MAX%% seconde maximaal!",
 		"confirmSkip": "Dit skipt de DJ, klik weer om te bevestigen.",
 		"confirmEject": "Dit verwijderd de DJ, klik weer om te bevestigen.",
 		"isTrusted": "Voer code nooit uit van iemand die u niet volledig vertrouwt! Klik hier om code te bevestigen en uit te voeren.",
@@ -200,7 +200,7 @@
 		"chatDelete": "Verwijder door %%MOD%%%%NEWCOUNT%% om %%TIME%%"
 	},
 	"notifications": {
-		"mentioned": "New mention by %%USER%%:",
+		"mentioned": "Nieuwe vermelding door %%USER%%:",
 		"reply": "Klik hier om te reageren."
 	},
 	"modal": {
@@ -222,6 +222,7 @@
 		"songs": "nummers",
 		"top": "boven",
 		"bottom": "onder",
-		"none": "geen"
+		"none": "geen",
+		"and": "and"
 	}
 }

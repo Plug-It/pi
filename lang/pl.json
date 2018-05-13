@@ -36,8 +36,8 @@
 			"title": "Moderacja",
 			"showDeletedMsg": "Pokaż usunięte wiadomości",
 			"confirmChatDeletion": "Potwierdź usunięcie wiadomości",
-			"gRoleCmdDeletion": "GRole command self delete",
-			"unmuteNotification": "User unmuted notifications",
+			"gRoleCmdDeletion": "Ukryj swoje role globalne",
+			"unmuteNotification": "Użytkownik włączył powiadomienia",
 			"userInformation": "Informacje o użytkowniku",
 			"skipStuckSongs": "Pomijaj zablokowane utwory",
 			"songLimit": "Limit długości utworu",
@@ -52,8 +52,8 @@
 			"boothPositionLabel": "przy pozycji:",
 			"userJoin": "Użytkownik dołącza",
 			"userLeave": "Użytkownik wychodzi",
-			"lowLevelJoin": "Low level join",
-			"lowLevelLeave": "Low level leave",
+			"lowLevelJoin": "Użytkownik o niskim poziomie dołączył",
+			"lowLevelLeave": "Użytkownik o niskim poziomie wyszedł",
 			"userWoot": "Użytkownik zwootował",
 			"userGrab": "Użytkownik zgrabował",
 			"userMeh": "Użytkownik zmehował",
@@ -67,7 +67,7 @@
 			"gainNotificationMinXPLabel": "Minimalna ilość XP do powiadomienia",
 			"gainNotificationMinPPLabel": "Minimalna ilość PP do powiadomienia",
 			"userLevelUp": "Użytkownik osiągnął nowy poziom",
-			"userUnmuted": "%%USER%% has been unmuted by %%MOD%%."
+			"userUnmuted": "Użytkownik %%MOD%% wyłączył wyciszenie %%USER%%."
 		},
 		"about": {
 			"title": "O nas",
@@ -139,7 +139,7 @@
 		"unfriended": "%%FRIEND%% usunął Cię ze znajomych %%SAD%%"
 	},
 	"warn": {
-		"songLimit": "This track lasts too long! %%MAX%% seconds max!",
+		"songLimit": "Ten kawałek trwa zbyt długo! Maksimum to %%MAX%%!",
 		"confirmSkip": "Kliknij, aby potwierdzić pominięcie aktualnego DJ-a.",
 		"confirmEject": "Kliknij, aby potwierdzić usunięcie użytkownika z listy oczekiwania.",
 		"isTrusted": "Nigdy nie uruchamiaj kodu, który otrzymałeś od nieznanej osoby! Kliknij, aby potwierdzić uruchomienie.",
@@ -200,7 +200,7 @@
 		"chatDelete": "Usunięte przez %%MOD%%%%NEWCOUNT%% o %%TIME%%"
 	},
 	"notifications": {
-		"mentioned": "New mention by %%USER%%:",
+		"mentioned": "Nowa wzmianka od %%USER%%:",
 		"reply": "Kliknij, aby odpowiedzieć."
 	},
 	"modal": {
@@ -222,6 +222,7 @@
 		"songs": "utwory",
 		"top": "góra",
 		"bottom": "dół",
-		"none": "brak"
+		"none": "brak",
+		"and": "and"
 	}
 }

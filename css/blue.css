@@ -778,12 +778,12 @@
 	border-radius: 5px;
 }
 .jspTrack { box-shadow: inset -1px 0 10px hsla(0,0%,20%,1); }
-.app-right #chat-input,
+.community__right-bar #chat-input,
 #dashboard .search,
 #search-bar,
 #filter-bar,
 #user-friends .search,
-.app-right .friends .list-header .input-background {
+.community__right-bar .friends .list-header .input-background {
 	border-radius: 20px;
 	background: linear-gradient(to top, hsla(220,100%,15%,.7), hsla(220,100%,10%,.7));
 }
@@ -956,7 +956,7 @@ div.focused { /* Div is here to override rcs */
 #chat .cm.rsshit.message {
 	border: none !important;
 }
-.app-right {
+.community__right-bar {
 	background: hsla(210,10%,5%,.9) !important;
 }
 #rcs-menu-container .container .group {

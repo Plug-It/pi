@@ -1,12 +1,16 @@
 .media-list.history .row {
   height: 40px !important;
 }
+#history-panel .media-list .row.playlist-media-item {
+    padding-top: 0;
+}
 .media-list.history img {
   margin: 5px 10px !important;
   width: 40px !important;
   height: 30px !important;
 }
 .media-list.history .meta {
+  top: 0 !important;
   height: 39px !important;
   margin-left: 60px !important;
 }
@@ -15,35 +19,17 @@
   top: 2px !important;
   width: 76% !important;
 }
-.media-list.history .meta .name,
-.media-list.history .meta .title {
-  top: 2px !important;
-  right: 2px;
-  width: auto;
-  text-align: right;
-}
-#history-panel .media-list.history .row:hover .meta .name,
-#history-panel .media-list.history .row:hover .meta .timestamp {
-  visibility: hidden;
+.media-list.history .meta .name {
+  top: 2px !important; right: 10px !important;
 }
 .media-list.history .meta .timestamp {
-  top: 20px;
-  right: 2px;
-  color: #808691;
-  text-align: right;
-  font-weight: 400;
+  top: 20px !important; right: 10px !important;
 }
 .media-list.history .score {
-  position: absolute;
-  top: 20px;
-  left: 62px;
-  width: 25%;
-  height: 24px;
-  font-weight: 400;
-  font-size: 14px;
+  top: 20px !important; left: 62px;
 }
 .media-list.history .actions {
-  top: 0px; right: 10px;
+  top: 0; right: 10px;
 }
 .media-list.history .actions,
 .media-list.history .actions:hover .add {
@@ -53,4 +39,27 @@
 .media-list.history .actions i {
   top: 5px !important;
   left: 7px !important;
+}
+
+#history-panel .media-list .playlist-media-item .meta {
+  margin: 0 !important;
+  margin-left: 0 !important;
+    margin-right: 0 !important;
+  width: calc(100% - 60px) !important;
+}
+
+/* Make .name and .timestamp disappear on hover */
+#history-panel .media-list.history .row:hover .meta .name,
+#history-panel .media-list.history .row:hover .meta .timestamp {
+  visibility: hidden;
+}
+
+@media screen and (max-width: 991px) {
+  .media-list.history .meta .name {
+    width: auto !important;
+    left: auto !important; right: 10px !important;
+  }
+  .media-list.history .actions {
+    display: block !important; /* Why tf is it hidden in small res ?! */
+  }
 }

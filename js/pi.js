@@ -75,7 +75,7 @@
 */
 
 ;(function load() {
-	var isPlugRoom = /(http(?:s)?:\/\/(?:[a-z]+\.)*plug\.dj\/)(?!about$|ba$|forgot-password$|founders$|giftsub\/\d|jobs$|legal$|merch$|partners$|plot$|privacy$|purchase$|subscribe$|team$|terms$|press$|_\/|@\/|!\/)(.+)/i;
+	var isPlugRoom = /(http(?:s)?:\/\/(?:\w+\.)*plug\.dj\/)(?!about$|ba$|forgot-password$|founders$|giftsub\/\d|jobs$|legal$|merch$|partners$|plot$|privacy$|purchase$|subscribe$|team$|terms$|press$|_\/|@\/|!\/)(.+)/i;
 
 	function plugReady() {
 		return typeof API !== 'undefined' && API.enabled && typeof jQuery !== 'undefined' && typeof require !== 'undefined';
@@ -240,40 +240,6 @@
 			chat: []
 		};
 
-		updateStatus('Initalizating modules', 1);
-		$.each(require.s.contexts._.defined, (n, obj) => {
-			if (!obj) return;
-			obj._moduleID = n;
-
-			if (obj._moduleID && obj._moduleID === 'lang/Lang')
-				modules.Lang = obj;
-			if (obj._events && obj._events["chat:receive"])
-				modules.context = obj;
-			if (obj.ack)
-				modules.socketEvents = obj;
-			if (obj.STATE)
-				modules.RoomEvent = obj;
-			if (obj.attributes && obj.attributes.hostID)
-				modules.room = obj;
-			if (obj._l)
-				modules.user = obj;
-			if (obj.imgRegex)
-				modules.chatFacade = obj;
-			if (obj.prototype && obj.prototype.onReceived)
-				modules.Chat = obj;
-			if (obj.defaultSettings)
-				modules.plugOptions = obj;
-			if (obj.hasOwnProperty("isorx"))
-				modules.utils = obj;
-			if (obj.SHOW && obj.SHOW === "ShowDialogEvent:show")
-				modules.ShowDialogEvent = obj;
-			if (obj.prototype && obj.prototype.id && obj.prototype.id === "dialog-gift-send")
-				modules.GiftSendDialog = obj;
-			if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
-				modules.User = obj;
-		});
-		modules.lang = require('lang/Lang');
-
 		// Prototypes
 		Number.prototype.spaceOut = function() {
 			if (isNaN(this) || this < 999) return this;
@@ -350,12 +316,50 @@
 			return socket;
 		}
 
+		updateStatus('Initalizating modules', 1);
+		$.each(require.s.contexts._.defined, (n, obj) => {
+			if (!obj) return;
+			obj._moduleID = n;
+
+			if (obj._moduleID && obj._moduleID === 'lang/Lang')
+				modules.Lang = obj;
+			if (obj._events && obj._events["chat:receive"])
+				modules.context = obj;
+			if (obj.ack)
+				modules.socketEvents = obj;
+			if (obj.STATE)
+				modules.RoomEvent = obj;
+			if (obj.attributes && obj.attributes.hostID)
+				modules.room = obj;
+			if (obj.updateElapsedBind)
+				modules.currentMedia = obj;
+			if (obj.activeMedia)
+				modules.playlists = obj;
+			if (obj._l)
+				modules.user = obj;
+			if (obj.imgRegex)
+				modules.chatFacade = obj;
+			if (obj.prototype && obj.prototype.onReceived)
+				modules.Chat = obj;
+			if (obj.defaultSettings)
+				modules.plugOptions = obj;
+			if (obj.hasOwnProperty("isorx"))
+				modules.utils = obj;
+			if (obj.SHOW && obj.SHOW === "ShowDialogEvent:show")
+				modules.ShowDialogEvent = obj;
+			if (obj.prototype && obj.prototype.id && obj.prototype.id === "dialog-gift-send")
+				modules.GiftSendDialog = obj;
+			if (obj.prototype && obj.prototype.defaults && obj.prototype.defaults._position)
+				modules.User = obj;
+		});
+		modules.lang = require('lang/Lang');
+
 		window.pi = {
 			version: {
 				major: 1,
 				minor: 0,
 				patch: 0,
-				pre: 31
+				pre: 32
 			},
 			_event: {
 				advance: function(song) {
@@ -1395,7 +1399,7 @@
 								'\n/kick [@user/id] (seconds)'+
 								'\n/ban [@user/id] [forever/day/hour]'+
 								'\n/host|cohost|manager|bouncer|residentdj|rdj|unrank [@user/id]'+
-								'\n/grabed?'+
+								'\n/grabbed'+
 								'\n/duplicates (Excluded playlist(s),playlist\\,with\\,coma)'+
 								'\n/findBrokenSongs'+
 								'\n/whoami'+
@@ -1440,26 +1444,20 @@
 						amount.xp = amount.xp > 999 ? amount.xp.spaceOut() : amount.xp;
 
 						if (amount.pp === 0 && minXP) {
-							gain = amount.xp + ' xp.\n'+
-							'Total: ' + totalXP + ' xp';
+							gain = `${amount.xp} XP.\nTotal: ${totalXP} XP`;
 						} else if (amount.xp === 0 && minPP) {
-							gain = amount.pp + ' PP.\n'+
-							'Total: ' + totalPP + ' PP';
+							gain = `${amount.pp} PP.\nTotal: ${totalPP} PP`;
 						} else {
 							if (minXP && minPP) {
-								gain = amount.xp+' xp and '+amount.pp+' PP.\n'+
-								'Total: ' + totalXP + ' xp\n' +
-								totalPP + ' PP';
+								gain = `${amount.xp} XP ${lang.glossary.and} ${amount.pp} PP.\nTotal: ${totalXP} XP\n${totalPP} PP`;
 							} else if (minXP) {
-								gain = amount.xp + ' xp.\n'+
-								'Total: ' + totalXP + ' xp';
+								gain = `${amount.xp} XP.\nTotal: ${totalXP} XP`;
 							} else if (minPP) {
-								gain = amount.pp + ' PP.\n'+
-								'Total: ' + totalPP + ' PP';
+								gain = `${amount.pp} PP.\nTotal: ${totalPP} PP`;
 							}
 						}
 
-						if (typeof gain !== "undefined") pi._tool.log(pi._tool.replaceString(lang.log.earn, {gain: gain}), 'chat');
+						if (typeof gain !== 'undefined') pi._tool.log(pi._tool.replaceString(lang.log.earn, {gain: gain}), 'chat');
 					}
 				},
 				friendJoin: function(friend) {
@@ -2196,10 +2194,32 @@
 							}
 						});
 					}
+				},
+				preventTextMenu: function(e) {
+					e.preventDefault();
+				},
+				rightClickMention: function(e) {
+					if (e.button === 2) {
+						e.preventDefault();
+
+						let $chatInput = $('#chat-input-field'),
+						    currentText = $chatInput[0].value,
+						    username = e.target.innerText,
+						    mention = '';
+
+						if (currentText.indexOf(username) !== -1) return;
+						if (currentText.length !== 0 &&
+							currentText.charCodeAt(currentText.length-1) !== 32) mention = ' ';
+
+						mention += `@${username} `;
+
+						$chatInput[0].value += mention;
+						$('#chat-input-field').focus();
+					}
 				}
 			},
 			_load: function() {
-				updateStatus('Initalizating API & Events listener', 3);
+				updateStatus('Initalizating API & Events listener', 4);
 				// Add custom events to the API
 				pi._extendAPI.init();
 				for (var event in pi._event) {
@@ -2219,12 +2239,14 @@
 				$('.button.staff').on('click', pi._DOMEvent.collideRanks);
 				$('#chat-popout-button').on('click', pi._DOMEvent.popout);
 				$("#chat-input-field").on('input', pi._DOMEvent.chatAutocompletion);
+				$('#chat-messages').on('contextmenu', '.un', pi._DOMEvent.preventTextMenu);
+				$('#chat-messages').on('mousedown', '.un', pi._DOMEvent.rightClickMention);
 				$(document).on('ajaxSuccess', pi._DOMEvent.updateRoomSettings);
 				// Execute it at least once, avoid to wait a gain of XP
-				pi._DOMEvent.levelPercentage();
+				// pi._DOMEvent.levelPercentage();
 
 				// Retrieve user settings if available
-				updateStatus('Loading user settings', 4);
+				updateStatus('Loading user settings', 5);
 				var ls = localStorage.getItem('pi-settings');
 				if (typeof ls === 'string') {
 					var userSettings = JSON.parse(ls);
@@ -2258,137 +2280,134 @@
 				}
 				// setInterval
 				window.friendsOnline = setInterval(function() {
-					pi._tool.getFriends(
-						function(friends) {
-							if (settings.unfriended) {
-								// Not using sessionStorage here to be able to track
-								// at any time, even after reboot
-								var friendsInStorage = localStorage.getItem('pi-friends');
+					if (settings.unfriended || settings.friendConnect || settings.friendDisconnect || settings.friendRoomChange)
+						pi._tool.getFriends(
+							function(friends) {
+								if (settings.unfriended) {
+									// Not using sessionStorage here to be able to track
+									// at any time, even after reboot
+									var friendsInStorage = localStorage.getItem('pi-friends');
 
-								if (friendsInStorage !== null) {
-									friendsInStorage = JSON.parse(friendsInStorage);
+									if (friendsInStorage !== null) {
+										friendsInStorage = JSON.parse(friendsInStorage);
 
-									if (friends.length < friendsInStorage.length) {
-										var unfriends = friendsInStorage.filter(user => {
-											let inArray = false;
+										if (friends.length < friendsInStorage.length) {
+											var unfriends = friendsInStorage.filter(user => {
+												let inArray = false;
 
-											for (var i = 0; i < friends.length; i++) {
-												if (friends[i].id === user.id) inArray = true;
-											}
+												for (var i = 0; i < friends.length; i++) {
+													if (friends[i].id === user.id) inArray = true;
+												}
 
-											return !inArray;
-										});
+												return !inArray;
+											});
 
-										unfriends.forEach(function(friend) {
-											pi._tool.log(
-												pi._tool.replaceString(lang.info.unfriended, {
-													friend: friend.username,
-													sad: emoji.replace_colons(':cry:')
-												}),
-												'info chat'
-											);
-										});
+											unfriends.forEach(function(friend) {
+												pi._tool.log(
+													pi._tool.replaceString(lang.info.unfriended, {
+														friend: friend.username,
+														sad: emoji.replace_colons(':cry:')
+													}),
+													'info chat'
+												);
+											});
+										}
 									}
+
+									localStorage.setItem('pi-friends', JSON.stringify(friends));
 								}
 
-								localStorage.setItem('pi-friends', JSON.stringify(friends));
-							}
+								var friendsOnline = [];
+								for (var i = 0; i < friends.length; i++) {
+									if (typeof friends[i].status == 'undefined') friendsOnline.push(friends[i]);
+								}
 
-							var friendsOnline = [];
-							for (var i = 0; i < friends.length; i++) {
-								if (typeof friends[i].status == 'undefined') friendsOnline.push(friends[i]);
-							}
 
-							// Display how many friends are online next to friends request count
-							var count = $('#friends-button > span')[0].innerText.replace(/[0-9]*\//g,'');
-							count = friendsOnline.length + '/' + count;
-							$('#friends-button > span')[0].innerText = count;
+								// Notification for friend connect/disconnected/room change
+								if (settings.friendConnect || settings.friendDisconnect || settings.friendRoomChange) {
+									var storage = sessionStorage.getItem('friendsOnline');
+									if (storage === null) sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
+									else {
+										storage = JSON.parse(storage);
 
-							// Notification for friend connect/disconnected/room change
-							if (settings.friendConnect || settings.friendDisconnect || settings.friendRoomChange) {
-								var storage = sessionStorage.getItem('friendsOnline');
-								if (storage === null) sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
-								else {
-									storage = JSON.parse(storage);
+										for (var i = 0; i < friendsOnline.length; i++) {
+											var isInArray = false;
 
-									for (var i = 0; i < friendsOnline.length; i++) {
-										var isInArray = false;
-
-										for (var j = 0; j < storage.length; j++) {
-											if (friendsOnline[i].id == storage[j].id) {
-												isInArray = true;
-												if (friendsOnline[i].room.id !== storage[j].room.id &&
-											 	    settings.friendRoomChange) {
-													if (friendsOnline[i].room.slug == 'dashboard')
-														pi._tool.log(
-															pi._tool.replaceString(
-																lang.log.friendRoomChangeDashboard,
-																{friend: friendsOnline[i].username}
-															), 'chat'
-														);
-													else {
-														pi._tool.log(
-															pi._tool.replaceString(
-																lang.log.friendRoomChange,
-																{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
-															), 'chat'
-														).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
-															e.preventDefault();
-															let slug = e.data.friend.room.slug,
-															    name = e.data.friend.room.name;
-															modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
-														});
+											for (var j = 0; j < storage.length; j++) {
+												if (friendsOnline[i].id == storage[j].id) {
+													isInArray = true;
+													if (friendsOnline[i].room.id !== storage[j].room.id &&
+												 	    settings.friendRoomChange) {
+														if (friendsOnline[i].room.slug == 'dashboard')
+															pi._tool.log(
+																pi._tool.replaceString(
+																	lang.log.friendRoomChangeDashboard,
+																	{friend: friendsOnline[i].username}
+																), 'chat'
+															);
+														else {
+															pi._tool.log(
+																pi._tool.replaceString(
+																	lang.log.friendRoomChange,
+																	{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
+																), 'chat'
+															).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
+																e.preventDefault();
+																let slug = e.data.friend.room.slug,
+																    name = e.data.friend.room.name;
+																modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
+															});
+														}
 													}
 												}
 											}
-										}
 
-										if (!isInArray && settings.friendConnect) {
-											if (typeof friendsOnline[i].room.name === 'undefined') {
-												// Went online in dashboard, message is slightly different
-												pi._tool.log(
-													pi._tool.replaceString(
-														lang.log.friendConnectDashboard,
-														{friend: friendsOnline[i].username}
-													), 'chat'
-												);
-											} else {
-												pi._tool.log(
-													pi._tool.replaceString(
-														lang.log.friendConnect,
-														{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
-													), 'chat'
-												).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
-													e.preventDefault();
-													let slug = e.data.friend.room.slug,
-													    name = e.data.friend.room.name;
-													modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
-												});
+											if (!isInArray && settings.friendConnect) {
+												if (typeof friendsOnline[i].room.name === 'undefined') {
+													// Went online in dashboard, message is slightly different
+													pi._tool.log(
+														pi._tool.replaceString(
+															lang.log.friendConnectDashboard,
+															{friend: friendsOnline[i].username}
+														), 'chat'
+													);
+												} else {
+													pi._tool.log(
+														pi._tool.replaceString(
+															lang.log.friendConnect,
+															{friend: friendsOnline[i].username, link: friendsOnline[i].room.slug, name: friendsOnline[i].room.name}
+														), 'chat'
+													).div.find('a').on('click', {friend: friendsOnline[i]}, function(e) {
+														e.preventDefault();
+														let slug = e.data.friend.room.slug,
+														    name = e.data.friend.room.name;
+														modules.context.dispatch(new modules.RoomEvent(modules.RoomEvent.JOIN, slug, name));
+													});
+												}
 											}
 										}
-									}
-									for (var i = 0; i < storage.length; i++) {
-										var isInArray = false;
+										for (var i = 0; i < storage.length; i++) {
+											var isInArray = false;
 
-										for (var j = 0; j < friendsOnline.length; j++) {
-											if (storage[i].id == friendsOnline[j].id) isInArray = true;
+											for (var j = 0; j < friendsOnline.length; j++) {
+												if (storage[i].id == friendsOnline[j].id) isInArray = true;
+											}
+
+											if (!isInArray && settings.friendDisconnect) {
+												pi._tool.log(
+													pi._tool.replaceString(
+														lang.log.friendDisconnect,
+														{friend: storage[i].username}
+													), 'chat'
+												);
+											}
 										}
 
-										if (!isInArray && settings.friendDisconnect) {
-											pi._tool.log(
-												pi._tool.replaceString(
-													lang.log.friendDisconnect,
-													{friend: storage[i].username}
-												), 'chat'
-											);
-										}
+										sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
 									}
-
-									sessionStorage.setItem('friendsOnline', JSON.stringify(friendsOnline));
 								}
 							}
-						}
-					);
+						);
 				}, 30*1000);
 				window.roomURL = location.pathname;
 				window.checkIfRoomChanged = setInterval(function() {
@@ -2399,7 +2418,7 @@
 					}
 				}, 2*1000);
 				// Creating DOM elements
-				updateStatus('Creating script environement', 5);
+				updateStatus('Creating script environement', 6);
 				// Menu icon
 				$('#app').append($('<div id="pi-logo"><div id="icon"></div></div>'));
 				// SoundCloud visualizer's custom iframe
@@ -2537,8 +2556,7 @@
 				// DelChat icon
 				$('#chat-popout-button').before(
 					'<div id="pi-delchat" class="chat-header-button">'+
-						'<i class="icon icon-chat"></i>'+
-						'<i class="icon icon-delete"></i>'+
+						'<i class="icon icon-delete-chat"></i>'+
 					'</div>'
 				);
 				// AFK icon
@@ -2787,8 +2805,8 @@
 					// Other
 					DelChat: $('#pi-delchat')[0],
 					// Plug
-					stream: $('#playback-container')[0],
-					playback: $('#playback')[0]
+					stream: $('.community__playing-top')[0],
+					playback: $('.community__playing')[0]
 				};
 
 				delete pi._load; // Init only once
@@ -2847,6 +2865,8 @@
 				$('.button.staff').off('click', pi._DOMEvent.collideRanks);
 				$('#chat-popout-button').off('click', pi._DOMEvent.popout);
 				$("#chat-input-field").off('input', pi._DOMEvent.chatAutocompletion);
+				$('#chat-messages').off('contextmenu', '.un', pi._DOMEvent.preventTextMenu);
+				$('#chat-messages').off('mousedown', '.un', pi._DOMEvent.rightClickMention);
 				$(document).off('ajaxSuccess', pi._DOMEvent.updateRoomSettings);
 				$('.group').css('cursor', '');
 
@@ -2996,23 +3016,8 @@
 					};
 					API.getActivePlaylist = function() {
 						if (!API.enabled) return;
-						let currentPL, name, id, count, allPL;
-						currentPL = $('#playlist-menu .row.selected');
-						name = currentPL.children()[1].innerText;
-						count = currentPL.children()[2].innerText;
-						allPL = JSON.parse(_.find(require.s.contexts._.defined,function(m){return m&&m._read;})._read())[1].p;
 
-						for (var PL in allPL) {
-							if (allPL[PL].name === name) {
-								id = allPL[PL].id;
-							}
-						}
-
-						return {
-							name: name,
-							id: id,
-							itemCount: count
-						};
+						return modules.playlists._byId[modules.playlists.getActiveID()].toJSON();
 					};
 					API.getRoomName = function() {
 						if (!API.enabled) return;
@@ -3785,7 +3790,10 @@
 												if (message.p.guest === 0 && message.p.username) {
 													console.log(`User ${message.p.username} is no longer a guest!`);
 												} else if (settings.userLevelUp && message.p.level) {
-													pi._tool.log(`User leveled up: ${API.getUser(message.p.i).username} to level ${message.p.level} !`, 'info');
+													if (message.p.i === API.getUser().id)
+														pi._tool.log(`Congratulation! You are now level ${message.p.level}!`, 'info');
+													else
+														pi._tool.log(`User leveled up: ${API.getUser(message.p.i).username} to level ${message.p.level}!`, 'info');
 												} else if (message.p.badge || message.p.avatarID) {
 													// do not log it
 												} else {
@@ -3815,10 +3823,6 @@
 											case 'gift':
 											case 'gifted':
 											case 'notify':
-											break;
-
-											default:
-												pi._tool.log(message, 'console info');
 											break;
 										}
 									} catch (e) {
@@ -3969,8 +3973,19 @@
 				}
 			},
 			autowoot: function() {
+				if (API.getMedia() === undefined) return;
 				if (settings.autoW && !$('#meh').is('.selected')) {
-					if (pi._tool.getRoomRules('allowAutowoot')) $('#woot')[0].click();
+					if (pi._tool.getRoomRules('allowAutowoot'))
+						$.ajax({
+							url: '/_/votes',
+							method: 'POST',
+							data: JSON.stringify({
+								direction: 1,
+								historyID: modules.currentMedia.get('historyID')
+							}),
+							dataType: 'json',
+							contentType: 'application/json'
+						});
 					// set up a sessionStorage to show this message only once
 					// else pi._tool.log('This room does not allow you to autowoot.');
 				}
@@ -4053,7 +4068,7 @@
 					} else {
 						eta.mins = Math.floor(eta.estimate/60);
 						eta.secs = eta.estimate%60;
-						eta.text = eta.hour+'m'+eta.secs+'s';
+						eta.text = eta.mins+'m'+eta.secs+'s';
 					}
 				}
 

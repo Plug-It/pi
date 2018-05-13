@@ -1,35 +1,45 @@
 /* Menu Icon */
 #pi-logo, #icon {
 	position: absolute;
-	right: 345px; top: 0;
-	width: 54px; height: 54px;
+	right: 440px; top: 0;
+	width: 40px; height: 50px;
 	z-index: 20;
 	cursor: pointer;
-	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
-	background:	url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat;
-	transition: all ease-in-out .3s;
+	background: 0 / 40px url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54.png) no-repeat;
+	transition: opacity ease-in-out .3s;
 }
 #icon {
 	top: 0px; left: 0;
 	background:
-		url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54-hover.png) no-repeat,
+		0 / 40px url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/icon-54-hover.png) no-repeat,
 		radial-gradient(circle at top left, hsla(0,0%,100%,.5), transparent),
 		linear-gradient(135deg, hsl(190,70%,50%), hsl(220,70%,50%));
-	box-shadow:
-		inset 0 -2px 0 -1px #0a0a0a,
-		inset 0 0 5px hsla(0,0%,100%,.5);
 }
 /* Transition from #pi-logo to #icon */
 #icon {opacity: 0;}
 #icon:hover {opacity: 1;}
 
+/* Menu's placement */
+.community__top-right .btn-subscribe {
+	margin-right: 50px;
+}
+
+@media screen and (max-width: 991px) {
+	#pi-logo, #icon { right: 95px; }
+
+	#pi-menu {
+		right: 0px !important;
+		z-index: 174 !important;
+	}
+}
+
 /* Menu itself */
 #pi-menu {
 	position: absolute;
 	right: 345px;
-	top: 54px;
+	top: 50px;
 	width: 150px;
-	z-index: 7 !important; /* otherwise #avatars-container gets in the way */
+	z-index: 7; /* otherwise #avatars-container gets in the way */
 	background: linear-gradient(to left, #0a0a0a, #111);
 }
 #pi-menu *::selection {
@@ -89,16 +99,8 @@
 	background: #300;
 }
 
-/* Chat headers button a bit more compact */
-#chat-sound-button {
-  margin-left: 5px !important;
-}
-.chat-header-button {
-	margin-right: 5px !important;
-}
-/* To add more buttons */
-#pi-delchat .icon-delete {
-	top: 3px; left: 8px;
+#pi-delchat .icon-delete-chat {
+	background: url(https://i.imgur.com/sIqRK6M.png);
 }
 #pi-afk .pi-afk {
 	background: url(https://raw.githubusercontent.com/Plug-It/pi/pre-release/img/other/afk.png) 30px;
@@ -111,14 +113,6 @@
 }
 #pi-toggleStream .pi-toggleStream.off {
 	background-position: 30px;
-}
-
-/* Menu's placement */
-#history-button {
-	right: 54px !important;
-}
-#now-playing-time, #volume, #button {
-	right: calc(+115px) !important;
 }
 
 /* Mod bar */
